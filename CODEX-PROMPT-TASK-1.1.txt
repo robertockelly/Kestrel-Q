@@ -1,0 +1,261 @@
+You are working in the public Kestrel-Q repository.
+
+Repository root:
+C:\SRC\Kestrel-Q
+
+Reviewed checkpoint:
+aaecee5b38269166f478023430a1208f2a49478f
+docs(model): establish Qwen3.8-Flash-Next source baseline
+
+Task 1.0 is COMPLETE/PASS.
+Task 1.1 is NOT STARTED.
+
+Execute **Task 1.1 — Architecture Characterization**.
+
+Before making changes, read in this order:
+
+1. AGENTS.md
+2. README.md
+3. docs/PRINCIPLES.md
+4. docs/VISION.md
+5. docs/ARCHITECTURE.md
+6. docs/PROJECT-PLAN.md
+7. docs/TASKS.md
+8. docs/ROADMAP.md
+9. docs/MODEL-SOURCE-BASELINE.md
+10. docs/MODEL-LICENSE-BOUNDARY.md
+11. docs/MODEL-ARTIFACT-REGISTER.md
+12. docs/PLAN-EPIC-1-MODEL-CHARACTERIZATION.md
+13. docs/TASKS-EPIC-1-MODEL-CHARACTERIZATION.md
+14. docs/PLAN-TASK-1.1-ARCHITECTURE-CHARACTERIZATION.md
+15. docs/TASKS-TASK-1.1-ARCHITECTURE-CHARACTERIZATION.md
+16. docs/adr/0004-model-source-of-truth-and-artifact-boundary.md
+17. docs/adr/0005-initial-text-only-runtime-scope.md
+18. docs/MODEL-ARCHITECTURE-EVIDENCE-GUIDE.md
+19. CHANGELOG.md
+
+Establish actual HEAD and working tree first. Do not reset newer maintainer work.
+
+============================================================
+MANDATE 0 — CANONICAL CHANGELOG GOVERNANCE
+============================================================
+
+Before architecture research, make the already approved history rule normative.
+
+Update AGENTS.md:
+- CHANGELOG.md is the canonical chronological project-change record.
+- Every mandate/iteration modifying code, config, benchmark, architecture,
+  governed docs, behavior/interfaces, model/runtime capabilities, bug
+  fixes/root causes, or governance MUST update CHANGELOG.md in that same
+  iteration before completion and commit.
+- Responsibility split:
+  CHANGELOG.md = chronological changes
+  docs/TASKS.md = Epic/Task status
+  TASKS-*.md = execution checklist/evidence
+  docs/adr = durable architectural decisions
+  Git history = exact implementation history
+- Do not create parallel worklogs without an ADR.
+
+Update docs/PRINCIPLES.md with:
+"Every material change is reconstructible" and the requirement to update the
+canonical CHANGELOG in the same iteration.
+
+Record this governance change in CHANGELOG.md immediately.
+
+============================================================
+CANONICAL SOURCES
+============================================================
+
+Canonical Hugging Face revision:
+de4b8e4d43b917e7706784d8bb445c9af86a3540
+
+Canonical Qwen research revision:
+69885871a64393807d988b27b1b5e380e8f28526
+
+Reuse Task 1.0 cache and pinned sources.
+
+Do NOT download any Safetensors weight shard.
+
+Official supporting article:
+https://qwen.ai/blog?id=qwen3.8-flash-next
+Treat it as official but unversioned supporting evidence.
+
+If Tier A sources do not fully specify exact execution semantics, select and
+pin a Tier B implementation reference. Hugging Face Transformers Qwen4-Exp is
+a strong candidate. Record exact revision/release, license, and exact
+files/classes/functions inspected.
+
+Do not make Transformers/SGLang/vLLM naming canonical where Tier A defines
+semantics. Community issues are not architecture truth.
+
+============================================================
+REQUIRED OUTPUTS
+============================================================
+
+Create:
+- docs/MODEL-ARCHITECTURE.md
+- docs/MODEL-RUNTIME-STATE.md
+- research/model-architecture/Qwen3.8-Flash-Next/<HF_REVISION>/evidence.json
+
+Finalize:
+- docs/adr/0005-initial-text-only-runtime-scope.md
+
+Update:
+- AGENTS.md
+- docs/PRINCIPLES.md
+- docs/TASKS.md
+- docs/ROADMAP.md
+- docs/TASKS-TASK-1.1-ARCHITECTURE-CHARACTERIZATION.md
+- CHANGELOG.md
+
+============================================================
+CHARACTERIZATION REQUIREMENTS
+============================================================
+
+Follow the governing PLAN exactly.
+
+Characterize, with pinned evidence:
+
+1. Top-level multimodal wrapper and exact text-only path.
+2. Complete 48-layer text backbone and explicit layer-number/type table.
+3. Gated DeltaNet mathematical forward semantics and persistent state.
+4. Qwen Sparse Attention and compressed indexer.
+5. Gated Residual with four branches and dynamic read/write behavior.
+6. Ultra-sparse MoE: 512 experts, top-10, shared expert and combination.
+7. N-gram/PLE lookup algorithm and exactly what can be prefetched in advance.
+8. MTP topology and whether ordinary next-token logits depend on it.
+9. End-to-end prefill flow.
+10. End-to-end single-token decode flow.
+11. Persistent runtime-state model and context scaling.
+
+Starting config hypotheses to verify, not merely repeat:
+- qwen4_exp / Qwen4ExpForConditionalGeneration
+- hidden_size 2560
+- vocab 248320
+- 48 text layers
+- full_attention_interval 4
+- 24 attention heads
+- 2 KV heads
+- head_dim 256
+- hc_count 4
+- hc_lowrank 320
+- indexer_budget 2048
+- indexer_compress_ratio 4
+- indexer_head_dim 128
+- indexer_kv_heads 1
+- indexer_n_heads 4
+- 512 experts
+- top-10 experts/token
+- MoE intermediate size 640
+- ngram_size 3
+- ngram_vocab_size_base 20000000
+- ple_layer_ids [2]
+- ple_embed_dim 2560
+- ple_conv_kernel_size 4
+- one-layer hybrid MTP
+- multimodal vision config
+
+============================================================
+ADR 0005
+============================================================
+
+Determine whether first Kestrel-Q inference may be:
+- text-only;
+- ordinary autoregressive generation;
+- no vision execution;
+- no MTP speculative acceleration.
+
+Do not accept the ADR because it is convenient.
+
+Prove:
+- vision is not involved for text-only requests;
+- canonical ordinary next-token logits do not require MTP.
+
+If proven, set ADR 0005 = Accepted.
+Otherwise leave Proposed with precise blocker.
+
+Future unsupported visual input must be planned to fail explicitly.
+
+============================================================
+EVIDENCE DISCIPLINE
+============================================================
+
+Every major architecture claim must have a stable KQ-ARCH-* entry in
+evidence.json.
+
+Record:
+- source tier
+- source/repository
+- exact revision when versioned
+- artifact/file
+- section/page/function/symbol/config path
+- confidence
+- notes/disagreement
+
+If sources disagree, do not silently reconcile them.
+
+Do not paste large copyrighted passages or source files into the repository.
+
+============================================================
+BOUNDARIES
+============================================================
+
+Task 1.1 must NOT:
+- implement model inference;
+- add tensor primitives;
+- add CUDA model kernels;
+- implement GGUF loading;
+- start canonical-to-GGUF tensor mapping;
+- start Task 1.2 footprint work beyond architecture context;
+- download model weight shards;
+- modify the external GGUF;
+- copy incompatible implementation source.
+
+Small deterministic research tools are allowed under tools/ and must be
+documented and included in CHANGELOG.md.
+
+Task 1.2 and Task 1.3 remain NOT STARTED.
+
+============================================================
+VALIDATION
+============================================================
+
+Before completion:
+- validate evidence.json syntax;
+- cross-check major MODEL-ARCHITECTURE claims against evidence IDs;
+- tracked *.safetensors = 0;
+- tracked *.gguf = 0;
+- repository model weights = 0;
+- no secrets;
+- no runtime/model implementation code added;
+- git diff --check PASS;
+- CHANGELOG.md includes every material Task 1.1/governance change;
+- docs/TASKS.md and ROADMAP.md are synchronized;
+- ADR 0005 outcome is explicit.
+
+Do not commit or push. Leave intentional Task 1.1 changes ready for review.
+
+============================================================
+FINAL REPORT
+============================================================
+
+Report:
+- current Kestrel-Q HEAD
+- canonical source revisions
+- pinned Tier B implementation revision/license, if used
+- architecture findings by subsystem
+- exact 48-layer pattern
+- GDN state/update model
+- QSA/index state/update model
+- GR semantics
+- MoE inference semantics
+- N-gram/PLE addressing and prefetch implications
+- MTP ordinary-generation dependency result
+- ADR 0005 status and evidence
+- evidence.json path and SHA-256
+- files changed
+- CHANGELOG governance-rule status
+- no-weight-download/safety validation
+- source disagreements/uncertainties
+- Task 1.1 status
+- working-tree status

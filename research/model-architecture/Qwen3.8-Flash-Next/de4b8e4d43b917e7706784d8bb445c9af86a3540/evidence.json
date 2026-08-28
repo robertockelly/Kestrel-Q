@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "model": "Qwen/Qwen3.8-Flash-Next",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "research_source": "QwenLM/Qwen3.8-Flash-Next",
+  "research_revision": "69885871a64393807d988b27b1b5e380e8f28526",
+  "captured_for": "Kestrel-Q Task 1.1",
+  "captured_at_utc": "2026-08-28T16:42:25Z",
+  "weight_shards_downloaded": 0,
+  "implementation_sources": [
+    {
+      "tier": "B",
+      "repository": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "path": "src/transformers/models/qwen4_exp/configuration_qwen4_exp.py",
+          "sha256": "26B47995740E3BC596B44B2011EE6C3D971D46136438B00DD5FAD9557BEC4254"
+        },
+        {
+          "path": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+          "sha256": "91E9B1E9C74EFE373CD989FE1974A8FA305F4AAD43628DBCBD03DAC20437814F"
+        },
+        {
+          "path": "src/transformers/models/qwen4_exp/modular_qwen4_exp.py",
+          "sha256": "54B9E147C1E1B95169419A4258C0EA4CEFEAF7C37B9AF2456E57EBC92A4ECC56"
+        },
+        {
+          "path": "src/transformers/cache_utils.py",
+          "sha256": "4B284431CB3A881B6E6F8B8C6430DF6F2EFDCB3366A2484C7984AE88C612C61A"
+        },
+        {
+          "path": "tests/models/qwen4_exp/test_modeling_qwen4_exp.py",
+          "sha256": "37BD97026D2FA9ECF3144E9B7F74F078C023512B07FEB2EFAD84A6D81D4C4B76"
+        }
+      ]
+    },
+    {
+      "tier": "C",
+      "repository": "sgl-project/sglang",
+      "revision": "9579bff86085f886cf6d1ec69349017d0caeced4",
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "path": "python/sglang/srt/models/qwen3_5_mtp.py",
+          "sha256": "7F147DDB7505A13E5A5207C6266EDD826A7D3E5A8281612613FC896570BD76E9"
+        }
+      ],
+      "notes": "Used only to cross-check the MTP input-fusion convention; it is not canonical Qwen3.8 checkpoint semantics."
+    }
+  ],
+  "supporting_sources": [
+    {
+      "tier": "A",
+      "source": "https://qwen.ai/blog?id=qwen3.8-flash-next",
+      "revision": null,
+      "notes": "Official but unversioned release article; not used to override pinned artifacts."
+    }
+  ],
+  "claims": [
+    {
+      "id": "KQ-ARCH-DISCREPANCY-001",
+      "topic": "layer terminology",
+      "claim": "The checkpoint spells every fourth layer full_attention, while the released model semantics use QSA at those positions.",
+      "source_tier": "A+B",
+      "source": "Qwen checkpoint, technical report and Transformers",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "config.json; tech_report.pdf; configuration_qwen4_exp.py",
+      "location": "text_config.layer_types; report section 2.1.2 page 7; Qwen4ExpTextConfig.__post_init__",
+      "confidence": "verified",
+      "notes": "Transformers explicitly maps full_attention to qwen_sparse_attention; the report says all backbone full-attention layers were replaced with QSA."
+    },
+    {
+      "id": "KQ-ARCH-WRAPPER-001",
+      "topic": "multimodal wrapper",
+      "claim": "The released architecture is Qwen4ExpForConditionalGeneration with separate visual and language modules and an LM head.",
+      "source_tier": "A+B",
+      "source": "Qwen/Qwen3.8-Flash-Next and huggingface/transformers",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "config.json; modeling_qwen4_exp.py",
+      "location": "architectures; Qwen4ExpModel.__init__; Qwen4ExpForConditionalGeneration.__init__",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-WRAPPER-002",
+      "topic": "text-only execution",
+      "claim": "With both pixel-value arguments absent, the wrapper does not invoke the vision model and passes token embeddings directly to the language model.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpModel.forward",
+      "confidence": "verified",
+      "notes": "Vision branches are guarded independently by pixel_values is not None and pixel_values_videos is not None."
+    },
+    {
+      "id": "KQ-ARCH-WRAPPER-003",
+      "topic": "multimodal merge",
+      "claim": "Visual features replace matching image/video placeholder embeddings after an explicit feature-count check and use multimodal rotary positions.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpModel.get_placeholder_mask; Qwen4ExpModel.compute_3d_position_ids; Qwen4ExpModel.forward",
+      "confidence": "verified",
+      "notes": "Outside initial Kestrel-Q scope."
+    },
+    {
+      "id": "KQ-ARCH-SCOPE-001",
+      "topic": "initial text scope",
+      "claim": "A language-model-only implementation can produce ordinary text logits without loading visual or MTP tensors.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpForCausalLM._keys_to_ignore_on_load_unexpected; Qwen4ExpForCausalLM.forward",
+      "confidence": "verified",
+      "notes": "Kestrel-Q must reject unsupported visual inputs/tokens explicitly."
+    },
+    {
+      "id": "KQ-ARCH-TEXT-001",
+      "topic": "text dimensions",
+      "claim": "The text model has hidden size 2560, vocabulary 248320, 48 layers, BF16 checkpoint dtype, SiLU activation, RMSNorm epsilon 1e-6 and maximum positions 262144.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "config.json",
+      "location": "text_config",
+      "confidence": "verified",
+      "notes": "Input embeddings and LM head are untied."
+    },
+    {
+      "id": "KQ-ARCH-TEXT-002",
+      "topic": "text flow",
+      "claim": "Embeddings are replicated into four residual branches, processed by 48 attention/GDN plus MoE layers, collapsed by a final GR read and projected by the LM head.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report figure 1 page 2 and section 2.2 pages 10-12; Qwen4ExpTextModel.forward; Qwen4ExpForCausalLM.forward",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-TEXT-003",
+      "topic": "layer schedule",
+      "claim": "The exact 48-layer schedule repeats three GDN layers then one QSA layer twelve times, yielding 36 GDN and 12 QSA layers.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next and Qwen technical report",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 69885871a64393807d988b27b1b5e380e8f28526",
+      "artifact": "config.json; README.md; tech_report.pdf",
+      "location": "text_config.layer_types; README Model Overview; report figure 1 page 2",
+      "confidence": "verified",
+      "notes": "One-based QSA layers are 4,8,...,48."
+    },
+    {
+      "id": "KQ-ARCH-GDN-001",
+      "topic": "GDN dimensions",
+      "claim": "GDN uses 16 Q/K heads and 48 value heads with 128-dimensional Q/K and value heads.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "config.json; README.md",
+      "location": "text_config.linear_*; README Model Overview",
+      "confidence": "verified",
+      "notes": "Tier B repeats each Q/K head three times to align with 48 value heads."
+    },
+    {
+      "id": "KQ-ARCH-GDN-002",
+      "topic": "GDN recurrence",
+      "claim": "GDN applies a data-dependent decay followed by beta-controlled delta-rule erase/write and reads the updated matrix with the query.",
+      "source_tier": "A",
+      "source": "Qwen technical report",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526",
+      "artifact": "tech_report.pdf",
+      "location": "section 2.1.1 equations 1-5, page 4",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-GDN-003",
+      "topic": "GDN parameterization",
+      "claim": "Q/K/V pass through a width-4 depthwise causal convolution and SiLU; Q/K are L2 normalized; beta and decay are separately projected; output uses gated RMSNorm and an output projection.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report equations 6-11 page 4; Qwen4ExpTextGatedDeltaNet",
+      "confidence": "verified",
+      "notes": "Released output_gate_type is sigmoid."
+    },
+    {
+      "id": "KQ-ARCH-GDN-004",
+      "topic": "GDN persistent state",
+      "claim": "Each GDN layer keeps recurrent state [B,48,128,128] in FP32 and convolution state [B,10240,4] in activation dtype.",
+      "source_tier": "A+B",
+      "source": "Qwen checkpoint config and huggingface/transformers",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "config.json; modeling_qwen4_exp.py; cache_utils.py",
+      "location": "text_config.mamba_ssm_dtype and linear_*; torch_chunk_gated_delta_rule; Qwen4ExpTextGatedDeltaNet; LinearAttentionLayer",
+      "confidence": "verified",
+      "notes": "10240 = 2*(16*128) + 48*128."
+    },
+    {
+      "id": "KQ-ARCH-GDN-005",
+      "topic": "GDN prefill/decode",
+      "claim": "Prefill causally scans a sequence and commits final recurrent/conv states; cached single-token decode updates both once in place.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpTextGatedDeltaNet.forward; torch_chunk_gated_delta_rule; torch_recurrent_gated_delta_rule",
+      "confidence": "verified",
+      "notes": "Chunk size and fusion are implementation details."
+    },
+    {
+      "id": "KQ-ARCH-QSA-001",
+      "topic": "QSA core attention",
+      "claim": "QSA uses 24 query heads, 2 KV heads, head dimension 256, 64 rotary dimensions and a sigmoid output gate.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "config.json; README.md",
+      "location": "text_config attention and rope fields; README Model Overview",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-QSA-002",
+      "topic": "QSA indexer",
+      "claim": "The indexer has four 128-dimensional query heads and one shared key head, pools complete blocks of four, selects up to 512 blocks/2048 tokens and always includes the incomplete tail.",
+      "source_tier": "A",
+      "source": "Qwen technical report and checkpoint config",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "tech_report.pdf; config.json",
+      "location": "report section 2.1.2 equations 12-19 pages 6-7; text_config.indexer_*",
+      "confidence": "verified",
+      "notes": "Scores sum ReLU-positive query/key similarities over indexer heads."
+    },
+    {
+      "id": "KQ-ARCH-QSA-003",
+      "topic": "QSA causality",
+      "claim": "Only causally complete blocks are eligible for top-k; selected blocks expand to tokens and combine with the visible incomplete tail to mask core attention.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report equations 15-19 pages 6-7; Qwen4ExpTextQSAIndexer.forward; Qwen4ExpTextAttention.forward",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-QSA-004",
+      "topic": "QSA persistent state",
+      "claim": "Each QSA layer persists K/V [B,2,T,256] and raw index keys [B,T,128]; pooled block keys, scores and masks are transient in the pinned implementation.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "modeling_qwen4_exp.py; cache_utils.py",
+      "location": "Qwen4ExpTextAttention.forward; Qwen4ExpTextQSAIndexer.forward; DynamicIndexedLayer",
+      "confidence": "verified",
+      "notes": "State grows with context length."
+    },
+    {
+      "id": "KQ-ARCH-QSA-005",
+      "topic": "QSA training boundary",
+      "claim": "Indexer KL distillation and sparse-training losses are training-only and are not part of inference logits.",
+      "source_tier": "A",
+      "source": "Qwen technical report",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526",
+      "artifact": "tech_report.pdf",
+      "location": "section 2.1.2 pages 6-7",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-GR-001",
+      "topic": "Gated Residual read/write",
+      "claim": "GR independently normalizes four branches, uses a rank-320 elementwise dynamic read gate and writes each block output through one data-dependent scalar per branch.",
+      "source_tier": "A",
+      "source": "Qwen technical report and checkpoint config",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "tech_report.pdf; config.json",
+      "location": "report equations 30-34 page 11; text_config.hc_count and hc_lowrank",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-GR-002",
+      "topic": "Gated Residual placement",
+      "claim": "Separate GR modules surround attention/GDN and MoE in every layer, and a final read-only GR mixer collapses the branches before logits.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report figure 1 page 2 and section 2.2; Qwen4ExpTextDecoderLayer; Qwen4ExpTextModel",
+      "confidence": "verified",
+      "notes": "There is no H_res branch-mixing operator."
+    },
+    {
+      "id": "KQ-ARCH-GR-003",
+      "topic": "Gated Residual lifetime",
+      "claim": "GR branches are current-forward activations carried across layers, not context-growing autoregressive cache state.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report equations 35-36 pages 12-13; Qwen4ExpTextModel.forward",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-GR-004",
+      "topic": "Gated Residual precision",
+      "claim": "The report supports FP8 residual-branch storage as an optimization, while the released/reference default remains BF16.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and checkpoint config",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "tech_report.pdf; config.json",
+      "location": "report Inference Efficiency page 14; text_config.dtype",
+      "confidence": "verified",
+      "notes": "FP8 requires future parity validation and is not assumed by Task 1.1."
+    },
+    {
+      "id": "KQ-ARCH-MOE-001",
+      "topic": "MoE router and experts",
+      "claim": "Every layer routes each token over 512 experts, selects top 10, normalizes selected weights and runs width-640 SwiGLU routed experts.",
+      "source_tier": "A+B",
+      "source": "Qwen checkpoint config and huggingface/transformers",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "config.json; modeling_qwen4_exp.py",
+      "location": "text_config num_experts fields; Qwen4ExpTextTopKRouter; Qwen4ExpTextExperts",
+      "confidence": "verified",
+      "notes": "Router softmax is evaluated in FP32 by Tier B."
+    },
+    {
+      "id": "KQ-ARCH-MOE-002",
+      "topic": "MoE shared expert",
+      "claim": "A width-640 shared SwiGLU expert is sigmoid-gated and added to the weighted routed-expert sum.",
+      "source_tier": "A+B",
+      "source": "Qwen checkpoint config and huggingface/transformers",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "config.json; modeling_qwen4_exp.py",
+      "location": "text_config.shared_expert_intermediate_size; Qwen4ExpTextSparseMoeBlock.forward",
+      "confidence": "verified",
+      "notes": "Ten routed plus one shared expert are active per token."
+    },
+    {
+      "id": "KQ-ARCH-MOE-003",
+      "topic": "MoE inference boundary",
+      "claim": "Load-balancing loss is optional training/diagnostic behavior; ordinary inference needs routing IDs and weights but no auxiliary loss.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpForCausalLM.forward; load_balancing_loss_func",
+      "confidence": "verified",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-PLE-001",
+      "topic": "PLE configuration",
+      "claim": "One PLE is placed at one-indexed layer 2 and uses ngram_size 3, eight heads per order, base vocabulary 20,000,000, embedding width 2560 and 128 table parts.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "config.json; model.safetensors.index.json; README.md",
+      "location": "text_config PLE/ngram fields; model.language_model.layers.1.ple.* tensor names; README Model Overview",
+      "confidence": "verified",
+      "notes": "The index contains 128 ngram_embedding shard weights plus PLE projections/state metadata."
+    },
+    {
+      "id": "KQ-ARCH-PLE-002",
+      "topic": "PLE addressing",
+      "claim": "Bigram/trigram addresses use current and preceding token IDs, EOS segment sentinels, deterministic odd multipliers, XOR mixing, per-head prime moduli and table offsets.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "_build_layer_multipliers; Qwen4ExpTextNGramEmbedding._shift_right_ignore_eos; Qwen4ExpTextNGramEmbedding.forward",
+      "confidence": "verified-implementation",
+      "notes": "The checkpoint-indexed layer_multipliers tensor remains canonical and must be loaded/validated."
+    },
+    {
+      "id": "KQ-ARCH-PLE-003",
+      "topic": "PLE injection",
+      "claim": "PLE projects lookup embeddings to branch keys and a shared value, gates the value from normalized branch/key similarity, adds a dilation-3 width-4 depthwise-convolution result, and injects it before layer-2 GR.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py",
+      "location": "Qwen4ExpTextPLELayer; Qwen4ExpTextDecoderLayer.forward",
+      "confidence": "verified-implementation",
+      "notes": ""
+    },
+    {
+      "id": "KQ-ARCH-PLE-004",
+      "topic": "PLE state",
+      "claim": "PLE persistently retains two token IDs and nine positions of dilated-convolution history.",
+      "source_tier": "B",
+      "source": "huggingface/transformers",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "modeling_qwen4_exp.py; cache_utils.py",
+      "location": "Qwen4ExpTextNGramEmbedding.forward; Qwen4ExpTextPLELayer.__init__ and _short_conv",
+      "confidence": "verified",
+      "notes": "Nine = (kernel 4 - 1) * dilation 3."
+    },
+    {
+      "id": "KQ-ARCH-PLE-005",
+      "topic": "PLE prefetch",
+      "claim": "PLE lookup addresses are determined from token IDs before layer execution, and layer-2 placement is intended to overlap host prefetch with layer 1.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report section 2.3.1 page 15; Qwen4ExpTextNGramEmbedding.forward",
+      "confidence": "verified",
+      "notes": "No cache/scheduler policy is selected."
+    },
+    {
+      "id": "KQ-ARCH-MTP-001",
+      "topic": "MTP topology",
+      "claim": "The release contains one hybrid MTP layer, no dedicated MTP embeddings, and MTP attention configured at a full/QSA position.",
+      "source_tier": "A",
+      "source": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "artifact": "config.json; model.safetensors.index.json; README.md",
+      "location": "text_config.mtp; text_config.mtp_use_dedicated_embeddings; mtp.* tensor names; README Model Overview",
+      "confidence": "verified",
+      "notes": "The index contains 31 mtp.* tensors and the README reports about 4B MTP parameters."
+    },
+    {
+      "id": "KQ-ARCH-MTP-002",
+      "topic": "MTP role",
+      "claim": "MTP is used for multi-step speculative decoding and reuses QSA top-k indices across draft prediction steps.",
+      "source_tier": "A",
+      "source": "Qwen technical report",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526",
+      "artifact": "tech_report.pdf",
+      "location": "section 2.1.2 pages 7-9, especially table 4 and surrounding text",
+      "confidence": "verified",
+      "notes": "The report evaluates four-step speculative decoding accepted length."
+    },
+    {
+      "id": "KQ-ARCH-MTP-003",
+      "topic": "MTP input fusion",
+      "claim": "MTP consumes a token embedding and a main-model hidden state through separately normalized/fused inputs before its one draft layer.",
+      "source_tier": "A+C",
+      "source": "Qwen checkpoint tensor inventory and sgl-project/sglang",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540 / 9579bff86085f886cf6d1ec69349017d0caeced4",
+      "artifact": "model.safetensors.index.json; python/sglang/srt/models/qwen3_5_mtp.py",
+      "location": "mtp.fc_embedding, mtp.fc_hidden, mtp.pre_fc_norm_*; Qwen3_5ForCausalLMMTP.forward",
+      "confidence": "high-cross-check",
+      "notes": "Tier A does not fully specify exact fusion arithmetic or mtp_use_hidden_state_from_layer=null; verify before implementing MTP."
+    },
+    {
+      "id": "KQ-ARCH-MTP-004",
+      "topic": "ordinary logits",
+      "claim": "Ordinary autoregressive next-token logits are computed by the main text backbone and LM head without MTP.",
+      "source_tier": "A+B",
+      "source": "Qwen technical report and huggingface/transformers",
+      "revision": "69885871a64393807d988b27b1b5e380e8f28526 / 805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "artifact": "tech_report.pdf; modeling_qwen4_exp.py",
+      "location": "report speculative-decoding discussion pages 7-9; Qwen4ExpForCausalLM.forward and _keys_to_ignore_on_load_unexpected",
+      "confidence": "verified",
+      "notes": "MTP is optional speculative acceleration."
+    }
+  ],
+  "disagreements": [
+    {
+      "id": "KQ-ARCH-DISCREPANCY-001",
+      "summary": "Released config uses full_attention labels; canonical report and Tier B implementation identify those positions as QSA.",
+      "resolution": "Preserve the literal label in source inventory but execute/describe QSA semantics only when all QSA configuration is present."
+    }
+  ],
+  "remaining_uncertainties": [
+    {
+      "topic": "MTP exact fusion",
+      "detail": "Tier A and no-weight metadata establish topology and optional role but do not fully specify exact input-fusion arithmetic or the null hidden-layer selector. This does not block ordinary text logits and must be resolved before MTP implementation."
+    },
+    {
+      "topic": "optimized runtime precision and cache representation",
+      "detail": "FP8 GR storage, derived QSA block caches and lower-precision GDN state require later parity evidence; Task 1.1 records semantics, not an optimization policy."
+    }
+  ]
+}

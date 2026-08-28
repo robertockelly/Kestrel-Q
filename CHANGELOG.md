@@ -26,6 +26,16 @@ The project is currently pre-alpha.
 - Documented the Apache-2.0 Kestrel-Q source boundary separately from the pinned
   Qwen Community License 1.0 model-artifact terms, including commercial MaaS
   and AI Work Assistant review triggers.
+- Made `CHANGELOG.md` the canonical chronological project-change record and
+  required every material mandate/iteration to update it before completion and
+  commit, with task status, task evidence, ADRs and Git history retaining their
+  separate responsibilities.
+- Completed Task 1.1 architecture characterization against pinned official
+  model/research sources and a pinned Apache-2.0 Transformers implementation
+  reference; Tasks 1.2 and 1.3 remain not started.
+- Accepted ADR 0005: the initial Kestrel-Q model path may support ordinary
+  text-only autoregressive logits while explicitly rejecting multimodal inputs
+  and deferring optional MTP speculative acceleration.
 
 ### Added
 
@@ -52,3 +62,9 @@ The project is currently pre-alpha.
   size, SHA-256, GGUF v3 metadata, tensor-type evidence and pinned provenance.
 - Completed Task 1.0 after read-only registration of the maintainer's local
   derived GGUF; no model artifact was copied into or tracked by the repository.
+- Implementation-grade Qwen3.8-Flash-Next architecture and runtime-state
+  baselines covering the exact 48-layer GDN/QSA schedule, Gated Residual, MoE,
+  deterministic n-gram/PLE addressing, MTP boundaries, and prefill/decode state
+  transitions.
+- Machine-readable Task 1.1 evidence with stable `KQ-ARCH-*` claim IDs, exact
+  source revisions, source locations, licenses and implementation file hashes.

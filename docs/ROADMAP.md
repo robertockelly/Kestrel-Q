@@ -15,7 +15,12 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   UD-Q4_K_XL GGUF is registered as `KQ-MODEL-ARTIFACT-001` with exact size,
   SHA-256, GGUF metadata, quantization evidence and pinned provenance. Task 1.0
   is complete/pass.
-- Task 1.1 detailed architecture/execution characterization has not started.
+- Task 1.1 is complete/pass: the exact 48-layer GDN/QSA schedule, GR, MoE,
+  PLE, MTP boundary, prefill/decode flow and persistent runtime state are
+  evidence-backed against pinned sources. ADR 0005 is accepted for an initial
+  text-only ordinary autoregressive path without vision or MTP acceleration.
+- Tasks 1.2 (canonical tensor inventory/footprint) and 1.3 (canonical-to-GGUF
+  mapping) remain not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.

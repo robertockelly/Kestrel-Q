@@ -215,6 +215,26 @@ Update documentation in the same change when modifying:
 
 Architectural decisions belong under `docs/adr/`.
 
+### Canonical change record
+
+`CHANGELOG.md` is the canonical chronological record of project changes.
+
+Every mandate or iteration that modifies source code, build/runtime
+configuration, benchmarks, architecture or model assumptions, governed
+documentation, supported behavior or interfaces, model/runtime capabilities,
+bug fixes or their root causes, or project governance **must** update
+`CHANGELOG.md` in that same iteration before completion and before commit.
+
+Project records have distinct responsibilities:
+
+- `CHANGELOG.md` records chronological changes;
+- `docs/TASKS.md` records current Epic/Task status;
+- task-specific `TASKS-*.md` files record execution checklists and evidence;
+- `docs/adr/` records durable architectural decisions;
+- Git history records exact implementation history.
+
+Do not create a parallel worklog unless an ADR explicitly introduces one.
+
 ## 12. Safety and destructive actions
 
 An agent must not:

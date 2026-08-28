@@ -27,13 +27,22 @@ Status convention:
   - ADR 0004: **ACCEPTED**;
   - local GGUF `KQ-MODEL-ARTIFACT-001`: **REGISTERED / VERIFIED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Catalogue canonical tensor inventory and footprint (Task 1.2)
+- [x] Task 1.1 — Architecture characterization:
+  - canonical 48-layer text execution, GDN, QSA, GR, MoE, PLE and MTP
+    boundaries: **PINNED / VERIFIED**;
+  - runtime-state and prefill/decode models: **DOCUMENTED**;
+  - ADR 0005 initial text-only ordinary autoregressive scope: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Task 1.2 — Catalogue canonical tensor inventory and footprint:
+  **NOT STARTED**.
+- [ ] Task 1.3 — Map canonical tensors to the registered derived GGUF:
+  **NOT STARTED**.
 - [ ] Document tokenizer/chat template
-- [ ] Document MoE topology and routing
-- [ ] Document Gated DeltaNet execution
-- [ ] Document Qwen Sparse Attention execution
-- [ ] Document gated residual mechanism
-- [ ] Document n-gram embedding mechanism
+- [x] Document MoE topology and routing (Task 1.1)
+- [x] Document Gated DeltaNet execution (Task 1.1)
+- [x] Document Qwen Sparse Attention execution (Task 1.1)
+- [x] Document gated residual mechanism (Task 1.1)
+- [x] Document n-gram embedding mechanism (Task 1.1)
 - [ ] Estimate memory by tensor family and datatype
 - [ ] Identify candidate host/SSD-resident tensor families
 - [ ] Define minimum useful quantization target

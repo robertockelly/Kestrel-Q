@@ -10,3 +10,8 @@
 8. **Benchmarks are reproducible artifacts** — not anecdotes.
 9. **Fail closed** — unsupported artifacts must not appear to work.
 10. **Community over ownership** — design decisions should be documented and reviewable.
+11. **Every material change is reconstructible** — update the canonical
+    `CHANGELOG.md` in the same iteration as any material code, configuration,
+    benchmark, architecture, governed-documentation, behavior, bug-fix or
+    governance change; use task status, task evidence, ADRs and Git history for
+    their distinct responsibilities rather than creating parallel worklogs.
