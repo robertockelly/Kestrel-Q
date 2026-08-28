@@ -1,0 +1,46 @@
+# Build
+/build/
+/out/
+cmake-build-*/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# Compiler
+*.obj
+*.o
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.exp
+
+# CUDA
+*.cubin
+*.ptx
+*.fatbin
+
+# Model artifacts
+/models/
+*.safetensors
+*.gguf
+*.bin
+*.onnx
+
+# Benchmark/generated data
+bench/results/
+*.trace
+*.nsys-rep
+*.sqlite
+
+# Python tooling
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+Thumbs.db
+Desktop.ini
