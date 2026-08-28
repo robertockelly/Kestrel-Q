@@ -1,0 +1,70 @@
+You are working in the Kestrel-Q repository.
+
+Repository root:
+C:\SRC\Kestrel-Q
+
+Before making changes, read:
+1. AGENTS.md
+2. README.md
+3. docs/VISION.md
+4. docs/ARCHITECTURE.md
+5. docs/PROJECT-PLAN.md
+6. docs/TASKS.md
+7. docs/TOOLCHAIN-BASELINE.md
+8. docs/PLAN-TASK-0.3B-CUDA-SMOKE.md
+9. docs/TASKS-TASK-0.3B-CUDA-SMOKE.md
+10. CHANGELOG.md
+
+Execute Task 0.3B exactly as governed by the plan/task files.
+
+Primary objective:
+add a minimal optional CUDA smoke backend and CTest validation. Do NOT implement inference, tensor math, quantization, model loading, tokenizer, scheduling, or any model-specific kernel.
+
+Hard constraints:
+- Core runtime remains C17.
+- CUDA code may live in .cu files but exposes a C ABI.
+- KQ_ENABLE_CUDA defaults to OFF.
+- CPU-only configure/build/tests remain green.
+- CUDA-enabled configure/build/tests must be green on KQ-01.
+- Check every CUDA API call.
+- Fail closed on CUDA errors.
+- Do not hard-code CUDA/MSVC absolute paths.
+- Do not add inference-framework dependencies.
+- Do not commit generated build directories.
+- Use clean build-cpu and build-cuda directories.
+- Update docs/TOOLCHAIN-BASELINE.md with observed values only.
+- Update CHANGELOG.md.
+- Follow Apache-2.0 provenance rules in AGENTS.md.
+
+Observed KQ-01 toolchain:
+- MSVC 19.44.35228 x64
+- toolset 14.44.35207
+- Windows SDK 10.0.26100.0
+- CMake 4.4.3
+- CUDA Toolkit 13.3
+- nvcc V13.3.73
+- NVIDIA driver 595.97
+- GPU NVIDIA GeForce RTX 3080 10 GiB
+
+Validation commands:
+
+CPU-only:
+cmake -S . -B build-cpu -G "Visual Studio 17 2022" -A x64 -DKQ_ENABLE_CUDA=OFF
+cmake --build build-cpu --config Release
+ctest --test-dir build-cpu -C Release --output-on-failure
+
+CUDA:
+cmake -S . -B build-cuda -G "Visual Studio 17 2022" -A x64 -DKQ_ENABLE_CUDA=ON
+cmake --build build-cuda --config Release
+ctest --test-dir build-cuda -C Release --output-on-failure
+
+If a normal internal build/application bug appears, determine and document root cause before fixing it, add relevant regression/fail-closed protection, and continue. Stop only for a genuinely unsafe/non-automatable blocker.
+
+At completion provide a concise final report with:
+- files changed
+- findings/root causes
+- CPU build/test result
+- CUDA build/test result
+- actual GPU/runtime/driver data
+- unresolved limitations
+- working tree status

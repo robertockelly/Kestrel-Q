@@ -1,0 +1,77 @@
+Kestrel-Q Task 0.2E raw capture
+capture_started_utc=2026-08-28T12:31:35.5867727Z
+machine_id=KQ-01
+capture_date=2026-08-28
+benchmark_executable=C:\SRC\Kestrel-Q\build-cuda\Release\kq_cuda_bandwidth.exe
+nvidia_smi=C:\WINDOWS\system32\nvidia-smi.exe
+sample_interval_ms=100
+git_commit=56ac196e19038fa71f48073b1493849de22a9fab
+
+cmake --version:
+cmake version 4.4.3
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+nvcc --version:
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Jun__9_14:30:19_Pacific_Daylight_Time_2026
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+
+nvidia-smi:
+Fri Aug 28 14:31:35 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.97                 Driver Version: 595.97         CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3080      WDDM  |   00000000:06:00.0  On |                  N/A |
+|  0%   45C    P8             27W /  340W |    1047MiB /  10240MiB |     12%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            5092    C+G   ...Chrome\Application\chrome.exe      N/A      |
+|    0   N/A  N/A           10360    C+G   ...em32\ApplicationFrameHost.exe      N/A      |
+|    0   N/A  N/A           10496    C+G   ...0.4129.101\msedgewebview2.exe      N/A      |
+|    0   N/A  N/A           10620    C+G   ...5n1h2txyewy\TextInputHost.exe      N/A      |
+|    0   N/A  N/A           10704    C+G   ...SnippingTool\SnippingTool.exe      N/A      |
+|    0   N/A  N/A           12452    C+G   ...Chrome\Application\chrome.exe      N/A      |
+|    0   N/A  N/A           12544    C+G   ...2txyewy\CrossDeviceResume.exe      N/A      |
+|    0   N/A  N/A           12664    C+G   ...indows\System32\ShellHost.exe      N/A      |
+|    0   N/A  N/A           12880    C+G   ...IA App\CEF\NVIDIA Overlay.exe      N/A      |
+|    0   N/A  N/A           13252    C+G   C:\Windows\explorer.exe               N/A      |
+|    0   N/A  N/A           13676    C+G   ...Local\PowerToys\PowerToys.exe      N/A      |
+|    0   N/A  N/A           13740    C+G   ...ntrolPanel\SystemSettings.exe      N/A      |
+|    0   N/A  N/A           14180    C+G   ...IA App\CEF\NVIDIA Overlay.exe      N/A      |
+|    0   N/A  N/A           14652    C+G   ..._cw5n1h2txyewy\SearchHost.exe      N/A      |
+|    0   N/A  N/A           14672    C+G   ...y\StartMenuExperienceHost.exe      N/A      |
+|    0   N/A  N/A           17132    C+G   ...1g1gvanyjgm\WhatsApp.Root.exe      N/A      |
+|    0   N/A  N/A           19952    C+G   ...yb3d8bbwe\Notepad\Notepad.exe      N/A      |
+|    0   N/A  N/A           21632    C+G   ...App_cw5n1h2txyewy\LockApp.exe      N/A      |
+|    0   N/A  N/A           22184    C+G   ...pps\PowerToys.QuickAccess.exe      N/A      |
+|    0   N/A  N/A           23752    C+G   ...s\PowerToys.AdvancedPaste.exe      N/A      |
+|    0   N/A  N/A           23856    C+G   ...s\PowerToys.ColorPickerUI.exe      N/A      |
+|    0   N/A  N/A           24228    C+G   ...Toys\PowerToys.FancyZones.exe      N/A      |
+|    0   N/A  N/A           24248    C+G   ...8bbwe\Microsoft.CmdPal.UI.exe      N/A      |
+|    0   N/A  N/A           25088    C+G   ...s\PowerToys.PowerLauncher.exe      N/A      |
+|    0   N/A  N/A           25364    C+G   ...UI3Apps\PowerToys.Peek.UI.exe      N/A      |
+|    0   N/A  N/A           26028    C+G   ...xyewy\ShellExperienceHost.exe      N/A      |
+|    0   N/A  N/A           28420    C+G   ...2p2nqsd0c76g0\app\ChatGPT.exe      N/A      |
+|    0   N/A  N/A           30208    C+G   ...yb3d8bbwe\WindowsTerminal.exe      N/A      |
+|    0   N/A  N/A           30460    C+G   ...2p2nqsd0c76g0\app\ChatGPT.exe      N/A      |
+|    0   N/A  N/A           31264    C+G   ...Files\Notepad++\notepad++.exe      N/A      |
++-----------------------------------------------------------------------------------------+
+
+benchmark_exit_code=0
+capture_finished_utc=2026-08-28T12:31:42.2176189Z
+pcie_sample_count=35
+
+benchmark stderr:

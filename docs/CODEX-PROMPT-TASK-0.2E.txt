@@ -1,0 +1,140 @@
+You are working in the Kestrel-Q repository.
+
+Repository root:
+C:\SRC\Kestrel-Q
+
+This mandate has two required outcomes:
+
+1. record the deferred portable-CUDA release decision in the canonical project backlog;
+2. execute Task 0.2E: measured CUDA/PCIe transfer baseline for KQ-01.
+
+Before editing, read:
+
+1. AGENTS.md
+2. README.md
+3. docs/VISION.md
+4. docs/ARCHITECTURE.md
+5. docs/PROJECT-PLAN.md
+6. docs/TASKS.md
+7. docs/ROADMAP.md
+8. docs/HARDWARE-TARGET.md
+9. docs/MEMORY-BANDWIDTH-BUDGET.md
+10. docs/TOOLCHAIN-BASELINE.md
+11. docs/PLAN-TASK-0.3B-CUDA-SMOKE.md
+12. docs/TASKS-TASK-0.3B-CUDA-SMOKE.md
+13. docs/BACKLOG-UPDATE-CUDA-PORTABILITY.md
+14. docs/PLAN-TASK-0.2E-CUDA-PCIE-BANDWIDTH.md
+15. docs/TASKS-TASK-0.2E-CUDA-PCIE-BANDWIDTH.md
+16. CHANGELOG.md
+
+First establish the current repository state and inspect the Task 0.3B implementation. Do not assume the prompt's expected file names are still exact if the repository has evolved; preserve current architecture.
+
+MANDATE A — BACKLOG
+
+Apply `docs/BACKLOG-UPDATE-CUDA-PORTABILITY.md`.
+
+Record:
+
+KQ-BACKLOG-CUDA-001 — Portable CUDA Binary Strategy
+Status: DEFERRED
+Trigger: before first public binary release
+
+Integrate it into the existing `docs/TASKS.md`, `docs/ROADMAP.md`, and `CHANGELOG.md` without overwriting newer content. It must not block current KQ-01 work.
+
+MANDATE B — TASK 0.2E
+
+Implement the CUDA/PCIe bandwidth benchmark exactly under the governing plan/task files.
+
+Measure on KQ-01:
+
+- pageable H2D
+- pinned H2D
+- pageable D2H
+- pinned D2H
+- bidirectional/concurrent transfer when supported
+- multiple sizes: 1, 4, 16, 64, 256 MiB
+- setup/allocation costs where meaningful
+- current PCIe generation/width under load where reliable
+
+Benchmark correctness is mandatory. Validate transferred data.
+
+Use both host-visible high-resolution timing and CUDA-event timing where those measurements are meaningful, and label them clearly.
+
+Produce stable machine-readable evidence under:
+
+bench/results/raw/KQ-01/2026-08-28/
+
+Raw evidence must remain immutable after capture.
+
+Important validated baseline:
+
+- RTX 3080, compute capability 8.6
+- 10 GiB VRAM
+- 68 SMs
+- warp 32
+- MSVC 19.44.35228 x64
+- CMake 4.4.3
+- CUDA Toolkit 13.3 / nvcc 13.3.73
+- NVIDIA driver 595.97
+- CUDA runtime/driver API observed by smoke: 13.2
+- RAM bandwidth baseline: ~25.63 GB/s
+- SATA sequential read baseline: ~0.44 GB/s
+- PCIe maximum capability: Gen4 x16
+- theoretical PCIe 4.0 x16 payload ceiling: ~31.5 GB/s/direction
+
+Task 0.3B finding that must not regress:
+
+The initial CUDA execution failed with cudaErrorUnsupportedPtxVersion because Toolkit 13.3 PTX could not be consumed by the driver 595.97 CUDA 13.2 JIT. CMake `native` generated a verified sm_86 cubin and the CUDA smoke passed. Preserve this behavior; do not reintroduce a PTX-only default or hard-code RTX 3080-specific architecture in production policy.
+
+Hard constraints:
+
+- no inference code;
+- no model loading;
+- no tensor framework;
+- no quantization;
+- no scheduler/expert implementation yet;
+- CPU-only build remains supported;
+- every CUDA API call used must be checked;
+- fail closed;
+- no hard-coded user-specific paths in production code;
+- benchmark PowerShell tooling may resolve C:\Windows\System32\nvidia-smi.exe as a Windows system tool, but should prefer robust resolution;
+- no build directories committed;
+- no large traces committed;
+- preserve Apache-2.0 provenance rules.
+
+Validation must include clean CPU and CUDA build trees.
+
+If a normal internal bug/blocker occurs:
+1. preserve evidence;
+2. identify/document root cause before changing code;
+3. add regression/fail-closed coverage where relevant;
+4. fix it;
+5. continue the same dirty journey;
+6. do not declare a clean baseline until the corrected path has been rerun cleanly.
+
+At completion update at minimum:
+
+- docs/TASKS.md
+- docs/ROADMAP.md
+- docs/MEMORY-BANDWIDTH-BUDGET.md
+- CHANGELOG.md
+
+Update docs/TOOLCHAIN-BASELINE.md only if new toolchain facts are learned.
+
+Final report must include:
+
+- files changed
+- KQ-BACKLOG-CUDA-001 status
+- methodology
+- CPU/CUDA test results
+- all measured bandwidth results
+- setup/allocation findings
+- PCIe link state under load if captured
+- raw evidence paths
+- findings/root causes
+- implications for future expert/tensor prefetch design
+- unresolved limitations
+- working tree status
+- final Task 0.2E status
+
+Do not make model throughput claims from PCIe bandwidth alone.

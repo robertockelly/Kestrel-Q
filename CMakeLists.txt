@@ -9,8 +9,35 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-option(KQ_ENABLE_CUDA "Enable the CUDA backend when implemented" OFF)
+option(KQ_ENABLE_CUDA "Enable the CUDA smoke backend" OFF)
 option(KQ_BUILD_TESTS "Build tests" ON)
+
+function(kq_enable_c_warnings target)
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /W4)
+    else()
+        target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
+endfunction()
+
+function(kq_configure_cuda_target target)
+    set_target_properties(${target} PROPERTIES
+        CUDA_ARCHITECTURES native
+        CUDA_STANDARD 17
+        CUDA_STANDARD_REQUIRED ON
+        CUDA_EXTENSIONS OFF
+    )
+
+    if(MSVC)
+        target_compile_options(${target} PRIVATE
+            $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/W4>
+        )
+    else()
+        target_compile_options(${target} PRIVATE
+            $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-Wall,-Wextra,-Wpedantic>
+        )
+    endif()
+endfunction()
 
 add_library(kq_core
     src/kq_runtime.c
@@ -21,21 +48,81 @@ target_include_directories(kq_core
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-if(MSVC)
-    target_compile_options(kq_core PRIVATE /W4)
-else()
-    target_compile_options(kq_core PRIVATE -Wall -Wextra -Wpedantic)
-endif()
+kq_enable_c_warnings(kq_core)
 
 add_executable(kq
     src/main.c
 )
 
 target_link_libraries(kq PRIVATE kq_core)
+kq_enable_c_warnings(kq)
+
+if(KQ_ENABLE_CUDA)
+    enable_language(CUDA)
+
+    add_library(kq_cuda_backend STATIC
+        src/cuda/kq_cuda_smoke.cu
+    )
+
+    target_include_directories(kq_cuda_backend
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    kq_configure_cuda_target(kq_cuda_backend)
+
+    set(KQ_GIT_COMMIT "unknown")
+    find_package(Git QUIET)
+    if(GIT_FOUND)
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE KQ_GIT_REVISION_RESULT
+            OUTPUT_VARIABLE KQ_GIT_COMMIT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+        )
+        if(NOT KQ_GIT_REVISION_RESULT EQUAL 0)
+            set(KQ_GIT_COMMIT "unknown")
+        else()
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} status --porcelain
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                OUTPUT_VARIABLE KQ_GIT_STATUS
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_QUIET
+            )
+            if(NOT KQ_GIT_STATUS STREQUAL "")
+                string(APPEND KQ_GIT_COMMIT "-dirty")
+            endif()
+        endif()
+    endif()
+
+    add_executable(kq_cuda_bandwidth
+        bench/cuda_bandwidth.cu
+    )
+    kq_configure_cuda_target(kq_cuda_bandwidth)
+    target_compile_definitions(kq_cuda_bandwidth PRIVATE
+        KQ_GIT_COMMIT="${KQ_GIT_COMMIT}"
+    )
+endif()
 
 if(KQ_BUILD_TESTS)
     enable_testing()
     add_executable(kq_smoke_test tests/smoke.c)
     target_link_libraries(kq_smoke_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_smoke_test)
     add_test(NAME kq_smoke COMMAND kq_smoke_test)
+
+    if(KQ_ENABLE_CUDA)
+        add_executable(kq_cuda_smoke_test tests/cuda_smoke.c)
+        target_link_libraries(kq_cuda_smoke_test PRIVATE kq_cuda_backend)
+        kq_enable_c_warnings(kq_cuda_smoke_test)
+        add_test(NAME kq_cuda_smoke COMMAND kq_cuda_smoke_test)
+
+        add_test(
+            NAME kq_cuda_bandwidth_self_test
+            COMMAND kq_cuda_bandwidth --self-test --machine-id KQ-01
+        )
+    endif()
 endif()

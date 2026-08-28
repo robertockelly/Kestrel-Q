@@ -1,5 +1,6 @@
 # Build
 /build/
+/build-*/
 /out/
 cmake-build-*/
 
@@ -31,7 +32,14 @@ cmake-build-*/
 *.onnx
 
 # Benchmark/generated data
-bench/results/
+bench/results/*
+!bench/results/raw/
+bench/results/raw/*
+!bench/results/raw/KQ-01/
+bench/results/raw/KQ-01/*
+!bench/results/raw/KQ-01/2026-08-28/
+!bench/results/raw/KQ-01/2026-08-28/*.csv
+!bench/results/raw/KQ-01/2026-08-28/*.txt
 *.trace
 *.nsys-rep
 *.sqlite

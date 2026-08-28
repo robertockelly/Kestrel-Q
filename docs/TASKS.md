@@ -13,8 +13,9 @@ Status convention:
 - [ ] Create public GitHub repository
 - [x] Adopt Apache License 2.0 as the project license
 - [ ] Define third-party dependency and NOTICE review policy
-- [ ] Record exact reference hardware
-- [ ] Establish build toolchain
+- [x] Task 0.1 — Record the exact KQ-01 reference hardware baseline
+- [x] Task 0.2 — Complete the KQ-01 memory and bandwidth budget (0.2A–0.2E PASS)
+- [x] Task 0.3 — Establish the Windows/CUDA toolchain and CUDA smoke baseline
 - [ ] Configure formatting/static-analysis policy
 - [ ] Add CI skeleton
 - [ ] Select authoritative reference runtime for correctness vectors
@@ -67,6 +68,12 @@ Status convention:
 - [ ] Correctness parity
 - [ ] CUDA profiler instrumentation
 - [ ] Initial performance baseline
+- [ ] `KQ-BACKLOG-BENCH-001` — Measure WDDM CUDA allocation headroom before a
+  production VRAM capacity policy depends on it:
+  - status: **DEFERRED**;
+  - trigger: **before production VRAM allocator/memory-placement capacity is set**;
+  - measure bounded allocation behavior under representative WDDM load;
+  - keep the result separate from Task 0.2D clean-idle capacity.
 
 ## Epic 5 — Memory tiering
 
@@ -127,4 +134,13 @@ Status convention:
 - [ ] Issue/PR templates
 - [ ] Security reporting
 - [ ] Release checklist
+- [ ] `KQ-BACKLOG-CUDA-001` — Define portable CUDA binary strategy before first public binary release:
+  - status: **DEFERRED**;
+  - trigger: **before first public binary release**;
+  - evaluate per-machine `native` builds;
+  - evaluate multi-architecture fat binaries;
+  - define minimum supported NVIDIA compute capabilities;
+  - define cubin/PTX fallback policy;
+  - measure binary-size/startup/performance trade-offs;
+  - document the selected release policy in an ADR.
 - [ ] First public alpha
