@@ -22,7 +22,12 @@ Status convention:
 
 ## Epic 1 — Qwen3.8-Flash-Next research
 
-- [ ] Catalogue official configuration and tensor inventory
+- [x] Task 1.0 — Model source & artifact baseline:
+  - official source `KQ-MODEL-SOURCE-001`: **PINNED / VERIFIED**;
+  - ADR 0004: **ACCEPTED**;
+  - local GGUF `KQ-MODEL-ARTIFACT-001`: **REGISTERED / VERIFIED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Catalogue canonical tensor inventory and footprint (Task 1.2)
 - [ ] Document tokenizer/chat template
 - [ ] Document MoE topology and routing
 - [ ] Document Gated DeltaNet execution

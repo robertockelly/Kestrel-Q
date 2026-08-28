@@ -26,6 +26,7 @@ cmake-build-*/
 
 # Model artifacts
 /models/
+/.research-cache/
 *.safetensors
 *.gguf
 *.bin

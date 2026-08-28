@@ -1,0 +1,161 @@
+You are working in the public Kestrel-Q repository.
+
+Repository root:
+C:\SRC\Kestrel-Q
+
+Foundation checkpoint:
+af79501ca57bb4ff7ad68c962086f9f5d2901f6b
+`chore: establish KQ-01 hardware and CUDA baseline`
+
+The current branch may contain later commits. Do not reset to the foundation SHA. Establish current HEAD first and preserve all newer work.
+
+Execute **Epic 1 / Task 1.0 — Model Source & Artifact Baseline**.
+
+Before editing, read in this order:
+
+1. AGENTS.md
+2. README.md
+3. docs/VISION.md
+4. docs/ARCHITECTURE.md
+5. docs/PROJECT-PLAN.md
+6. docs/TASKS.md
+7. docs/ROADMAP.md
+8. docs/HARDWARE-TARGET.md
+9. docs/MEMORY-BANDWIDTH-BUDGET.md
+10. docs/TOOLCHAIN-BASELINE.md
+11. docs/PLAN-EPIC-1-MODEL-CHARACTERIZATION.md
+12. docs/TASKS-EPIC-1-MODEL-CHARACTERIZATION.md
+13. docs/PLAN-TASK-1.0-MODEL-SOURCE-BASELINE.md
+14. docs/TASKS-TASK-1.0-MODEL-SOURCE-BASELINE.md
+15. docs/adr/0004-model-source-of-truth-and-artifact-boundary.md
+16. CHANGELOG.md
+
+Primary official sources:
+
+- https://huggingface.co/Qwen/Qwen3.8-Flash-Next
+- https://github.com/QwenLM/Qwen3.8-Flash-Next
+- https://qwen.ai/blog?id=qwen3.8-flash-next
+- https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE
+
+Treat these as starting sources, but pin exact revisions and verify facts yourself.
+
+IMPORTANT: THIS TASK MUST NOT DOWNLOAD MODEL WEIGHT SHARDS.
+
+The upstream Hugging Face repository is approximately 360 GB and uses 131 Safetensors shards. Do not run a full `git clone`, unrestricted `hf download`, snapshot download, or any command that could pull all weights.
+
+Allowed:
+- repository API/file listing;
+- small config/tokenizer/processor/chat-template files;
+- README/LICENSE;
+- `model.safetensors.index.json`;
+- architecture/technical-report metadata;
+- temporary research downloads under an ignored cache.
+
+Forbidden during Task 1.0:
+- any `model-*.safetensors` shard;
+- full checkpoint download;
+- adding model weights to Git;
+- adding the user's GGUF to Git.
+
+Create/complete the following governed outputs:
+
+- docs/MODEL-SOURCE-BASELINE.md
+- docs/MODEL-LICENSE-BOUNDARY.md
+- docs/MODEL-ARTIFACT-REGISTER.md
+- docs/adr/0004-model-source-of-truth-and-artifact-boundary.md
+- research/model-baseline/Qwen3.8-Flash-Next/<PINNED_REVISION>/manifest.json
+- project status updates in docs/TASKS.md, docs/ROADMAP.md and CHANGELOG.md
+
+A small research-only metadata-fetch/manifest tool under `tools/` is allowed if it improves reproducibility. It must use an explicit allowlist and fail closed against `.safetensors` shard downloads.
+
+Model license boundary:
+
+Kestrel-Q source code remains Apache-2.0.
+The official Qwen3.8-Flash-Next repository currently identifies the model artifacts under Qwen Community License 1.0. Verify the pinned license text. Document its terms factually and separately. In particular, record any terms relevant to commercial Model-as-a-Service and AI Work Assistant use because Kestrel-Q's long-term roadmap includes a coding agent. Do not provide legal advice or imply that Apache-2.0 relicenses the model.
+
+Canonical-source rule:
+
+- pinned official Qwen artifacts/specifications define model semantics;
+- official Safetensors index defines canonical released tensor identity/composition;
+- a GGUF is a derived representation;
+- do not treat GGUF tensor names/layout as canonical model architecture.
+
+GGUF registration:
+
+The maintainer has an existing local Qwen3.8-Flash-Next Q4 GGUF.
+
+Assign:
+KQ-MODEL-ARTIFACT-001
+
+Only inspect it if:
+- environment variable `KQ_GGUF_PATH` points to the exact file, OR
+- it exists under the repository's ignored `models/` directory.
+
+Do NOT recursively search C:\ or the user's profile.
+
+If the exact GGUF path is unavailable, complete every other Task 1.0 deliverable, create the registry entry as `AWAITING_LOCAL_PATH`, and report the exact missing input. Do not invent the quantization subtype or provenance.
+
+When the GGUF is available, record:
+- exact filename
+- size bytes
+- SHA-256
+- GGUF version/architecture metadata if inspectable
+- exact quantization label encoded by the artifact
+- origin URL/revision if known
+- converter/quantizer provenance if discoverable
+- license/provenance
+Do not modify the GGUF.
+
+Expected config facts to verify, not assume:
+- qwen4_exp / Qwen4ExpForConditionalGeneration
+- multimodal wrapper
+- 48 text layers
+- repeating linear/full attention pattern
+- hidden size 2560
+- 512 experts / 10 routed per token
+- 262144 max positions
+- N-gram/PLE config
+- MTP config
+- vision config
+
+Task 1.0 must not become Task 1.1. Record high-confidence config facts, but leave detailed GDN/QSA/GR/MoE equations and execution analysis for Task 1.1.
+
+Safety validation before declaring completion:
+
+- no `*.safetensors` is tracked;
+- no `*.gguf` is tracked;
+- no weight shard was accidentally downloaded into repository paths;
+- no unrestricted model download command was used;
+- metadata manifest is pinned and reproducible;
+- upstream hashes/sizes are recorded;
+- no secrets/tokens are committed;
+- licensing boundary is explicit;
+- no incompatible implementation code is copied;
+- current CPU/CUDA foundation code is not modified unless genuinely required by this research task.
+
+If a normal internal bug occurs:
+1. preserve evidence;
+2. determine/document root cause before fix;
+3. add fail-closed/regression protection where applicable;
+4. continue safely.
+
+Do not commit/push unless the repository's current governance or maintainer instruction for this mandate explicitly requires it. If not required, finish with a clean report and leave intentional changes ready for review.
+
+Final report must include:
+
+- current Kestrel-Q HEAD
+- pinned official HF revision
+- pinned official research-source revision(s)
+- official metadata inventory
+- files actually downloaded temporarily
+- manifest path
+- verified source-baseline facts
+- model-license boundary summary
+- KQ-MODEL-SOURCE-001 status
+- KQ-MODEL-ARTIFACT-001 status and exact GGUF identity/hash, or exact missing path input
+- ADR 0004 status
+- files changed
+- no-weight-download safety evidence
+- unresolved limitations
+- final Task 1.0 status
+- working-tree status

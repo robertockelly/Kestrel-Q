@@ -8,6 +8,14 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
 - KQ-01 CUDA/PCIe transfer baseline captured with correctness-checked pageable
   and pinned H2D/D2H measurements; simultaneous bidirectional copy remains an
   explicit unsupported/skip case on the observed WDDM runtime.
+- Task 1.0 pinned the official Hugging Face artifact revision and official Qwen
+  research revision, captured a reproducible no-weight metadata manifest,
+  documented the model-license boundary and accepted ADR 0004.
+- `KQ-MODEL-SOURCE-001` is verified and the maintainer's merged Unsloth
+  UD-Q4_K_XL GGUF is registered as `KQ-MODEL-ARTIFACT-001` with exact size,
+  SHA-256, GGUF metadata, quantization evidence and pinned provenance. Task 1.0
+  is complete/pass.
+- Task 1.1 detailed architecture/execution characterization has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
