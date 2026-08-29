@@ -1,0 +1,457 @@
+{
+  "claims": [
+    {
+      "claim": "Canonical identity and composition come from the pinned Safetensors inventory.",
+      "id": "KQ-GGUF-EVIDENCE-001",
+      "sha256": "46e0b550a8a37a48180d96c151b61354fe6251ae91734df64dafe5975202177a",
+      "source": "research/model-tensors/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/tensor-inventory.csv"
+    },
+    {
+      "claim": "GGUF type, name, block-size and tensor-name mappings are pinned to llama.cpp.",
+      "id": "KQ-GGUF-EVIDENCE-002",
+      "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+      "source": "ggml-org/llama.cpp gguf-py/gguf/constants.py and tensor_mapping.py"
+    },
+    {
+      "claim": "Qwen4Exp converter defines PLE fusion/KV representation, QSA split and converter transforms.",
+      "id": "KQ-GGUF-EVIDENCE-003",
+      "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+      "sha256": "12a0a5aea7877fbb8fe35af041a9c34f8b57b05278871b22c24c650b9760dfc3",
+      "source": "ggml-org/llama.cpp conversion/qwen4exp.py"
+    },
+    {
+      "claim": "Qwen MoE converter splits canonical aggregated gate_up expert weights.",
+      "id": "KQ-GGUF-EVIDENCE-004",
+      "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+      "sha256": "3e3ea6be268c65915f8f5b8419edc15c291f0adf374b97216f436191d23456b4",
+      "source": "ggml-org/llama.cpp conversion/qwen.py"
+    },
+    {
+      "claim": "ADR-0005 defines vision and MTP as outside the initial text runtime scope.",
+      "id": "KQ-GGUF-EVIDENCE-005",
+      "source": "docs/adr/0005-initial-text-only-runtime-scope.md"
+    },
+    {
+      "claim": "The pinned local artifact supplies observed metadata, tensor directory, types and offsets.",
+      "id": "KQ-GGUF-EVIDENCE-006",
+      "sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+      "source": "KQ-MODEL-ARTIFACT-001"
+    },
+    {
+      "claim": "Pinned upstream shard headers and llama.cpp merge semantics reconcile the 384-byte difference as format overhead.",
+      "id": "KQ-GGUF-EVIDENCE-007",
+      "llama_cpp_revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+      "llama_cpp_source_sha256": "86484d1c25843ef5abd01f9d1523b707fa60ad13905a5912d949201791681347",
+      "source": "unsloth/Qwen3.8-Flash-Next-GGUF and llama.cpp tools/gguf-split/gguf-split.cpp",
+      "unsloth_revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+    }
+  ],
+  "format_and_converter_sources": {
+    "files": [
+      {
+        "evidence_role": "GGUF/GGML type IDs, block geometry, Qwen4Exp tensor symbols",
+        "path": "gguf-py/gguf/constants.py",
+        "sha256": "425024d367b166444f39ed724bd01b3ef9276775a68e6c71519d6866c7701ab8"
+      },
+      {
+        "evidence_role": "canonical converter name patterns to GGUF tensor symbols",
+        "path": "gguf-py/gguf/tensor_mapping.py",
+        "sha256": "0bff4f10215bbf76dd0ab5762e3548f4929da6a8f0cdb51bfc8c675801ee0101"
+      },
+      {
+        "evidence_role": "PLE fusion/KV conversion, QSA split, PLE transforms, initial-scope MTP omission",
+        "path": "conversion/qwen4exp.py",
+        "sha256": "12a0a5aea7877fbb8fe35af041a9c34f8b57b05278871b22c24c650b9760dfc3"
+      },
+      {
+        "evidence_role": "aggregated MoE gate_up split and GDN layout transforms",
+        "path": "conversion/qwen.py",
+        "sha256": "3e3ea6be268c65915f8f5b8419edc15c291f0adf374b97216f436191d23456b4"
+      },
+      {
+        "evidence_role": "split metadata and payload-preserving merge semantics",
+        "path": "tools/gguf-split/gguf-split.cpp",
+        "sha256": "86484d1c25843ef5abd01f9d1523b707fa60ad13905a5912d949201791681347"
+      }
+    ],
+    "license": "MIT",
+    "license_file_sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+    "repository": "ggml-org/llama.cpp",
+    "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a"
+  },
+  "generated_by": "tools/map-canonical-to-gguf.py",
+  "input_hashes": {
+    "canonical_inventory_sha256": "46e0b550a8a37a48180d96c151b61354fe6251ae91734df64dafe5975202177a",
+    "gguf_metadata_sha256": "181ac010d7fc7f236408706801bbc2fe37a1310f115f33c1b5654fdffef84add",
+    "normalized_base_gguf_inventory_sha256": "5fd8c70996dcfbe06d8b1795797ceb9d69a260c05bbf9a8e1f57a16414be3e5e",
+    "upstream_split_audit_sha256": "024912ef8e5476d1430b84825a41bdf3b80644143d868f8d7f6976ba797fa86e"
+  },
+  "safety": {
+    "local_tensor_payload_bytes_read_by_inspector": 0,
+    "model_artifacts_written_to_repository": 0,
+    "upstream_tensor_payload_bytes_fetched": 0
+  },
+  "schema_version": 1,
+  "unsloth_source": {
+    "license_boundary": "model artifact remains under the upstream Qwen Community License 1.0 boundary documented by Task 1.0",
+    "readme_sha256": "abe002ccf7cefcfcae3587c7f863ad6287147c6ebedf3ccf967faf97035baaab",
+    "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+  },
+  "upstream_split_range_audit": {
+    "api_url": "https://huggingface.co/api/models/unsloth/Qwen3.8-Flash-Next-GGUF/revision/c8b5954a88c2775c546b92593eda40ea041d3176?blobs=true",
+    "audit": {
+      "request_count": 40,
+      "requests": [
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf",
+          "purpose": "GGUF fixed header",
+          "range_end": 23,
+          "range_start": 0,
+          "response_bytes": 24
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "GGUF fixed header",
+          "range_end": 23,
+          "range_start": 0,
+          "response_bytes": 24
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 31,
+          "range_start": 24,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 39,
+          "range_start": 32,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.no type",
+          "range_end": 43,
+          "range_start": 40,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.no value",
+          "range_end": 45,
+          "range_start": 44,
+          "response_bytes": 2
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 53,
+          "range_start": 46,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 72,
+          "range_start": 54,
+          "response_bytes": 19
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.tensors.count type",
+          "range_end": 76,
+          "range_start": 73,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.tensors.count value",
+          "range_end": 80,
+          "range_start": 77,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 88,
+          "range_start": 81,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 99,
+          "range_start": 89,
+          "response_bytes": 11
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.count type",
+          "range_end": 103,
+          "range_start": 100,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+          "purpose": "split.count value",
+          "range_end": 105,
+          "range_start": 104,
+          "response_bytes": 2
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "GGUF fixed header",
+          "range_end": 23,
+          "range_start": 0,
+          "response_bytes": 24
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 31,
+          "range_start": 24,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 39,
+          "range_start": 32,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.no type",
+          "range_end": 43,
+          "range_start": 40,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.no value",
+          "range_end": 45,
+          "range_start": 44,
+          "response_bytes": 2
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 53,
+          "range_start": 46,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 72,
+          "range_start": 54,
+          "response_bytes": 19
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.tensors.count type",
+          "range_end": 76,
+          "range_start": 73,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.tensors.count value",
+          "range_end": 80,
+          "range_start": 77,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 88,
+          "range_start": 81,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 99,
+          "range_start": 89,
+          "response_bytes": 11
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.count type",
+          "range_end": 103,
+          "range_start": 100,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+          "purpose": "split.count value",
+          "range_end": 105,
+          "range_start": 104,
+          "response_bytes": 2
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "GGUF fixed header",
+          "range_end": 23,
+          "range_start": 0,
+          "response_bytes": 24
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 31,
+          "range_start": 24,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 39,
+          "range_start": 32,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.no type",
+          "range_end": 43,
+          "range_start": 40,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.no value",
+          "range_end": 45,
+          "range_start": 44,
+          "response_bytes": 2
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 53,
+          "range_start": 46,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 72,
+          "range_start": 54,
+          "response_bytes": 19
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.tensors.count type",
+          "range_end": 76,
+          "range_start": 73,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.tensors.count value",
+          "range_end": 80,
+          "range_start": 77,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key length",
+          "range_end": 88,
+          "range_start": 81,
+          "response_bytes": 8
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "metadata key",
+          "range_end": 99,
+          "range_start": 89,
+          "response_bytes": 11
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.count type",
+          "range_end": 103,
+          "range_start": 100,
+          "response_bytes": 4
+        },
+        {
+          "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+          "purpose": "split.count value",
+          "range_end": 105,
+          "range_start": 104,
+          "response_bytes": 2
+        }
+      ],
+      "response_bytes": 342,
+      "tensor_payload_bytes_fetched": 0
+    },
+    "generated_by": "tools/audit-gguf-split-headers.py",
+    "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "revision": "c8b5954a88c2775c546b92593eda40ea041d3176",
+    "schema_version": 1,
+    "shards": [
+      {
+        "bytes_fetched": 24,
+        "file_size_bytes": 10946624,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf",
+        "last_fetched_offset": 23,
+        "metadata_count": 67,
+        "split_metadata": {},
+        "tensor_count": 0,
+        "tensor_payload_bytes_fetched": 0,
+        "upstream_lfs_sha256": "4448186216b3af4cc558bbce2c3213f01608f8f8b2e5267a9767971dd3ec8082",
+        "version": 3
+      },
+      {
+        "bytes_fetched": 106,
+        "file_size_bytes": 49859583136,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+        "last_fetched_offset": 105,
+        "metadata_count": 3,
+        "split_metadata": {
+          "split.count": 4,
+          "split.no": 1,
+          "split.tensors.count": 1224
+        },
+        "tensor_count": 297,
+        "tensor_payload_bytes_fetched": 0,
+        "upstream_lfs_sha256": "3f342f1c1580473f1ee94ddd5b28206e8c07a70fa1a366f59d1d6c922919a6c9",
+        "version": 3
+      },
+      {
+        "bytes_fetched": 106,
+        "file_size_bytes": 49376141504,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+        "last_fetched_offset": 105,
+        "metadata_count": 3,
+        "split_metadata": {
+          "split.count": 4,
+          "split.no": 2,
+          "split.tensors.count": 1224
+        },
+        "tensor_count": 752,
+        "tensor_payload_bytes_fetched": 0,
+        "upstream_lfs_sha256": "56758f40269cad5cd9b0d3d6fbae0f40f6d5be6de49e4ab392dbe83157d9cbd3",
+        "version": 3
+      },
+      {
+        "bytes_fetched": 106,
+        "file_size_bytes": 12087983520,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+        "last_fetched_offset": 105,
+        "metadata_count": 3,
+        "split_metadata": {
+          "split.count": 4,
+          "split.no": 3,
+          "split.tensors.count": 1224
+        },
+        "tensor_count": 175,
+        "tensor_payload_bytes_fetched": 0,
+        "upstream_lfs_sha256": "753bda48b98ba4f1636134a90a967de1b2d3908a236c026e464777342e53510a",
+        "version": 3
+      }
+    ]
+  }
+}

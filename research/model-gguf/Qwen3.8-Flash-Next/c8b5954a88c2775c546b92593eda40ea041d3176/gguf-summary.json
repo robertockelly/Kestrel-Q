@@ -1,0 +1,1482 @@
+{
+  "artifact": {
+    "architecture": "qwen4exp",
+    "artifact_id": "KQ-MODEL-ARTIFACT-001",
+    "file_size_bytes": 111334654400,
+    "filename": "Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf",
+    "metadata_count": 67,
+    "sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+    "tensor_count": 1224,
+    "version": 3
+  },
+  "artifact_footprints": {
+    "canonical_full_checkpoint": {
+      "parameter_count": 179999981459,
+      "stored_payload_bytes": 359999963128
+    },
+    "canonical_initial_text_scope": {
+      "parameter_count": 176943899555,
+      "stored_payload_bytes": 353887799320
+    },
+    "excluded_mtp": {
+      "canonical_parameter_count": 2607150848,
+      "canonical_stored_payload_bytes": 5214301696,
+      "effective_bits_per_gguf_tensor_parameter": null,
+      "gguf_tensor_count": 0,
+      "gguf_tensor_count_by_type": {},
+      "gguf_tensor_parameter_count": 0,
+      "idealized_q4_payload_floor_bytes": 1303575424,
+      "packed_bytes": 0,
+      "packed_share_of_all_tensors": 0.0,
+      "precision_policy_observation": "NOT_PRESENT_INITIAL_SCOPE"
+    },
+    "excluded_vision": {
+      "canonical_parameter_count": 448931056,
+      "canonical_stored_payload_bytes": 897862112,
+      "effective_bits_per_gguf_tensor_parameter": null,
+      "gguf_tensor_count": 0,
+      "gguf_tensor_count_by_type": {},
+      "gguf_tensor_parameter_count": 0,
+      "idealized_q4_payload_floor_bytes": 224465528,
+      "packed_bytes": 0,
+      "packed_share_of_all_tensors": 0.0,
+      "precision_policy_observation": "NOT_PRESENT_INITIAL_SCOPE"
+    },
+    "gguf_initial_text_scope": {
+      "file_overhead_bytes": 11024320,
+      "tensor_packed_bytes": 111323630080,
+      "tensor_parameter_count": 176943899520,
+      "total_file_bytes": 111334654400
+    }
+  },
+  "canonical_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "family_footprints": {
+    "dense_non_routed_excluding_shared": {
+      "canonical_parameter_count": 4678806400,
+      "canonical_stored_payload_bytes": 9357612800,
+      "effective_bits_per_gguf_tensor_parameter": 8.92418237266667,
+      "gguf_tensor_count": 881,
+      "gguf_tensor_parameter_count": 4678806400,
+      "idealized_q4_payload_floor_bytes": 2339403200,
+      "packed_bytes": 5219315200,
+      "packed_share_of_all_tensors": 0.046884162834514714,
+      "precision_policy_observation": "MIXED"
+    },
+    "dense_shared_non_routed_text": {
+      "canonical_parameter_count": 4914858880,
+      "canonical_stored_payload_bytes": 9829717760,
+      "effective_bits_per_gguf_tensor_parameter": 8.904397141103672,
+      "gguf_tensor_count": 1073,
+      "gguf_tensor_parameter_count": 4914858880,
+      "idealized_q4_payload_floor_bytes": 2457429440,
+      "packed_bytes": 5470481920,
+      "packed_share_of_all_tensors": 0.04914034797525711,
+      "precision_policy_observation": "MIXED"
+    },
+    "gated_residual": {
+      "canonical_parameter_count": 640624640,
+      "canonical_stored_payload_bytes": 1281249280,
+      "effective_bits_per_gguf_tensor_parameter": 8.680679656655105,
+      "gguf_tensor_count": 387,
+      "gguf_tensor_count_by_type": {
+        "F32": 193,
+        "Q8_0": 194
+      },
+      "gguf_tensor_parameter_count": 640624640,
+      "idealized_q4_payload_floor_bytes": 320312320,
+      "packed_bytes": 695132160,
+      "packed_share_of_all_tensors": 0.006244246253023372,
+      "precision_policy_observation": "MIXED"
+    },
+    "gdn": {
+      "canonical_parameter_count": 2086510464,
+      "canonical_stored_payload_bytes": 4173020928,
+      "effective_bits_per_gguf_tensor_parameter": 8.616344791070265,
+      "gguf_tensor_count": 324,
+      "gguf_tensor_count_by_type": {
+        "F32": 216,
+        "Q8_0": 108
+      },
+      "gguf_tensor_parameter_count": 2086510464,
+      "idealized_q4_payload_floor_bytes": 1043255232,
+      "packed_bytes": 2247261696,
+      "packed_share_of_all_tensors": 0.02018674466854037,
+      "precision_policy_observation": "MIXED"
+    },
+    "lm_head": {
+      "canonical_parameter_count": 635699200,
+      "canonical_stored_payload_bytes": 1271398400,
+      "effective_bits_per_gguf_tensor_parameter": 8.5,
+      "gguf_tensor_count": 1,
+      "gguf_tensor_count_by_type": {
+        "Q8_0": 1
+      },
+      "gguf_tensor_parameter_count": 635699200,
+      "idealized_q4_payload_floor_bytes": 317849600,
+      "packed_bytes": 675430400,
+      "packed_share_of_all_tensors": 0.006067268912400885,
+      "precision_policy_observation": "OBSERVED_LOWER_PRECISION"
+    },
+    "mtp": {
+      "canonical_parameter_count": 2607150848,
+      "canonical_stored_payload_bytes": 5214301696,
+      "effective_bits_per_gguf_tensor_parameter": null,
+      "gguf_tensor_count": 0,
+      "gguf_tensor_count_by_type": {},
+      "gguf_tensor_parameter_count": 0,
+      "idealized_q4_payload_floor_bytes": 1303575424,
+      "packed_bytes": 0,
+      "packed_share_of_all_tensors": 0.0,
+      "precision_policy_observation": "NOT_PRESENT_INITIAL_SCOPE"
+    },
+    "ple": {
+      "canonical_parameter_count": 51233085475,
+      "canonical_stored_payload_bytes": 102466171160,
+      "effective_bits_per_gguf_tensor_parameter": 4.5025968219336665,
+      "gguf_tensor_count": 7,
+      "gguf_tensor_count_by_type": {
+        "F32": 4,
+        "IQ4_NL": 1,
+        "Q8_0": 2
+      },
+      "gguf_tensor_parameter_count": 51233085440,
+      "idealized_q4_payload_floor_bytes": 25616542738,
+      "packed_bytes": 28835240960,
+      "packed_share_of_all_tensors": 0.25902174533186045,
+      "precision_policy_observation": "MIXED"
+    },
+    "qsa_attention": {
+      "canonical_parameter_count": 597694464,
+      "canonical_stored_payload_bytes": 1195388928,
+      "effective_bits_per_gguf_tensor_parameter": 8.500241568240458,
+      "gguf_tensor_count": 72,
+      "gguf_tensor_count_by_type": {
+        "F32": 24,
+        "Q8_0": 48
+      },
+      "gguf_tensor_parameter_count": 597694464,
+      "idealized_q4_payload_floor_bytes": 298847232,
+      "packed_bytes": 635068416,
+      "packed_share_of_all_tensors": 0.005704704522693193,
+      "precision_policy_observation": "MIXED"
+    },
+    "qsa_indexer": {
+      "canonical_parameter_count": 19663872,
+      "canonical_stored_payload_bytes": 39327744,
+      "effective_bits_per_gguf_tensor_parameter": 16.002499609436025,
+      "gguf_tensor_count": 48,
+      "gguf_tensor_count_by_type": {
+        "BF16": 24,
+        "F32": 24
+      },
+      "gguf_tensor_parameter_count": 19663872,
+      "idealized_q4_payload_floor_bytes": 9831936,
+      "packed_bytes": 39333888,
+      "packed_share_of_all_tensors": 0.0003533291896045221,
+      "precision_policy_observation": "UNQUANTIZED"
+    },
+    "routed_experts": {
+      "canonical_parameter_count": 120795955200,
+      "canonical_stored_payload_bytes": 241591910400,
+      "effective_bits_per_gguf_tensor_parameter": 5.100694444444445,
+      "gguf_tensor_count": 144,
+      "gguf_tensor_count_by_type": {
+        "Q4_K": 94,
+        "Q5_1": 43,
+        "Q5_K": 2,
+        "Q8_0": 5
+      },
+      "gguf_tensor_parameter_count": 120795955200,
+      "idealized_q4_payload_floor_bytes": 60397977600,
+      "packed_bytes": 77017907200,
+      "packed_share_of_all_tensors": 0.6918379066928825,
+      "precision_policy_observation": "MIXED"
+    },
+    "router": {
+      "canonical_parameter_count": 62914560,
+      "canonical_stored_payload_bytes": 125829120,
+      "effective_bits_per_gguf_tensor_parameter": 32.0,
+      "gguf_tensor_count": 48,
+      "gguf_tensor_count_by_type": {
+        "F32": 48
+      },
+      "gguf_tensor_parameter_count": 62914560,
+      "idealized_q4_payload_floor_bytes": 31457280,
+      "packed_bytes": 251658240,
+      "packed_share_of_all_tensors": 0.0022606003758514877,
+      "precision_policy_observation": "UNQUANTIZED"
+    },
+    "shared_experts": {
+      "canonical_parameter_count": 236052480,
+      "canonical_stored_payload_bytes": 472104960,
+      "effective_bits_per_gguf_tensor_parameter": 8.512233211868818,
+      "gguf_tensor_count": 192,
+      "gguf_tensor_count_by_type": {
+        "F32": 48,
+        "Q8_0": 144
+      },
+      "gguf_tensor_parameter_count": 236052480,
+      "idealized_q4_payload_floor_bytes": 118026240,
+      "packed_bytes": 251166720,
+      "packed_share_of_all_tensors": 0.002256185140742403,
+      "precision_policy_observation": "MIXED"
+    },
+    "token_embedding": {
+      "canonical_parameter_count": 635699200,
+      "canonical_stored_payload_bytes": 1271398400,
+      "effective_bits_per_gguf_tensor_parameter": 8.5,
+      "gguf_tensor_count": 1,
+      "gguf_tensor_count_by_type": {
+        "Q8_0": 1
+      },
+      "gguf_tensor_parameter_count": 635699200,
+      "idealized_q4_payload_floor_bytes": 317849600,
+      "packed_bytes": 675430400,
+      "packed_share_of_all_tensors": 0.006067268912400885,
+      "precision_policy_observation": "OBSERVED_LOWER_PRECISION"
+    },
+    "vision": {
+      "canonical_parameter_count": 448931056,
+      "canonical_stored_payload_bytes": 897862112,
+      "effective_bits_per_gguf_tensor_parameter": null,
+      "gguf_tensor_count": 0,
+      "gguf_tensor_count_by_type": {},
+      "gguf_tensor_parameter_count": 0,
+      "idealized_q4_payload_floor_bytes": 224465528,
+      "packed_bytes": 0,
+      "packed_share_of_all_tensors": 0.0,
+      "precision_policy_observation": "NOT_PRESENT_INITIAL_SCOPE"
+    }
+  },
+  "family_physical_locality": {
+    "gated_residual": {
+      "first_absolute_offset": 686454720,
+      "last_payload_end_absolute": 111331376576,
+      "physical_runs": 49
+    },
+    "gdn": {
+      "first_absolute_offset": 30169027520,
+      "last_payload_end_absolute": 109418634688,
+      "physical_runs": 48
+    },
+    "lm_head": {
+      "first_absolute_offset": 11024320,
+      "last_payload_end_absolute": 686454720,
+      "physical_runs": 1
+    },
+    "mtp": {
+      "first_absolute_offset": null,
+      "last_payload_end_absolute": null,
+      "physical_runs": 0
+    },
+    "ple": {
+      "first_absolute_offset": 693458880,
+      "last_payload_end_absolute": 33506469696,
+      "physical_runs": 2
+    },
+    "qsa_attention": {
+      "first_absolute_offset": 35656287808,
+      "last_payload_end_absolute": 109471557056,
+      "physical_runs": 12
+    },
+    "qsa_indexer": {
+      "first_absolute_offset": 37306885696,
+      "last_payload_end_absolute": 111334654400,
+      "physical_runs": 12
+    },
+    "routed_experts": {
+      "first_absolute_offset": 30213592000,
+      "last_payload_end_absolute": 111315299776,
+      "physical_runs": 144
+    },
+    "router": {
+      "first_absolute_offset": 31316337600,
+      "last_payload_end_absolute": 110841689536,
+      "physical_runs": 48
+    },
+    "shared_experts": {
+      "first_absolute_offset": 30842737600,
+      "last_payload_end_absolute": 111317040576,
+      "physical_runs": 144
+    },
+    "token_embedding": {
+      "first_absolute_offset": 29493597120,
+      "last_payload_end_absolute": 30169027520,
+      "physical_runs": 1
+    },
+    "vision": {
+      "first_absolute_offset": null,
+      "last_payload_end_absolute": null,
+      "physical_runs": 0
+    }
+  },
+  "generated_by": "tools/map-canonical-to-gguf.py",
+  "llama_cpp_revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+  "mapping_coverage": {
+    "canonical_status_counts": {
+      "FUSED_INTO_GGUF": 128,
+      "OMITTED_FORMAT_DERIVED": 3,
+      "OMITTED_INITIAL_SCOPE_VALID": 364,
+      "RENAMED_ONE_TO_ONE": 847,
+      "SPLIT_IN_GGUF": 60,
+      "TRANSFORMED_LAYOUT": 256
+    },
+    "canonical_total": 1658,
+    "canonical_unresolved": 0,
+    "gguf_total": 1224,
+    "unexplained_gguf": 0
+  },
+  "per_layer": {
+    "0": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "1": {
+      "gguf_tensor_count": 32,
+      "packed_bytes": 30495340416,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "ple": 28835240960,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 53827064544
+    },
+    "10": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "11": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "12": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "13": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "14": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "15": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "16": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "17": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "18": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "19": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "2": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 2131958656,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 2044723200,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "20": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "21": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "22": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "23": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "24": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "25": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "26": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "27": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "28": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "29": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "3": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "30": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1922243456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1835008000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "31": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "32": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "33": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "34": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "35": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "36": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "37": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "38": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "39": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "4": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1922243456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1835008000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "40": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "41": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "42": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "43": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "44": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "45": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "46": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1922243456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1835008000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "47": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1916019712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1835008000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "5": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "6": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "7": {
+      "gguf_tensor_count": 26,
+      "packed_bytes": 1653875712,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "qsa_attention": 52922368,
+        "qsa_indexer": 3277824,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2587467008
+    },
+    "8": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    },
+    "9": {
+      "gguf_tensor_count": 25,
+      "packed_bytes": 1660099456,
+      "packed_bytes_by_family": {
+        "gated_residual": 14336000,
+        "gdn": 62423936,
+        "routed_experts": 1572864000,
+        "router": 5242880,
+        "shared_experts": 5232640
+      },
+      "parameter_count": 2593979104
+    }
+  },
+  "quantization_provenance": {
+    "general_file_type": 15,
+    "imatrix_chunks_count": 45,
+    "imatrix_dataset": "unsloth_calibration_Qwen3.8-Flash-Next.txt",
+    "imatrix_entries_count": 926,
+    "imatrix_file": "Qwen3.8-Flash-Next-GGUF/imatrix_unsloth.gguf",
+    "limitation": "metadata establishes calibration provenance, not per-family sensitivity or quality",
+    "quantization_version": 2,
+    "quantized_by": "Unsloth"
+  },
+  "routed_expert_selection": {
+    "experts_per_layer": 512,
+    "interpretation": "selected parameter payload only; not measured I/O, residency, cache traffic, or throughput",
+    "parameter_count_per_expert_per_layer": 4915200,
+    "per_layer": {
+      "0": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "1": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "10": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "11": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "12": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "13": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "14": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "15": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "16": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "17": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "18": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "19": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "2": {
+        "effective_bits_per_parameter": 6.5,
+        "packed_bytes_per_expert": 3993600,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 39936000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "20": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "21": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "22": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "23": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "24": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "25": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "26": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "27": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "28": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "29": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "3": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "30": {
+        "effective_bits_per_parameter": 5.833333333333333,
+        "packed_bytes_per_expert": 3584000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 35840000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "31": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "32": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "33": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "34": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "35": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "36": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "37": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "38": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "39": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "4": {
+        "effective_bits_per_parameter": 5.833333333333333,
+        "packed_bytes_per_expert": 3584000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 35840000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "40": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "41": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "42": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "43": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "44": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "45": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "46": {
+        "effective_bits_per_parameter": 5.833333333333333,
+        "packed_bytes_per_expert": 3584000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 35840000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "47": {
+        "effective_bits_per_parameter": 5.833333333333333,
+        "packed_bytes_per_expert": 3584000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 35840000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "5": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "6": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "7": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "8": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      },
+      "9": {
+        "effective_bits_per_parameter": 5.0,
+        "packed_bytes_per_expert": 3072000,
+        "parameter_count_per_expert": 4915200,
+        "top10_selected_packed_bytes": 30720000,
+        "top10_selected_parameter_count": 49152000
+      }
+    },
+    "selected_experts_per_token": 10,
+    "top10_selected_packed_bytes_across_48_layers": 1504256000,
+    "top10_selected_parameter_count_across_48_layers": 2359296000
+  },
+  "schema_version": 1,
+  "split_merged_investigation": {
+    "difference_bytes": 384,
+    "local_header_directory_overhead_bytes": 11024320,
+    "local_merged_bytes": 111334654400,
+    "network_tensor_payload_bytes_fetched": 0,
+    "packed_tensor_bytes_both_representations": 111323630080,
+    "result": "PROVEN_FORMAT_OVERHEAD_ONLY",
+    "shards": [
+      {
+        "file_size_bytes": 10946624,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf",
+        "first_merged_tensor": null,
+        "header_directory_overhead_bytes": 10946624,
+        "last_merged_tensor": null,
+        "packed_tensor_bytes": 0,
+        "tensor_count": 0
+      },
+      {
+        "file_size_bytes": 49859583136,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+        "first_merged_tensor": "output.weight",
+        "header_directory_overhead_bytes": 18720,
+        "last_merged_tensor": "blk.11.ffn_down_shexp.weight",
+        "packed_tensor_bytes": 49859564416,
+        "tensor_count": 297
+      },
+      {
+        "file_size_bytes": 49376141504,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+        "first_merged_tensor": "blk.11.ffn_gate_exps.weight",
+        "header_directory_overhead_bytes": 48064,
+        "last_merged_tensor": "blk.41.attn_qkv.weight",
+        "packed_tensor_bytes": 49376093440,
+        "tensor_count": 752
+      },
+      {
+        "file_size_bytes": 12087983520,
+        "filename": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+        "first_merged_tensor": "blk.41.ffn_down_exps.weight",
+        "header_directory_overhead_bytes": 11296,
+        "last_merged_tensor": "blk.47.indexer.q_proj.weight",
+        "packed_tensor_bytes": 12087972224,
+        "tensor_count": 175
+      }
+    ],
+    "upstream_aggregate_header_directory_overhead_bytes": 11024704,
+    "upstream_shard_total_bytes": 111334654784
+  },
+  "structure": {
+    "data_section_bytes": 111323630080,
+    "data_section_offset": 11024320,
+    "file_overhead_bytes": 11024320,
+    "file_size_bytes": 111334654400,
+    "pre_data_alignment_padding_bytes": 13,
+    "tensor_alignment_padding_bytes": 0,
+    "tensor_directory_end_offset": 11024307,
+    "total_tensor_packed_bytes": 111323630080,
+    "type_summary": {
+      "BF16": {
+        "block_size": 1,
+        "bytes_per_block": 2,
+        "nominal_bits_per_parameter": 16.0,
+        "packed_bytes": 39321600,
+        "parameter_count": 19660800,
+        "tensor_count": 24,
+        "type_id": 30
+      },
+      "F32": {
+        "block_size": 1,
+        "bytes_per_block": 4,
+        "nominal_bits_per_parameter": 32.0,
+        "packed_bytes": 313495040,
+        "parameter_count": 78373760,
+        "tensor_count": 557,
+        "type_id": 0
+      },
+      "IQ4_NL": {
+        "block_size": 32,
+        "bytes_per_block": 18,
+        "nominal_bits_per_parameter": 4.5,
+        "packed_bytes": 28800138240,
+        "parameter_count": 51200245760,
+        "tensor_count": 1,
+        "type_id": 20
+      },
+      "Q4_K": {
+        "block_size": 256,
+        "bytes_per_block": 144,
+        "nominal_bits_per_parameter": 4.5,
+        "packed_bytes": 44354764800,
+        "parameter_count": 78852915200,
+        "tensor_count": 94,
+        "type_id": 12
+      },
+      "Q5_1": {
+        "block_size": 32,
+        "bytes_per_block": 24,
+        "nominal_bits_per_parameter": 6.0,
+        "packed_bytes": 27053260800,
+        "parameter_count": 36071014400,
+        "tensor_count": 43,
+        "type_id": 7
+      },
+      "Q5_K": {
+        "block_size": 256,
+        "bytes_per_block": 176,
+        "nominal_bits_per_parameter": 5.5,
+        "packed_bytes": 1153433600,
+        "parameter_count": 1677721600,
+        "tensor_count": 2,
+        "type_id": 13
+      },
+      "Q8_0": {
+        "block_size": 32,
+        "bytes_per_block": 34,
+        "nominal_bits_per_parameter": 8.5,
+        "packed_bytes": 9609216000,
+        "parameter_count": 9043968000,
+        "tensor_count": 503,
+        "type_id": 8
+      }
+    }
+  },
+  "tensor_count_reconciliation": [
+    {
+      "cause": "canonical total",
+      "delta": 1658,
+      "running_total": 1658
+    },
+    {
+      "cause": "vision omitted by ADR-0005 initial scope",
+      "delta": -333,
+      "running_total": 1325
+    },
+    {
+      "cause": "MTP omitted by ADR-0005 initial scope",
+      "delta": -31,
+      "running_total": 1294
+    },
+    {
+      "cause": "three PLE int64 address tensors represented as GGUF metadata",
+      "delta": -3,
+      "running_total": 1291
+    },
+    {
+      "cause": "128 PLE table shards fused to one GGUF tensor",
+      "delta": -127,
+      "running_total": 1164
+    },
+    {
+      "cause": "48 MoE gate_up tensors split into gate and up tensors",
+      "delta": 48,
+      "running_total": 1212
+    },
+    {
+      "cause": "12 QSA index_qk tensors split into q and k tensors",
+      "delta": 12,
+      "running_total": 1224
+    }
+  ],
+  "type_summary": {
+    "BF16": {
+      "effective_bits_per_parameter": 16.0,
+      "packed_bytes": 39321600,
+      "parameter_count": 19660800,
+      "tensor_count": 24
+    },
+    "F32": {
+      "effective_bits_per_parameter": 32.0,
+      "packed_bytes": 313495040,
+      "parameter_count": 78373760,
+      "tensor_count": 557
+    },
+    "IQ4_NL": {
+      "effective_bits_per_parameter": 4.5,
+      "packed_bytes": 28800138240,
+      "parameter_count": 51200245760,
+      "tensor_count": 1
+    },
+    "Q4_K": {
+      "effective_bits_per_parameter": 4.5,
+      "packed_bytes": 44354764800,
+      "parameter_count": 78852915200,
+      "tensor_count": 94
+    },
+    "Q5_1": {
+      "effective_bits_per_parameter": 6.0,
+      "packed_bytes": 27053260800,
+      "parameter_count": 36071014400,
+      "tensor_count": 43
+    },
+    "Q5_K": {
+      "effective_bits_per_parameter": 5.5,
+      "packed_bytes": 1153433600,
+      "parameter_count": 1677721600,
+      "tensor_count": 2
+    },
+    "Q8_0": {
+      "effective_bits_per_parameter": 8.5,
+      "packed_bytes": 9609216000,
+      "parameter_count": 9043968000,
+      "tensor_count": 503
+    }
+  },
+  "unsloth_revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+}

@@ -32,7 +32,7 @@ composition. Detailed tensor-family analysis remains Task 1.2.
 - role: `DERIVED_RUNTIME_ARTIFACT`
 - exact filename: `Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf`
 - local path source: persistent User-scope `KQ_GGUF_PATH`
-- local path: `D:\AI\Modelli full e quantizzati\Unsloth-Qwen3.8-Flash-Next-GGUF\Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf`
+- local path: intentionally not recorded; resolved only from `KQ_GGUF_PATH`
 - size bytes: **111,334,654,400**
 - SHA-256: `8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2`
 - format: GGUF, magic `GGUF`, version **3**
@@ -78,7 +78,8 @@ composition. Detailed tensor-family analysis remains Task 1.2.
 - upstream variant: `UD-Q4_K_XL`, published as four GGUF shards
 - published shard total: **111,334,654,784 bytes**
 - local merged-size delta: **384 bytes smaller** than the four published shards
-  combined, consistent with removal of split-container overhead during merge;
+  combined; Task 1.3 proves this is format/header-directory overhead only, with
+  identical 111,323,630,080 packed tensor bytes;
 - source repository metadata declares base model
   `Qwen/Qwen3.8-Flash-Next` and Qwen Community License 1.0;
 - converter/quantizer provenance: Unsloth, with the embedded imatrix metadata
@@ -99,6 +100,11 @@ merged local file by only 384 bytes.
 The upstream shards were not downloaded or re-merged during Task 1.0, so this
 registration does not claim a cryptographic derivation proof between the local
 merged SHA-256 and the four individual upstream LFS hashes.
+
+Task 1.3 maps all 1,658 canonical tensors to the 1,224 GGUF tensors or to exact
+scope/format-derived dispositions with zero unresolved entries. See
+`docs/MODEL-GGUF-MAPPING.md` and the pinned machine-readable evidence under
+`research/model-gguf/`.
 
 ## Boundary rule
 

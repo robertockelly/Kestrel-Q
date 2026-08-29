@@ -49,3 +49,48 @@ python tools/analyze-model-tensors.py `
 
 These tools use only the Python standard library and are not production runtime
 dependencies.
+
+## Task 1.3 canonical-to-GGUF mapping
+
+`inspect-gguf.py` is a read-only, fail-closed GGUF v3 parser for the exact
+registered `KQ-MODEL-ARTIFACT-001`. It requires `KQ_GGUF_PATH`, verifies exact
+filename, size and full-file SHA-256, parses only metadata/tensor descriptors,
+validates type blocks and spans, and never reads tensor payload values. Its
+development-only `--skip-full-sha256` mode is rejected unless output remains
+under `.research-cache/`; canonical evidence always requires the full hash.
+
+```powershell
+python tools/inspect-gguf.py `
+  --output-dir research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176
+```
+
+`audit-gguf-split-headers.py` pins the Unsloth repository, revision, exact four
+shard names and sizes. It reads only exact HTTP Range bytes for fixed GGUF
+headers and the three scalar split keys on secondary shards. A non-206 response,
+incorrect `Content-Range`, revision/count/size mismatch or unexpected key fails
+closed. It saves no GGUF data and records zero tensor-payload bytes fetched.
+
+```powershell
+python tools/audit-gguf-split-headers.py `
+  --output .research-cache/task-1.3-upstream-splits.json
+```
+
+`map-canonical-to-gguf.py` is an offline deterministic reconciler. It requires
+the fully verified local metadata/inventory, Task-1.2 canonical inventory and
+the bounded split audit. Versioned rules cover all renames, converter
+transforms, splits, fusion and accepted scope/format omissions. It fails unless
+all 1,658 canonical and 1,224 GGUF tensors reconcile, all parameter/packed-byte
+invariants hold and the 384-byte split/merge delta closes exactly.
+
+```powershell
+python tools/map-canonical-to-gguf.py `
+  --canonical-inventory research/model-tensors/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/tensor-inventory.csv `
+  --gguf-metadata research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-metadata.json `
+  --gguf-inventory research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-tensor-inventory.csv `
+  --upstream-split-audit .research-cache/task-1.3-upstream-splits.json `
+  --output-dir research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176
+```
+
+These standard-library tools are research-only and are not production runtime
+dependencies. Pinned third-party sources are inspected for evidence under their
+original license; no implementation source is incorporated.

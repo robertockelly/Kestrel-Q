@@ -383,5 +383,6 @@ prefetch candidate. No scheduler or cache design is selected by Task 1.1.
 - Do not infer canonical tensor layout from the registered GGUF.
 - Reject unsupported multimodal input and visual special tokens explicitly.
 - Do not require or load MTP for the first ordinary text-generation path.
-- Keep detailed tensor footprint/accounting in Task 1.2 and tensor mapping in
-  Task 1.3; both remain not started.
+- Keep detailed tensor footprint/accounting in the completed Task 1.2 evidence
+  and canonical/container mapping in the completed Task 1.3 evidence; neither
+  document authorizes runtime implementation.

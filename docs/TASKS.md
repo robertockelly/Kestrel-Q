@@ -38,8 +38,13 @@ Status convention:
   - canonical inventory: **1,658 / 1,658 tensors reconciled and classified**;
   - static, idealized-quantization and persistent-state footprint: **VERIFIED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Task 1.3 — Map canonical tensors to the registered derived GGUF:
-  **NOT STARTED**.
+- [x] Task 1.3 — Map canonical tensors to the registered derived GGUF:
+  - canonical coverage: **1,658 / 1,658, UNRESOLVED = 0**;
+  - GGUF coverage: **1,224 / 1,224, unexplained = 0**;
+  - packed/type/family footprint and exact 434-count reconciliation: **VERIFIED**;
+  - 384-byte split/merge delta: **PROVEN FORMAT OVERHEAD ONLY**;
+  - ADR 0006 staged initial container strategy: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 - [ ] Document tokenizer/chat template
 - [x] Document MoE topology and routing (Task 1.1)
 - [x] Document Gated DeltaNet execution (Task 1.1)
@@ -53,7 +58,7 @@ Status convention:
 
 ## Epic 2 — Loader and introspection
 
-- [ ] Choose initial model storage/container strategy
+- [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [ ] Implement file mapping
 - [ ] Implement metadata parsing
 - [ ] Implement safe tensor lookup

@@ -23,10 +23,17 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   canonical shard headers and 1,658 tensors with zero weight-payload bytes,
   exact subsystem/static footprints, idealized quantization floors and
   batch-1 persistent-state scaling through 262,144 context tokens.
-- Task 1.3 (canonical-to-GGUF mapping) remains not started.
+- Task 1.3 is complete/pass: all 1,658 canonical tensors and all 1,224 GGUF
+  tensors reconcile with zero unexplained mappings; exact packed footprints,
+  converter/quantizer provenance and the 384-byte split/merge overhead are
+  evidence-backed. ADR 0006 accepts a staged direct-GGUF-first strategy while
+  keeping canonical model semantics independent of the container.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
+
+- The initial container decision is complete in ADR 0006. Production loader,
+  mapping and malformed-artifact implementation remain future R1 work.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.

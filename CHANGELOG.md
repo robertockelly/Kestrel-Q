@@ -40,6 +40,16 @@ The project is currently pre-alpha.
   Safetensors headers and 1,658 tensors reconcile exactly, with zero weight
   payload bytes fetched and zero unexplained classifications; Task 1.3 remains
   not started.
+- Completed Task 1.3 canonical-to-GGUF mapping: all 1,658 canonical tensors and
+  all 1,224 derived GGUF tensors reconcile with zero unresolved or unexplained
+  entries, including exact PLE fusion/metadata, MoE/QSA splits, vision/MTP scope
+  omissions and converter transforms, closing the exact 434-tensor difference.
+- Accepted ADR 0006's staged container strategy: begin future correctness work
+  from the verified GGUF while preserving canonical internal semantics, and
+  require profiling evidence before introducing a Kestrel-Q-native container.
+- Proved the local merged GGUF's 384-byte reduction from the published four
+  shards is header/directory format overhead only; bounded upstream Range audit
+  fetched 342 metadata bytes and zero tensor-payload bytes.
 
 ### Added
 
@@ -80,3 +90,8 @@ The project is currently pre-alpha.
   versioned component rule rather than only the global rule version.
 - Canonical tensor-inventory and KQ-01 footprint documents, including exact
   text/vision/MTP/PLE/expert families and explicit placement-candidate limits.
+- Fail-closed, standard-library Task 1.3 tooling for read-only GGUF structure,
+  bounded upstream split-header audit and deterministic canonical mapping, plus
+  five machine-readable evidence artifacts and exact packed quantization/type,
+  family, per-layer and per-expert footprints and embedded imatrix/calibration
+  provenance findings without unsupported sensitivity claims.

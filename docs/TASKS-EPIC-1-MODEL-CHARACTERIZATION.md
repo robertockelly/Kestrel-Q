@@ -35,13 +35,13 @@
 - [x] Compare preliminary placement candidates against KQ-01 budgets.
 
 ## Task 1.3 — GGUF mapping
-- [ ] Register exact GGUF quantization.
-- [ ] Inspect GGUF metadata.
-- [ ] Inspect tensor inventory.
-- [ ] Map canonical names to GGUF names.
-- [ ] Identify conversions/fusions/omissions.
-- [ ] Document provenance of the converter/quantizer.
-- [ ] Decide whether GGUF is an initial runtime format or only a research artifact.
+- [x] Register exact GGUF quantization.
+- [x] Inspect GGUF metadata.
+- [x] Inspect tensor inventory.
+- [x] Map canonical names to GGUF names.
+- [x] Identify conversions/fusions/omissions.
+- [x] Document provenance of the converter/quantizer.
+- [x] Accept ADR 0006 staged direct-GGUF-first initial container strategy.
 
 ## Task 1.4 — Reference behavior plan
 - [ ] Select authoritative reference implementation(s).
@@ -61,3 +61,5 @@
 - [x] Record Task 1.1 completion and ADR 0005 acceptance.
 - [x] Keep Task 1.2 header/inventory evidence deterministically reproducible.
 - [x] Update `CHANGELOG.md` for the Task 1.2 milestone and research tooling.
+- [x] Keep Task 1.3 GGUF mapping evidence deterministically reproducible.
+- [x] Update `CHANGELOG.md` for the Task 1.3 milestone and ADR 0006.
