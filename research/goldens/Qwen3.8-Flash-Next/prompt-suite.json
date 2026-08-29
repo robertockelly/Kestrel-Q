@@ -1,0 +1,154 @@
+{
+  "content_policy": "ORIGINAL_SYNTHETIC_ONLY",
+  "prompt_count": 10,
+  "prompts": [
+    {
+      "coverage": [
+        "short_ascii"
+      ],
+      "id": "KQ-PROMPT-001",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "Hello, Kestrel-Q.",
+      "utf8_bytes": 17,
+      "utf8_sha256": "6a013508a5747146c4c37c1cdc104d49d2a75dbaa2950b23e2d72eb8ac2b4787"
+    },
+    {
+      "coverage": [
+        "whitespace",
+        "tab",
+        "lf",
+        "crlf",
+        "trailing_spaces"
+      ],
+      "id": "KQ-PROMPT-002",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": " \tKQ\n\nline 2\r\nend  ",
+      "utf8_bytes": 19,
+      "utf8_sha256": "a2184026d1dfdf844b1826b26633e57b802eb33295f2fe3d1405dd7d0c31af48"
+    },
+    {
+      "coverage": [
+        "punctuation",
+        "numbers"
+      ],
+      "id": "KQ-PROMPT-003",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "0, 1, -2, 3.14159; []{}()!? #42 / 7 = 6.",
+      "utf8_bytes": 40,
+      "utf8_sha256": "0fa8a445d2ed6648407191035d76f0ac412779870f970822d80191b697c9c782"
+    },
+    {
+      "coverage": [
+        "italian",
+        "spanish",
+        "accented_utf8"
+      ],
+      "id": "KQ-PROMPT-004",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "Perché l'acqua è blu? El pingüino pidió café y azúcar.",
+      "utf8_bytes": 60,
+      "utf8_sha256": "2017866378fcf2fbe396b357134d2b171ea9b6e5be7907dd9c1676617c414361"
+    },
+    {
+      "coverage": [
+        "non_latin_unicode"
+      ],
+      "id": "KQ-PROMPT-005",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "Ελλάδα — 日本語 — العربية — नमस्ते",
+      "utf8_bytes": 68,
+      "utf8_sha256": "c27fe94be4d6be106fca9bc7b6d65f33350b0cb976e96d54d8ad91f581e89fce"
+    },
+    {
+      "coverage": [
+        "c_source",
+        "code_punctuation"
+      ],
+      "id": "KQ-PROMPT-006",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "int sum(const int *v, size_t n) {\n    int s = 0;\n    for (size_t i = 0; i < n; ++i) s += v[i];\n    return s;\n}\n",
+      "utf8_bytes": 111,
+      "utf8_sha256": "b9762ecef23dce5530c99654d72842446c10ffa0bf7efc4367d5087e92357c5a"
+    },
+    {
+      "coverage": [
+        "system_user_chat"
+      ],
+      "id": "KQ-PROMPT-007",
+      "identity_serialization": "CANONICAL_MESSAGES_JSON_UTF8",
+      "kind": "chat_messages",
+      "messages": [
+        {
+          "content": "Answer with one concise sentence.",
+          "role": "system"
+        },
+        {
+          "content": "Explain why a byte has eight bits.",
+          "role": "user"
+        }
+      ],
+      "utf8_bytes": 128,
+      "utf8_sha256": "ad570b037317b16cdb5f91792bcb9800f7b8d270dfab75ae2b7b89ff8c62c2c8"
+    },
+    {
+      "coverage": [
+        "multi_turn_chat"
+      ],
+      "id": "KQ-PROMPT-008",
+      "identity_serialization": "CANONICAL_MESSAGES_JSON_UTF8",
+      "kind": "chat_messages",
+      "messages": [
+        {
+          "content": "Keep identifiers unchanged.",
+          "role": "system"
+        },
+        {
+          "content": "Remember KQ_VALUE = 17.",
+          "role": "user"
+        },
+        {
+          "content": "KQ_VALUE is 17.",
+          "reasoning_content": "",
+          "role": "assistant"
+        },
+        {
+          "content": "What is KQ_VALUE plus 5?",
+          "role": "user"
+        }
+      ],
+      "utf8_bytes": 236,
+      "utf8_sha256": "f186e18b41fe374741bd09156706cfb52a953140221c48a48861b32ae7859d77"
+    },
+    {
+      "coverage": [
+        "repeated_prefix",
+        "token_boundary"
+      ],
+      "id": "KQ-PROMPT-009",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "prefix prefix prefix-prefix_prefix\nprefixing prefixed prefixes",
+      "utf8_bytes": 62,
+      "utf8_sha256": "3397b614cce31de65c27f4798ecddd72abf80feaea9fc0240f43bec29322bef5"
+    },
+    {
+      "coverage": [
+        "bounded_longer_prefill"
+      ],
+      "id": "KQ-PROMPT-010",
+      "identity_serialization": "RAW_UTF8",
+      "kind": "raw_text",
+      "text": "KQ line 000: alpha beta gamma 00000.\nKQ line 001: alpha beta gamma 00017.\nKQ line 002: alpha beta gamma 00034.\nKQ line 003: alpha beta gamma 00051.\nKQ line 004: alpha beta gamma 00068.\nKQ line 005: alpha beta gamma 00085.\nKQ line 006: alpha beta gamma 00102.\nKQ line 007: alpha beta gamma 00119.\nKQ line 008: alpha beta gamma 00136.\nKQ line 009: alpha beta gamma 00153.\nKQ line 010: alpha beta gamma 00170.\nKQ line 011: alpha beta gamma 00187.\nKQ line 012: alpha beta gamma 00204.\nKQ line 013: alpha beta gamma 00221.\nKQ line 014: alpha beta gamma 00238.\nKQ line 015: alpha beta gamma 00255.\nKQ line 016: alpha beta gamma 00272.\nKQ line 017: alpha beta gamma 00289.\nKQ line 018: alpha beta gamma 00306.\nKQ line 019: alpha beta gamma 00323.\nKQ line 020: alpha beta gamma 00340.\nKQ line 021: alpha beta gamma 00357.\nKQ line 022: alpha beta gamma 00374.\nKQ line 023: alpha beta gamma 00391.\nKQ line 024: alpha beta gamma 00408.\nKQ line 025: alpha beta gamma 00425.\nKQ line 026: alpha beta gamma 00442.\nKQ line 027: alpha beta gamma 00459.\nKQ line 028: alpha beta gamma 00476.\nKQ line 029: alpha beta gamma 00493.\nKQ line 030: alpha beta gamma 00510.\nKQ line 031: alpha beta gamma 00527.\nKQ line 032: alpha beta gamma 00544.\nKQ line 033: alpha beta gamma 00561.\nKQ line 034: alpha beta gamma 00578.\nKQ line 035: alpha beta gamma 00595.\nKQ line 036: alpha beta gamma 00612.\nKQ line 037: alpha beta gamma 00629.\nKQ line 038: alpha beta gamma 00646.\nKQ line 039: alpha beta gamma 00663.\nKQ line 040: alpha beta gamma 00680.\nKQ line 041: alpha beta gamma 00697.\nKQ line 042: alpha beta gamma 00714.\nKQ line 043: alpha beta gamma 00731.\nKQ line 044: alpha beta gamma 00748.\nKQ line 045: alpha beta gamma 00765.\nKQ line 046: alpha beta gamma 00782.\nKQ line 047: alpha beta gamma 00799.\nKQ line 048: alpha beta gamma 00816.\nKQ line 049: alpha beta gamma 00833.\nKQ line 050: alpha beta gamma 00850.\nKQ line 051: alpha beta gamma 00867.\nKQ line 052: alpha beta gamma 00884.\nKQ line 053: alpha beta gamma 00901.\nKQ line 054: alpha beta gamma 00918.\nKQ line 055: alpha beta gamma 00935.\nKQ line 056: alpha beta gamma 00952.\nKQ line 057: alpha beta gamma 00969.\nKQ line 058: alpha beta gamma 00986.\nKQ line 059: alpha beta gamma 01003.\nKQ line 060: alpha beta gamma 01020.\nKQ line 061: alpha beta gamma 01037.\nKQ line 062: alpha beta gamma 01054.\nKQ line 063: alpha beta gamma 01071.",
+      "utf8_bytes": 2367,
+      "utf8_sha256": "b1a63a3064c8fe0027243b6b9f40ccabf7642453285bc1ffd34be6cd3d9f75ae"
+    }
+  ],
+  "schema_version": 1,
+  "suite_id": "KQ-PROMPT-SUITE-001"
+}

@@ -1,0 +1,4173 @@
+{
+  "address_arithmetic": "signed int64 products/XOR; positive remainder by per-head prime; add head offset",
+  "asset_id": "KQ-GOLD-PLE-ROOT-001",
+  "canonical_constants": {
+    "eos_token_id": 248044,
+    "head_offsets": [
+      0,
+      20000003,
+      40000026,
+      60000059,
+      80000106,
+      100000165,
+      120000228,
+      140000297,
+      160000374,
+      180000455,
+      200000548,
+      220000655,
+      240000802,
+      260000955,
+      280001114,
+      300001275
+    ],
+    "head_vocab_sizes": [
+      20000003,
+      20000023,
+      20000033,
+      20000047,
+      20000059,
+      20000063,
+      20000069,
+      20000077,
+      20000081,
+      20000093,
+      20000107,
+      20000147,
+      20000153,
+      20000159,
+      20000161,
+      20000171
+    ],
+    "heads_per_ngram": 8,
+    "layer_multipliers": [
+      23703573157769,
+      20109073645365,
+      8052911324071
+    ],
+    "ngram_size": 3,
+    "partition_count": 128,
+    "partition_rows": 2500012,
+    "seed": 1234
+  },
+  "class": "C",
+  "comparison_mode": "EXACT",
+  "decode_case": {
+    "id": "KQ-GOLD-PLE-008",
+    "prefill_input_ids": [
+      101,
+      102,
+      103
+    ],
+    "steps": [
+      {
+        "addresses": [
+          {
+            "global_address": 18639696,
+            "head_offset": 0,
+            "head_vocab_size": 20000003,
+            "local_head": 0,
+            "ngram_order": 2,
+            "partition_id": 7,
+            "partition_row": 1139612
+          },
+          {
+            "global_address": 27429516,
+            "head_offset": 20000003,
+            "head_vocab_size": 20000023,
+            "local_head": 1,
+            "ngram_order": 2,
+            "partition_id": 10,
+            "partition_row": 2429396
+          },
+          {
+            "global_address": 51827749,
+            "head_offset": 40000026,
+            "head_vocab_size": 20000033,
+            "local_head": 2,
+            "ngram_order": 2,
+            "partition_id": 20,
+            "partition_row": 1827509
+          },
+          {
+            "global_address": 77988972,
+            "head_offset": 60000059,
+            "head_vocab_size": 20000047,
+            "local_head": 3,
+            "ngram_order": 2,
+            "partition_id": 31,
+            "partition_row": 488600
+          },
+          {
+            "global_address": 83273412,
+            "head_offset": 80000106,
+            "head_vocab_size": 20000059,
+            "local_head": 4,
+            "ngram_order": 2,
+            "partition_id": 33,
+            "partition_row": 773016
+          },
+          {
+            "global_address": 105035655,
+            "head_offset": 100000165,
+            "head_vocab_size": 20000063,
+            "local_head": 5,
+            "ngram_order": 2,
+            "partition_id": 42,
+            "partition_row": 35151
+          },
+          {
+            "global_address": 127679654,
+            "head_offset": 120000228,
+            "head_vocab_size": 20000069,
+            "local_head": 6,
+            "ngram_order": 2,
+            "partition_id": 51,
+            "partition_row": 179042
+          },
+          {
+            "global_address": 151206203,
+            "head_offset": 140000297,
+            "head_vocab_size": 20000077,
+            "local_head": 7,
+            "ngram_order": 2,
+            "partition_id": 60,
+            "partition_row": 1205483
+          },
+          {
+            "global_address": 172574467,
+            "head_offset": 160000374,
+            "head_vocab_size": 20000081,
+            "local_head": 0,
+            "ngram_order": 3,
+            "partition_id": 69,
+            "partition_row": 73639
+          },
+          {
+            "global_address": 181367473,
+            "head_offset": 180000455,
+            "head_vocab_size": 20000093,
+            "local_head": 1,
+            "ngram_order": 3,
+            "partition_id": 72,
+            "partition_row": 1366609
+          },
+          {
+            "global_address": 211629531,
+            "head_offset": 200000548,
+            "head_vocab_size": 20000107,
+            "local_head": 2,
+            "ngram_order": 3,
+            "partition_id": 84,
+            "partition_row": 1628523
+          },
+          {
+            "global_address": 220969764,
+            "head_offset": 220000655,
+            "head_vocab_size": 20000147,
+            "local_head": 3,
+            "ngram_order": 3,
+            "partition_id": 88,
+            "partition_row": 968708
+          },
+          {
+            "global_address": 245373584,
+            "head_offset": 240000802,
+            "head_vocab_size": 20000153,
+            "local_head": 4,
+            "ngram_order": 3,
+            "partition_id": 98,
+            "partition_row": 372408
+          },
+          {
+            "global_address": 269778094,
+            "head_offset": 260000955,
+            "head_vocab_size": 20000159,
+            "local_head": 5,
+            "ngram_order": 3,
+            "partition_id": 107,
+            "partition_row": 2276810
+          },
+          {
+            "global_address": 291246524,
+            "head_offset": 280001114,
+            "head_vocab_size": 20000161,
+            "local_head": 6,
+            "ngram_order": 3,
+            "partition_id": 116,
+            "partition_row": 1245132
+          },
+          {
+            "global_address": 318589180,
+            "head_offset": 300001275,
+            "head_vocab_size": 20000171,
+            "local_head": 7,
+            "ngram_order": 3,
+            "partition_id": 127,
+            "partition_row": 1087656
+          }
+        ],
+        "history_after": [
+          103,
+          104
+        ],
+        "history_before": [
+          102,
+          103
+        ],
+        "step": 0,
+        "token_id": 104
+      },
+      {
+        "addresses": [
+          {
+            "global_address": 14334437,
+            "head_offset": 0,
+            "head_vocab_size": 20000003,
+            "local_head": 0,
+            "ngram_order": 2,
+            "partition_id": 5,
+            "partition_row": 1834377
+          },
+          {
+            "global_address": 28193683,
+            "head_offset": 20000003,
+            "head_vocab_size": 20000023,
+            "local_head": 1,
+            "ngram_order": 2,
+            "partition_id": 11,
+            "partition_row": 693551
+          },
+          {
+            "global_address": 55126659,
+            "head_offset": 40000026,
+            "head_vocab_size": 20000033,
+            "local_head": 2,
+            "ngram_order": 2,
+            "partition_id": 22,
+            "partition_row": 126395
+          },
+          {
+            "global_address": 76836537,
+            "head_offset": 60000059,
+            "head_vocab_size": 20000047,
+            "local_head": 3,
+            "ngram_order": 2,
+            "partition_id": 30,
+            "partition_row": 1836177
+          },
+          {
+            "global_address": 81162712,
+            "head_offset": 80000106,
+            "head_vocab_size": 20000059,
+            "local_head": 4,
+            "ngram_order": 2,
+            "partition_id": 32,
+            "partition_row": 1162328
+          },
+          {
+            "global_address": 115938914,
+            "head_offset": 100000165,
+            "head_vocab_size": 20000063,
+            "local_head": 5,
+            "ngram_order": 2,
+            "partition_id": 46,
+            "partition_row": 938362
+          },
+          {
+            "global_address": 128103763,
+            "head_offset": 120000228,
+            "head_vocab_size": 20000069,
+            "local_head": 6,
+            "ngram_order": 2,
+            "partition_id": 51,
+            "partition_row": 603151
+          },
+          {
+            "global_address": 157658189,
+            "head_offset": 140000297,
+            "head_vocab_size": 20000077,
+            "local_head": 7,
+            "ngram_order": 2,
+            "partition_id": 63,
+            "partition_row": 157433
+          },
+          {
+            "global_address": 177533752,
+            "head_offset": 160000374,
+            "head_vocab_size": 20000081,
+            "local_head": 0,
+            "ngram_order": 3,
+            "partition_id": 71,
+            "partition_row": 32900
+          },
+          {
+            "global_address": 191952497,
+            "head_offset": 180000455,
+            "head_vocab_size": 20000093,
+            "local_head": 1,
+            "ngram_order": 3,
+            "partition_id": 76,
+            "partition_row": 1951585
+          },
+          {
+            "global_address": 212111131,
+            "head_offset": 200000548,
+            "head_vocab_size": 20000107,
+            "local_head": 2,
+            "ngram_order": 3,
+            "partition_id": 84,
+            "partition_row": 2110123
+          },
+          {
+            "global_address": 226870096,
+            "head_offset": 220000655,
+            "head_vocab_size": 20000147,
+            "local_head": 3,
+            "ngram_order": 3,
+            "partition_id": 90,
+            "partition_row": 1869016
+          },
+          {
+            "global_address": 244086637,
+            "head_offset": 240000802,
+            "head_vocab_size": 20000153,
+            "local_head": 4,
+            "ngram_order": 3,
+            "partition_id": 97,
+            "partition_row": 1585473
+          },
+          {
+            "global_address": 261303856,
+            "head_offset": 260000955,
+            "head_vocab_size": 20000159,
+            "local_head": 5,
+            "ngram_order": 3,
+            "partition_id": 104,
+            "partition_row": 1302608
+          },
+          {
+            "global_address": 287043240,
+            "head_offset": 280001114,
+            "head_vocab_size": 20000161,
+            "local_head": 6,
+            "ngram_order": 3,
+            "partition_id": 114,
+            "partition_row": 2041872
+          },
+          {
+            "global_address": 315740495,
+            "head_offset": 300001275,
+            "head_vocab_size": 20000171,
+            "local_head": 7,
+            "ngram_order": 3,
+            "partition_id": 126,
+            "partition_row": 738983
+          }
+        ],
+        "history_after": [
+          104,
+          105
+        ],
+        "history_before": [
+          103,
+          104
+        ],
+        "step": 1,
+        "token_id": 105
+      },
+      {
+        "addresses": [
+          {
+            "global_address": 9949088,
+            "head_offset": 0,
+            "head_vocab_size": 20000003,
+            "local_head": 0,
+            "ngram_order": 2,
+            "partition_id": 3,
+            "partition_row": 2449052
+          },
+          {
+            "global_address": 37186037,
+            "head_offset": 20000003,
+            "head_vocab_size": 20000023,
+            "local_head": 1,
+            "ngram_order": 2,
+            "partition_id": 14,
+            "partition_row": 2185869
+          },
+          {
+            "global_address": 45215730,
+            "head_offset": 40000026,
+            "head_vocab_size": 20000033,
+            "local_head": 2,
+            "ngram_order": 2,
+            "partition_id": 18,
+            "partition_row": 215514
+          },
+          {
+            "global_address": 73397892,
+            "head_offset": 60000059,
+            "head_vocab_size": 20000047,
+            "local_head": 3,
+            "ngram_order": 2,
+            "partition_id": 29,
+            "partition_row": 897544
+          },
+          {
+            "global_address": 87855955,
+            "head_offset": 80000106,
+            "head_vocab_size": 20000059,
+            "local_head": 4,
+            "ngram_order": 2,
+            "partition_id": 35,
+            "partition_row": 355535
+          },
+          {
+            "global_address": 106949742,
+            "head_offset": 100000165,
+            "head_vocab_size": 20000063,
+            "local_head": 5,
+            "ngram_order": 2,
+            "partition_id": 42,
+            "partition_row": 1949238
+          },
+          {
+            "global_address": 126472637,
+            "head_offset": 120000228,
+            "head_vocab_size": 20000069,
+            "local_head": 6,
+            "ngram_order": 2,
+            "partition_id": 50,
+            "partition_row": 1472037
+          },
+          {
+            "global_address": 147483330,
+            "head_offset": 140000297,
+            "head_vocab_size": 20000077,
+            "local_head": 7,
+            "ngram_order": 2,
+            "partition_id": 58,
+            "partition_row": 2482634
+          },
+          {
+            "global_address": 170265671,
+            "head_offset": 160000374,
+            "head_vocab_size": 20000081,
+            "local_head": 0,
+            "ngram_order": 3,
+            "partition_id": 68,
+            "partition_row": 264855
+          },
+          {
+            "global_address": 194299322,
+            "head_offset": 180000455,
+            "head_vocab_size": 20000093,
+            "local_head": 1,
+            "ngram_order": 3,
+            "partition_id": 77,
+            "partition_row": 1798398
+          },
+          {
+            "global_address": 217690133,
+            "head_offset": 200000548,
+            "head_vocab_size": 20000107,
+            "local_head": 2,
+            "ngram_order": 3,
+            "partition_id": 87,
+            "partition_row": 189089
+          },
+          {
+            "global_address": 224848521,
+            "head_offset": 220000655,
+            "head_vocab_size": 20000147,
+            "local_head": 3,
+            "ngram_order": 3,
+            "partition_id": 89,
+            "partition_row": 2347453
+          },
+          {
+            "global_address": 257980267,
+            "head_offset": 240000802,
+            "head_vocab_size": 20000153,
+            "local_head": 4,
+            "ngram_order": 3,
+            "partition_id": 103,
+            "partition_row": 479031
+          },
+          {
+            "global_address": 272170416,
+            "head_offset": 260000955,
+            "head_vocab_size": 20000159,
+            "local_head": 5,
+            "ngram_order": 3,
+            "partition_id": 108,
+            "partition_row": 2169120
+          },
+          {
+            "global_address": 290469139,
+            "head_offset": 280001114,
+            "head_vocab_size": 20000161,
+            "local_head": 6,
+            "ngram_order": 3,
+            "partition_id": 116,
+            "partition_row": 467747
+          },
+          {
+            "global_address": 303726360,
+            "head_offset": 300001275,
+            "head_vocab_size": 20000171,
+            "local_head": 7,
+            "ngram_order": 3,
+            "partition_id": 121,
+            "partition_row": 1224908
+          }
+        ],
+        "history_after": [
+          105,
+          248044
+        ],
+        "history_before": [
+          104,
+          105
+        ],
+        "step": 2,
+        "token_id": 248044
+      },
+      {
+        "addresses": [
+          {
+            "global_address": 5195499,
+            "head_offset": 0,
+            "head_vocab_size": 20000003,
+            "local_head": 0,
+            "ngram_order": 2,
+            "partition_id": 2,
+            "partition_row": 195475
+          },
+          {
+            "global_address": 28284899,
+            "head_offset": 20000003,
+            "head_vocab_size": 20000023,
+            "local_head": 1,
+            "ngram_order": 2,
+            "partition_id": 11,
+            "partition_row": 784767
+          },
+          {
+            "global_address": 43568789,
+            "head_offset": 40000026,
+            "head_vocab_size": 20000033,
+            "local_head": 2,
+            "ngram_order": 2,
+            "partition_id": 17,
+            "partition_row": 1068585
+          },
+          {
+            "global_address": 69154125,
+            "head_offset": 60000059,
+            "head_vocab_size": 20000047,
+            "local_head": 3,
+            "ngram_order": 2,
+            "partition_id": 27,
+            "partition_row": 1653801
+          },
+          {
+            "global_address": 94973169,
+            "head_offset": 80000106,
+            "head_vocab_size": 20000059,
+            "local_head": 4,
+            "ngram_order": 2,
+            "partition_id": 37,
+            "partition_row": 2472725
+          },
+          {
+            "global_address": 104377209,
+            "head_offset": 100000165,
+            "head_vocab_size": 20000063,
+            "local_head": 5,
+            "ngram_order": 2,
+            "partition_id": 41,
+            "partition_row": 1876717
+          },
+          {
+            "global_address": 139231172,
+            "head_offset": 120000228,
+            "head_vocab_size": 20000069,
+            "local_head": 6,
+            "ngram_order": 2,
+            "partition_id": 55,
+            "partition_row": 1730512
+          },
+          {
+            "global_address": 140432255,
+            "head_offset": 140000297,
+            "head_vocab_size": 20000077,
+            "local_head": 7,
+            "ngram_order": 2,
+            "partition_id": 56,
+            "partition_row": 431583
+          },
+          {
+            "global_address": 176108624,
+            "head_offset": 160000374,
+            "head_vocab_size": 20000081,
+            "local_head": 0,
+            "ngram_order": 3,
+            "partition_id": 70,
+            "partition_row": 1107784
+          },
+          {
+            "global_address": 183639431,
+            "head_offset": 180000455,
+            "head_vocab_size": 20000093,
+            "local_head": 1,
+            "ngram_order": 3,
+            "partition_id": 73,
+            "partition_row": 1138555
+          },
+          {
+            "global_address": 208624059,
+            "head_offset": 200000548,
+            "head_vocab_size": 20000107,
+            "local_head": 2,
+            "ngram_order": 3,
+            "partition_id": 83,
+            "partition_row": 1123063
+          },
+          {
+            "global_address": 228219848,
+            "head_offset": 220000655,
+            "head_vocab_size": 20000147,
+            "local_head": 3,
+            "ngram_order": 3,
+            "partition_id": 91,
+            "partition_row": 718756
+          },
+          {
+            "global_address": 254859408,
+            "head_offset": 240000802,
+            "head_vocab_size": 20000153,
+            "local_head": 4,
+            "ngram_order": 3,
+            "partition_id": 101,
+            "partition_row": 2358196
+          },
+          {
+            "global_address": 262724915,
+            "head_offset": 260000955,
+            "head_vocab_size": 20000159,
+            "local_head": 5,
+            "ngram_order": 3,
+            "partition_id": 105,
+            "partition_row": 223655
+          },
+          {
+            "global_address": 298952817,
+            "head_offset": 280001114,
+            "head_vocab_size": 20000161,
+            "local_head": 6,
+            "ngram_order": 3,
+            "partition_id": 119,
+            "partition_row": 1451389
+          },
+          {
+            "global_address": 302134378,
+            "head_offset": 300001275,
+            "head_vocab_size": 20000171,
+            "local_head": 7,
+            "ngram_order": 3,
+            "partition_id": 120,
+            "partition_row": 2132938
+          }
+        ],
+        "history_after": [
+          248044,
+          106
+        ],
+        "history_before": [
+          105,
+          248044
+        ],
+        "step": 3,
+        "token_id": 106
+      }
+    ]
+  },
+  "model_id": "Qwen/Qwen3.8-Flash-Next",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle": {
+    "implementation": "pinned Transformers Qwen4-Exp PLE algorithm and official config",
+    "license": "Apache-2.0",
+    "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+    "source_file_sha256": "91e9b1e9c74efe373cd989fe1974a8fa305f4aad43628dbcbd03dac20437814f"
+  },
+  "vectors": [
+    {
+      "case": "length_1",
+      "id": "KQ-GOLD-PLE-001",
+      "input_ids": [
+        1
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 16121432,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 1121360
+            },
+            {
+              "global_address": 28938500,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 11,
+              "partition_row": 1438368
+            },
+            {
+              "global_address": 59087997,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 23,
+              "partition_row": 1587721
+            },
+            {
+              "global_address": 73487090,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 986742
+            },
+            {
+              "global_address": 81148277,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 32,
+              "partition_row": 1147893
+            },
+            {
+              "global_address": 104500129,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1999637
+            },
+            {
+              "global_address": 120276032,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 275456
+            },
+            {
+              "global_address": 149373875,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 1873167
+            },
+            {
+              "global_address": 176283436,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1282596
+            },
+            {
+              "global_address": 184305849,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 73,
+              "partition_row": 1804973
+            },
+            {
+              "global_address": 216528839,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 1527807
+            },
+            {
+              "global_address": 231080079,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 92,
+              "partition_row": 1078975
+            },
+            {
+              "global_address": 257961536,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 103,
+              "partition_row": 460300
+            },
+            {
+              "global_address": 266068568,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 1067296
+            },
+            {
+              "global_address": 289043455,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 1542075
+            },
+            {
+              "global_address": 305959965,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 122,
+              "partition_row": 958501
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 1
+        }
+      ]
+    },
+    {
+      "case": "length_2",
+      "id": "KQ-GOLD-PLE-002",
+      "input_ids": [
+        1,
+        2
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 16121432,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 1121360
+            },
+            {
+              "global_address": 28938500,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 11,
+              "partition_row": 1438368
+            },
+            {
+              "global_address": 59087997,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 23,
+              "partition_row": 1587721
+            },
+            {
+              "global_address": 73487090,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 986742
+            },
+            {
+              "global_address": 81148277,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 32,
+              "partition_row": 1147893
+            },
+            {
+              "global_address": 104500129,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1999637
+            },
+            {
+              "global_address": 120276032,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 275456
+            },
+            {
+              "global_address": 149373875,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 1873167
+            },
+            {
+              "global_address": 176283436,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1282596
+            },
+            {
+              "global_address": 184305849,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 73,
+              "partition_row": 1804973
+            },
+            {
+              "global_address": 216528839,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 1527807
+            },
+            {
+              "global_address": 231080079,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 92,
+              "partition_row": 1078975
+            },
+            {
+              "global_address": 257961536,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 103,
+              "partition_row": 460300
+            },
+            {
+              "global_address": 266068568,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 1067296
+            },
+            {
+              "global_address": 289043455,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 1542075
+            },
+            {
+              "global_address": 305959965,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 122,
+              "partition_row": 958501
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 1
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 15220011,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 219939
+            },
+            {
+              "global_address": 32170723,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 12,
+              "partition_row": 2170579
+            },
+            {
+              "global_address": 40646129,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 645937
+            },
+            {
+              "global_address": 76511807,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 30,
+              "partition_row": 1511447
+            },
+            {
+              "global_address": 98682440,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 39,
+              "partition_row": 1181972
+            },
+            {
+              "global_address": 106072663,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 42,
+              "partition_row": 1072159
+            },
+            {
+              "global_address": 127158041,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 50,
+              "partition_row": 2157441
+            },
+            {
+              "global_address": 141938523,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 56,
+              "partition_row": 1937851
+            },
+            {
+              "global_address": 170367010,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 68,
+              "partition_row": 366194
+            },
+            {
+              "global_address": 180520041,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 72,
+              "partition_row": 519177
+            },
+            {
+              "global_address": 210849650,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 84,
+              "partition_row": 848642
+            },
+            {
+              "global_address": 234005644,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 93,
+              "partition_row": 1504528
+            },
+            {
+              "global_address": 252857364,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 101,
+              "partition_row": 356152
+            },
+            {
+              "global_address": 272068622,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 108,
+              "partition_row": 2067326
+            },
+            {
+              "global_address": 291885712,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 116,
+              "partition_row": 1884320
+            },
+            {
+              "global_address": 311569748,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 124,
+              "partition_row": 1568260
+            }
+          ],
+          "history_tokens": [
+            1,
+            248044
+          ],
+          "position": 1,
+          "token_id": 2
+        }
+      ]
+    },
+    {
+      "case": "length_3",
+      "id": "KQ-GOLD-PLE-003",
+      "input_ids": [
+        1,
+        2,
+        3
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 16121432,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 1121360
+            },
+            {
+              "global_address": 28938500,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 11,
+              "partition_row": 1438368
+            },
+            {
+              "global_address": 59087997,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 23,
+              "partition_row": 1587721
+            },
+            {
+              "global_address": 73487090,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 986742
+            },
+            {
+              "global_address": 81148277,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 32,
+              "partition_row": 1147893
+            },
+            {
+              "global_address": 104500129,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1999637
+            },
+            {
+              "global_address": 120276032,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 275456
+            },
+            {
+              "global_address": 149373875,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 1873167
+            },
+            {
+              "global_address": 176283436,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1282596
+            },
+            {
+              "global_address": 184305849,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 73,
+              "partition_row": 1804973
+            },
+            {
+              "global_address": 216528839,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 1527807
+            },
+            {
+              "global_address": 231080079,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 92,
+              "partition_row": 1078975
+            },
+            {
+              "global_address": 257961536,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 103,
+              "partition_row": 460300
+            },
+            {
+              "global_address": 266068568,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 1067296
+            },
+            {
+              "global_address": 289043455,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 1542075
+            },
+            {
+              "global_address": 305959965,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 122,
+              "partition_row": 958501
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 1
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 15220011,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 219939
+            },
+            {
+              "global_address": 32170723,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 12,
+              "partition_row": 2170579
+            },
+            {
+              "global_address": 40646129,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 645937
+            },
+            {
+              "global_address": 76511807,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 30,
+              "partition_row": 1511447
+            },
+            {
+              "global_address": 98682440,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 39,
+              "partition_row": 1181972
+            },
+            {
+              "global_address": 106072663,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 42,
+              "partition_row": 1072159
+            },
+            {
+              "global_address": 127158041,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 50,
+              "partition_row": 2157441
+            },
+            {
+              "global_address": 141938523,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 56,
+              "partition_row": 1937851
+            },
+            {
+              "global_address": 170367010,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 68,
+              "partition_row": 366194
+            },
+            {
+              "global_address": 180520041,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 72,
+              "partition_row": 519177
+            },
+            {
+              "global_address": 210849650,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 84,
+              "partition_row": 848642
+            },
+            {
+              "global_address": 234005644,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 93,
+              "partition_row": 1504528
+            },
+            {
+              "global_address": 252857364,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 101,
+              "partition_row": 356152
+            },
+            {
+              "global_address": 272068622,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 108,
+              "partition_row": 2067326
+            },
+            {
+              "global_address": 291885712,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 116,
+              "partition_row": 1884320
+            },
+            {
+              "global_address": 311569748,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 124,
+              "partition_row": 1568260
+            }
+          ],
+          "history_tokens": [
+            1,
+            248044
+          ],
+          "position": 1,
+          "token_id": 2
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 14605717,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 5,
+              "partition_row": 2105657
+            },
+            {
+              "global_address": 24410875,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 9,
+              "partition_row": 1910767
+            },
+            {
+              "global_address": 49313567,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 19,
+              "partition_row": 1813339
+            },
+            {
+              "global_address": 72177428,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 28,
+              "partition_row": 2177092
+            },
+            {
+              "global_address": 86060820,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 34,
+              "partition_row": 1060412
+            },
+            {
+              "global_address": 104022010,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1521518
+            },
+            {
+              "global_address": 130963819,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 52,
+              "partition_row": 963195
+            },
+            {
+              "global_address": 146886202,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 58,
+              "partition_row": 1885506
+            },
+            {
+              "global_address": 161523077,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 64,
+              "partition_row": 1522309
+            },
+            {
+              "global_address": 195939126,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 78,
+              "partition_row": 938190
+            },
+            {
+              "global_address": 219424565,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 87,
+              "partition_row": 1923521
+            },
+            {
+              "global_address": 220811782,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 88,
+              "partition_row": 810726
+            },
+            {
+              "global_address": 248020141,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 518953
+            },
+            {
+              "global_address": 275228530,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 110,
+              "partition_row": 227210
+            },
+            {
+              "global_address": 284297999,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 113,
+              "partition_row": 1796643
+            },
+            {
+              "global_address": 309645223,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 123,
+              "partition_row": 2143747
+            }
+          ],
+          "history_tokens": [
+            2,
+            1
+          ],
+          "position": 2,
+          "token_id": 3
+        }
+      ]
+    },
+    {
+      "case": "length_gt_3",
+      "id": "KQ-GOLD-PLE-004",
+      "input_ids": [
+        7,
+        11,
+        13,
+        17,
+        19
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 2927653,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 1,
+              "partition_row": 427641
+            },
+            {
+              "global_address": 34980843,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 13,
+              "partition_row": 2480687
+            },
+            {
+              "global_address": 54748278,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 21,
+              "partition_row": 2248026
+            },
+            {
+              "global_address": 66612378,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 26,
+              "partition_row": 1612066
+            },
+            {
+              "global_address": 97814964,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 39,
+              "partition_row": 314496
+            },
+            {
+              "global_address": 109013870,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 43,
+              "partition_row": 1513354
+            },
+            {
+              "global_address": 126560393,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 50,
+              "partition_row": 1559793
+            },
+            {
+              "global_address": 151352333,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 60,
+              "partition_row": 1351613
+            },
+            {
+              "global_address": 167888935,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 67,
+              "partition_row": 388131
+            },
+            {
+              "global_address": 182235580,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 72,
+              "partition_row": 2234716
+            },
+            {
+              "global_address": 215170017,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 168985
+            },
+            {
+              "global_address": 237467519,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 94,
+              "partition_row": 2466391
+            },
+            {
+              "global_address": 247510681,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 9493
+            },
+            {
+              "global_address": 278779700,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 111,
+              "partition_row": 1278368
+            },
+            {
+              "global_address": 296141806,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 118,
+              "partition_row": 1140390
+            },
+            {
+              "global_address": 304994522,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 2493070
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 7
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 3518994,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 1,
+              "partition_row": 1018982
+            },
+            {
+              "global_address": 23525975,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 9,
+              "partition_row": 1025867
+            },
+            {
+              "global_address": 43529577,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 17,
+              "partition_row": 1029373
+            },
+            {
+              "global_address": 79534759,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 31,
+              "partition_row": 2034387
+            },
+            {
+              "global_address": 87539255,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 35,
+              "partition_row": 38835
+            },
+            {
+              "global_address": 103540813,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1040321
+            },
+            {
+              "global_address": 127543174,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 51,
+              "partition_row": 42562
+            },
+            {
+              "global_address": 159546370,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 63,
+              "partition_row": 2045614
+            },
+            {
+              "global_address": 168682726,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 67,
+              "partition_row": 1181922
+            },
+            {
+              "global_address": 193417972,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 77,
+              "partition_row": 917048
+            },
+            {
+              "global_address": 204093272,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 81,
+              "partition_row": 1592300
+            },
+            {
+              "global_address": 222522584,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 89,
+              "partition_row": 21516
+            },
+            {
+              "global_address": 258665398,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 103,
+              "partition_row": 1164162
+            },
+            {
+              "global_address": 275167591,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 110,
+              "partition_row": 166271
+            },
+            {
+              "global_address": 280748216,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 112,
+              "partition_row": 746872
+            },
+            {
+              "global_address": 309250551,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 123,
+              "partition_row": 1749075
+            }
+          ],
+          "history_tokens": [
+            7,
+            248044
+          ],
+          "position": 1,
+          "token_id": 11
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 9783552,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 3,
+              "partition_row": 2283516
+            },
+            {
+              "global_address": 38030433,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 15,
+              "partition_row": 530253
+            },
+            {
+              "global_address": 42154252,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 2154060
+            },
+            {
+              "global_address": 63928059,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 25,
+              "partition_row": 1427759
+            },
+            {
+              "global_address": 96877490,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 38,
+              "partition_row": 1877034
+            },
+            {
+              "global_address": 114527408,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 45,
+              "partition_row": 2026868
+            },
+            {
+              "global_address": 121002300,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 1001724
+            },
+            {
+              "global_address": 156302400,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 62,
+              "partition_row": 1301656
+            },
+            {
+              "global_address": 175668638,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 667798
+            },
+            {
+              "global_address": 197581371,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 79,
+              "partition_row": 80423
+            },
+            {
+              "global_address": 206479972,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 82,
+              "partition_row": 1478988
+            },
+            {
+              "global_address": 226193110,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 90,
+              "partition_row": 1192030
+            },
+            {
+              "global_address": 247150585,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 98,
+              "partition_row": 2149409
+            },
+            {
+              "global_address": 268108162,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 107,
+              "partition_row": 606878
+            },
+            {
+              "global_address": 295094204,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 118,
+              "partition_row": 92788
+            },
+            {
+              "global_address": 310023618,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 124,
+              "partition_row": 22130
+            }
+          ],
+          "history_tokens": [
+            11,
+            7
+          ],
+          "position": 2,
+          "token_id": 13
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 8107993,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 3,
+              "partition_row": 607957
+            },
+            {
+              "global_address": 21774939,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 8,
+              "partition_row": 1774843
+            },
+            {
+              "global_address": 48608765,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 19,
+              "partition_row": 1108537
+            },
+            {
+              "global_address": 70176473,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 28,
+              "partition_row": 176137
+            },
+            {
+              "global_address": 94377727,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 37,
+              "partition_row": 1877283
+            },
+            {
+              "global_address": 109111570,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 43,
+              "partition_row": 1611054
+            },
+            {
+              "global_address": 121212369,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 1211793
+            },
+            {
+              "global_address": 150680275,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 60,
+              "partition_row": 679555
+            },
+            {
+              "global_address": 176419043,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1418203
+            },
+            {
+              "global_address": 188217223,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 75,
+              "partition_row": 716323
+            },
+            {
+              "global_address": 208648940,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 83,
+              "partition_row": 1147944
+            },
+            {
+              "global_address": 221313544,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 88,
+              "partition_row": 1312488
+            },
+            {
+              "global_address": 247213771,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 98,
+              "partition_row": 2212595
+            },
+            {
+              "global_address": 273114100,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 109,
+              "partition_row": 612792
+            },
+            {
+              "global_address": 281747565,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 112,
+              "partition_row": 1746221
+            },
+            {
+              "global_address": 304914889,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 2413437
+            }
+          ],
+          "history_tokens": [
+            13,
+            11
+          ],
+          "position": 3,
+          "token_id": 17
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 2684051,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 1,
+              "partition_row": 184039
+            },
+            {
+              "global_address": 29782984,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 11,
+              "partition_row": 2282852
+            },
+            {
+              "global_address": 53332622,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 21,
+              "partition_row": 832370
+            },
+            {
+              "global_address": 78302284,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 31,
+              "partition_row": 801912
+            },
+            {
+              "global_address": 82562110,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 61714
+            },
+            {
+              "global_address": 103982143,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 1481651
+            },
+            {
+              "global_address": 126112197,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 50,
+              "partition_row": 1111597
+            },
+            {
+              "global_address": 148952310,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 1451602
+            },
+            {
+              "global_address": 179124972,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 71,
+              "partition_row": 1624120
+            },
+            {
+              "global_address": 180611476,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 72,
+              "partition_row": 610612
+            },
+            {
+              "global_address": 215679471,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 678439
+            },
+            {
+              "global_address": 227303320,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 90,
+              "partition_row": 2302240
+            },
+            {
+              "global_address": 248047223,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 546035
+            },
+            {
+              "global_address": 268791180,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 107,
+              "partition_row": 1289896
+            },
+            {
+              "global_address": 282372564,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 112,
+              "partition_row": 2371220
+            },
+            {
+              "global_address": 310279252,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 124,
+              "partition_row": 277764
+            }
+          ],
+          "history_tokens": [
+            17,
+            13
+          ],
+          "position": 4,
+          "token_id": 19
+        }
+      ]
+    },
+    {
+      "case": "repeated_tokens",
+      "id": "KQ-GOLD-PLE-005",
+      "input_ids": [
+        42,
+        42,
+        42,
+        42
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 4064167,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 1,
+              "partition_row": 1564155
+            },
+            {
+              "global_address": 21428206,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 8,
+              "partition_row": 1428110
+            },
+            {
+              "global_address": 43851727,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 17,
+              "partition_row": 1351523
+            },
+            {
+              "global_address": 63435096,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 25,
+              "partition_row": 934796
+            },
+            {
+              "global_address": 89826284,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 35,
+              "partition_row": 2325864
+            },
+            {
+              "global_address": 106088217,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 42,
+              "partition_row": 1087713
+            },
+            {
+              "global_address": 121229381,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 48,
+              "partition_row": 1228805
+            },
+            {
+              "global_address": 156147803,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 62,
+              "partition_row": 1147059
+            },
+            {
+              "global_address": 175176707,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 175867
+            },
+            {
+              "global_address": 188463481,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 75,
+              "partition_row": 962581
+            },
+            {
+              "global_address": 216828809,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 1827777
+            },
+            {
+              "global_address": 228933352,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 91,
+              "partition_row": 1432260
+            },
+            {
+              "global_address": 248448227,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 947039
+            },
+            {
+              "global_address": 269188956,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 107,
+              "partition_row": 1687672
+            },
+            {
+              "global_address": 283041664,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 113,
+              "partition_row": 540308
+            },
+            {
+              "global_address": 314347972,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 125,
+              "partition_row": 1846472
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 42
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 6812105,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 2,
+              "partition_row": 1812081
+            },
+            {
+              "global_address": 35806432,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 14,
+              "partition_row": 806264
+            },
+            {
+              "global_address": 40303704,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 303512
+            },
+            {
+              "global_address": 74600071,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 2099723
+            },
+            {
+              "global_address": 83997042,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 1496646
+            },
+            {
+              "global_address": 113796139,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 45,
+              "partition_row": 1295599
+            },
+            {
+              "global_address": 128494720,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 51,
+              "partition_row": 994108
+            },
+            {
+              "global_address": 148092876,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 592168
+            },
+            {
+              "global_address": 178480991,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 71,
+              "partition_row": 980139
+            },
+            {
+              "global_address": 192523972,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 77,
+              "partition_row": 23048
+            },
+            {
+              "global_address": 207391931,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 82,
+              "partition_row": 2390947
+            },
+            {
+              "global_address": 223515838,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 89,
+              "partition_row": 1014770
+            },
+            {
+              "global_address": 244312899,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 97,
+              "partition_row": 1811735
+            },
+            {
+              "global_address": 265469534,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 468262
+            },
+            {
+              "global_address": 285935091,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 114,
+              "partition_row": 933723
+            },
+            {
+              "global_address": 308861522,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 123,
+              "partition_row": 1360046
+            }
+          ],
+          "history_tokens": [
+            42,
+            248044
+          ],
+          "position": 1,
+          "token_id": 42
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 6812105,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 2,
+              "partition_row": 1812081
+            },
+            {
+              "global_address": 35806432,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 14,
+              "partition_row": 806264
+            },
+            {
+              "global_address": 40303704,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 303512
+            },
+            {
+              "global_address": 74600071,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 2099723
+            },
+            {
+              "global_address": 83997042,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 1496646
+            },
+            {
+              "global_address": 113796139,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 45,
+              "partition_row": 1295599
+            },
+            {
+              "global_address": 128494720,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 51,
+              "partition_row": 994108
+            },
+            {
+              "global_address": 148092876,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 592168
+            },
+            {
+              "global_address": 175560763,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 559923
+            },
+            {
+              "global_address": 183451510,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 73,
+              "partition_row": 950634
+            },
+            {
+              "global_address": 202657876,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 81,
+              "partition_row": 156904
+            },
+            {
+              "global_address": 228964306,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 91,
+              "partition_row": 1463214
+            },
+            {
+              "global_address": 242910686,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 97,
+              "partition_row": 409522
+            },
+            {
+              "global_address": 276857315,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 110,
+              "partition_row": 1855995
+            },
+            {
+              "global_address": 288172880,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 671500
+            },
+            {
+              "global_address": 304750533,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 2249081
+            }
+          ],
+          "history_tokens": [
+            42,
+            42
+          ],
+          "position": 2,
+          "token_id": 42
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 6812105,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 2,
+              "partition_row": 1812081
+            },
+            {
+              "global_address": 35806432,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 14,
+              "partition_row": 806264
+            },
+            {
+              "global_address": 40303704,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 16,
+              "partition_row": 303512
+            },
+            {
+              "global_address": 74600071,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 2099723
+            },
+            {
+              "global_address": 83997042,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 1496646
+            },
+            {
+              "global_address": 113796139,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 45,
+              "partition_row": 1295599
+            },
+            {
+              "global_address": 128494720,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 51,
+              "partition_row": 994108
+            },
+            {
+              "global_address": 148092876,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 592168
+            },
+            {
+              "global_address": 175560763,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 559923
+            },
+            {
+              "global_address": 183451510,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 73,
+              "partition_row": 950634
+            },
+            {
+              "global_address": 202657876,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 81,
+              "partition_row": 156904
+            },
+            {
+              "global_address": 228964306,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 91,
+              "partition_row": 1463214
+            },
+            {
+              "global_address": 242910686,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 97,
+              "partition_row": 409522
+            },
+            {
+              "global_address": 276857315,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 110,
+              "partition_row": 1855995
+            },
+            {
+              "global_address": 288172880,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 671500
+            },
+            {
+              "global_address": 304750533,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 2249081
+            }
+          ],
+          "history_tokens": [
+            42,
+            42
+          ],
+          "position": 3,
+          "token_id": 42
+        }
+      ]
+    },
+    {
+      "case": "large_valid_token_ids",
+      "id": "KQ-GOLD-PLE-006",
+      "input_ids": [
+        248319,
+        248318,
+        248317
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 11864469,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 4,
+              "partition_row": 1864421
+            },
+            {
+              "global_address": 21951351,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 8,
+              "partition_row": 1951255
+            },
+            {
+              "global_address": 48107725,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 19,
+              "partition_row": 607497
+            },
+            {
+              "global_address": 61973071,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 24,
+              "partition_row": 1972783
+            },
+            {
+              "global_address": 83586526,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 1086130
+            },
+            {
+              "global_address": 111028494,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 44,
+              "partition_row": 1027966
+            },
+            {
+              "global_address": 132413971,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 52,
+              "partition_row": 2413347
+            },
+            {
+              "global_address": 148010049,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 509341
+            },
+            {
+              "global_address": 176514610,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1513770
+            },
+            {
+              "global_address": 187742443,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 75,
+              "partition_row": 241543
+            },
+            {
+              "global_address": 211837434,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 84,
+              "partition_row": 1836426
+            },
+            {
+              "global_address": 238017737,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 95,
+              "partition_row": 516597
+            },
+            {
+              "global_address": 255699936,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 102,
+              "partition_row": 698712
+            },
+            {
+              "global_address": 273579109,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 109,
+              "partition_row": 1077801
+            },
+            {
+              "global_address": 286249325,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 114,
+              "partition_row": 1247957
+            },
+            {
+              "global_address": 309928373,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 123,
+              "partition_row": 2426897
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 248319
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 5885801,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 2,
+              "partition_row": 885777
+            },
+            {
+              "global_address": 39442143,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 15,
+              "partition_row": 1941963
+            },
+            {
+              "global_address": 57349114,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 22,
+              "partition_row": 2348850
+            },
+            {
+              "global_address": 67683089,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 27,
+              "partition_row": 182765
+            },
+            {
+              "global_address": 83429017,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 33,
+              "partition_row": 928621
+            },
+            {
+              "global_address": 115585217,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 46,
+              "partition_row": 584665
+            },
+            {
+              "global_address": 124045153,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 49,
+              "partition_row": 1544565
+            },
+            {
+              "global_address": 149079863,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 59,
+              "partition_row": 1579155
+            },
+            {
+              "global_address": 172916437,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 69,
+              "partition_row": 415609
+            },
+            {
+              "global_address": 192857220,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 77,
+              "partition_row": 356296
+            },
+            {
+              "global_address": 213795138,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 85,
+              "partition_row": 1294118
+            },
+            {
+              "global_address": 222450238,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 88,
+              "partition_row": 2449182
+            },
+            {
+              "global_address": 244512204,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 97,
+              "partition_row": 2011040
+            },
+            {
+              "global_address": 266773364,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 1772092
+            },
+            {
+              "global_address": 287571456,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 115,
+              "partition_row": 70076
+            },
+            {
+              "global_address": 311893262,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 124,
+              "partition_row": 1891774
+            }
+          ],
+          "history_tokens": [
+            248319,
+            248044
+          ],
+          "position": 1,
+          "token_id": 248318
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 18204799,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 7,
+              "partition_row": 704715
+            },
+            {
+              "global_address": 30983358,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 12,
+              "partition_row": 983214
+            },
+            {
+              "global_address": 48501439,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 19,
+              "partition_row": 1001211
+            },
+            {
+              "global_address": 78291015,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 31,
+              "partition_row": 790643
+            },
+            {
+              "global_address": 93570287,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 37,
+              "partition_row": 1069843
+            },
+            {
+              "global_address": 105570872,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 42,
+              "partition_row": 570368
+            },
+            {
+              "global_address": 133797543,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 53,
+              "partition_row": 1296907
+            },
+            {
+              "global_address": 158521149,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 63,
+              "partition_row": 1020393
+            },
+            {
+              "global_address": 178582661,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 71,
+              "partition_row": 1081809
+            },
+            {
+              "global_address": 198209494,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 79,
+              "partition_row": 708546
+            },
+            {
+              "global_address": 218766759,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 87,
+              "partition_row": 1265715
+            },
+            {
+              "global_address": 226248959,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 90,
+              "partition_row": 1247879
+            },
+            {
+              "global_address": 248124088,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 622900
+            },
+            {
+              "global_address": 270195567,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 108,
+              "partition_row": 194271
+            },
+            {
+              "global_address": 290929800,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 116,
+              "partition_row": 928408
+            },
+            {
+              "global_address": 314927571,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 125,
+              "partition_row": 2426071
+            }
+          ],
+          "history_tokens": [
+            248318,
+            248319
+          ],
+          "position": 2,
+          "token_id": 248317
+        }
+      ]
+    },
+    {
+      "case": "eos_segment_boundary",
+      "id": "KQ-GOLD-PLE-007",
+      "input_ids": [
+        5,
+        248044,
+        7,
+        8
+      ],
+      "rows": [
+        {
+          "addresses": [
+            {
+              "global_address": 15389869,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 389797
+            },
+            {
+              "global_address": 39778609,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 15,
+              "partition_row": 2278429
+            },
+            {
+              "global_address": 55713969,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 22,
+              "partition_row": 713705
+            },
+            {
+              "global_address": 62213332,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 24,
+              "partition_row": 2213044
+            },
+            {
+              "global_address": 88817728,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 35,
+              "partition_row": 1317308
+            },
+            {
+              "global_address": 118483999,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 47,
+              "partition_row": 983435
+            },
+            {
+              "global_address": 133731511,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 53,
+              "partition_row": 1230875
+            },
+            {
+              "global_address": 155458159,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 62,
+              "partition_row": 457415
+            },
+            {
+              "global_address": 179763390,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 71,
+              "partition_row": 2262538
+            },
+            {
+              "global_address": 197956758,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 79,
+              "partition_row": 455810
+            },
+            {
+              "global_address": 205378969,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 82,
+              "partition_row": 377985
+            },
+            {
+              "global_address": 220499474,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 88,
+              "partition_row": 498418
+            },
+            {
+              "global_address": 242466248,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 96,
+              "partition_row": 2465096
+            },
+            {
+              "global_address": 265658744,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 106,
+              "partition_row": 657472
+            },
+            {
+              "global_address": 293662119,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 117,
+              "partition_row": 1160715
+            },
+            {
+              "global_address": 315720898,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 126,
+              "partition_row": 719386
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 0,
+          "token_id": 5
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 18392917,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 7,
+              "partition_row": 892833
+            },
+            {
+              "global_address": 34857659,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 13,
+              "partition_row": 2357503
+            },
+            {
+              "global_address": 47499630,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 18,
+              "partition_row": 2499414
+            },
+            {
+              "global_address": 74137148,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 29,
+              "partition_row": 1636800
+            },
+            {
+              "global_address": 90126688,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 36,
+              "partition_row": 126256
+            },
+            {
+              "global_address": 103063933,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 41,
+              "partition_row": 563441
+            },
+            {
+              "global_address": 133351754,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 53,
+              "partition_row": 851118
+            },
+            {
+              "global_address": 142048315,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 56,
+              "partition_row": 2047643
+            },
+            {
+              "global_address": 173113148,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 69,
+              "partition_row": 612320
+            },
+            {
+              "global_address": 192355065,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 76,
+              "partition_row": 2354153
+            },
+            {
+              "global_address": 202997842,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 81,
+              "partition_row": 496870
+            },
+            {
+              "global_address": 236534513,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 94,
+              "partition_row": 1533385
+            },
+            {
+              "global_address": 246250533,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 98,
+              "partition_row": 1249357
+            },
+            {
+              "global_address": 276928146,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 110,
+              "partition_row": 1926826
+            },
+            {
+              "global_address": 287367671,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 114,
+              "partition_row": 2366303
+            },
+            {
+              "global_address": 301167364,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 120,
+              "partition_row": 1165924
+            }
+          ],
+          "history_tokens": [
+            5,
+            248044
+          ],
+          "position": 1,
+          "token_id": 248044
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 2927653,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 1,
+              "partition_row": 427641
+            },
+            {
+              "global_address": 34980843,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 13,
+              "partition_row": 2480687
+            },
+            {
+              "global_address": 54748278,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 21,
+              "partition_row": 2248026
+            },
+            {
+              "global_address": 66612378,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 26,
+              "partition_row": 1612066
+            },
+            {
+              "global_address": 97814964,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 39,
+              "partition_row": 314496
+            },
+            {
+              "global_address": 109013870,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 43,
+              "partition_row": 1513354
+            },
+            {
+              "global_address": 126560393,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 50,
+              "partition_row": 1559793
+            },
+            {
+              "global_address": 151352333,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 60,
+              "partition_row": 1351613
+            },
+            {
+              "global_address": 167888935,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 67,
+              "partition_row": 388131
+            },
+            {
+              "global_address": 182235580,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 72,
+              "partition_row": 2234716
+            },
+            {
+              "global_address": 215170017,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 86,
+              "partition_row": 168985
+            },
+            {
+              "global_address": 237467519,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 94,
+              "partition_row": 2466391
+            },
+            {
+              "global_address": 247510681,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 99,
+              "partition_row": 9493
+            },
+            {
+              "global_address": 278779700,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 111,
+              "partition_row": 1278368
+            },
+            {
+              "global_address": 296141806,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 118,
+              "partition_row": 1140390
+            },
+            {
+              "global_address": 304994522,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 2493070
+            }
+          ],
+          "history_tokens": [
+            248044,
+            248044
+          ],
+          "position": 2,
+          "token_id": 7
+        },
+        {
+          "addresses": [
+            {
+              "global_address": 17329723,
+              "head_offset": 0,
+              "head_vocab_size": 20000003,
+              "local_head": 0,
+              "ngram_order": 2,
+              "partition_id": 6,
+              "partition_row": 2329651
+            },
+            {
+              "global_address": 28464492,
+              "head_offset": 20000003,
+              "head_vocab_size": 20000023,
+              "local_head": 1,
+              "ngram_order": 2,
+              "partition_id": 11,
+              "partition_row": 964360
+            },
+            {
+              "global_address": 44031928,
+              "head_offset": 40000026,
+              "head_vocab_size": 20000033,
+              "local_head": 2,
+              "ngram_order": 2,
+              "partition_id": 17,
+              "partition_row": 1531724
+            },
+            {
+              "global_address": 69826401,
+              "head_offset": 60000059,
+              "head_vocab_size": 20000047,
+              "local_head": 3,
+              "ngram_order": 2,
+              "partition_id": 27,
+              "partition_row": 2326077
+            },
+            {
+              "global_address": 80507399,
+              "head_offset": 80000106,
+              "head_vocab_size": 20000059,
+              "local_head": 4,
+              "ngram_order": 2,
+              "partition_id": 32,
+              "partition_row": 507015
+            },
+            {
+              "global_address": 110734489,
+              "head_offset": 100000165,
+              "head_vocab_size": 20000063,
+              "local_head": 5,
+              "ngram_order": 2,
+              "partition_id": 44,
+              "partition_row": 733961
+            },
+            {
+              "global_address": 136075079,
+              "head_offset": 120000228,
+              "head_vocab_size": 20000069,
+              "local_head": 6,
+              "ngram_order": 2,
+              "partition_id": 54,
+              "partition_row": 1074431
+            },
+            {
+              "global_address": 156529177,
+              "head_offset": 140000297,
+              "head_vocab_size": 20000077,
+              "local_head": 7,
+              "ngram_order": 2,
+              "partition_id": 62,
+              "partition_row": 1528433
+            },
+            {
+              "global_address": 176740572,
+              "head_offset": 160000374,
+              "head_vocab_size": 20000081,
+              "local_head": 0,
+              "ngram_order": 3,
+              "partition_id": 70,
+              "partition_row": 1739732
+            },
+            {
+              "global_address": 199715560,
+              "head_offset": 180000455,
+              "head_vocab_size": 20000093,
+              "local_head": 1,
+              "ngram_order": 3,
+              "partition_id": 79,
+              "partition_row": 2214612
+            },
+            {
+              "global_address": 201670584,
+              "head_offset": 200000548,
+              "head_vocab_size": 20000107,
+              "local_head": 2,
+              "ngram_order": 3,
+              "partition_id": 80,
+              "partition_row": 1669624
+            },
+            {
+              "global_address": 220899605,
+              "head_offset": 220000655,
+              "head_vocab_size": 20000147,
+              "local_head": 3,
+              "ngram_order": 3,
+              "partition_id": 88,
+              "partition_row": 898549
+            },
+            {
+              "global_address": 256162416,
+              "head_offset": 240000802,
+              "head_vocab_size": 20000153,
+              "local_head": 4,
+              "ngram_order": 3,
+              "partition_id": 102,
+              "partition_row": 1161192
+            },
+            {
+              "global_address": 271784618,
+              "head_offset": 260000955,
+              "head_vocab_size": 20000159,
+              "local_head": 5,
+              "ngram_order": 3,
+              "partition_id": 108,
+              "partition_row": 1783322
+            },
+            {
+              "global_address": 290405356,
+              "head_offset": 280001114,
+              "head_vocab_size": 20000161,
+              "local_head": 6,
+              "ngram_order": 3,
+              "partition_id": 116,
+              "partition_row": 403964
+            },
+            {
+              "global_address": 304107632,
+              "head_offset": 300001275,
+              "head_vocab_size": 20000171,
+              "local_head": 7,
+              "ngram_order": 3,
+              "partition_id": 121,
+              "partition_row": 1606180
+            }
+          ],
+          "history_tokens": [
+            7,
+            248044
+          ],
+          "position": 3,
+          "token_id": 8
+        }
+      ]
+    }
+  ]
+}

@@ -135,6 +135,31 @@ For:
 
 The runtime must measure traffic between tiers.
 
+### Preliminary KQ-01 placement hypothesis — validation pending
+
+The following is a hypothesis to test, not an accepted scheduler or residency
+policy:
+
+- PLE/N-gram has the role `PLE_DISK_BACKED_CANDIDATE`: use a disk-backed or
+  memory-mapped primary store, a bounded explicit hot page/row cache in RAM,
+  predictive asynchronous prefetch from the deterministically known addresses,
+  and only actively materialized lookup results or required working data in
+  VRAM. Full RAM residency is neither required nor desirable on KQ-01.
+- Routed experts are candidates for a bounded active cache in RAM, a hot subset
+  in VRAM and cold backing on disk.
+- Uncontrolled Windows paging is not an implementation mechanism. Any mapped
+  path must expose and measure the OS page cache separately from Kestrel-Q's
+  explicit RAM cache and cold physical-storage reads.
+
+The hypothesis follows from the registered GGUF's approximately 26.855 GiB PLE
+and 71.729 GiB routed-expert footprints versus the planned approximately 20 GiB
+managed host and 8 GiB VRAM budgets. KQ-01 measured approximately 0.44 GB/s SATA,
+25.63 GB/s RAM and 26 GB/s large pinned PCIe transfers, while Task 1.1 established
+that PLE addresses are available deterministically early enough to permit
+prefetch. These facts establish the need for a measured tiering experiment;
+they do not validate disk-backed PLE performance. `KQ-BACKLOG-BENCH-002` is the
+required validation before final scheduler/residency policy is accepted.
+
 ## 5. Expected specialization opportunities
 
 Potential areas to investigate:

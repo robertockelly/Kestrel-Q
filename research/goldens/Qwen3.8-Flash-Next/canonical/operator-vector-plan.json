@@ -1,0 +1,223 @@
+{
+  "asset_id": "KQ-GOLD-OPERATOR-PLAN-001",
+  "class": "C",
+  "independence_rule": "Kestrel-Q implementation output cannot create or replace its own reference vector.",
+  "model_id": "Qwen/Qwen3.8-Flash-Next",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "operators": [
+    {
+      "comparison": {
+        "discrete_fields": "EXACT",
+        "floating_fields": {
+          "atol": null,
+          "dtype": "REFERENCE_REPORTED",
+          "inf_policy": "MATCH_REFERENCE",
+          "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+          "rtol": null,
+          "shape": [
+            "FIELD_SPECIFIC"
+          ],
+          "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+        }
+      },
+      "future_capture_fields": [
+        "normalized_branches",
+        "read_gates",
+        "branch_read_result",
+        "write_coefficients",
+        "resulting_branches"
+      ],
+      "operator": "GR",
+      "reason": "No independently executed weight-free reference vector was captured in Task 1.4; capture through the pinned oracle before implementation parity is claimed.",
+      "required_shapes": {
+        "branch_read_result": [
+          1,
+          "N",
+          2560
+        ],
+        "branches": [
+          1,
+          "N",
+          4,
+          2560
+        ]
+      },
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    },
+    {
+      "comparison": {
+        "discrete_fields": "EXACT",
+        "floating_fields": {
+          "atol": null,
+          "dtype": "REFERENCE_REPORTED",
+          "inf_policy": "MATCH_REFERENCE",
+          "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+          "rtol": null,
+          "shape": [
+            "FIELD_SPECIFIC"
+          ],
+          "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+        }
+      },
+      "future_capture_fields": [
+        "q",
+        "k",
+        "v",
+        "alpha",
+        "beta",
+        "conv_state_before",
+        "conv_state_after",
+        "recurrent_state_before",
+        "recurrent_state_after",
+        "layer_output"
+      ],
+      "operator": "GDN",
+      "reason": "No independently executed weight-free reference vector was captured in Task 1.4; capture through the pinned oracle before implementation parity is claimed.",
+      "required_shapes": {
+        "conv_state": [
+          1,
+          10240,
+          4
+        ],
+        "recurrent_state": [
+          1,
+          48,
+          128,
+          128
+        ]
+      },
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    },
+    {
+      "comparison": {
+        "discrete_fields": "EXACT",
+        "floating_fields": {
+          "atol": null,
+          "dtype": "REFERENCE_REPORTED",
+          "inf_policy": "MATCH_REFERENCE",
+          "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+          "rtol": null,
+          "shape": [
+            "FIELD_SPECIFIC"
+          ],
+          "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+        }
+      },
+      "future_capture_fields": [
+        "index_query",
+        "raw_index_keys",
+        "pooled_block_keys",
+        "index_scores",
+        "selected_block_ids",
+        "selected_token_positions",
+        "k_cache_before",
+        "k_cache_after",
+        "v_cache_before",
+        "v_cache_after",
+        "attention_output"
+      ],
+      "operator": "QSA",
+      "reason": "No independently executed weight-free reference vector was captured in Task 1.4; capture through the pinned oracle before implementation parity is claimed.",
+      "required_shapes": {
+        "kv_cache_per_kind": [
+          1,
+          2,
+          "T",
+          256
+        ],
+        "raw_index_keys": [
+          1,
+          "T",
+          128
+        ]
+      },
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    },
+    {
+      "comparison": {
+        "discrete_fields": "EXACT",
+        "floating_fields": {
+          "atol": null,
+          "dtype": "REFERENCE_REPORTED",
+          "inf_policy": "MATCH_REFERENCE",
+          "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+          "rtol": null,
+          "shape": [
+            "FIELD_SPECIFIC"
+          ],
+          "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+        }
+      },
+      "future_capture_fields": [
+        "router_logits",
+        "router_probabilities",
+        "top10_expert_ids",
+        "normalized_expert_weights",
+        "shared_expert_gate",
+        "routed_sum",
+        "shared_output",
+        "combined_output"
+      ],
+      "operator": "MOE",
+      "reason": "No independently executed weight-free reference vector was captured in Task 1.4; capture through the pinned oracle before implementation parity is claimed.",
+      "required_shapes": {
+        "router_logits": [
+          "B*N",
+          512
+        ],
+        "top10_expert_ids": [
+          "B*N",
+          10
+        ]
+      },
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    },
+    {
+      "comparison": {
+        "discrete_fields": "EXACT",
+        "floating_fields": {
+          "atol": null,
+          "dtype": "REFERENCE_REPORTED",
+          "inf_policy": "MATCH_REFERENCE",
+          "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+          "rtol": null,
+          "shape": [
+            "FIELD_SPECIFIC"
+          ],
+          "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+        }
+      },
+      "future_capture_fields": [
+        "selected_hidden_states",
+        "final_hidden_state",
+        "full_logits",
+        "topk_token_ids",
+        "topk_logits",
+        "greedy_next_token_id",
+        "short_greedy_sequence"
+      ],
+      "operator": "FINAL",
+      "reason": "No independently executed weight-free reference vector was captured in Task 1.4; capture through the pinned oracle before implementation parity is claimed.",
+      "required_shapes": {
+        "final_hidden_state": [
+          1,
+          1,
+          2560
+        ],
+        "full_logits": [
+          1,
+          1,
+          248320
+        ]
+      },
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    }
+  ],
+  "oracle": {
+    "implementation": "huggingface/transformers",
+    "license": "Apache-2.0",
+    "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+  },
+  "schema_version": 1,
+  "status": "PLANNED_REFERENCE_REQUIRED"
+}

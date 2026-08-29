@@ -94,3 +94,34 @@ python tools/map-canonical-to-gguf.py `
 These standard-library tools are research-only and are not production runtime
 dependencies. Pinned third-party sources are inspected for evidence under their
 original license; no implementation source is incorporated.
+
+## Task 1.4 reference goldens
+
+`generate-reference-goldens.py` generates only weight-independent Task 1.4
+assets. It requires the Task 1.0 allowlisted metadata directory plus exact
+Transformers and llama.cpp source checkouts. It verifies revision and source
+hashes, rejects `.safetensors`/`.gguf` inputs, forces local-only tokenizer use,
+and fails unless the pinned Python/tokenizer/template dependency versions match.
+It does not import PyTorch, load a model or resolve a remote model ID.
+
+```powershell
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+python tools/generate-reference-goldens.py `
+  --model-dir .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540 `
+  --transformers-source .research-cache/task-1.4/transformers `
+  --llama-source .research-cache/task-1.4/llama.cpp `
+  --output-dir research/goldens/Qwen3.8-Flash-Next
+```
+
+`validate-reference-goldens.py` parses the manifest and every referenced JSON
+asset, rehashes all paths, checks the two oracle classes and allowed statuses,
+and requires full prompt/tokenizer/chat/PLE coverage.
+
+```powershell
+python tools/validate-reference-goldens.py `
+  --golden-dir research/goldens/Qwen3.8-Flash-Next
+```
+
+Both tools are research-only. Transformers/tokenizers/Jinja are isolated
+generation dependencies; neither tool is a production runtime dependency.

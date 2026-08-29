@@ -50,6 +50,22 @@ The project is currently pre-alpha.
 - Proved the local merged GGUF's 384-byte reduction from the published four
   shards is header/directory format overhead only; bounded upstream Range audit
   fetched 342 metadata bytes and zero tensor-payload bytes.
+- Completed Task 1.4 and Epic 1 with separate canonical and exact-GGUF
+  correctness classes, pinned Apache-2.0 Transformers and MIT llama.cpp
+  oracles, and accepted ADR 0007's independence/resource-deferral policy.
+- Preserved canonical BF16 and exact-GGUF full-model vectors as explicit
+  capable-reference-environment gates after KQ-01 resource checks; no
+  weight-dependent output was fabricated or executed.
+- Recorded `PLE_DISK_BACKED_CANDIDATE` as a preliminary KQ-01 placement
+  hypothesis: disk-backed/mapped PLE with a bounded explicit RAM cache,
+  deterministic predictive prefetch and materialized lookup data only in VRAM;
+  routed experts remain candidates for RAM-active/VRAM-hot/disk-cold tiering.
+  This is not a validated performance result or final scheduler policy, and
+  uncontrolled Windows paging is explicitly not the implementation mechanism.
+- Added `KQ-BACKLOG-BENCH-002`, the deferred PLE disk-backed access benchmark
+  required before final scheduler/residency design. It must separate OS page
+  cache, explicit Kestrel-Q RAM cache and cold physical reads; it does not block
+  Task 2 loader/correctness work.
 
 ### Added
 
@@ -95,3 +111,12 @@ The project is currently pre-alpha.
   five machine-readable evidence artifacts and exact packed quantization/type,
   family, per-layer and per-expert footprints and embedded imatrix/calibration
   provenance findings without unsupported sensitivity claims.
+- A deterministic original/synthetic ten-case reference prompt suite and exact
+  weight-independent tokenizer, chat-template and PLE address goldens, plus
+  machine-readable GR/GDN/QSA/MoE/final checkpoint and full-model plans.
+- Fail-closed Task 1.4 generation/validation tooling with pinned metadata,
+  source-revision/hash and dependency checks. The checks caught a one-nibble
+  source-hash transcription error and a Transformers `BatchEncoding` handling
+  error before a valid manifest; a final scan also removed 19 zero-tensor
+  llama.cpp vocabulary GGUF fixtures from ignored cache and added source-tree
+  fixture rejection. Corrected regeneration is byte-identical.

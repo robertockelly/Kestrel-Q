@@ -1,0 +1,84 @@
+{
+  "artifact": {
+    "filename": "Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf",
+    "model_artifact_license": "Qwen Community License 1.0",
+    "sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+    "size_bytes": 111334654400,
+    "unsloth_revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+  },
+  "asset_id": "KQ-GOLD-Q-FULL-PLAN-001",
+  "build_verification": {
+    "command": "cmake -S $LLAMA_CPP_SOURCE -B $LLAMA_CPP_BUILD -G 'Visual Studio 17 2022' -A x64 -DGGML_CUDA=OFF -DGGML_NATIVE=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON -DLLAMA_CURL=OFF && cmake --build $LLAMA_CPP_BUILD --config Release --target llama-cli",
+    "observed_binary_version": "0.3.0-dev (build 1, commit 90c26fc), MSVC 19.44.35228.0 x64",
+    "result": "PASS_NO_MODEL_LOAD",
+    "source_hashes": {
+      "LICENSE": "bcd8ec749126d45cb06737d0690295d73df4b6e7e194205bcf91190368f27285",
+      "ggml/src/ggml-cpu/ggml-cpu.c": "74ff989a94b4c1daffeeb5a0d625f658504a3131683aa72730893db1f6c683e3",
+      "ggml/src/ggml.c": "e6489c22422ab0e3988de1898498ce31d725c2ef743e08a243a226d966a6395a",
+      "src/llama-arch.cpp": "a36997a3aa3f08294a4988b9f4905dc4fe99153d8b2104b022d66d85085c7756",
+      "src/llama-model.cpp": "02a058ca805b38230083c59a21e8ad42d67e753864cc56e8f5216ba6bbba61c2",
+      "src/models/qwen4exp.cpp": "dbc93b44cbed2c9187d0ce8e35cdded031b986b2de31633e63f2f5687fa74619",
+      "tools/cli/README.md": "af61c3c3013082c208ab14e923ff29e79c1d5746d1e8f462b73706ad08a99bab"
+    }
+  },
+  "capable_environment": {
+    "host_ram_min_gib": 256,
+    "os": "Windows 11 x64 or Ubuntu 24.04 x86_64; record exact selection",
+    "storage": "local NVMe with at least 160 GiB free"
+  },
+  "class": "Q",
+  "execution_contract": {
+    "batch_size": 1,
+    "command_template": "llama-cli --model $KQ_GGUF_PATH --ctx-size 4096 --batch-size 512 --ubatch-size 512 --n-gpu-layers 0 --load-mode mmap --spec-type none --temp 0 --seed 0 --no-warmup --simple-io --no-display-prompt --n-predict 8 --prompt-file $KQ_RENDERED_PROMPT_FILE",
+    "context_size": 4096,
+    "device_backend": "CPU_ONLY_REFERENCE",
+    "greedy": true,
+    "mmap": "ENABLED_EXPLICIT",
+    "offload": "n_gpu_layers=0",
+    "prompt_ids": [
+      "KQ-PROMPT-001",
+      "KQ-PROMPT-006",
+      "KQ-PROMPT-008"
+    ],
+    "speculation": "DISABLED_EXPLICIT_--spec-type_none",
+    "text_only": true
+  },
+  "future_acceptance_gate": "Verify the exact GGUF SHA immediately before execution, capture binary/source/build identity and stdout bytes, and require repeated greedy token IDs to match exactly before Class-Q correctness is claimed.",
+  "oracle": {
+    "implementation": "ggml-org/llama.cpp llama-cli",
+    "license": "MIT",
+    "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a"
+  },
+  "resource_decision": "DEFER: the 103.688 GiB file exceeds KQ-01's 32 GiB RAM and 10 GiB VRAM; its SATA backing makes a controlled no-thrash run infeasible.",
+  "runtime_capability_evidence": {
+    "architecture": "qwen4exp registered and has a complete graph implementation",
+    "ordinary_generation": "llama-cli built and exposes model/prompt/greedy controls",
+    "speculation_default_and_override": "none; explicit --spec-type none required",
+    "tensor_types": [
+      "F32",
+      "Q5_1",
+      "Q8_0",
+      "Q4_K",
+      "Q5_K",
+      "IQ4_NL",
+      "BF16"
+    ]
+  },
+  "status": "DEFERRED_CAPABLE_REFERENCE_ENV",
+  "tolerance_policy": {
+    "floating_logits_if_future_tool_exposes_them": {
+      "atol": null,
+      "dtype": "REFERENCE_REPORTED",
+      "inf_policy": "MATCH_REFERENCE",
+      "nan_policy": "FORBID_UNLESS_REFERENCE_HAS_NAN",
+      "rtol": null,
+      "shape": [
+        1,
+        1,
+        248320
+      ],
+      "tolerance_status": "TO_BE_CALIBRATED_FROM_REFERENCE_RUNS"
+    },
+    "greedy_token_ids_and_stdout_utf8": "EXACT"
+  }
+}

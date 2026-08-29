@@ -1,0 +1,358 @@
+{
+  "asset_id": "KQ-GOLD-CHAT-001",
+  "chat_template_sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+  "class": "C",
+  "comparison_mode": "EXACT",
+  "generation_prompt_suffix": "<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "model_id": "Qwen/Qwen3.8-Flash-Next",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle": {
+    "implementation": "huggingface/transformers",
+    "license": "Apache-2.0",
+    "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+  },
+  "vectors": [
+    {
+      "add_generation_prompt": false,
+      "messages": [
+        {
+          "content": "Answer with one concise sentence.",
+          "role": "system"
+        },
+        {
+          "content": "Explain why a byte has eight bits.",
+          "role": "user"
+        }
+      ],
+      "options": {
+        "add_vision_id": false,
+        "enable_thinking": false,
+        "preserve_thinking": false,
+        "tools": null
+      },
+      "prompt_id": "KQ-PROMPT-007",
+      "rendered": "<|im_start|>system\nAnswer with one concise sentence.<|im_end|>\n<|im_start|>user\nExplain why a byte has eight bits.<|im_end|>\n",
+      "rendered_utf8_bytes": 125,
+      "rendered_utf8_sha256": "1649e04f96506929e2ff8e32890abd4900aad7d3556eab24fb02b22e67ad8fab",
+      "special_token_positions": [
+        {
+          "index": 9,
+          "token_id": 248046
+        },
+        {
+          "index": 23,
+          "token_id": 248046
+        }
+      ],
+      "token_count": 25,
+      "token_ids": [
+        248045,
+        8678,
+        198,
+        15666,
+        440,
+        799,
+        61446,
+        11316,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        814,
+        20139,
+        3069,
+        264,
+        4763,
+        682,
+        7810,
+        9192,
+        13,
+        248046,
+        198
+      ]
+    },
+    {
+      "add_generation_prompt": true,
+      "messages": [
+        {
+          "content": "Answer with one concise sentence.",
+          "role": "system"
+        },
+        {
+          "content": "Explain why a byte has eight bits.",
+          "role": "user"
+        }
+      ],
+      "options": {
+        "add_vision_id": false,
+        "enable_thinking": false,
+        "preserve_thinking": false,
+        "tools": null
+      },
+      "prompt_id": "KQ-PROMPT-007",
+      "rendered": "<|im_start|>system\nAnswer with one concise sentence.<|im_end|>\n<|im_start|>user\nExplain why a byte has eight bits.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "rendered_utf8_bytes": 166,
+      "rendered_utf8_sha256": "03b11a06e84aee975f84c96a4ab11b6938b6179fe0838a373530aca6a00bbcf1",
+      "special_token_positions": [
+        {
+          "index": 9,
+          "token_id": 248046
+        },
+        {
+          "index": 23,
+          "token_id": 248046
+        }
+      ],
+      "token_count": 32,
+      "token_ids": [
+        248045,
+        8678,
+        198,
+        15666,
+        440,
+        799,
+        61446,
+        11316,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        814,
+        20139,
+        3069,
+        264,
+        4763,
+        682,
+        7810,
+        9192,
+        13,
+        248046,
+        198,
+        248045,
+        74455,
+        198,
+        248068,
+        271,
+        248069,
+        271
+      ]
+    },
+    {
+      "add_generation_prompt": false,
+      "messages": [
+        {
+          "content": "Keep identifiers unchanged.",
+          "role": "system"
+        },
+        {
+          "content": "Remember KQ_VALUE = 17.",
+          "role": "user"
+        },
+        {
+          "content": "KQ_VALUE is 17.",
+          "reasoning_content": "",
+          "role": "assistant"
+        },
+        {
+          "content": "What is KQ_VALUE plus 5?",
+          "role": "user"
+        }
+      ],
+      "options": {
+        "add_vision_id": false,
+        "enable_thinking": false,
+        "preserve_thinking": false,
+        "tools": null
+      },
+      "prompt_id": "KQ-PROMPT-008",
+      "rendered": "<|im_start|>system\nKeep identifiers unchanged.<|im_end|>\n<|im_start|>user\nRemember KQ_VALUE = 17.<|im_end|>\n<|im_start|>assistant\nKQ_VALUE is 17.<|im_end|>\n<|im_start|>user\nWhat is KQ_VALUE plus 5?<|im_end|>\n",
+      "rendered_utf8_bytes": 208,
+      "rendered_utf8_sha256": "c72511d1f0d6c94f0db4fc559e2809027d5d53c2224e427e61a45cae560b64e3",
+      "special_token_positions": [
+        {
+          "index": 7,
+          "token_id": 248046
+        },
+        {
+          "index": 21,
+          "token_id": 248046
+        },
+        {
+          "index": 34,
+          "token_id": 248046
+        },
+        {
+          "index": 48,
+          "token_id": 248046
+        }
+      ],
+      "token_count": 50,
+      "token_ids": [
+        248045,
+        8678,
+        198,
+        18844,
+        45640,
+        33702,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        27656,
+        710,
+        48,
+        7241,
+        283,
+        220,
+        16,
+        22,
+        13,
+        248046,
+        198,
+        248045,
+        74455,
+        198,
+        42,
+        48,
+        7241,
+        369,
+        220,
+        16,
+        22,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        3710,
+        369,
+        710,
+        48,
+        7241,
+        5346,
+        220,
+        20,
+        30,
+        248046,
+        198
+      ]
+    },
+    {
+      "add_generation_prompt": true,
+      "messages": [
+        {
+          "content": "Keep identifiers unchanged.",
+          "role": "system"
+        },
+        {
+          "content": "Remember KQ_VALUE = 17.",
+          "role": "user"
+        },
+        {
+          "content": "KQ_VALUE is 17.",
+          "reasoning_content": "",
+          "role": "assistant"
+        },
+        {
+          "content": "What is KQ_VALUE plus 5?",
+          "role": "user"
+        }
+      ],
+      "options": {
+        "add_vision_id": false,
+        "enable_thinking": false,
+        "preserve_thinking": false,
+        "tools": null
+      },
+      "prompt_id": "KQ-PROMPT-008",
+      "rendered": "<|im_start|>system\nKeep identifiers unchanged.<|im_end|>\n<|im_start|>user\nRemember KQ_VALUE = 17.<|im_end|>\n<|im_start|>assistant\nKQ_VALUE is 17.<|im_end|>\n<|im_start|>user\nWhat is KQ_VALUE plus 5?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "rendered_utf8_bytes": 249,
+      "rendered_utf8_sha256": "eaa0074c32d7935736ac629254208eee37d1773c070f59dd92ac47e8e08eb5cf",
+      "special_token_positions": [
+        {
+          "index": 7,
+          "token_id": 248046
+        },
+        {
+          "index": 21,
+          "token_id": 248046
+        },
+        {
+          "index": 34,
+          "token_id": 248046
+        },
+        {
+          "index": 48,
+          "token_id": 248046
+        }
+      ],
+      "token_count": 57,
+      "token_ids": [
+        248045,
+        8678,
+        198,
+        18844,
+        45640,
+        33702,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        27656,
+        710,
+        48,
+        7241,
+        283,
+        220,
+        16,
+        22,
+        13,
+        248046,
+        198,
+        248045,
+        74455,
+        198,
+        42,
+        48,
+        7241,
+        369,
+        220,
+        16,
+        22,
+        13,
+        248046,
+        198,
+        248045,
+        846,
+        198,
+        3710,
+        369,
+        710,
+        48,
+        7241,
+        5346,
+        220,
+        20,
+        30,
+        248046,
+        198,
+        248045,
+        74455,
+        198,
+        248068,
+        271,
+        248069,
+        271
+      ]
+    }
+  ]
+}

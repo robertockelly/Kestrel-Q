@@ -1,5 +1,7 @@
 # TASKS-EPIC-1-MODEL-CHARACTERIZATION.md
 
+Status: **COMPLETE / PASS — TASKS 1.0–1.4**
+
 ## Task 1.0 — Model source & artifact baseline
 - [x] Pin official Qwen upstream revision(s).
 - [x] Enumerate official repository files without downloading weight shards.
@@ -44,13 +46,15 @@
 - [x] Accept ADR 0006 staged direct-GGUF-first initial container strategy.
 
 ## Task 1.4 — Reference behavior plan
-- [ ] Select authoritative reference implementation(s).
-- [ ] Pin their versions/revisions.
-- [ ] Define tokenizer golden vectors.
-- [ ] Define routing golden vectors.
-- [ ] Define layer/logit golden vectors.
-- [ ] Define greedy-generation golden vectors.
-- [ ] Define tolerances and reproducibility rules.
+- [x] Select authoritative Class-C and Class-Q reference implementations.
+- [x] Pin their versions/revisions and licenses.
+- [x] Generate exact tokenizer and chat-template golden vectors.
+- [x] Generate exact PLE address golden vectors.
+- [x] Define routing/operator/layer/logit checkpoint contracts.
+- [x] Define canonical and GGUF greedy-generation contracts.
+- [x] Define exact/tolerance and deterministic-regeneration rules.
+- [x] Accept ADR 0007 and preserve capable-environment deferrals as future
+  correctness gates.
 
 ## Epic governance
 - [x] Keep `docs/TASKS.md` synchronized with current Epic 1 status.
@@ -63,3 +67,6 @@
 - [x] Update `CHANGELOG.md` for the Task 1.2 milestone and research tooling.
 - [x] Keep Task 1.3 GGUF mapping evidence deterministically reproducible.
 - [x] Update `CHANGELOG.md` for the Task 1.3 milestone and ADR 0006.
+- [x] Keep Task 1.4 safe golden evidence deterministically reproducible.
+- [x] Update `CHANGELOG.md` for Task 1.4 and ADR 0007.
+- [x] Close Epic 1 only after its seven exit gates were satisfied.

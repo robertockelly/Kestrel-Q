@@ -1,0 +1,165 @@
+{
+  "assets": [
+    {
+      "asset_id": "KQ-GOLD-PROMPT-C-001",
+      "class": "C",
+      "comparison_mode": "EXACT",
+      "dependencies": [],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/prompt-suite.json",
+      "sha256": "ffee472cac6e57f85df5f50104535b6e4e2d801c4ae6cac1f775840a29b7ed15",
+      "status": "GENERATED_VERIFIED"
+    },
+    {
+      "asset_id": "KQ-GOLD-PROMPT-Q-001",
+      "class": "Q",
+      "comparison_mode": "EXACT",
+      "dependencies": [],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/prompt-suite.json",
+      "sha256": "ffee472cac6e57f85df5f50104535b6e4e2d801c4ae6cac1f775840a29b7ed15",
+      "status": "GENERATED_VERIFIED"
+    },
+    {
+      "asset_id": "KQ-GOLD-TOK-001",
+      "class": "C",
+      "comparison_mode": "EXACT",
+      "dependencies": [
+        "prompt-suite.json",
+        "official tokenizer metadata"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/canonical/tokenizer-vectors.json",
+      "sha256": "cbe1290d84a7a61113cf201edaf5034893eb1e70ba5a3c4bc9f4ea50bdcaf153",
+      "status": "GENERATED_VERIFIED"
+    },
+    {
+      "asset_id": "KQ-GOLD-CHAT-001",
+      "class": "C",
+      "comparison_mode": "EXACT",
+      "dependencies": [
+        "prompt-suite.json",
+        "official chat_template.jinja"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/canonical/chat-template-vectors.json",
+      "sha256": "72858a105a0f009b94eaea5dec24ae9f45ec0a400b9ce7325efc9341f0fbd1d6",
+      "status": "GENERATED_VERIFIED"
+    },
+    {
+      "asset_id": "KQ-GOLD-PLE-ROOT-001",
+      "class": "C",
+      "comparison_mode": "EXACT",
+      "dependencies": [
+        "official config",
+        "pinned Transformers PLE algorithm"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/canonical/ple-address-vectors.json",
+      "sha256": "495ef70f091e8d61caac99bb14ad8cea0fdb77940ec4dc6e8ce9811a144da3b6",
+      "status": "GENERATED_VERIFIED"
+    },
+    {
+      "asset_id": "KQ-GOLD-OPERATOR-PLAN-001",
+      "class": "C",
+      "comparison_mode": "NUMERIC_TOLERANCE",
+      "dependencies": [
+        "pinned Transformers full operator execution"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/canonical/operator-vector-plan.json",
+      "sha256": "b2fc0c6bfe2401d2199cabe80ef0e8627fb0260ffbf7450e4a4f57c01c4a35c8",
+      "status": "PLANNED_REFERENCE_REQUIRED"
+    },
+    {
+      "asset_id": "KQ-GOLD-C-FULL-PLAN-001",
+      "class": "C",
+      "comparison_mode": "EXACT_AND_NUMERIC_TOLERANCE",
+      "dependencies": [
+        "canonical BF16 checkpoint",
+        "capable reference environment"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/canonical/full-model-vector-plan.json",
+      "sha256": "852c326c6c1ba89fd87c7717c5297eb6fd3ae7b087ee1ede5169473d4d87a7a9",
+      "status": "DEFERRED_CAPABLE_REFERENCE_ENV"
+    },
+    {
+      "asset_id": "KQ-GOLD-Q-FULL-PLAN-001",
+      "class": "Q",
+      "comparison_mode": "EXACT_AND_NUMERIC_TOLERANCE",
+      "dependencies": [
+        "exact registered GGUF",
+        "capable reference environment"
+      ],
+      "generation_command": "python tools/generate-reference-goldens.py --model-dir $KQ_MODEL_METADATA_DIR --transformers-source $KQ_TRANSFORMERS_SOURCE --llama-source $KQ_LLAMA_SOURCE --output-dir research/goldens/Qwen3.8-Flash-Next",
+      "generation_tool": "tools/generate-reference-goldens.py",
+      "path": "research/goldens/Qwen3.8-Flash-Next/quantized/gguf-vector-plan.json",
+      "sha256": "b51e4e25cda36dcf2fdcc14bbd2394b3a03a8e9ec74b45a3497f50a9a5d83c07",
+      "status": "DEFERRED_CAPABLE_REFERENCE_ENV"
+    }
+  ],
+  "canonical_model": {
+    "artifact_license": "Qwen Community License 1.0",
+    "id": "Qwen/Qwen3.8-Flash-Next",
+    "research_revision": "69885871a64393807d988b27b1b5e380e8f28526",
+    "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540"
+  },
+  "generated_safe_vector_count": 3,
+  "generation_dependencies": {
+    "jinja2": "3.1.6",
+    "python": "3.13.12",
+    "tokenizers": "0.23.1",
+    "transformers": "5.16.0.dev0"
+  },
+  "gguf": {
+    "artifact_id": "KQ-MODEL-ARTIFACT-001",
+    "artifact_license": "Qwen Community License 1.0",
+    "filename": "Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf",
+    "sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+    "size_bytes": 111334654400,
+    "unsloth_revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+  },
+  "manifest_id": "KQ-GOLDEN-MANIFEST-001",
+  "oracles": [
+    {
+      "class": "C",
+      "implementation": "huggingface/transformers",
+      "license": "Apache-2.0",
+      "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "source_hashes": {
+        "LICENSE": "10fe554b4ffd57008fd1b44474b005f2c35af7312608dbd95fecad82fe87ab42",
+        "src/transformers/models/qwen4_exp/configuration_qwen4_exp.py": "26b47995740e3bc596b44b2011ee6c3d971d46136438b00dd5fad9557bec4254",
+        "src/transformers/models/qwen4_exp/modeling_qwen4_exp.py": "91e9b1e9c74efe373cd989fe1974a8fa305f4aad43628dbcbd03dac20437814f"
+      },
+      "status": "PINNED_TOKENIZER_EXECUTED_MODEL_SOURCE_VERIFIED"
+    },
+    {
+      "class": "Q",
+      "implementation": "ggml-org/llama.cpp llama-cli",
+      "license": "MIT",
+      "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+      "source_hashes": {
+        "LICENSE": "bcd8ec749126d45cb06737d0690295d73df4b6e7e194205bcf91190368f27285",
+        "ggml/src/ggml-cpu/ggml-cpu.c": "74ff989a94b4c1daffeeb5a0d625f658504a3131683aa72730893db1f6c683e3",
+        "ggml/src/ggml.c": "e6489c22422ab0e3988de1898498ce31d725c2ef743e08a243a226d966a6395a",
+        "src/llama-arch.cpp": "a36997a3aa3f08294a4988b9f4905dc4fe99153d8b2104b022d66d85085c7756",
+        "src/llama-model.cpp": "02a058ca805b38230083c59a21e8ad42d67e753864cc56e8f5216ba6bbba61c2",
+        "src/models/qwen4exp.cpp": "dbc93b44cbed2c9187d0ce8e35cdded031b986b2de31633e63f2f5687fa74619",
+        "tools/cli/README.md": "af61c3c3013082c208ab14e923ff29e79c1d5746d1e8f462b73706ad08a99bab"
+      },
+      "status": "PINNED_BUILD_VERIFIED_NO_MODEL_RUN"
+    }
+  ],
+  "prompt_suite_sha256": "ffee472cac6e57f85df5f50104535b6e4e2d801c4ae6cac1f775840a29b7ed15",
+  "schema_version": 1,
+  "weight_dependent_vector_status": "DEFERRED_CAPABLE_REFERENCE_ENV",
+  "weight_payload_downloaded_or_executed": false
+}

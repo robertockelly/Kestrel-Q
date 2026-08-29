@@ -18,7 +18,8 @@ Status convention:
 - [x] Task 0.3 — Establish the Windows/CUDA toolchain and CUDA smoke baseline
 - [ ] Configure formatting/static-analysis policy
 - [ ] Add CI skeleton
-- [ ] Select authoritative reference runtime for correctness vectors
+- [x] Select authoritative reference runtimes for correctness vectors (Task
+  1.4 two-oracle strategy; full-model captures remain future gates)
 
 ## Epic 1 — Qwen3.8-Flash-Next research
 
@@ -45,18 +46,36 @@ Status convention:
   - 384-byte split/merge delta: **PROVEN FORMAT OVERHEAD ONLY**;
   - ADR 0006 staged initial container strategy: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Document tokenizer/chat template
+- [x] Task 1.4 — Establish reference behavior and golden vectors:
+  - Class C: official pinned Qwen sources plus
+    `transformers@805a9e939fa8c1bff8d8ffdf041c051b71a914aa`;
+  - Class Q: exact registered GGUF plus
+    `llama.cpp@90c26fcd4b2114b4aa39d09d69318cb8f438d27a`;
+  - prompt suite and exact tokenizer/chat/PLE vectors: **GENERATED / VERIFIED**;
+  - operator and full-model contracts: **PINNED**, with weight-dependent runs
+    explicitly deferred to a capable reference environment;
+  - ADR 0007 two-oracle strategy: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [x] Document tokenizer/chat template (Task 1.4 exact goldens)
 - [x] Document MoE topology and routing (Task 1.1)
 - [x] Document Gated DeltaNet execution (Task 1.1)
 - [x] Document Qwen Sparse Attention execution (Task 1.1)
 - [x] Document gated residual mechanism (Task 1.1)
 - [x] Document n-gram embedding mechanism (Task 1.1)
 - [x] Estimate memory by tensor family and datatype (Task 1.2)
-- [x] Identify preliminary placement-candidate tensor families (Task 1.2;
-  scheduler policy remains deferred)
+- [x] Identify preliminary placement-candidate tensor families (Task 1.2),
+  including the unvalidated `PLE_DISK_BACKED_CANDIDATE`; scheduler policy
+  remains deferred
 - [ ] Define minimum useful quantization target
 
+**Epic 1 status: COMPLETE / PASS.** All characterization exit gates are met;
+deferred weight-dependent vectors remain mandatory before later canonical or
+exact-GGUF runtime correctness claims.
+
 ## Epic 2 — Loader and introspection
+
+**Implementation status: NOT STARTED.** ADR 0006 selected a future container
+strategy; it did not start Task 2 loader/runtime implementation.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [ ] Implement file mapping
@@ -110,6 +129,19 @@ Status convention:
 - [ ] I/O/PCIe/compute overlap
 - [ ] Adaptive scheduler
 - [ ] Memory-pressure tests
+- [ ] `KQ-BACKLOG-BENCH-002` — PLE Disk-Backed Access Benchmark:
+  - status: **DEFERRED / REQUIRED BEFORE FINAL SCHEDULER DESIGN**;
+  - purpose: validate whether KQ-01's storage hierarchy can support the
+    `PLE_DISK_BACKED_CANDIDATE` efficiently;
+  - measure cold and warm lookup latency; random, batched and
+    predictive/prefetched lookup; mmap/page-fault behavior; physical bytes read
+    per token; read amplification; RAM-cache hit ratio and working-set size;
+    prefetch lead time; lookup-batching effects; SATA utilization; CPU overhead;
+    and an NVMe comparison if/when a device is available;
+  - distinguish OS page cache, explicit Kestrel-Q RAM cache and cold
+    physical-storage reads;
+  - this does not block Epic 2 loader/correctness work, but it **MUST** pass
+    before final scheduler/residency policy is accepted.
 
 ## Epic 6 — Quantization
 

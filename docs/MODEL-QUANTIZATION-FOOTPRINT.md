@@ -116,3 +116,19 @@ show why cache hit rate and transfer overlap will matter, while the ~0.44 GB/s
 SATA baseline makes cold storage traffic especially expensive. These bandwidths
 do not convert the selected top-10 footprint into a tokens/s prediction. Final
 placement, prefetch, eviction and scheduling policy remain future work.
+
+### Preliminary tiering hypothesis to validate
+
+For KQ-01, PLE is now labeled `PLE_DISK_BACKED_CANDIDATE`: its 26.855 GiB
+packed footprint makes full residency in the approximately 20 GiB managed host
+budget undesirable, so the candidate design uses disk-backed/mapped storage, a
+bounded explicit RAM page/row cache, deterministic predictive/asynchronous
+prefetch and only materialized lookup results or required working data in VRAM.
+The 71.729 GiB routed-expert family is separately a candidate for an active RAM
+cache, hot VRAM subset and cold disk backing. Uncontrolled Windows paging is not
+the proposed mechanism.
+
+This is an architectural hypothesis, not a performance result or final policy.
+`KQ-BACKLOG-BENCH-002` must distinguish OS page-cache hits, explicit Kestrel-Q
+RAM-cache hits and cold physical reads and must validate the approach before a
+final scheduler/residency decision.

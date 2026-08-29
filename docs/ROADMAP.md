@@ -28,6 +28,12 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   converter/quantizer provenance and the 384-byte split/merge overhead are
   evidence-backed. ADR 0006 accepts a staged direct-GGUF-first strategy while
   keeping canonical model semantics independent of the container.
+- Task 1.4 is complete/pass: ADR 0007 pins separate canonical and exact-GGUF
+  oracles, and the original/synthetic prompt suite plus exact tokenizer,
+  chat-template and PLE-address vectors regenerate byte-identically. Canonical
+  BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
+  no weight-dependent output was fabricated.
+- Epic 1 is complete/pass. Task 2 implementation remains **NOT STARTED**.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -46,6 +52,19 @@ CUDA baseline with correctness parity.
 
 ## R4 — Fit the machine
 VRAM/RAM/NVMe tiering, expert cache, async prefetch, streaming.
+
+- Treat PLE as `PLE_DISK_BACKED_CANDIDATE`: disk-backed/mapped primary storage,
+  a bounded explicit RAM page/row cache, predictive asynchronous prefetch from
+  deterministic addresses and only materialized lookup results/working data in
+  VRAM. Treat routed experts as candidates for active RAM cache, hot VRAM subset
+  and cold disk backing. This is preliminary and does not endorse uncontrolled
+  Windows paging.
+- `KQ-BACKLOG-BENCH-002` is **DEFERRED / REQUIRED BEFORE FINAL SCHEDULER
+  DESIGN**. It must characterize cold/warm, random/batched/prefetched PLE access,
+  mmap/page faults, physical reads and amplification, explicit-cache hit rate
+  and working set, prefetch lead, SATA/CPU cost and eventual NVMe comparison,
+  while separating OS cache, explicit Kestrel-Q cache and cold storage. It does
+  not block R1/Task 2 correctness work.
 
 ## R5 — Make it fast
 Quantization, fused kernels, scheduler optimization, profiling.

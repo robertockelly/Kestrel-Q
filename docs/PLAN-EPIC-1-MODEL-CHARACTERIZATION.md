@@ -1,11 +1,13 @@
 # PLAN-EPIC-1-MODEL-CHARACTERIZATION.md
 
-Status: **ACTIVE — TASKS 1.0–1.2 COMPLETE / PASS**
+Status: **COMPLETE / PASS — TASKS 1.0–1.4 COMPLETE / PASS**
 
-Task 1.0's official-source baseline and local derived-GGUF registration are
-complete and verified. Task 1.1's architecture characterization and Task 1.2's
-canonical tensor/footprint baseline are complete and verified. Task 1.3 remains
-not started.
+Task 1.0's official-source baseline and local derived-GGUF registration, Task
+1.1's architecture characterization, Task 1.2's canonical tensor/footprint
+baseline, Task 1.3's canonical-to-GGUF mapping and Task 1.4's two-oracle
+golden-vector strategy are complete/pass. Weight-dependent full-model vectors
+remain explicit future correctness gates on a capable reference environment;
+they were not fabricated to close this characterization epic.
 
 ## Epic
 
