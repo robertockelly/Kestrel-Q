@@ -161,3 +161,52 @@ python tools/validate-tensor-view-geometry.py `
 The model resolves only from an explicit `--model` or `KQ_GGUF_PATH`; the test
 skips when neither is available. The standard-library validator reads no model
 payload. Production code neither invokes it nor reads the evidence CSV.
+
+## Task 2.3 canonical tokenizer oracle
+
+`generate-tokenizer-differential.py` is a research-only pinned-oracle tool. It
+verifies the official tokenizer asset hashes, imports the exact offline
+Transformers revision and emits canonical expected behavior for the discovered
+NFC, combining-mark, padded-ID, special-token and chat-template divergences.
+It also emits the binary compatibility digests compiled into the production
+GGUF substrate gate. It never imports Kestrel-Q output.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/transformers/src').Path
+$env:TRANSFORMERS_OFFLINE = '1'
+$env:HF_HUB_OFFLINE = '1'
+.research-cache/task-1.4/venv/Scripts/python.exe `
+  tools/generate-tokenizer-differential.py `
+  --model-dir .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540 `
+  --output research/tokenizer/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+```
+
+`validate-native-tokenizer.py` hashes the unchanged Task 1.4 prompt/tokenizer/
+chat/manifest assets, then compares the native test probe with every original
+golden and every independent differential case. The local GGUF is resolved
+only by the probe from `KQ_GGUF_PATH`; the validator receives no model path.
+
+```powershell
+python tools/validate-native-tokenizer.py `
+  --probe build-cpu/Release/kq_tokenizer_probe.exe `
+  --golden-dir research/goldens/Qwen3.8-Flash-Next `
+  --differential research/tokenizer/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+```
+
+Both programs are test/research tools. Python, Transformers and tokenizers are
+not production runtime dependencies.
+
+`generate-unicode9-assigned.py` verifies the official Unicode 9.0.0 UCD
+`DerivedAge.txt` SHA-256 and deterministically emits the compact assigned-range
+table used to reproduce the pinned tokenizer's Unicode-9 NFC boundary. The
+source file stays in ignored research cache; the generated table and its source
+hash are reviewable production inputs.
+
+```powershell
+python tools/generate-unicode9-assigned.py `
+  --derived-age .research-cache/task-2.3-unicode9/DerivedAge-9.0.0.txt `
+  --output src/kq_unicode9_assigned.inc
+```
+
+The generated table SHA-256 is
+`83a57437a5785fcbe40b21f4f297c5b7cc5bc472ace9b0a57a3e9040a8a39694`.

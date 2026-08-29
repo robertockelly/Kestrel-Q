@@ -39,19 +39,37 @@ function(kq_configure_cuda_target target)
     endif()
 endfunction()
 
+add_library(kq_utf8proc STATIC
+    third_party/utf8proc/utf8proc.c
+)
+target_include_directories(kq_utf8proc PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utf8proc
+)
+target_compile_definitions(kq_utf8proc PUBLIC UTF8PROC_STATIC)
+if(MSVC)
+    target_compile_options(kq_utf8proc PRIVATE /W0)
+else()
+    target_compile_options(kq_utf8proc PRIVATE -w)
+endif()
+
 add_library(kq_core
+    src/kq_chat.c
     src/kq_file_win32.c
     src/kq_gguf.c
     src/kq_model.c
     src/kq_runtime.c
+    src/kq_sha256.c
     src/kq_status.c
     src/kq_tensor_view.c
+    src/kq_tokenizer.c
 )
 
 target_include_directories(kq_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+target_link_libraries(kq_core PRIVATE kq_utf8proc)
 
 kq_enable_c_warnings(kq_core)
 
@@ -126,6 +144,19 @@ if(KQ_BUILD_TESTS)
     kq_enable_c_warnings(kq_smoke_test)
     add_test(NAME kq_smoke COMMAND kq_smoke_test)
 
+    add_executable(kq_sha256_test tests/sha256_test.c)
+    target_link_libraries(kq_sha256_test PRIVATE kq_core)
+    target_include_directories(kq_sha256_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_sha256_test)
+    add_test(NAME kq_sha256_known_vectors COMMAND kq_sha256_test)
+
+    add_executable(kq_chat_test tests/chat_test.c)
+    target_link_libraries(kq_chat_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_chat_test)
+    add_test(NAME kq_chat_synthetic COMMAND kq_chat_test)
+
     add_executable(kq_gguf_test tests/gguf_test.c)
     target_link_libraries(kq_gguf_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_gguf_test)
@@ -146,6 +177,19 @@ if(KQ_BUILD_TESTS)
     )
     kq_enable_c_warnings(kq_tensor_view_test)
     add_test(NAME kq_tensor_view_synthetic COMMAND kq_tensor_view_test)
+
+    add_executable(kq_tokenizer_integration_test tests/tokenizer_integration.c)
+    target_link_libraries(kq_tokenizer_integration_test PRIVATE kq_core)
+    target_include_directories(kq_tokenizer_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_tokenizer_integration_test)
+    add_test(NAME kq_tokenizer_real_artifact COMMAND kq_tokenizer_integration_test)
+    set_tests_properties(kq_tokenizer_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(kq_tokenizer_probe tests/tokenizer_probe.c)
+    target_link_libraries(kq_tokenizer_probe PRIVATE kq_core)
+    kq_enable_c_warnings(kq_tokenizer_probe)
 
     add_executable(kq_gguf_integration_test tests/gguf_integration.c)
     target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
@@ -175,6 +219,19 @@ if(KQ_BUILD_TESTS)
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-tensor-inventory.csv
         )
         set_tests_properties(kq_tensor_view_geometry_oracle PROPERTIES
+            SKIP_RETURN_CODE 77
+        )
+        add_test(
+            NAME kq_tokenizer_canonical_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-tokenizer.py
+                --probe $<TARGET_FILE:kq_tokenizer_probe>
+                --golden-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/goldens/Qwen3.8-Flash-Next
+                --differential
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/tokenizer/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+        )
+        set_tests_properties(kq_tokenizer_canonical_oracle PROPERTIES
             SKIP_RETURN_CODE 77
         )
     endif()

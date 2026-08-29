@@ -3,4 +3,10 @@ Copyright 2026 Kestrel-Q contributors
 
 This product is licensed under the Apache License, Version 2.0.
 
-Third-party attribution notices, when required, must be added to this file as dependencies or incorporated components are introduced.
+Third-party components:
+
+utf8proc 2.10.0
+Copyright (c) 2014-2021 by Steven G. Johnson, Jiahao Chen, Tony Kelman,
+Jonas Fonseca, and other contributors.
+Licensed under the MIT License. Unicode data notices are reproduced in
+third_party/utf8proc/LICENSE.md.

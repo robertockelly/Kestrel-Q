@@ -127,6 +127,82 @@ The project is currently pre-alpha.
   canonical element total; the original mutation was validly rejected by the
   earlier shape gate and therefore did not exercise the intended contiguity
   branch. The corrected regression now isolates the slowest-axis requirement.
+- Completed Task 2.3's mandatory tokenizer characterization and stopped
+  fail-closed before production code. The registered GGUF's 248,044 base
+  vocabulary entries, 33 added-token strings and 247,587 ordered merges match
+  the pinned official assets exactly, with 243 additional unused padded IDs.
+- Recorded the Task 2.3 production-source blocker: GGUF metadata omits the
+  canonical NFC normalizer, selects a marks-inclusive `qwen35` pre-tokenizer
+  instead of the executed Class-C `Qwen2Tokenizer` expression, classifies six
+  FIM/repository tokens contrary to canonical skip-special decode, and embeds a
+  modified Unsloth chat template. The modified template matches all four
+  committed initial-subset chat cases, but its other branches are not
+  canonical. ADR 0011 remains proposed; no tokenizer/chat runtime or sidecar
+  was introduced without maintainer approval.
+- Revalidated all eight independent Task 1.4 golden assets and regenerated them
+  byte-identically offline. Clean CPU Release tests remain 7/7 and clean CUDA
+  Release tests remain 9/9; no Kestrel-Q warning or runtime regression was
+  introduced by the documentation-only fail-closed result.
+- Continued the preserved Task 2.3 blocker delta after the maintainer selected
+  a governed model-specific canonical tokenizer override. The immutable C17
+  tokenizer now validates the GGUF's exact 248,320 token/ID stream, 247,587
+  ordered merge/rank stream, token types, special tokens and 243 padded IDs,
+  then applies canonical Qwen3.8 NFC, marks-excluding byte-level BPE,
+  special/BOS/EOS and skip-special semantics without a sidecar or GGUF change.
+- Added the separate native text-only Qwen3.8 chat formatter for the supported
+  optional-system and alternating user/assistant subset, with exact generation
+  prompt off/on behavior. Developer/tool, multimodal, reasoning/tool options
+  and malformed role sequences fail explicitly rather than falling through to
+  the divergent embedded Unsloth template.
+- Vendored utf8proc 2.10.0 at commit
+  `a1b99daa2a3393884220264c927a48ba1251a9c6` under its MIT/Unicode-data
+  notices. Source inspection found that the pinned tokenizer oracle splits
+  Unicode semantics: Unicode 9.0.0 NFC and Unicode 16.0.0 regex properties.
+  A deterministic table generated from the pinned Unicode-9 `DerivedAge.txt`
+  gates utf8proc composition to reproduce that split without host-locale
+  dependence. Added `NOTICE`, hashes and removal/provenance guidance;
+  Python/Transformers/tokenizers remain test-only.
+- Added independent canonical tokenizer divergence evidence (SHA-256
+  `f383e213ccc4cde06b47a9855ca1eabb54d0b8911acbd43b2078be5fc546b463`)
+  for 22 encode, five decode, two supported-chat and three rejected-chat cases,
+  including a post-Unicode-9 normalization boundary.
+  The native oracle comparison also passes all unchanged original 10 prompts,
+  14 segments and four chat vectors; model tensor payload touched remains zero.
+- Accepted ADR 0011. The decision preserves the original GGUF-only
+  insufficiency finding, uses exact GGUF vocabulary/ID/merge data as physical
+  substrate, compiles only the pinned canonical semantic overrides, rejects
+  near-match artifacts and introduces neither a sidecar nor a generic override
+  framework. Task 2.3 is COMPLETE/PASS; Task 2.4 remains NOT STARTED and
+  `KQ-BACKLOG-BENCH-002` remains DEFERRED.
+- Corrected two bugs in the independent differential generator before evidence
+  capture. It initially discarded valid merge entries whose first token began
+  with `#` by treating every such line as a version banner; it now skips only
+  the literal `#version:` form. It also tried to serialize a Transformers
+  `BatchEncoding` directly; the fixed path extracts `input_ids`. Deterministic
+  regeneration and hash comparison cover both corrections.
+- Corrected implementation-review findings before the clean Task 2.3 gate:
+  empty `(NULL,0)` text could form an invalid pointer before a zero-length
+  append, special-token decode could reorder pending ordinary bytes, and an
+  encode-time characterization counter made the tokenizer object mutable.
+  Zero-length, interleaved special decode and const API/oracle regressions cover
+  the fixes; encode/decode now accept an immutable tokenizer.
+- Final clean Release validation passes CPU 11/11 and CUDA 13/13, including all
+  Task 2.0–2.2 regressions, the real tokenizer substrate gate and independent
+  canonical oracle. Kestrel-Q emits no new `/W4` warning; only the already
+  documented NVCC-generated external C4211 remains.
+- The final dependency-provenance audit caught four incorrectly transcribed
+  utf8proc file hashes in the first draft of its local README. The vendored
+  bytes already matched the pinned upstream checkout; the documentation now
+  records the independently recomputed full SHA-256 values, and the final
+  vendor-hash gate verifies all four files. A path-specific Git whitespace
+  attribute preserves the verified upstream-generated data bytes while keeping
+  the repository-wide staged `git diff --check` gate green.
+- The first Unicode-9 assigned-range generator preserved the source file's
+  age-group order even though the runtime binary search requires code-point
+  order. The expanded NFC oracle immediately caught the resulting mismatch on
+  an existing Angstrom case. The generator now sorts and merges all ranges
+  deterministically before emission; byte-identical regeneration plus the full
+  native canonical corpus guard the corrected table.
 
 ### Added
 

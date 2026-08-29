@@ -74,8 +74,9 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.2 are complete/pass;
-Task 2.3 has not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.3 are complete/pass. The
+original Task 2.3 GGUF-only insufficiency finding is preserved and resolved by
+the governed canonical override; Task 2.4 has not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -115,6 +116,21 @@ Task 2.3 has not started.
     by test = **0**;
   - ADR 0010 bounded quantized tensor views: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+- [x] Task 2.3 — Native tokenizer and chat formatting:
+  - pinned canonical `Qwen2Tokenizer`, preprocessing, vocabulary, special-token
+    and template behavior: **CHARACTERIZED**;
+  - original GGUF-only production-source insufficiency: **PRESERVED /
+    FAIL-CLOSED**;
+  - exact GGUF 248,320-token, 247,587-merge physical substrate compatibility:
+    **PASS**;
+  - governed Qwen3.8 canonical NFC/pre-tokenizer/BPE/special/BOS/EOS override
+    and separate text-only chat formatter: **IMPLEMENTED**;
+  - original 10 prompts, 14 segments and four chat vectors plus expanded
+    independent divergence corpus: **EXACT PASS**;
+  - model tensor payload touched: **0**;
+  - ADR 0011: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Task 2.4 — Native PLE address engine: **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
 

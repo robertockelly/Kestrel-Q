@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.2 are
-  complete/pass and Task 2.3 remains **NOT STARTED**.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.3 are
+  complete/pass; Task 2.4 has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -53,7 +53,14 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   separate split parts, contiguous expert members and bounded fused PLE
   members. Synthetic guarded payload reads pass, all 1,224 physical geometries
   match Task 1.3 and the real test dereferences zero model-payload bytes.
-- R1/Epic 2 remains in progress. Task 2.3 native tokenizer has not started.
+- Task 2.3 is complete/pass. It preserves the finding that GGUF-only tokenizer
+  semantics are insufficient, then applies the governed canonical adapter over
+  exactly validated GGUF vocab/ID/merge substrate. Pinned Unicode/NFC,
+  marks-excluding byte-level BPE, canonical special/BOS/EOS behavior and the
+  separate official text-only chat subset match all independent original and
+  divergence vectors. ADR 0011 is accepted; model tensor payload touched is
+  zero.
+- R1/Epic 2 remains in progress. Task 2.4 has not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.

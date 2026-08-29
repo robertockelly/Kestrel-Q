@@ -395,6 +395,7 @@ static kq_status kq_read_metadata_scalar(kq_reader *reader,
 static kq_status kq_read_metadata_array(kq_reader *reader,
                                         kq_gguf_metadata *metadata) {
     const unsigned char *array_data = NULL;
+    uint64_t array_offset = 0U;
     uint32_t element_type;
     uint64_t length;
     uint64_t bytes;
@@ -448,12 +449,15 @@ static kq_status kq_read_metadata_array(kq_reader *reader,
             }
             return status;
         case KQ_GGUF_VALUE_STRING:
+            array_offset = reader->offset;
             for (index = 0U; index < length; ++index) {
                 status = kq_reader_string(reader, &ignored_string);
                 if (status != KQ_STATUS_OK) {
                     return status;
                 }
             }
+            metadata->array_data.data = reader->data + (size_t)array_offset;
+            metadata->array_data.length = reader->offset - array_offset;
             return KQ_STATUS_OK;
         default:
             kq_diagnostic_set(reader->diagnostic,
@@ -1191,4 +1195,43 @@ int kq_gguf_metadata_array_u64_at(const kq_gguf_metadata *metadata,
     }
     *value = result;
     return 1;
+}
+
+int kq_gguf_metadata_array_string_at(const kq_gguf_metadata *metadata,
+                                     uint64_t index,
+                                     kq_string_view *value) {
+    const unsigned char *data;
+    uint64_t length;
+    uint64_t offset = 0U;
+    uint64_t item;
+    unsigned int byte_index;
+
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_ARRAY ||
+        metadata->array_element_type != KQ_GGUF_VALUE_STRING ||
+        index >= metadata->array_length || metadata->array_data.data == NULL) {
+        return 0;
+    }
+    data = metadata->array_data.data;
+    for (item = 0U; item <= index; ++item) {
+        if (metadata->array_data.length - offset < 8U) {
+            return 0;
+        }
+        length = 0U;
+        for (byte_index = 0U; byte_index < 8U; ++byte_index) {
+            length |= (uint64_t)data[(size_t)(offset + byte_index)] <<
+                      (byte_index * 8U);
+        }
+        offset += 8U;
+        if (length > metadata->array_data.length - offset) {
+            return 0;
+        }
+        if (item == index) {
+            value->data = data + (size_t)offset;
+            value->length = length;
+            return 1;
+        }
+        offset += length;
+    }
+    return 0;
 }

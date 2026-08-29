@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+third_party/utf8proc/utf8proc_data.c -whitespace

@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.2 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.3 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -16,8 +16,9 @@ Initial task order:
    **COMPLETE / PASS**
 3. Task 2.2 — Quantized tensor views & block geometry.
    **COMPLETE / PASS**
-4. Task 2.3 — Native tokenizer.
-5. Task 2.4 — Native PLE address engine.
+4. Task 2.3 — Native tokenizer and chat formatting.
+   **COMPLETE / PASS**
+5. Task 2.4 — Native PLE address engine. **NOT STARTED**
 6. Task 2.5 — CPU reference tensor primitives.
 
 Constraints:
@@ -33,5 +34,9 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Current next gate: Task 2.3 native tokenizer.
-Task 2.3 is **NOT STARTED**.
+Task 2.3 preserves the original GGUF-only insufficiency finding, then completes
+through the governed model-specific canonical override adapter. Exact GGUF
+vocab/ID/merge substrate validation, pinned Unicode/NFC, canonical byte-level
+BPE/special semantics and the separate initial chat formatter match all
+independent original and divergence vectors. ADR 0011 is ACCEPTED. Task 2.4 is
+**NOT STARTED**.

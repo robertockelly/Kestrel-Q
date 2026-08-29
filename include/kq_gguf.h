@@ -110,6 +110,9 @@ int kq_gguf_metadata_array_i32_at(const kq_gguf_metadata *metadata,
 int kq_gguf_metadata_array_u64_at(const kq_gguf_metadata *metadata,
                                   uint64_t index,
                                   uint64_t *value);
+int kq_gguf_metadata_array_string_at(const kq_gguf_metadata *metadata,
+                                     uint64_t index,
+                                     kq_string_view *value);
 
 #ifdef __cplusplus
 }

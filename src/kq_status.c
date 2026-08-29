@@ -66,6 +66,20 @@ const char *kq_status_string(kq_status status) {
             return "tensor layout does not satisfy the requested access";
         case KQ_STATUS_TENSOR_OWNERSHIP_MISMATCH:
             return "tensor descriptor does not belong to the GGUF";
+        case KQ_STATUS_INCOMPATIBLE_TOKENIZER:
+            return "incompatible tokenizer metadata";
+        case KQ_STATUS_INVALID_UTF8:
+            return "invalid UTF-8";
+        case KQ_STATUS_INVALID_TOKEN_ID:
+            return "invalid tokenizer token ID";
+        case KQ_STATUS_BUFFER_TOO_SMALL:
+            return "output buffer too small";
+        case KQ_STATUS_UNSUPPORTED_TOKENIZER_OPTION:
+            return "unsupported tokenizer option";
+        case KQ_STATUS_UNSUPPORTED_CHAT:
+            return "unsupported chat role, content, or option";
+        case KQ_STATUS_MALFORMED_CHAT:
+            return "malformed chat input";
         default:
             return "unknown Kestrel-Q status";
     }

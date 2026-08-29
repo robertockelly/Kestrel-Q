@@ -1,0 +1,490 @@
+{
+  "asset_id": "KQ-TOK-DIFFERENTIAL-001",
+  "bos_policy": "ABSENT_NO_AUTO_ADD",
+  "chat_cases": [
+    {
+      "add_generation_prompt": false,
+      "id": "KQ-CHAT-DIFF-001",
+      "messages": [
+        {
+          "content": "Hello.",
+          "role": "user"
+        }
+      ],
+      "rendered": "<|im_start|>user\nHello.<|im_end|>\n",
+      "rendered_utf8_sha256": "8381df48efb88023a686022af034bc1bbdbc2da7c59590b1e5b84dd0d9dd0fb9",
+      "token_ids": [
+        248045,
+        846,
+        198,
+        9419,
+        13,
+        248046,
+        198
+      ]
+    },
+    {
+      "add_generation_prompt": true,
+      "id": "KQ-CHAT-DIFF-002",
+      "messages": [
+        {
+          "content": "  trimmed text  ",
+          "role": "user"
+        }
+      ],
+      "rendered": "<|im_start|>user\ntrimmed text<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "rendered_utf8_sha256": "7a55f32a0199e12323c4768c44361877b4d2fe608d0fc0d793d1b42c6a874e80",
+      "token_ids": [
+        248045,
+        846,
+        198,
+        94718,
+        1414,
+        248046,
+        198,
+        248045,
+        74455,
+        198,
+        248068,
+        271,
+        248069,
+        271
+      ]
+    }
+  ],
+  "chat_rejection_cases": [
+    {
+      "id": "KQ-CHAT-DIFF-REJECT-001",
+      "messages": [
+        {
+          "content": "merged by the derived template",
+          "role": "developer"
+        },
+        {
+          "content": "Hi",
+          "role": "user"
+        }
+      ],
+      "oracle_error": "Unexpected message role.",
+      "oracle_error_type": "TemplateError",
+      "oracle_status": "REJECTED",
+      "reason": "developer role is outside the official initial subset"
+    },
+    {
+      "id": "KQ-CHAT-DIFF-REJECT-002",
+      "messages": [
+        {
+          "content": "Hi",
+          "role": "user"
+        },
+        {
+          "content": "late",
+          "role": "system"
+        }
+      ],
+      "oracle_error": "System message must be at the beginning.",
+      "oracle_error_type": "TemplateError",
+      "oracle_status": "REJECTED",
+      "reason": "a system message after user content is invalid"
+    },
+    {
+      "id": "KQ-CHAT-DIFF-REJECT-003",
+      "messages": [],
+      "oracle_error": "Cannot apply chat template to an empty conversation. Provide at least one message.",
+      "oracle_error_type": "ValueError",
+      "oracle_status": "REJECTED",
+      "reason": "empty chat is invalid"
+    }
+  ],
+  "comparison_mode": "EXACT",
+  "decode_cases": [
+    {
+      "case_id": "KQ-TOK-DECODE-001",
+      "decoded": "<|fim_prefix|><|fim_middle|><|fim_suffix|><|fim_pad|><|repo_name|><|file_sep|>",
+      "decoded_utf8_sha256": "dd9127e2024d2e950007dc9f19be925bd68a7c9028f77c68b7d9e93c05c80ee7",
+      "skip_special_tokens": false,
+      "token_ids": [
+        248060,
+        248061,
+        248062,
+        248063,
+        248064,
+        248065
+      ]
+    },
+    {
+      "case_id": "KQ-TOK-DECODE-002",
+      "decoded": "<|fim_prefix|><|fim_middle|><|fim_suffix|><|fim_pad|><|repo_name|><|file_sep|>",
+      "decoded_utf8_sha256": "dd9127e2024d2e950007dc9f19be925bd68a7c9028f77c68b7d9e93c05c80ee7",
+      "skip_special_tokens": true,
+      "token_ids": [
+        248060,
+        248061,
+        248062,
+        248063,
+        248064,
+        248065
+      ]
+    },
+    {
+      "case_id": "KQ-TOK-DECODE-003",
+      "decoded": "<|endoftext|><|im_start|>assistant\n<|im_end|>",
+      "decoded_utf8_sha256": "fc621279276fba7b6e32284140ce3003856b652384e13c3c474b438e3062b441",
+      "skip_special_tokens": false,
+      "token_ids": [
+        248044,
+        248045,
+        74455,
+        198,
+        248046
+      ]
+    },
+    {
+      "case_id": "KQ-TOK-DECODE-004",
+      "decoded": "assistant\n",
+      "decoded_utf8_sha256": "18f567b536cbac636bf0abc739e9a90e6d635c3b2552c623f39a00f66503dbbb",
+      "skip_special_tokens": true,
+      "token_ids": [
+        248044,
+        248045,
+        74455,
+        198,
+        248046
+      ]
+    },
+    {
+      "case_id": "KQ-TOK-DECODE-005",
+      "decoded": "�",
+      "decoded_utf8_sha256": "83d544ccc223c057d2bf80d3f2a32982c32c3c0db8e2674820da5064783fb097",
+      "skip_special_tokens": false,
+      "token_ids": [
+        127
+      ]
+    }
+  ],
+  "encode_cases": [
+    {
+      "case_id": "KQ-TOK-DIFF-001",
+      "decoded_keep_special": "é",
+      "decoded_skip_special": "é",
+      "text": "é",
+      "token_ids": [
+        933
+      ],
+      "utf8_sha256": "bf12767b0f2a56b2190075bae8169f656e3ce8d6357d4aff184bc6c7ea48f9f6"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-002",
+      "decoded_keep_special": "Å",
+      "decoded_skip_special": "Å",
+      "text": "Å",
+      "token_ids": [
+        169111
+      ],
+      "utf8_sha256": "446b2da699e20cd17905c4d73147935ffe84e37d2df872fb5c72fcf1838715cc"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-003",
+      "decoded_keep_special": "ñ mañana",
+      "decoded_skip_special": "ñ mañana",
+      "text": "ñ mañana",
+      "token_ids": [
+        5476,
+        92215
+      ],
+      "utf8_sha256": "5ebc888f30af4ec6f116c0198e4838af16807ce6d796db3b41283ce4d8bb5c24"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-004",
+      "decoded_keep_special": "Å and Å",
+      "decoded_skip_special": "Å and Å",
+      "text": "Å and Å",
+      "token_ids": [
+        169111,
+        321,
+        76533
+      ],
+      "utf8_sha256": "473a52ac225c1d8353dddccf0db384e663d4dd139d4e189fc195f161bfb5def9"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-005",
+      "decoded_keep_special": "각",
+      "decoded_skip_special": "각",
+      "text": "각",
+      "token_ids": [
+        149252
+      ],
+      "utf8_sha256": "e2f7ec2baabd8451addae759c813d5c0d9bc9114e82f81ccfb504cec557b13a6"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-006",
+      "decoded_keep_special": "ạ́",
+      "decoded_skip_special": "ạ́",
+      "text": "ạ́",
+      "token_ids": [
+        19614,
+        52033
+      ],
+      "utf8_sha256": "3b95362a6912ac655948e0a70f4adfceeb98c43cb0fd6f13f2ed05122c82c0cb"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-007",
+      "decoded_keep_special": " ́a",
+      "decoded_skip_special": " ́a",
+      "text": " ́a",
+      "token_ids": [
+        220,
+        52033,
+        64
+      ],
+      "utf8_sha256": "17253dca93a1c25b62802c73a5a9e483f4fc09952b344ea36cc735bbfa54e0b4"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-008",
+      "decoded_keep_special": "a ́ b",
+      "decoded_skip_special": "a ́ b",
+      "text": "a ́ b",
+      "token_ids": [
+        64,
+        220,
+        52033,
+        292
+      ],
+      "utf8_sha256": "c621a3196ecff23bf041dd45cbc01b9dd87317c32302079858155aa27795b2cf"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-009",
+      "decoded_keep_special": "कि क",
+      "decoded_skip_special": "कि क",
+      "text": "कि क",
+      "token_ids": [
+        62516,
+        37565,
+        46215
+      ],
+      "utf8_sha256": "608a80c2d50731e480426e8b5b38b008c6cfbfe1acbc91e8ca078e7e1e739768"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-010",
+      "decoded_keep_special": "'s 'T 're 'VE 'm 'LL 'd",
+      "decoded_skip_special": "'s 'T 're 'VE 'm 'LL 'd",
+      "text": "'s 'T 're 'VE 'm 'LL 'd",
+      "token_ids": [
+        579,
+        359,
+        51,
+        359,
+        265,
+        359,
+        4343,
+        359,
+        76,
+        359,
+        3950,
+        359,
+        67
+      ],
+      "utf8_sha256": "4c7681e59625b1e8192f251f33fe39e069b7184289dab9760a1e9e2fb83f1efa"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-011",
+      "decoded_keep_special": "123 ٤٥ १२",
+      "decoded_skip_special": "123 ٤٥ १२",
+      "text": "123 ٤٥ १२",
+      "token_ids": [
+        16,
+        17,
+        18,
+        220,
+        149,
+        97,
+        149,
+        98,
+        220,
+        12256,
+        100,
+        12256,
+        101
+      ],
+      "utf8_sha256": "ec838cabfb73aca478df9e4c0d3be69cb22b818e42a787135dee4033cfadbe29"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-012",
+      "decoded_keep_special": "  !?\r\n\tword",
+      "decoded_skip_special": "  !?\r\n\tword",
+      "text": "  !?\r\n\tword",
+      "token_ids": [
+        220,
+        729,
+        30,
+        317,
+        64061
+      ],
+      "utf8_sha256": "62a29c13d7ecbb7654451b060f823f88f9927de1e3fc594ae97bcc04e06d4b1c"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-013",
+      "decoded_keep_special": "line1\r\n\r\n line2\t  ",
+      "decoded_skip_special": "line1\r\n\r\n line2\t  ",
+      "text": "line1\r\n\r\n line2\t  ",
+      "token_ids": [
+        1021,
+        16,
+        845,
+        1500,
+        17,
+        8424
+      ],
+      "utf8_sha256": "5f57cf21cc89359a0eed4b1577db8534de15896779c4f3909797ffcf448d551a"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-014",
+      "decoded_keep_special": "emoji🙂+symbols—ok",
+      "decoded_skip_special": "emoji🙂+symbols—ok",
+      "text": "emoji🙂+symbols—ok",
+      "token_ids": [
+        36280,
+        169171,
+        10,
+        65151,
+        2218,
+        547
+      ],
+      "utf8_sha256": "0a423511085c350486f4ca44c85b0c14a3eeacf70eacdf7efc774237bea04871"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-015",
+      "decoded_keep_special": "Ελληνικά 日本語 한국어",
+      "decoded_skip_special": "Ελληνικά 日本語 한국어",
+      "text": "Ελληνικά 日本語 한국어",
+      "token_ids": [
+        168953,
+        164594,
+        159778,
+        220,
+        247359,
+        190925
+      ],
+      "utf8_sha256": "8fca81cf3301630fda0fe38807ecf2af14c8531d120ee64b818a91ea06a5a111"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-016",
+      "decoded_keep_special": "<|fim_prefix|>left<|fim_middle|>right<|fim_suffix|>",
+      "decoded_skip_special": "<|fim_prefix|>left<|fim_middle|>right<|fim_suffix|>",
+      "text": "<|fim_prefix|>left<|fim_middle|>right<|fim_suffix|>",
+      "token_ids": [
+        248060,
+        2282,
+        248061,
+        1246,
+        248062
+      ],
+      "utf8_sha256": "899b3c99c8b1b64c200a4689ee653dedccd88406b75a403f8ff69f15a9204e2b"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-017",
+      "decoded_keep_special": "<|repo_name|>Kestrel-Q<|file_sep|>src/main.c",
+      "decoded_skip_special": "<|repo_name|>Kestrel-Q<|file_sep|>src/main.c",
+      "text": "<|repo_name|>Kestrel-Q<|file_sep|>src/main.c",
+      "token_ids": [
+        248064,
+        42,
+        467,
+        3621,
+        27325,
+        248065,
+        3431,
+        14905,
+        508
+      ],
+      "utf8_sha256": "1d02a74a453ab24f5f4c88a35a4978dd26b46babe00edd3bab0a9dbd3d6501dc"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-018",
+      "decoded_keep_special": "<|im_end|>",
+      "decoded_skip_special": "",
+      "text": "<|im_end|>",
+      "token_ids": [
+        248046
+      ],
+      "utf8_sha256": "d6b60b51acc9448b15da9cb03f644d0ec8c410e37735817f39e15764aa75a37f"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-019",
+      "decoded_keep_special": "",
+      "decoded_skip_special": "",
+      "text": "",
+      "token_ids": [],
+      "utf8_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-020",
+      "decoded_keep_special": " word next last",
+      "decoded_skip_special": " word next last",
+      "text": " word next last",
+      "token_ids": [
+        3966,
+        1119,
+        373,
+        225,
+        3480,
+        373,
+        101,
+        4119
+      ],
+      "utf8_sha256": "e731fb4b1af5ab6712a4aaada0833eac2e05de1f95f0ffb6865bce7e54193227"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-021",
+      "decoded_keep_special": "𐗉",
+      "decoded_skip_special": "𐗉",
+      "text": "𐗉",
+      "token_ids": [
+        172,
+        238,
+        245,
+        240,
+        136,
+        229
+      ],
+      "utf8_sha256": "6848bf2c2d9609ec70f11d1acd4b545dca6cbc278147c3650087f4704557d4d0"
+    },
+    {
+      "case_id": "KQ-TOK-DIFF-022",
+      "decoded_keep_special": "'ſx",
+      "decoded_skip_special": "'ſx",
+      "text": "'ſx",
+      "token_ids": [
+        6,
+        129,
+        123,
+        87
+      ],
+      "utf8_sha256": "dc02d5add3d9a1f64f1bc10da11610fc9125f8e482da4ed7d32807206fe04aec"
+    }
+  ],
+  "eos_policy": "ID_248046_NO_AUTO_ADD",
+  "generated_by": "tools/generate-tokenizer-differential.py",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle": {
+    "implementation": "huggingface/transformers",
+    "license": "Apache-2.0",
+    "nfc_unicode_version": "9.0.0",
+    "python_unicodedata_version": "15.1.0",
+    "regex_unicode_version": "16.0.0",
+    "revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+    "tokenizers_source_revision": "7f1623b90b5adfb9bc327d4c3468d2f70bbce262",
+    "tokenizers_version": "0.23.1",
+    "transformers_version": "5.16.0.dev0"
+  },
+  "schema_version": 1,
+  "self_oracle": false,
+  "substrate_contract": {
+    "merge_count": 247587,
+    "merges_binary_sha256": "dc39bdbcf9d182b14e39b1aa9a54fbc8757342cfdd2c5f55367f4615cc9a64b4",
+    "token_count": 248320,
+    "token_strings_binary_sha256": "90536bd926c0d6b3230b68cd9fd9006a59ea90950c42827aa5f1795b6e84b340",
+    "token_type_count": 248320,
+    "token_types_binary_sha256": "2cc07d0807489ce9c9e3a04d53fc055a8de48176e61dbf113005b5597f808c84"
+  }
+}

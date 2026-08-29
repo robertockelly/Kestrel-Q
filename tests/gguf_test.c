@@ -316,6 +316,7 @@ static void test_valid_fixture(const test_fixture *fixture) {
     kq_gguf *gguf = NULL;
     const kq_gguf_tensor *tensor;
     const kq_gguf_metadata *metadata;
+    kq_string_view metadata_string;
     const kq_gguf_type_info *type_info;
     kq_string_view architecture;
     kq_status status;
@@ -420,6 +421,21 @@ static void test_valid_fixture(const test_fixture *fixture) {
                "typed array metadata lookup must preserve bounded values");
     test_check(!kq_gguf_metadata_array_i32_at(metadata, 3U, &metadata_i32),
                "metadata array lookup must reject out-of-range indices");
+    metadata = kq_gguf_find_metadata(gguf, "test.array1");
+    test_check(kq_gguf_metadata_array_string_at(metadata,
+                                                0U,
+                                                &metadata_string) &&
+                   kq_string_view_equal_cstr(&metadata_string, "one"),
+               "string-array lookup must preserve its first bounded value");
+    test_check(kq_gguf_metadata_array_string_at(metadata,
+                                                1U,
+                                                &metadata_string) &&
+                   kq_string_view_equal_cstr(&metadata_string, "two"),
+               "string-array lookup must preserve its last bounded value");
+    test_check(!kq_gguf_metadata_array_string_at(metadata,
+                                                 2U,
+                                                 &metadata_string),
+               "string-array lookup must reject out-of-range indices");
     test_check(kq_gguf_find_metadata(gguf, "missing") == NULL,
                "unknown metadata lookup must return NULL");
 

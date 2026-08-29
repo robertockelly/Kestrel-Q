@@ -61,6 +61,16 @@ contiguous routed-expert members and individual fused PLE members are supported
 without copies or dequantization. Mapping remains a storage primitive, not an
 allocator, cache, prefetcher or scheduler policy.
 
+Task 2.3 adds the immutable native tokenizer and separate model-specific chat
+formatter. The registered GGUF supplies exactly validated vocabulary/ID and
+ordered merge substrate, while a governed Qwen3.8 adapter supplies pinned NFC,
+marks-excluding byte-level BPE, canonical special/BOS/EOS semantics and the
+supported official chat-template subset. The original GGUF-only insufficiency
+finding remains explicit; no execution layer may trust divergent fields or
+substitute a sidecar. ADR 0011 accepts this model-specific boundary. The
+tokenizer borrows bounded GGUF metadata, contains no global mutable state and
+does not open tensor payload views.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.
