@@ -97,6 +97,36 @@ The project is currently pre-alpha.
   and semantic CLI dispatch was moved after successful GGUF parsing after an
   initial null-GGUF ordering failure. Synthetic and CLI-oracle regressions cover
   both corrected paths.
+- Completed Task 2.2 and accepted ADR 0010: the C17 runtime now exposes
+  immutable bounded read-only quantized tensor views with checked F32, BF16,
+  Q5_1, Q8_0, Q4_K, Q5_K and IQ4_NL block geometry, packed-size and logical
+  element/range-to-block helpers.
+- Preserved semantic/physical layout boundaries through exact whole-tensor
+  views, ordered non-concatenated MoE/QSA split parts, provably contiguous
+  routed-expert members and one-member-only views over the fused 128-member PLE
+  tensor. Metadata-derived requests and transformed-canonical misuse fail
+  explicitly; mapping adds no allocator, cache, prefetch or scheduler policy.
+- Added deterministic guarded payload fixtures and real-artifact view coverage.
+  Synthetic tests dereference only their 1,192 known fixture bytes; dense,
+  all-seven-type, layer-2 expert, split and PLE 0/64/127 real mappings open and
+  close with zero model-payload bytes touched by the test.
+- Added a deterministic physical-geometry inspector dump and research-only
+  Task 1.3 validator. All 1,224 physical descriptors and 111,323,630,080 packed
+  bytes match the pinned inventory; production has no CSV/JSON or Python
+  dependency.
+- Corrected an intermediate Task 2.2 descriptor-contract omission found during
+  implementation review: the first draft separated requested elements from
+  physical block bytes but omitted canonical unpacked bytes. The final view
+  info records `logical_unpacked_bytes` and a copied stable semantic ID, with
+  synthetic regression assertions. `KQ-BACKLOG-BENCH-002` remains deferred.
+- Fixed an intermediate Task 2.2 MSVC C4701 diagnostic caused by conservative
+  data-flow analysis of a canonical element count returned through a
+  status-reporting helper. Explicit initialization preserves fail-closed
+  control flow and restores the warning-free project build.
+- Corrected the synthetic non-contiguous-expert mutation so it preserves the
+  canonical element total; the original mutation was validly rejected by the
+  earlier shape gate and therefore did not exercise the intended contiguity
+  branch. The corrected regression now isolates the slowest-axis requirement.
 
 ### Added
 

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "kq_internal.h"
+#include "kq_gguf_internal.h"
 
 #define KQ_GGUF_FIXED_HEADER_BYTES 24U
 #define KQ_GGUF_MAX_HEADER_DIRECTORY_BYTES (512ULL * 1024ULL * 1024ULL)
@@ -1009,6 +1010,67 @@ uint64_t kq_gguf_directory_bytes_parsed(const kq_gguf *gguf) {
 
 uint64_t kq_gguf_payload_bytes_accessed(const kq_gguf *gguf) {
     return gguf == NULL ? 0U : gguf->payload_bytes_accessed;
+}
+
+kq_status kq_gguf_open_tensor_span(const kq_gguf *gguf,
+                                    const kq_gguf_tensor *tensor,
+                                    uint64_t tensor_byte_offset,
+                                    uint64_t byte_length,
+                                    kq_file_view **out_view,
+                                    kq_diagnostic *diagnostic) {
+    uint64_t tensor_end;
+    uint64_t file_offset;
+    uint64_t index;
+    int owned = 0;
+
+    kq_diagnostic_clear(diagnostic);
+    if (gguf == NULL || tensor == NULL || out_view == NULL ||
+        byte_length == 0U) {
+        kq_diagnostic_set(diagnostic,
+                          KQ_STATUS_INVALID_ARGUMENT,
+                          "GGUF, tensor, non-zero span and output view are required");
+        return KQ_STATUS_INVALID_ARGUMENT;
+    }
+    *out_view = NULL;
+    for (index = 0U; index < gguf->tensor_count; ++index) {
+        if (tensor == &gguf->tensors[(size_t)index]) {
+            owned = 1;
+            break;
+        }
+    }
+    if (!owned) {
+        kq_diagnostic_set(diagnostic,
+                          KQ_STATUS_TENSOR_OWNERSHIP_MISMATCH,
+                          "physical tensor descriptor does not belong to this GGUF");
+        return KQ_STATUS_TENSOR_OWNERSHIP_MISMATCH;
+    }
+    if (!kq_u64_add_checked(tensor_byte_offset,
+                            byte_length,
+                            &tensor_end)) {
+        kq_diagnostic_set(diagnostic,
+                          KQ_STATUS_ARITHMETIC_OVERFLOW,
+                          "tensor view byte span overflows uint64");
+        return KQ_STATUS_ARITHMETIC_OVERFLOW;
+    }
+    if (tensor_end > tensor->packed_bytes) {
+        kq_diagnostic_set(diagnostic,
+                          KQ_STATUS_SPAN_OUT_OF_RANGE,
+                          "tensor view byte span exceeds packed tensor size");
+        return KQ_STATUS_SPAN_OUT_OF_RANGE;
+    }
+    if (!kq_u64_add_checked(tensor->data_offset,
+                            tensor_byte_offset,
+                            &file_offset)) {
+        kq_diagnostic_set(diagnostic,
+                          KQ_STATUS_ARITHMETIC_OVERFLOW,
+                          "tensor view file offset overflows uint64");
+        return KQ_STATUS_ARITHMETIC_OVERFLOW;
+    }
+    return kq_file_view_open(gguf->file,
+                             file_offset,
+                             byte_length,
+                             out_view,
+                             diagnostic);
 }
 
 kq_string_view kq_gguf_architecture(const kq_gguf *gguf) {

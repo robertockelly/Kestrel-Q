@@ -1,6 +1,6 @@
 # Kestrel-Q semantic registry API
 
-Status: **IMPLEMENTED / TASK 2.1 COMPLETE**
+Status: **IMPLEMENTED / TASKS 2.1–2.2 COMPLETE**
 
 The public C17 interface is `include/kq_model.h`.
 
@@ -79,6 +79,10 @@ Name helpers produce deterministic diagnostic strings for every enumeration.
 
 ## Non-capabilities
 
-This API does not provide tensor payload views, per-expert slices,
-dequantization, allocation, placement enforcement, execution, tokenizer/PLE
-logic or scheduling. Those require later task-specific correctness gates.
+The semantic registry itself still owns no payload view or file mapping.
+Task 2.2's separate `include/kq_tensor_view.h` API may resolve these immutable
+descriptors into bounded whole/split/expert/PLE physical mappings; see
+`docs/KQ-TENSOR-VIEW-API.md`.
+
+Neither API provides dequantization, allocation, placement enforcement,
+execution, tokenizer/PLE logic, caching, prefetch or scheduling.

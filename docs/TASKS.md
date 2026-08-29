@@ -74,8 +74,8 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0 and 2.1 are complete/pass;
-Task 2.2 has not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.2 are complete/pass;
+Task 2.3 has not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -104,7 +104,17 @@ Task 2.2 has not started.
   - semantic inspection payload bytes accessed: **0**;
   - ADR 0009 canonical semantic tensor registry: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Task 2.2 — Quantized tensor views and block geometry
+- [x] Task 2.2 — Quantized tensor views and block geometry:
+  - all seven registered physical storage geometries and checked logical-range
+    to quant-block helpers: **VERIFIED**;
+  - bounded whole, ordered split, contiguous expert-member and fused PLE-member
+    views: **VERIFIED**;
+  - synthetic guarded payload suite and Task 1.3 all-physical geometry oracle:
+    **PASS**;
+  - real-artifact representative view construction with payload bytes touched
+    by test = **0**;
+  - ADR 0010 bounded quantized tensor views: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine
 

@@ -143,3 +143,21 @@ python tools/validate-semantic-registry.py `
 
 The validator is test/research-only. `kq_model` and the production runtime do
 not read CSV/JSON evidence and do not depend on Python.
+
+## Task 2.2 tensor-view geometry oracle
+
+`validate-tensor-view-geometry.py` runs
+`kq-inspect --view-geometry-dump` twice, requires byte-identical output and
+compares all 1,224 physical names, ranks, dimensions, types, block geometry,
+element counts, offsets and packed bytes with the pinned Task 1.3
+`gguf-tensor-inventory.csv`.
+
+```powershell
+python tools/validate-tensor-view-geometry.py `
+  --inspect build-cpu/Release/kq-inspect.exe `
+  --inventory research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-tensor-inventory.csv
+```
+
+The model resolves only from an explicit `--model` or `KQ_GGUF_PATH`; the test
+skips when neither is available. The standard-library validator reads no model
+payload. Production code neither invokes it nor reads the evidence CSV.

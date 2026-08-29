@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.1 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.2 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -15,6 +15,7 @@ Initial task order:
 2. Task 2.1 — Canonical tensor registry & semantic descriptors.
    **COMPLETE / PASS**
 3. Task 2.2 — Quantized tensor views & block geometry.
+   **COMPLETE / PASS**
 4. Task 2.3 — Native tokenizer.
 5. Task 2.4 — Native PLE address engine.
 6. Task 2.5 — CPU reference tensor primitives.
@@ -32,5 +33,5 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Current next gate: Task 2.2 quantized tensor views and block geometry.
-Task 2.2 is **NOT STARTED**.
+Current next gate: Task 2.3 native tokenizer.
+Task 2.3 is **NOT STARTED**.

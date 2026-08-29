@@ -10,6 +10,7 @@
 #include "kq_gguf.h"
 #include "kq_model.h"
 #include "kq_status.h"
+#include "kq_tensor_view.h"
 
 #define KQ_TEST_SKIP 77
 #define EXPECTED_FILE_SIZE UINT64_C(111334654400)
@@ -42,6 +43,260 @@ static void print_error(kq_status status, const kq_diagnostic *diagnostic) {
         fprintf(stderr, ": %s", diagnostic->message);
     }
     fputc('\n', stderr);
+}
+
+static int validate_opened_view(const kq_tensor_view *view,
+                                const kq_tensor_binding *binding,
+                                kq_tensor_view_kind expected_kind) {
+    const kq_tensor_view_info *info = kq_tensor_view_get_info(view);
+
+    return info != NULL && binding != NULL && binding->physical != NULL &&
+           info->kind == expected_kind &&
+           info->type_id == binding->physical->type_id &&
+           info->file_byte_offset >= binding->physical->data_offset &&
+           info->mapped_logical_offset == info->file_byte_offset &&
+           info->mapped_logical_length > 0U &&
+           info->mapped_logical_length <= binding->physical->packed_bytes;
+}
+
+static int open_binding_sample(const kq_gguf *gguf,
+                               const kq_semantic_tensor *semantic,
+                               uint32_t binding_index,
+                               kq_tensor_view_kind expected_kind) {
+    kq_diagnostic diagnostic;
+    kq_tensor_view *view = NULL;
+    kq_status status = kq_tensor_view_open_binding(
+        gguf, semantic, binding_index, KQ_TENSOR_VIEW_PHYSICAL_LAYOUT,
+        &view, &diagnostic);
+    int valid = status == KQ_STATUS_OK &&
+                validate_opened_view(view,
+                                     &semantic->bindings[binding_index],
+                                     expected_kind);
+    if (!valid) {
+        print_error(status, &diagnostic);
+    }
+    kq_tensor_view_close(view);
+    return valid;
+}
+
+static int open_expert_sample(const kq_gguf *gguf,
+                              const kq_semantic_tensor *semantic,
+                              uint32_t binding_index,
+                              uint32_t expert_id) {
+    const kq_tensor_binding *binding = &semantic->bindings[binding_index];
+    kq_diagnostic diagnostic;
+    kq_tensor_view *view = NULL;
+    const kq_tensor_view_info *info;
+    uint64_t expected_bytes;
+    uint64_t expected_offset;
+    kq_status status;
+    int valid = 0;
+
+    if (binding->physical == NULL || semantic->expert_count == 0U ||
+        binding->physical->packed_bytes % semantic->expert_count != 0U) {
+        return 0;
+    }
+    expected_bytes = binding->physical->packed_bytes / semantic->expert_count;
+    expected_offset = expected_bytes * expert_id;
+    status = kq_tensor_view_open_expert_member(
+        gguf, semantic, binding_index, expert_id,
+        KQ_TENSOR_VIEW_PHYSICAL_LAYOUT, &view, &diagnostic);
+    info = kq_tensor_view_get_info(view);
+    valid = status == KQ_STATUS_OK &&
+            validate_opened_view(view, binding,
+                                 KQ_TENSOR_VIEW_EXPERT_MEMBER) &&
+            info->expert_id == expert_id &&
+            info->tensor_byte_offset == expected_offset &&
+            info->mapped_logical_length == expected_bytes &&
+            info->leading_elements == 0U && info->trailing_elements == 0U;
+    if (!valid) {
+        print_error(status, &diagnostic);
+    }
+    kq_tensor_view_close(view);
+    return valid;
+}
+
+static int open_ple_sample(const kq_gguf *gguf,
+                           const kq_semantic_tensor *semantic) {
+    const kq_tensor_binding *binding = &semantic->bindings[0];
+    kq_diagnostic diagnostic;
+    kq_tensor_view *view = NULL;
+    const kq_tensor_view_info *info;
+    uint64_t expected_bytes;
+    uint64_t expected_offset;
+    kq_status status;
+    int valid = 0;
+
+    if (binding->physical == NULL || binding->fused_member_count == 0U ||
+        binding->physical->packed_bytes % binding->fused_member_count != 0U) {
+        return 0;
+    }
+    expected_bytes = binding->physical->packed_bytes /
+                     binding->fused_member_count;
+    expected_offset = expected_bytes * binding->fused_member_index;
+    status = kq_tensor_view_open_ple_member(
+        gguf, semantic, KQ_TENSOR_VIEW_PHYSICAL_LAYOUT,
+        &view, &diagnostic);
+    info = kq_tensor_view_get_info(view);
+    valid = status == KQ_STATUS_OK &&
+            validate_opened_view(view, binding,
+                                 KQ_TENSOR_VIEW_PLE_FUSED_MEMBER) &&
+            info->fused_member_index == binding->fused_member_index &&
+            info->tensor_byte_offset == expected_offset &&
+            info->mapped_logical_length == expected_bytes &&
+            info->mapped_logical_length < binding->physical->packed_bytes &&
+            info->leading_elements == 0U && info->trailing_elements == 0U;
+    if (!valid) {
+        print_error(status, &diagnostic);
+    }
+    kq_tensor_view_close(view);
+    return valid;
+}
+
+static int validate_real_view_samples(const kq_gguf *gguf,
+                                      const kq_model *model) {
+    static const uint32_t type_ids[] = {
+        KQ_GGUF_TYPE_BF16, KQ_GGUF_TYPE_F32, KQ_GGUF_TYPE_IQ4_NL,
+        KQ_GGUF_TYPE_Q4_K, KQ_GGUF_TYPE_Q5_1, KQ_GGUF_TYPE_Q5_K,
+        KQ_GGUF_TYPE_Q8_0
+    };
+    const kq_semantic_tensor *candidates[
+        sizeof(type_ids) / sizeof(type_ids[0])] = {0};
+    uint32_t candidate_bindings[
+        sizeof(type_ids) / sizeof(type_ids[0])] = {0};
+    uint64_t candidate_sizes[
+        sizeof(type_ids) / sizeof(type_ids[0])];
+    const kq_semantic_tensor *semantic;
+    const kq_tensor_binding *binding;
+    kq_diagnostic diagnostic;
+    kq_tensor_view *view = NULL;
+    kq_status status;
+    uint64_t semantic_index;
+    uint32_t binding_index;
+    size_t type_index;
+
+    for (type_index = 0U;
+         type_index < sizeof(type_ids) / sizeof(type_ids[0]);
+         ++type_index) {
+        candidate_sizes[type_index] = UINT64_MAX;
+    }
+    for (semantic_index = 0U;
+         semantic_index < kq_model_semantic_tensor_count(model);
+         ++semantic_index) {
+        semantic = kq_model_semantic_tensor_at(model, semantic_index);
+        for (binding_index = 0U;
+             semantic != NULL && binding_index < semantic->binding_count;
+             ++binding_index) {
+            binding = &semantic->bindings[binding_index];
+            if (binding->physical == NULL) {
+                continue;
+            }
+            for (type_index = 0U;
+                 type_index < sizeof(type_ids) / sizeof(type_ids[0]);
+                 ++type_index) {
+                if (binding->physical->type_id == type_ids[type_index] &&
+                    binding->physical->packed_bytes <
+                        candidate_sizes[type_index]) {
+                    candidates[type_index] = semantic;
+                    candidate_bindings[type_index] = binding_index;
+                    candidate_sizes[type_index] =
+                        binding->physical->packed_bytes;
+                }
+            }
+        }
+    }
+    for (type_index = 0U;
+         type_index < sizeof(type_ids) / sizeof(type_ids[0]);
+         ++type_index) {
+        semantic = candidates[type_index];
+        if (semantic == NULL) {
+            return 0;
+        }
+        binding_index = candidate_bindings[type_index];
+        if (semantic->component == KQ_COMPONENT_PLE_TABLE) {
+            if (!open_ple_sample(gguf, semantic)) {
+                return 0;
+            }
+        } else if (semantic->component ==
+                   KQ_COMPONENT_ROUTED_EXPERT_STACK) {
+            if (!open_expert_sample(gguf, semantic, binding_index, 0U)) {
+                return 0;
+            }
+        } else if (!open_binding_sample(
+                       gguf, semantic, binding_index,
+                       semantic->relation ==
+                               KQ_BINDING_ONE_CANONICAL_TO_MULTIPLE_PHYSICAL
+                           ? KQ_TENSOR_VIEW_SPLIT_PART
+                           : KQ_TENSOR_VIEW_WHOLE_PHYSICAL)) {
+            return 0;
+        }
+    }
+
+    semantic = kq_model_find_semantic_tensor(model,
+                                             "text.token_embedding");
+    if (semantic == NULL ||
+        !open_binding_sample(gguf, semantic, 0U,
+                             KQ_TENSOR_VIEW_WHOLE_PHYSICAL)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(
+        model, "layer.03.qsa.indexer.qk");
+    if (semantic == NULL ||
+        !open_binding_sample(gguf, semantic, 0U,
+                             KQ_TENSOR_VIEW_SPLIT_PART) ||
+        !open_binding_sample(gguf, semantic, 1U,
+                             KQ_TENSOR_VIEW_SPLIT_PART)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(
+        model, "layer.02.moe.routed.gate_up");
+    if (semantic == NULL ||
+        !open_expert_sample(gguf, semantic, 0U, 0U) ||
+        !open_expert_sample(gguf, semantic, 1U, 511U)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(
+        model, "layer.02.moe.routed.down");
+    if (semantic == NULL ||
+        !open_expert_sample(gguf, semantic, 0U, 17U)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(model,
+                                             "layer.01.ple.table.000");
+    if (semantic == NULL || !open_ple_sample(gguf, semantic)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(model,
+                                             "layer.01.ple.table.064");
+    if (semantic == NULL || !open_ple_sample(gguf, semantic)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(model,
+                                             "layer.01.ple.table.127");
+    if (semantic == NULL || !open_ple_sample(gguf, semantic)) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(
+        model, "layer.01.ple.address.head_offsets");
+    status = semantic == NULL
+                 ? KQ_STATUS_INVALID_ARGUMENT
+                 : kq_tensor_view_open_binding(
+                       gguf, semantic, 0U, KQ_TENSOR_VIEW_PHYSICAL_LAYOUT,
+                       &view, &diagnostic);
+    kq_tensor_view_close(view);
+    view = NULL;
+    if (status != KQ_STATUS_NO_TENSOR_PAYLOAD) {
+        return 0;
+    }
+    semantic = kq_model_find_semantic_tensor(model, "layer.00.gdn.qkv");
+    status = semantic == NULL
+                 ? KQ_STATUS_INVALID_ARGUMENT
+                 : kq_tensor_view_open_binding(
+                       gguf, semantic, 0U,
+                       KQ_TENSOR_VIEW_REQUIRE_CANONICAL_CONTIGUOUS,
+                       &view, &diagnostic);
+    kq_tensor_view_close(view);
+    return status == KQ_STATUS_TENSOR_LAYOUT_MISMATCH;
 }
 
 int main(void) {
@@ -227,8 +482,15 @@ int main(void) {
         goto cleanup;
     }
 
-    printf("real GGUF physical/semantic oracle: PASS, "
-           "semantics=1294, payload_bytes_accessed=0\n");
+    if (!validate_real_view_samples(gguf, model) ||
+        kq_gguf_payload_bytes_accessed(gguf) != 0U) {
+        fprintf(stderr, "real GGUF bounded-view geometry mismatch\n");
+        goto cleanup;
+    }
+
+    printf("real GGUF physical/semantic/view oracle: PASS, "
+           "semantics=1294, payload_bytes_accessed=0, "
+           "payload_bytes_touched_by_test=0\n");
     result = 0;
 
 cleanup:

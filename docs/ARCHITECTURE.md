@@ -53,6 +53,14 @@ split, fused and metadata-derived bindings. Future GDN/QSA/MoE/PLE code consumes
 these IDs rather than raw GGUF names. The registry retains no payload pointers,
 performs no allocation/scheduling and fails on every unknown physical tensor.
 
+Task 2.2 adds the first bounded payload boundary. Immutable quantized tensor
+views resolve semantic bindings into exact read-only physical block spans while
+retaining canonical shape, physical shape, split/fused/member identity and
+explicit transformed-layout metadata. Whole tensors, ordered split parts,
+contiguous routed-expert members and individual fused PLE members are supported
+without copies or dequantization. Mapping remains a storage primitive, not an
+allocator, cache, prefetcher or scheduler policy.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

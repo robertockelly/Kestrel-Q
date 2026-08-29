@@ -56,6 +56,16 @@ const char *kq_status_string(kq_status status) {
             return "semantic tensor mapping failed";
         case KQ_STATUS_UNKNOWN_PHYSICAL_TENSOR:
             return "unknown physical tensor";
+        case KQ_STATUS_NO_TENSOR_PAYLOAD:
+            return "semantic has no tensor payload";
+        case KQ_STATUS_INVALID_QUANTIZED_GEOMETRY:
+            return "invalid quantized tensor geometry";
+        case KQ_STATUS_NONCONTIGUOUS_TENSOR_VIEW:
+            return "tensor member is not physically contiguous";
+        case KQ_STATUS_TENSOR_LAYOUT_MISMATCH:
+            return "tensor layout does not satisfy the requested access";
+        case KQ_STATUS_TENSOR_OWNERSHIP_MISMATCH:
+            return "tensor descriptor does not belong to the GGUF";
         default:
             return "unknown Kestrel-Q status";
     }

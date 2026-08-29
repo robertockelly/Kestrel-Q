@@ -1,6 +1,6 @@
 # `kq-inspect`
 
-Status: **TASK 2.0 COMPLETE / PASS; TASK 2.1 SEMANTIC MODES IMPLEMENTED**
+Status: **TASK 2.0 COMPLETE / PASS; TASKS 2.1–2.2 DIAGNOSTICS IMPLEMENTED**
 
 `kq-inspect` is the first native Kestrel-Q diagnostics executable. It opens one
 GGUF through the read-only Windows file layer and prints structural facts only.
@@ -12,6 +12,7 @@ build-cpu\Release\kq-inspect.exe <model.gguf>
 build-cpu\Release\kq-inspect.exe --semantic-summary <model.gguf>
 build-cpu\Release\kq-inspect.exe --semantic <stable-id> <model.gguf>
 build-cpu\Release\kq-inspect.exe --semantic-dump <model.gguf>
+build-cpu\Release\kq-inspect.exe --view-geometry-dump <model.gguf>
 ```
 
 The path is a command-line input and is never persisted by the tool. The real
@@ -69,3 +70,11 @@ unknown/unbound entries.
 physical or metadata binding. `--semantic-dump` emits deterministic TSV used by
 the research-only Epic 1 oracle validator. None of these modes opens a tensor
 payload view.
+
+## Quantized-view geometry diagnostics
+
+`--view-geometry-dump` emits deterministic TSV with every physical tensor's
+rank, dimensions, type, quant-block geometry, element count, relative and
+absolute offsets and packed bytes. The Task 2.2 research-only validator compares
+this output with the pinned Task 1.3 inventory. The mode computes geometry from
+descriptors only; it neither maps nor dereferences tensor payload.

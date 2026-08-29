@@ -5,6 +5,7 @@
 #include "kq_gguf.h"
 #include "kq_model.h"
 #include "kq_status.h"
+#include "kq_tensor_view.h"
 
 typedef struct kq_type_count {
     uint32_t type_id;
@@ -16,7 +17,8 @@ static void kq_print_usage(void) {
             "usage: kq-inspect <model.gguf>\n"
             "       kq-inspect --semantic-summary <model.gguf>\n"
             "       kq-inspect --semantic <stable-id> <model.gguf>\n"
-            "       kq-inspect --semantic-dump <model.gguf>\n");
+            "       kq-inspect --semantic-dump <model.gguf>\n"
+            "       kq-inspect --view-geometry-dump <model.gguf>\n");
 }
 
 static void kq_print_bounded_text(kq_string_view value) {
@@ -176,6 +178,64 @@ static void kq_print_semantic_dump(const kq_model *model) {
     }
 }
 
+static int kq_print_view_geometry_dump(const kq_gguf *gguf) {
+    const kq_gguf_tensor *tensor;
+    const kq_gguf_type_info *type_info;
+    kq_diagnostic diagnostic;
+    uint64_t derived_packed_bytes;
+    uint64_t tensor_index;
+    uint32_t dimension;
+    kq_status status;
+
+    fputs("physical_name\trank\tdimensions\ttype_id\ttype_name\t"
+          "block_elements\tbytes_per_block\telement_count\t"
+          "relative_offset\tdata_offset\tpacked_bytes\n",
+          stdout);
+    for (tensor_index = 0U;
+         tensor_index < kq_gguf_tensor_count(gguf);
+         ++tensor_index) {
+        tensor = kq_gguf_tensor_at(gguf, tensor_index);
+        if (tensor == NULL) {
+            fputs("kq-inspect: physical tensor lookup failed\n", stderr);
+            return 0;
+        }
+        type_info = kq_gguf_type_info_for(tensor->type_id);
+        status = kq_quant_packed_size(tensor->type_id,
+                                      tensor->element_count,
+                                      &derived_packed_bytes,
+                                      &diagnostic);
+        if (type_info == NULL || status != KQ_STATUS_OK ||
+            tensor->block_elements != type_info->block_elements ||
+            tensor->bytes_per_block != type_info->bytes_per_block ||
+            tensor->packed_bytes != derived_packed_bytes) {
+            kq_print_diagnostic(status == KQ_STATUS_OK
+                                    ? KQ_STATUS_INVALID_QUANTIZED_GEOMETRY
+                                    : status,
+                                &diagnostic);
+            return 0;
+        }
+        kq_print_bounded_text(tensor->name);
+        printf("\t%u\t", (unsigned int)tensor->rank);
+        for (dimension = 0U; dimension < tensor->rank; ++dimension) {
+            if (dimension != 0U) {
+                fputc('x', stdout);
+            }
+            printf("%llu",
+                   (unsigned long long)tensor->dimensions[dimension]);
+        }
+        printf("\t%u\t%s\t%llu\t%llu\t%llu\t%llu\t%llu\t%llu\n",
+               (unsigned int)tensor->type_id,
+               type_info->name,
+               (unsigned long long)tensor->block_elements,
+               (unsigned long long)tensor->bytes_per_block,
+               (unsigned long long)tensor->element_count,
+               (unsigned long long)tensor->relative_offset,
+               (unsigned long long)tensor->data_offset,
+               (unsigned long long)tensor->packed_bytes);
+    }
+    return 1;
+}
+
 static int kq_copy_semantic_id(const wchar_t *wide,
                                char id[KQ_SEMANTIC_ID_CAPACITY]) {
     size_t index;
@@ -218,6 +278,7 @@ int wmain(int argc, wchar_t **argv) {
     int semantic_summary = 0;
     int semantic_dump = 0;
     int semantic_query = 0;
+    int view_geometry_dump = 0;
     wchar_t *path_argument = NULL;
     char semantic_id[KQ_SEMANTIC_ID_CAPACITY] = {0};
 
@@ -232,6 +293,10 @@ int wmain(int argc, wchar_t **argv) {
         path_argument = argv[2];
     } else if (argc == 3 && wcscmp(argv[1], L"--semantic-dump") == 0) {
         semantic_dump = 1;
+        path_argument = argv[2];
+    } else if (argc == 3 &&
+               wcscmp(argv[1], L"--view-geometry-dump") == 0) {
+        view_geometry_dump = 1;
         path_argument = argv[2];
     } else if (argc == 4 && wcscmp(argv[1], L"--semantic") == 0 &&
                kq_copy_semantic_id(argv[2], semantic_id)) {
@@ -274,6 +339,14 @@ int wmain(int argc, wchar_t **argv) {
                 goto cleanup;
             }
             kq_print_semantic(semantic);
+        }
+        result = 0;
+        goto cleanup;
+    }
+
+    if (view_geometry_dump) {
+        if (!kq_print_view_geometry_dump(gguf)) {
+            goto cleanup;
         }
         result = 0;
         goto cleanup;

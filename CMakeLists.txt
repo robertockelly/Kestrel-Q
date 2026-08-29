@@ -45,6 +45,7 @@ add_library(kq_core
     src/kq_model.c
     src/kq_runtime.c
     src/kq_status.c
+    src/kq_tensor_view.c
 )
 
 target_include_directories(kq_core
@@ -138,6 +139,14 @@ if(KQ_BUILD_TESTS)
     kq_enable_c_warnings(kq_model_test)
     add_test(NAME kq_model_semantic_synthetic COMMAND kq_model_test)
 
+    add_executable(kq_tensor_view_test tests/tensor_view_test.c)
+    target_link_libraries(kq_tensor_view_test PRIVATE kq_core)
+    target_include_directories(kq_tensor_view_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_tensor_view_test)
+    add_test(NAME kq_tensor_view_synthetic COMMAND kq_tensor_view_test)
+
     add_executable(kq_gguf_integration_test tests/gguf_integration.c)
     target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_gguf_integration_test)
@@ -155,6 +164,17 @@ if(KQ_BUILD_TESTS)
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/canonical-gguf-mapping.csv
         )
         set_tests_properties(kq_model_semantic_oracle PROPERTIES
+            SKIP_RETURN_CODE 77
+        )
+        add_test(
+            NAME kq_tensor_view_geometry_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-tensor-view-geometry.py
+                --inspect $<TARGET_FILE:kq_inspect>
+                --inventory
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-tensor-inventory.csv
+        )
+        set_tests_properties(kq_tensor_view_geometry_oracle PROPERTIES
             SKIP_RETURN_CODE 77
         )
     endif()

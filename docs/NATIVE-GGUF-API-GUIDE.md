@@ -1,6 +1,6 @@
 # NATIVE-GGUF-API-GUIDE.md
 
-Status: **IMPLEMENTED / TASKS 2.0–2.1 COMPLETE**
+Status: **IMPLEMENTED / TASKS 2.0–2.2 COMPLETE**
 
 ## File boundary
 
@@ -53,3 +53,9 @@ immutable and remain valid only until `kq_gguf_close`.
 
 Canonical model semantics are exposed separately by `include/kq_model.h`; see
 `docs/KQ-SEMANTIC-API.md`.
+
+Task 2.2 keeps arbitrary payload offsets out of the public GGUF API. Its
+semantic tensor-view layer internally verifies that a physical descriptor
+belongs to the parsed GGUF and that the requested checked block span remains
+inside that tensor before delegating to `kq_file_view_open`. Public consumers
+use `include/kq_tensor_view.h`, documented in `docs/KQ-TENSOR-VIEW-API.md`.
