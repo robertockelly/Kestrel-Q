@@ -36,6 +36,10 @@ The project is currently pre-alpha.
 - Accepted ADR 0005: the initial Kestrel-Q model path may support ordinary
   text-only autoregressive logits while explicitly rejecting multimodal inputs
   and deferring optional MTP speculative acceleration.
+- Completed Task 1.2 canonical tensor inventory and footprint analysis: all 131
+  Safetensors headers and 1,658 tensors reconcile exactly, with zero weight
+  payload bytes fetched and zero unexplained classifications; Task 1.3 remains
+  not started.
 
 ### Added
 
@@ -68,3 +72,11 @@ The project is currently pre-alpha.
   transitions.
 - Machine-readable Task 1.1 evidence with stable `KQ-ARCH-*` claim IDs, exact
   source revisions, source locations, licenses and implementation file hashes.
+- Fail-closed, standard-library Task 1.2 research tooling for bounded
+  Safetensors-header Range capture and deterministic offline tensor analysis,
+  with exact static, idealized-quantization, per-layer/expert and persistent
+  runtime-state evidence; failure audits are preserved against later overwrite
+  or cleanup, and each inventory row's `classification_rule` records its exact
+  versioned component rule rather than only the global rule version.
+- Canonical tensor-inventory and KQ-01 footprint documents, including exact
+  text/vision/MTP/PLE/expert families and explicit placement-candidate limits.

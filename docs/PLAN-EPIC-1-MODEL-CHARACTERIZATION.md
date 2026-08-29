@@ -1,9 +1,11 @@
 # PLAN-EPIC-1-MODEL-CHARACTERIZATION.md
 
-Status: **ACTIVE — TASK 1.0 COMPLETE / PASS**
+Status: **ACTIVE — TASKS 1.0–1.2 COMPLETE / PASS**
 
 Task 1.0's official-source baseline and local derived-GGUF registration are
-complete and verified. Task 1.1 remains not started.
+complete and verified. Task 1.1's architecture characterization and Task 1.2's
+canonical tensor/footprint baseline are complete and verified. Task 1.3 remains
+not started.
 
 ## Epic
 

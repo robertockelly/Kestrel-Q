@@ -19,8 +19,11 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   PLE, MTP boundary, prefill/decode flow and persistent runtime state are
   evidence-backed against pinned sources. ADR 0005 is accepted for an initial
   text-only ordinary autoregressive path without vision or MTP acceleration.
-- Tasks 1.2 (canonical tensor inventory/footprint) and 1.3 (canonical-to-GGUF
-  mapping) remain not started.
+- Task 1.2 is complete/pass: bounded HTTP Range capture reconciles all 131
+  canonical shard headers and 1,658 tensors with zero weight-payload bytes,
+  exact subsystem/static footprints, idealized quantization floors and
+  batch-1 persistent-state scaling through 262,144 context tokens.
+- Task 1.3 (canonical-to-GGUF mapping) remains not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.

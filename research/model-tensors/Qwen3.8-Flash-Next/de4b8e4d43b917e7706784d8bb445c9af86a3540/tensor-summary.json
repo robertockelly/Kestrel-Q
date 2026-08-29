@@ -1,0 +1,2874 @@
+{
+  "classification_rule_version": "KQ-TENSOR-CLASSIFICATION-v1",
+  "dtype_tensor_counts": {
+    "BF16": 1655,
+    "I64": 3
+  },
+  "generated_by": "tools/analyze-model-tensors.py",
+  "idealized_quantization": {
+    "dense_non_routed_excluding_shared": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 14036419200,
+          "payload_bytes_ceiling": 1754552400
+        },
+        "Q4": {
+          "payload_bits": 18715225600,
+          "payload_bytes_ceiling": 2339403200
+        },
+        "Q5": {
+          "payload_bits": 23394032000,
+          "payload_bytes_ceiling": 2924254000
+        },
+        "Q6": {
+          "payload_bits": 28072838400,
+          "payload_bytes_ceiling": 3509104800
+        },
+        "Q8": {
+          "payload_bits": 37430451200,
+          "payload_bytes_ceiling": 4678806400
+        }
+      },
+      "parameter_count": 4678806400
+    },
+    "dense_shared_non_routed_text": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 14744576640,
+          "payload_bytes_ceiling": 1843072080
+        },
+        "Q4": {
+          "payload_bits": 19659435520,
+          "payload_bytes_ceiling": 2457429440
+        },
+        "Q5": {
+          "payload_bits": 24574294400,
+          "payload_bytes_ceiling": 3071786800
+        },
+        "Q6": {
+          "payload_bits": 29489153280,
+          "payload_bytes_ceiling": 3686144160
+        },
+        "Q8": {
+          "payload_bits": 39318871040,
+          "payload_bytes_ceiling": 4914858880
+        }
+      },
+      "parameter_count": 4914858880
+    },
+    "excluded_mtp": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 7821452544,
+          "payload_bytes_ceiling": 977681568
+        },
+        "Q4": {
+          "payload_bits": 10428603392,
+          "payload_bytes_ceiling": 1303575424
+        },
+        "Q5": {
+          "payload_bits": 13035754240,
+          "payload_bytes_ceiling": 1629469280
+        },
+        "Q6": {
+          "payload_bits": 15642905088,
+          "payload_bytes_ceiling": 1955363136
+        },
+        "Q8": {
+          "payload_bits": 20857206784,
+          "payload_bytes_ceiling": 2607150848
+        }
+      },
+      "parameter_count": 2607150848
+    },
+    "excluded_vision": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 1346793168,
+          "payload_bytes_ceiling": 168349146
+        },
+        "Q4": {
+          "payload_bits": 1795724224,
+          "payload_bytes_ceiling": 224465528
+        },
+        "Q5": {
+          "payload_bits": 2244655280,
+          "payload_bytes_ceiling": 280581910
+        },
+        "Q6": {
+          "payload_bits": 2693586336,
+          "payload_bytes_ceiling": 336698292
+        },
+        "Q8": {
+          "payload_bits": 3591448448,
+          "payload_bytes_ceiling": 448931056
+        }
+      },
+      "parameter_count": 448931056
+    },
+    "full_checkpoint": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 539999944377,
+          "payload_bytes_ceiling": 67499993048
+        },
+        "Q4": {
+          "payload_bits": 719999925836,
+          "payload_bytes_ceiling": 89999990730
+        },
+        "Q5": {
+          "payload_bits": 899999907295,
+          "payload_bytes_ceiling": 112499988412
+        },
+        "Q6": {
+          "payload_bits": 1079999888754,
+          "payload_bytes_ceiling": 134999986095
+        },
+        "Q8": {
+          "payload_bits": 1439999851672,
+          "payload_bytes_ceiling": 179999981459
+        }
+      },
+      "parameter_count": 179999981459
+    },
+    "initial_text_only": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 530831698665,
+          "payload_bytes_ceiling": 66353962334
+        },
+        "Q4": {
+          "payload_bits": 707775598220,
+          "payload_bytes_ceiling": 88471949778
+        },
+        "Q5": {
+          "payload_bits": 884719497775,
+          "payload_bytes_ceiling": 110589937222
+        },
+        "Q6": {
+          "payload_bits": 1061663397330,
+          "payload_bytes_ceiling": 132707924667
+        },
+        "Q8": {
+          "payload_bits": 1415551196440,
+          "payload_bytes_ceiling": 176943899555
+        }
+      },
+      "parameter_count": 176943899555
+    },
+    "ple_ngram": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 153699256425,
+          "payload_bytes_ceiling": 19212407054
+        },
+        "Q4": {
+          "payload_bits": 204932341900,
+          "payload_bytes_ceiling": 25616542738
+        },
+        "Q5": {
+          "payload_bits": 256165427375,
+          "payload_bytes_ceiling": 32020678422
+        },
+        "Q6": {
+          "payload_bits": 307398512850,
+          "payload_bytes_ceiling": 38424814107
+        },
+        "Q8": {
+          "payload_bits": 409864683800,
+          "payload_bytes_ceiling": 51233085475
+        }
+      },
+      "parameter_count": 51233085475
+    },
+    "routed_experts": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 362387865600,
+          "payload_bytes_ceiling": 45298483200
+        },
+        "Q4": {
+          "payload_bits": 483183820800,
+          "payload_bytes_ceiling": 60397977600
+        },
+        "Q5": {
+          "payload_bits": 603979776000,
+          "payload_bytes_ceiling": 75497472000
+        },
+        "Q6": {
+          "payload_bits": 724775731200,
+          "payload_bytes_ceiling": 90596966400
+        },
+        "Q8": {
+          "payload_bits": 966367641600,
+          "payload_bytes_ceiling": 120795955200
+        }
+      },
+      "parameter_count": 120795955200
+    },
+    "shared_experts": {
+      "idealized_lower_bounds": {
+        "Q3": {
+          "payload_bits": 708157440,
+          "payload_bytes_ceiling": 88519680
+        },
+        "Q4": {
+          "payload_bits": 944209920,
+          "payload_bytes_ceiling": 118026240
+        },
+        "Q5": {
+          "payload_bits": 1180262400,
+          "payload_bytes_ceiling": 147532800
+        },
+        "Q6": {
+          "payload_bits": 1416314880,
+          "payload_bytes_ceiling": 177039360
+        },
+        "Q8": {
+          "payload_bits": 1888419840,
+          "payload_bytes_ceiling": 236052480
+        }
+      },
+      "parameter_count": 236052480
+    }
+  },
+  "per_layer": [
+    {
+      "layer_id": 0,
+      "layer_number": 1,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 1,
+      "layer_number": 2,
+      "layer_type": "GDN+PLE",
+      "non_expert": {
+        "parameter_count": 51304253699,
+        "payload_bytes": 102608507608
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 53827064579,
+      "total_payload_bytes": 107654129368
+    },
+    {
+      "layer_id": 2,
+      "layer_number": 3,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 3,
+      "layer_number": 4,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 4,
+      "layer_number": 5,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 5,
+      "layer_number": 6,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 6,
+      "layer_number": 7,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 7,
+      "layer_number": 8,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 8,
+      "layer_number": 9,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 9,
+      "layer_number": 10,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 10,
+      "layer_number": 11,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 11,
+      "layer_number": 12,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 12,
+      "layer_number": 13,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 13,
+      "layer_number": 14,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 14,
+      "layer_number": 15,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 15,
+      "layer_number": 16,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 16,
+      "layer_number": 17,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 17,
+      "layer_number": 18,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 18,
+      "layer_number": 19,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 19,
+      "layer_number": 20,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 20,
+      "layer_number": 21,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 21,
+      "layer_number": 22,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 22,
+      "layer_number": 23,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 23,
+      "layer_number": 24,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 24,
+      "layer_number": 25,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 25,
+      "layer_number": 26,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 26,
+      "layer_number": 27,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 27,
+      "layer_number": 28,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 28,
+      "layer_number": 29,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 29,
+      "layer_number": 30,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 30,
+      "layer_number": 31,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 31,
+      "layer_number": 32,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 32,
+      "layer_number": 33,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 33,
+      "layer_number": 34,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 34,
+      "layer_number": 35,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 35,
+      "layer_number": 36,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 36,
+      "layer_number": 37,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 37,
+      "layer_number": 38,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 38,
+      "layer_number": 39,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 39,
+      "layer_number": 40,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 40,
+      "layer_number": 41,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 41,
+      "layer_number": 42,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 42,
+      "layer_number": 43,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 43,
+      "layer_number": 44,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    },
+    {
+      "layer_id": 44,
+      "layer_number": 45,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 45,
+      "layer_number": 46,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 46,
+      "layer_number": 47,
+      "layer_type": "GDN",
+      "non_expert": {
+        "parameter_count": 71168224,
+        "payload_bytes": 142336448
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2593979104,
+      "total_payload_bytes": 5187958208
+    },
+    {
+      "layer_id": 47,
+      "layer_number": 48,
+      "layer_type": "QSA",
+      "non_expert": {
+        "parameter_count": 64656128,
+        "payload_bytes": 129312256
+      },
+      "per_routed_expert_parameter_count": 4915200,
+      "per_routed_expert_payload_bytes": 9830400,
+      "routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800
+      },
+      "router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440
+      },
+      "shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520
+      },
+      "top10_selected_routed_expert_parameter_count": 49152000,
+      "top10_selected_routed_expert_payload_bytes": 98304000,
+      "total_parameter_count": 2587467008,
+      "total_payload_bytes": 5174934016
+    }
+  ],
+  "reconciliation": {
+    "aggregate_header_region_bytes": 229760,
+    "aggregate_payload_bytes": 359999963128,
+    "aggregate_remote_shard_bytes": 360000192888,
+    "duplicate_tensors": 0,
+    "extra_header_tensors": 0,
+    "index_metadata_total_size": 359999963128.0,
+    "missing_index_tensors": 0,
+    "shard_count": 131,
+    "shards": [
+      {
+        "filename": "model-00001-of-00131.safetensors",
+        "header_region_bytes": 39304,
+        "payload_bytes": 1040116640,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1040155944,
+        "tensor_count": 349
+      },
+      {
+        "filename": "model-00002-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00003-of-00131.safetensors",
+        "header_region_bytes": 3256,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518264,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00004-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00005-of-00131.safetensors",
+        "header_region_bytes": 2400,
+        "payload_bytes": 3355886104,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355888504,
+        "tensor_count": 17
+      },
+      {
+        "filename": "model-00006-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00007-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00008-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00009-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00010-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00011-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00012-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00013-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00014-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00015-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00016-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00017-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00018-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00019-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00020-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00021-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00022-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00023-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00024-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00025-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00026-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00027-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00028-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00029-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00030-of-00131.safetensors",
+        "header_region_bytes": 672,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016032,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00031-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00032-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00033-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00034-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00035-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00036-of-00131.safetensors",
+        "header_region_bytes": 680,
+        "payload_bytes": 3200015360,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3200016040,
+        "tensor_count": 4
+      },
+      {
+        "filename": "model-00037-of-00131.safetensors",
+        "header_region_bytes": 2776,
+        "payload_bytes": 1742344384,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1742347160,
+        "tensor_count": 20
+      },
+      {
+        "filename": "model-00038-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00039-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00040-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00041-of-00131.safetensors",
+        "header_region_bytes": 4624,
+        "payload_bytes": 1941961664,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1941966288,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00042-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00043-of-00131.safetensors",
+        "header_region_bytes": 3408,
+        "payload_bytes": 1839068608,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1839072016,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00044-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00045-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00046-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00047-of-00131.safetensors",
+        "header_region_bytes": 2224,
+        "payload_bytes": 1716679680,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716681904,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00048-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00049-of-00131.safetensors",
+        "header_region_bytes": 4608,
+        "payload_bytes": 1935428544,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935433152,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00050-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00051-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00052-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00053-of-00131.safetensors",
+        "header_region_bytes": 3416,
+        "payload_bytes": 1839068608,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1839072024,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00054-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00055-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00056-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00057-of-00131.safetensors",
+        "header_region_bytes": 4616,
+        "payload_bytes": 1941961664,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1941966280,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00058-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00059-of-00131.safetensors",
+        "header_region_bytes": 2192,
+        "payload_bytes": 1716597856,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716600048,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00060-of-00131.safetensors",
+        "header_region_bytes": 1176,
+        "payload_bytes": 3471360352,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3471361528,
+        "tensor_count": 9
+      },
+      {
+        "filename": "model-00061-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00062-of-00131.safetensors",
+        "header_region_bytes": 3392,
+        "payload_bytes": 3510236608,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3510240000,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00063-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00064-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00065-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00066-of-00131.safetensors",
+        "header_region_bytes": 2192,
+        "payload_bytes": 1719219200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1719221392,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00067-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00068-of-00131.safetensors",
+        "header_region_bytes": 4488,
+        "payload_bytes": 1935408064,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935412552,
+        "tensor_count": 32
+      },
+      {
+        "filename": "model-00069-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00070-of-00131.safetensors",
+        "header_region_bytes": 3392,
+        "payload_bytes": 1832520128,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832523520,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00071-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00072-of-00131.safetensors",
+        "header_region_bytes": 3520,
+        "payload_bytes": 1839068608,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1839072128,
+        "tensor_count": 25
+      },
+      {
+        "filename": "model-00073-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00074-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00075-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00076-of-00131.safetensors",
+        "header_region_bytes": 4616,
+        "payload_bytes": 1938684864,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1938689480,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00077-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00078-of-00131.safetensors",
+        "header_region_bytes": 3416,
+        "payload_bytes": 1832596928,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832600344,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00079-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00080-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00081-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00082-of-00131.safetensors",
+        "header_region_bytes": 4592,
+        "payload_bytes": 1935428544,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935433136,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00083-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00084-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00085-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00086-of-00131.safetensors",
+        "header_region_bytes": 4632,
+        "payload_bytes": 1941961664,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1941966296,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00087-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00088-of-00131.safetensors",
+        "header_region_bytes": 3416,
+        "payload_bytes": 1839068608,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1839072024,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00089-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00090-of-00131.safetensors",
+        "header_region_bytes": 3408,
+        "payload_bytes": 1835791808,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1835795216,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00091-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00092-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00093-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00094-of-00131.safetensors",
+        "header_region_bytes": 4608,
+        "payload_bytes": 1935408320,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935412928,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00095-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00096-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00097-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00098-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00099-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00100-of-00131.safetensors",
+        "header_region_bytes": 2208,
+        "payload_bytes": 1716598016,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716600224,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00101-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00102-of-00131.safetensors",
+        "header_region_bytes": 4584,
+        "payload_bytes": 1935408576,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935413160,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00103-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00104-of-00131.safetensors",
+        "header_region_bytes": 3264,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518272,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00105-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00106-of-00131.safetensors",
+        "header_region_bytes": 3392,
+        "payload_bytes": 1863972288,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1863975680,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00107-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00108-of-00131.safetensors",
+        "header_region_bytes": 3616,
+        "payload_bytes": 1900672448,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1900676064,
+        "tensor_count": 26
+      },
+      {
+        "filename": "model-00109-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00110-of-00131.safetensors",
+        "header_region_bytes": 2080,
+        "payload_bytes": 1716597760,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716599840,
+        "tensor_count": 14
+      },
+      {
+        "filename": "model-00111-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00112-of-00131.safetensors",
+        "header_region_bytes": 4600,
+        "payload_bytes": 1935408576,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935413176,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00113-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00114-of-00131.safetensors",
+        "header_region_bytes": 3384,
+        "payload_bytes": 1832520128,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832523512,
+        "tensor_count": 24
+      },
+      {
+        "filename": "model-00115-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00116-of-00131.safetensors",
+        "header_region_bytes": 3272,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518280,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00117-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00118-of-00131.safetensors",
+        "header_region_bytes": 2184,
+        "payload_bytes": 1716618240,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1716620424,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00119-of-00131.safetensors",
+        "header_region_bytes": 176,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443376,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00120-of-00131.safetensors",
+        "header_region_bytes": 4576,
+        "payload_bytes": 1948515264,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1948519840,
+        "tensor_count": 33
+      },
+      {
+        "filename": "model-00121-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00122-of-00131.safetensors",
+        "header_region_bytes": 3256,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518264,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00123-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00124-of-00131.safetensors",
+        "header_region_bytes": 2168,
+        "payload_bytes": 1729704960,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1729707128,
+        "tensor_count": 15
+      },
+      {
+        "filename": "model-00125-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00126-of-00131.safetensors",
+        "header_region_bytes": 4456,
+        "payload_bytes": 1935408064,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1935412520,
+        "tensor_count": 32
+      },
+      {
+        "filename": "model-00127-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00128-of-00131.safetensors",
+        "header_region_bytes": 3256,
+        "payload_bytes": 1832515008,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1832518264,
+        "tensor_count": 23
+      },
+      {
+        "filename": "model-00129-of-00131.safetensors",
+        "header_region_bytes": 168,
+        "payload_bytes": 3355443200,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 3355443368,
+        "tensor_count": 1
+      },
+      {
+        "filename": "model-00130-of-00131.safetensors",
+        "header_region_bytes": 1576,
+        "payload_bytes": 2974786560,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 2974788136,
+        "tensor_count": 11
+      },
+      {
+        "filename": "model-00131-of-00131.safetensors",
+        "header_region_bytes": 128,
+        "payload_bytes": 1271398400,
+        "reconciliation": "PASS",
+        "remote_size_bytes": 1271398528,
+        "tensor_count": 1
+      }
+    ],
+    "status": "PASS",
+    "tensor_count": 1658,
+    "unique_tensor_count": 1658,
+    "unknown_or_review_tensors": 0
+  },
+  "repository_id": "Qwen/Qwen3.8-Flash-Next",
+  "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "routed_expert_analysis": {
+    "experts_per_layer": 512,
+    "interpretation": "selected parameter payload only; not measured I/O and not throughput",
+    "per_expert_parameter_count_max": 4915200,
+    "per_expert_parameter_count_median": 4915200,
+    "per_expert_parameter_count_min": 4915200,
+    "per_expert_payload_bytes_max": 9830400,
+    "per_expert_payload_bytes_median": 9830400,
+    "per_expert_payload_bytes_min": 9830400,
+    "selected_experts_per_token_per_layer": 10,
+    "top10_selected_across_48_layers_parameter_count": 2359296000,
+    "top10_selected_across_48_layers_payload_bytes": 4718592000,
+    "uniform_across_layers": true
+  },
+  "runtime_state_batch1": {
+    "batch": 1,
+    "contexts": [
+      {
+        "context_tokens": 1,
+        "fixed_state_bytes": 116379672,
+        "pinned_reference_container_total_bytes": 116407344,
+        "qsa_k_bytes": 12288,
+        "qsa_raw_index_key_bytes": 3072,
+        "qsa_semantic_context_bytes": 27648,
+        "qsa_v_bytes": 12288,
+        "reference_cached_position_ids_bytes": 24,
+        "semantic_total_bytes": 116407320
+      },
+      {
+        "context_tokens": 4096,
+        "fixed_state_bytes": 116379672,
+        "pinned_reference_container_total_bytes": 229724184,
+        "qsa_k_bytes": 50331648,
+        "qsa_raw_index_key_bytes": 12582912,
+        "qsa_semantic_context_bytes": 113246208,
+        "qsa_v_bytes": 50331648,
+        "reference_cached_position_ids_bytes": 98304,
+        "semantic_total_bytes": 229625880
+      },
+      {
+        "context_tokens": 16384,
+        "fixed_state_bytes": 116379672,
+        "pinned_reference_container_total_bytes": 569757720,
+        "qsa_k_bytes": 201326592,
+        "qsa_raw_index_key_bytes": 50331648,
+        "qsa_semantic_context_bytes": 452984832,
+        "qsa_v_bytes": 201326592,
+        "reference_cached_position_ids_bytes": 393216,
+        "semantic_total_bytes": 569364504
+      },
+      {
+        "context_tokens": 65536,
+        "fixed_state_bytes": 116379672,
+        "pinned_reference_container_total_bytes": 1929891864,
+        "qsa_k_bytes": 805306368,
+        "qsa_raw_index_key_bytes": 201326592,
+        "qsa_semantic_context_bytes": 1811939328,
+        "qsa_v_bytes": 805306368,
+        "reference_cached_position_ids_bytes": 1572864,
+        "semantic_total_bytes": 1928319000
+      },
+      {
+        "context_tokens": 262144,
+        "fixed_state_bytes": 116379672,
+        "pinned_reference_container_total_bytes": 7370428440,
+        "qsa_k_bytes": 3221225472,
+        "qsa_raw_index_key_bytes": 805306368,
+        "qsa_semantic_context_bytes": 7247757312,
+        "qsa_v_bytes": 3221225472,
+        "reference_cached_position_ids_bytes": 6291456,
+        "semantic_total_bytes": 7364136984
+      }
+    ],
+    "dtype_assumptions": {
+      "gdn_conv": "BF16",
+      "gdn_recurrent": "F32",
+      "ple_conv": "BF16",
+      "ple_history": "I64",
+      "position_scalar": "I64",
+      "qsa_k_v": "BF16",
+      "qsa_raw_index_keys": "BF16",
+      "reference_cached_position_ids": "I64"
+    },
+    "fixed_components": {
+      "fixed_total_bytes": 116379672,
+      "gdn_convolution_state_bytes": 2949120,
+      "gdn_recurrent_matrix_bytes": 113246208,
+      "ple_dilated_convolution_state_bytes": 184320,
+      "ple_token_history_bytes": 16,
+      "position_bookkeeping_bytes": 8
+    },
+    "notes": [
+      "GR branches are current-forward activations and are excluded from persistent context state.",
+      "The pinned reference stores three equivalent text position-ID axes; a native runtime may reconstruct them from scalar position state after proving equivalence.",
+      "Optional vision and MTP state is outside the ADR-0005 initial scope."
+    ],
+    "per_context_token": {
+      "qsa_k_bytes": 12288,
+      "qsa_raw_index_key_bytes": 3072,
+      "qsa_semantic_total_bytes": 27648,
+      "qsa_v_bytes": 12288,
+      "reference_cached_position_ids_bytes": 24
+    }
+  },
+  "schema_version": 1,
+  "source_header_manifest_sha256": "193be76b3a3c30f623d3cedaa8c64e302f6f5d7a672b266b23a888d09615c1fd",
+  "source_index_sha256": "99e815241ef03325536b0aaa4441deea45174c17fae31e10f0bb456410c590de",
+  "totals": {
+    "by_component": {
+      "final_gated_residual": {
+        "parameter_count": 6563840,
+        "payload_bytes": 13127680,
+        "tensor_count": 3
+      },
+      "gated_residual": {
+        "parameter_count": 634060800,
+        "payload_bytes": 1268121600,
+        "tensor_count": 384
+      },
+      "gdn": {
+        "parameter_count": 2086510464,
+        "payload_bytes": 4173020928,
+        "tensor_count": 324
+      },
+      "lm_head": {
+        "parameter_count": 635699200,
+        "payload_bytes": 1271398400,
+        "tensor_count": 1
+      },
+      "mtp_gated_residual": {
+        "parameter_count": 19773440,
+        "payload_bytes": 39546880,
+        "tensor_count": 11
+      },
+      "mtp_input_fusion": {
+        "parameter_count": 13120000,
+        "payload_bytes": 26240000,
+        "tensor_count": 4
+      },
+      "mtp_qsa_attention": {
+        "parameter_count": 49807872,
+        "payload_bytes": 99615744,
+        "tensor_count": 6
+      },
+      "mtp_qsa_indexer": {
+        "parameter_count": 1638656,
+        "payload_bytes": 3277312,
+        "tensor_count": 3
+      },
+      "mtp_routed_experts": {
+        "parameter_count": 2516582400,
+        "payload_bytes": 5033164800,
+        "tensor_count": 2
+      },
+      "mtp_router": {
+        "parameter_count": 1310720,
+        "payload_bytes": 2621440,
+        "tensor_count": 1
+      },
+      "mtp_shared_expert": {
+        "parameter_count": 4917760,
+        "payload_bytes": 9835520,
+        "tensor_count": 4
+      },
+      "multimodal_merger": {
+        "parameter_count": 33039616,
+        "payload_bytes": 66079232,
+        "tensor_count": 6
+      },
+      "ple_address_metadata": {
+        "parameter_count": 35,
+        "payload_bytes": 280,
+        "tensor_count": 3
+      },
+      "ple_dense": {
+        "parameter_count": 32839680,
+        "payload_bytes": 65679360,
+        "tensor_count": 6
+      },
+      "ple_embedding_table": {
+        "parameter_count": 51200245760,
+        "payload_bytes": 102400491520,
+        "tensor_count": 128
+      },
+      "qsa_attention": {
+        "parameter_count": 597694464,
+        "payload_bytes": 1195388928,
+        "tensor_count": 72
+      },
+      "qsa_indexer": {
+        "parameter_count": 19663872,
+        "payload_bytes": 39327744,
+        "tensor_count": 36
+      },
+      "routed_experts": {
+        "parameter_count": 120795955200,
+        "payload_bytes": 241591910400,
+        "tensor_count": 96
+      },
+      "router": {
+        "parameter_count": 62914560,
+        "payload_bytes": 125829120,
+        "tensor_count": 48
+      },
+      "shared_expert": {
+        "parameter_count": 236052480,
+        "payload_bytes": 472104960,
+        "tensor_count": 192
+      },
+      "token_embedding": {
+        "parameter_count": 635699200,
+        "payload_bytes": 1271398400,
+        "tensor_count": 1
+      },
+      "vision_block": {
+        "parameter_count": 411466608,
+        "payload_bytes": 822933216,
+        "tensor_count": 324
+      },
+      "vision_patch_embedding": {
+        "parameter_count": 1770624,
+        "payload_bytes": 3541248,
+        "tensor_count": 2
+      },
+      "vision_position_embedding": {
+        "parameter_count": 2654208,
+        "payload_bytes": 5308416,
+        "tensor_count": 1
+      }
+    },
+    "by_initial_text_scope": {
+      "EXCLUDED_INITIAL_MTP": {
+        "parameter_count": 2607150848,
+        "payload_bytes": 5214301696,
+        "tensor_count": 31
+      },
+      "EXCLUDED_INITIAL_VISION": {
+        "parameter_count": 448931056,
+        "payload_bytes": 897862112,
+        "tensor_count": 333
+      },
+      "REQUIRED_INITIAL_TEXT": {
+        "parameter_count": 176943899555,
+        "payload_bytes": 353887799320,
+        "tensor_count": 1294
+      }
+    },
+    "by_subsystem": {
+      "mtp": {
+        "parameter_count": 2607150848,
+        "payload_bytes": 5214301696,
+        "tensor_count": 31
+      },
+      "ple_ngram": {
+        "parameter_count": 51233085475,
+        "payload_bytes": 102466171160,
+        "tensor_count": 137
+      },
+      "text": {
+        "parameter_count": 125710814080,
+        "payload_bytes": 251421628160,
+        "tensor_count": 1157
+      },
+      "vision": {
+        "parameter_count": 448931056,
+        "payload_bytes": 897862112,
+        "tensor_count": 333
+      }
+    },
+    "full_checkpoint": {
+      "parameter_count": 179999981459,
+      "payload_bytes": 359999963128,
+      "tensor_count": 1658
+    }
+  }
+}

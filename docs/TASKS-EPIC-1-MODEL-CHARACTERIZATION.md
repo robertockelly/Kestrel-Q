@@ -12,27 +12,27 @@
 - [x] Update project backlog/roadmap/changelog.
 
 ## Task 1.1 — Architecture characterization
-- [ ] Characterize top-level multimodal wrapper.
-- [ ] Characterize text model.
-- [ ] Characterize 48-layer execution pattern.
-- [ ] Characterize Gated DeltaNet.
-- [ ] Characterize Qwen Sparse Attention.
-- [ ] Characterize QSA indexer.
-- [ ] Characterize Gated Residual / hyper-connections.
-- [ ] Characterize MoE routing and shared expert.
-- [ ] Characterize N-gram / PLE lookup.
-- [ ] Characterize MTP.
-- [ ] Characterize tokenizer/chat-template semantics.
-- [ ] Determine evidence-backed text-only boundary.
+- [x] Characterize top-level multimodal wrapper.
+- [x] Characterize text model.
+- [x] Characterize 48-layer execution pattern.
+- [x] Characterize Gated DeltaNet.
+- [x] Characterize Qwen Sparse Attention.
+- [x] Characterize QSA indexer.
+- [x] Characterize Gated Residual / hyper-connections.
+- [x] Characterize MoE routing and shared expert.
+- [x] Characterize N-gram / PLE lookup.
+- [x] Characterize MTP.
+- [x] Record tokenizer/chat-template boundary for later detailed work.
+- [x] Determine evidence-backed text-only boundary through accepted ADR 0005.
 
 ## Task 1.2 — Tensor inventory & footprint
-- [ ] Parse official Safetensors index only.
-- [ ] Build tensor-family taxonomy.
-- [ ] Derive shapes/dtypes/shards.
-- [ ] Calculate bytes by tensor family.
-- [ ] Separate text / vision / PLE / MTP footprints.
-- [ ] Calculate idealized quantized footprints.
-- [ ] Map candidate storage tiers against KQ-01 budgets.
+- [x] Parse the official index and bounded headers without weight payload.
+- [x] Build deterministic tensor-family taxonomy.
+- [x] Derive and reconcile shapes/dtypes/shards for all 1,658 tensors.
+- [x] Calculate exact bytes by tensor family.
+- [x] Separate text / vision / PLE / MTP footprints.
+- [x] Calculate idealized Q8/Q6/Q5/Q4/Q3 payload floors.
+- [x] Compare preliminary placement candidates against KQ-01 budgets.
 
 ## Task 1.3 — GGUF mapping
 - [ ] Register exact GGUF quantization.
@@ -58,3 +58,6 @@
 - [x] Update `CHANGELOG.md` for the Task 1.0 milestone.
 - [x] Add ADR 0004 for the Task 1.0 source-of-truth decision.
 - [x] Keep Task 1.0 upstream source/evidence provenance reproducible.
+- [x] Record Task 1.1 completion and ADR 0005 acceptance.
+- [x] Keep Task 1.2 header/inventory evidence deterministically reproducible.
+- [x] Update `CHANGELOG.md` for the Task 1.2 milestone and research tooling.

@@ -33,8 +33,11 @@ Status convention:
   - runtime-state and prefill/decode models: **DOCUMENTED**;
   - ADR 0005 initial text-only ordinary autoregressive scope: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Task 1.2 — Catalogue canonical tensor inventory and footprint:
-  **NOT STARTED**.
+- [x] Task 1.2 — Catalogue canonical tensor inventory and footprint:
+  - bounded Range capture: **131 / 131 headers, zero weight payload bytes**;
+  - canonical inventory: **1,658 / 1,658 tensors reconciled and classified**;
+  - static, idealized-quantization and persistent-state footprint: **VERIFIED**;
+  - overall status: **COMPLETE / PASS**.
 - [ ] Task 1.3 — Map canonical tensors to the registered derived GGUF:
   **NOT STARTED**.
 - [ ] Document tokenizer/chat template
@@ -43,8 +46,9 @@ Status convention:
 - [x] Document Qwen Sparse Attention execution (Task 1.1)
 - [x] Document gated residual mechanism (Task 1.1)
 - [x] Document n-gram embedding mechanism (Task 1.1)
-- [ ] Estimate memory by tensor family and datatype
-- [ ] Identify candidate host/SSD-resident tensor families
+- [x] Estimate memory by tensor family and datatype (Task 1.2)
+- [x] Identify preliminary placement-candidate tensor families (Task 1.2;
+  scheduler policy remains deferred)
 - [ ] Define minimum useful quantization target
 
 ## Epic 2 — Loader and introspection
