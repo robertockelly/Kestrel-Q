@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.3 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.4 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -18,8 +18,8 @@ Initial task order:
    **COMPLETE / PASS**
 4. Task 2.3 — Native tokenizer and chat formatting.
    **COMPLETE / PASS**
-5. Task 2.4 — Native PLE address engine. **NOT STARTED**
-6. Task 2.5 — CPU reference tensor primitives.
+5. Task 2.4 — Native PLE address engine. **COMPLETE / PASS**
+6. Task 2.5 — CPU reference tensor primitives. **NOT STARTED**
 
 Constraints:
 
@@ -34,9 +34,9 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Task 2.3 preserves the original GGUF-only insufficiency finding, then completes
-through the governed model-specific canonical override adapter. Exact GGUF
-vocab/ID/merge substrate validation, pinned Unicode/NFC, canonical byte-level
-BPE/special semantics and the separate initial chat formatter match all
-independent original and divergence vectors. ADR 0011 is ACCEPTED. Task 2.4 is
-**NOT STARTED**.
+Task 2.4 completes the weight-independent PLE address boundary. An immutable
+model-validated config and explicit 32-byte stream state emit 16 ordered
+canonical member/row intents per token. Exact original and expanded independent
+oracles pass with zero PLE payload views and zero tensor payload bytes touched.
+ADR 0012 is ACCEPTED. No lookup, I/O, cache, prefetch or scheduler policy is
+introduced; Task 2.5 is **NOT STARTED**.

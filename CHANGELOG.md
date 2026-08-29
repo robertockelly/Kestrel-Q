@@ -203,6 +203,30 @@ The project is currently pre-alpha.
   an existing Angstrom case. The generator now sorts and merges all ranges
   deterministically before emission; byte-identical regeneration plus the full
   native canonical corpus guard the corrected table.
+- Completed Task 2.4 and accepted ADR 0012. The production C17 PLE address
+  engine validates the exact Qwen3.8 semantic-registry topology, all 128 fused
+  table members and three metadata-derived address arrays, then emits 16
+  ordered logical member/row intents per canonical token from an immutable
+  configuration and explicit bounded 32-byte stream state.
+- Matched all seven unchanged Task 1.4 PLE sequences and four incremental
+  decode steps exactly; the original SHA-256 remains
+  `495ef70f091e8d61caac99bb14ad8cea0fdb77940ec4dc6e8ce9811a144da3b6`
+  after independent byte-identical regeneration. Added independent expanded
+  evidence SHA-256
+  `b9c9be4d927d59c9ac12ba2313034cda5a1857d5484fca479327c9b771cb9671`
+  for 12 sequence cases, three decode streams and tokenizer-to-PLE integration.
+- Kept the PLE address boundary storage-neutral: real integration opens zero
+  PLE payload views and touches zero model tensor payload bytes. No lookup,
+  PLE value math, disk access, cache, prefetch, scheduler, inference or CUDA
+  model kernel was added; `KQ-BACKLOG-BENCH-002` remains deferred and required
+  before final disk-backed policy. Task 2.5 remains not started.
+- Corrected two Task 2.4 validation findings before the clean gate. A first
+  incremental-equivalence test used `memcmp` across compiler padding in the
+  intent struct and could report a false mismatch despite the independent
+  oracle passing; the regression now compares every semantic field. MSVC also
+  conservatively reported C4701 for run metrics populated through successful
+  status-returning calls; explicit initialization restores a warning-free
+  `/W4` path without weakening error handling.
 
 ### Added
 

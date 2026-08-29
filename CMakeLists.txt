@@ -57,6 +57,7 @@ add_library(kq_core
     src/kq_file_win32.c
     src/kq_gguf.c
     src/kq_model.c
+    src/kq_ple.c
     src/kq_runtime.c
     src/kq_sha256.c
     src/kq_status.c
@@ -191,6 +192,24 @@ if(KQ_BUILD_TESTS)
     target_link_libraries(kq_tokenizer_probe PRIVATE kq_core)
     kq_enable_c_warnings(kq_tokenizer_probe)
 
+    add_executable(kq_ple_test tests/ple_test.c)
+    target_link_libraries(kq_ple_test PRIVATE kq_core)
+    target_include_directories(kq_ple_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_ple_test)
+    add_test(NAME kq_ple_synthetic COMMAND kq_ple_test)
+
+    add_executable(kq_ple_integration_test tests/ple_integration.c)
+    target_link_libraries(kq_ple_integration_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_ple_integration_test)
+    add_test(NAME kq_ple_real_artifact COMMAND kq_ple_integration_test)
+    set_tests_properties(kq_ple_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(kq_ple_probe tests/ple_probe.c)
+    target_link_libraries(kq_ple_probe PRIVATE kq_core)
+    kq_enable_c_warnings(kq_ple_probe)
+
     add_executable(kq_gguf_integration_test tests/gguf_integration.c)
     target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_gguf_integration_test)
@@ -232,6 +251,19 @@ if(KQ_BUILD_TESTS)
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/tokenizer/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
         )
         set_tests_properties(kq_tokenizer_canonical_oracle PROPERTIES
+            SKIP_RETURN_CODE 77
+        )
+        add_test(
+            NAME kq_ple_canonical_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-ple.py
+                --probe $<TARGET_FILE:kq_ple_probe>
+                --golden
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/goldens/Qwen3.8-Flash-Next/canonical/ple-address-vectors.json
+                --differential
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/ple/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+        )
+        set_tests_properties(kq_ple_canonical_oracle PROPERTIES
             SKIP_RETURN_CODE 77
         )
     endif()

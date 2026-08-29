@@ -71,6 +71,16 @@ substitute a sidecar. ADR 0011 accepts this model-specific boundary. The
 tokenizer borrows bounded GGUF metadata, contains no global mutable state and
 does not open tensor payload views.
 
+Task 2.4 adds the immutable model-specific PLE address configuration and
+explicit bounded stream state. Canonical token IDs produce 16 ordered logical
+member/row intents per position using the pinned bigram/trigram arithmetic.
+The 32-byte address state tracks only position and two prior raw token IDs;
+future PLE value/dilation state remains separate. Intents contain no physical
+offset, pointer, cache slot or scheduling policy. Construction validates the
+semantic registry and its metadata-derived arrays, and address generation
+opens no tensor view or storage path. ADR 0012 accepts this prefetch-consumable
+semantic boundary while leaving all I/O/cache/prefetch policy deferred.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

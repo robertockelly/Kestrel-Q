@@ -74,9 +74,9 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.3 are complete/pass. The
-original Task 2.3 GGUF-only insufficiency finding is preserved and resolved by
-the governed canonical override; Task 2.4 has not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.4 are complete/pass. The
+native runtime now reaches deterministic tokenization, chat formatting and PLE
+logical-address generation without tensor math; Task 2.5 has not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -130,7 +130,20 @@ the governed canonical override; Task 2.4 has not started.
   - model tensor payload touched: **0**;
   - ADR 0011: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Task 2.4 — Native PLE address engine: **NOT STARTED**.
+- [x] Task 2.4 — Native PLE address engine:
+  - exact layer/order/head/member/history and integer contract:
+    **CHARACTERIZED**;
+  - immutable model-validated config and explicit 32-byte stream state:
+    **VERIFIED**;
+  - transactional prefill and incremental decode with 16 ordered logical
+    member/row intents per token: **VERIFIED**;
+  - original 7 sequence vectors and 4 decode steps plus expanded independent
+    differential corpus: **EXACT PASS**;
+  - native tokenizer-to-PLE integration: **EXACT PASS**;
+  - PLE payload views opened / model tensor payload touched: **0 / 0**;
+  - ADR 0012: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Task 2.5 — CPU reference tensor primitives: **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
 

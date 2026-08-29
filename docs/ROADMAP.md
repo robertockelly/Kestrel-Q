@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.3 are
-  complete/pass; Task 2.4 has not started.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.4 are
+  complete/pass; Task 2.5 has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -60,7 +60,12 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   separate official text-only chat subset match all independent original and
   divergence vectors. ADR 0011 is accepted; model tensor payload touched is
   zero.
-- R1/Epic 2 remains in progress. Task 2.4 has not started.
+- Task 2.4 is complete/pass. The native C17 PLE address engine validates the
+  exact target semantics, maintains a bounded 32-byte per-stream history and
+  emits 16 canonical member/row intents per token. All original and expanded
+  pinned-oracle vectors pass exactly; no PLE payload view, I/O, cache, prefetch
+  or scheduler behavior was introduced. ADR 0012 is accepted.
+- R1/Epic 2 remains in progress. Task 2.5 has not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.

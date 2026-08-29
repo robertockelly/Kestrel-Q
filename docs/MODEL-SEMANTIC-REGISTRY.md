@@ -86,6 +86,12 @@ than inventing physical tensors or offsets:
 - `qwen4exp.ple.head_offsets`;
 - `qwen4exp.ple.head_vocab_sizes`.
 
+Task 2.4 consumes these three bindings and validates all 128 fused member
+descriptors when constructing its independent immutable PLE address config.
+The config copies only the exact address constants; it opens no fused-member
+view and emits canonical member/row identities rather than physical offsets.
+The semantic-registry ownership contract is therefore unchanged.
+
 Unique physical coverage is 1,224/1,224, unknown physical tensors are zero and
 unbound required semantics are zero.
 

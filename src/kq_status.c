@@ -80,6 +80,10 @@ const char *kq_status_string(kq_status status) {
             return "unsupported chat role, content, or option";
         case KQ_STATUS_MALFORMED_CHAT:
             return "malformed chat input";
+        case KQ_STATUS_INCOMPATIBLE_PLE:
+            return "incompatible PLE configuration";
+        case KQ_STATUS_INVALID_PLE_STATE:
+            return "invalid PLE stream state";
         default:
             return "unknown Kestrel-Q status";
     }

@@ -103,3 +103,13 @@ combinations match exactly. The separate canonical differential corpus adds 22
 encode, five decode, two supported-chat and three rejected-chat cases at
 `research/tokenizer/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json`
 (SHA-256 `f383e213ccc4cde06b47a9855ca1eabb54d0b8911acbd43b2078be5fc546b463`).
+
+Task 2.4 independently regenerated `canonical/ple-address-vectors.json`
+byte-identically and compared the native C17 engine to all 7 sequence cases
+and 4 decode steps. The original PLE SHA-256 remains unchanged. The expanded
+canonical differential evidence adds 12 sequence cases, three incremental
+streams and one tokenizer-to-PLE integration case at
+`research/ple/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json`
+(SHA-256 `b9c9be4d927d59c9ac12ba2313034cda5a1857d5484fca479327c9b771cb9671`).
+Expected values come only from the pinned canonical oracle; the native runtime
+is never its own oracle.

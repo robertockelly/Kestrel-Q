@@ -210,3 +210,37 @@ python tools/generate-unicode9-assigned.py `
 
 The generated table SHA-256 is
 `83a57437a5785fcbe40b21f4f297c5b7cc5bc472ace9b0a57a3e9040a8a39694`.
+
+## Task 2.4 PLE address oracle
+
+`generate-ple-differential.py` is a research-only, standard-library generator.
+It requires the exact pinned Transformers Qwen4-Exp implementation file,
+official `config.json` and unchanged Task 1.4 tokenizer vectors, and verifies
+all three hashes before deriving expected PLE values. It independently derives
+the seeded odd multipliers and prime/head-offset sequence, then emits 12
+sequence, three incremental-stream and one tokenizer-integration case. It does
+not import or invoke Kestrel-Q.
+
+```powershell
+python tools/generate-ple-differential.py `
+  --transformers-source .research-cache/task-1.4/transformers/src/transformers/models/qwen4_exp/modeling_qwen4_exp.py `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --tokenizer-vectors research/goldens/Qwen3.8-Flash-Next/canonical/tokenizer-vectors.json `
+  --output research/ple/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+```
+
+The deterministic output SHA-256 is
+`b9c9be4d927d59c9ac12ba2313034cda5a1857d5484fca479327c9b771cb9671`.
+
+`validate-native-ple.py` first requires the unchanged Task 1.4 PLE SHA and the
+expanded differential SHA, then compares every native intent/state field with
+the independent expectations through the test-only `kq_ple_probe`. The probe
+opens the model from the explicit test argument supplied from `KQ_GGUF_PATH`;
+production PLE code reads no JSON and has no Python dependency.
+
+```powershell
+python tools/validate-native-ple.py `
+  --probe build-cpu/Release/kq_ple_probe.exe `
+  --golden research/goldens/Qwen3.8-Flash-Next/canonical/ple-address-vectors.json `
+  --differential research/ple/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
+```
