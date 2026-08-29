@@ -33,13 +33,18 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Task 2 implementation remains **NOT STARTED**.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Task 2.0 is complete/pass
+  and Task 2.1 remains **NOT STARTED**.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
 
-- The initial container decision is complete in ADR 0006. Production loader,
-  mapping and malformed-artifact implementation remain future R1 work.
+- Task 2.0 is complete/pass. ADR 0008 accepts the Kestrel-Q-owned C17 GGUF v3
+  layer: read-only Win32 mapping, bounded logical views, checked physical tensor
+  descriptors, `kq-inspect`, malformed-artifact coverage and exact reproduction
+  of the 111 GB artifact's structural oracle with zero payload bytes accessed.
+- R1/Epic 2 remains in progress. Task 2.1 canonical semantic descriptors and
+  later loader work have not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.

@@ -74,16 +74,26 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: NOT STARTED.** ADR 0006 selected a future container
-strategy; it did not start Task 2 loader/runtime implementation.
+**Implementation status: IN PROGRESS.** Task 2.0 is complete/pass; Task 2.1 has
+not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
-- [ ] Implement file mapping
-- [ ] Implement metadata parsing
-- [ ] Implement safe tensor lookup
-- [ ] Implement datatype registry
-- [ ] Implement inspection CLI
-- [ ] Add malformed-artifact tests
+- [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
+  - Windows read-only file mapping and bounded logical views: **VERIFIED**;
+  - target-first GGUF v3 metadata/tensor parser: **VERIFIED**;
+  - seven observed storage types and packed-span validation: **VERIFIED**;
+  - `kq-inspect`, deterministic malformed suite and real-artifact oracle:
+    **PASS**;
+  - normal inspection payload bytes accessed: **0**;
+  - ADR 0008 native read-only GGUF layer: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [x] Implement file mapping (Task 2.0 physical container layer)
+- [x] Implement metadata parsing (Task 2.0 target-required subset)
+- [x] Implement safe physical tensor lookup (Task 2.0)
+- [x] Implement physical datatype/block registry (Task 2.0)
+- [x] Implement inspection CLI (Task 2.0 summary mode)
+- [x] Add malformed-artifact tests (Task 2.0)
+- [ ] Task 2.1 — Canonical tensor registry and semantic descriptors
 
 ## Epic 3 — CPU correctness engine
 

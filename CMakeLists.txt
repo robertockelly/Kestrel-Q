@@ -40,7 +40,10 @@ function(kq_configure_cuda_target target)
 endfunction()
 
 add_library(kq_core
+    src/kq_file_win32.c
+    src/kq_gguf.c
     src/kq_runtime.c
+    src/kq_status.c
 )
 
 target_include_directories(kq_core
@@ -56,6 +59,13 @@ add_executable(kq
 
 target_link_libraries(kq PRIVATE kq_core)
 kq_enable_c_warnings(kq)
+
+add_executable(kq_inspect
+    src/inspect_main.c
+)
+set_target_properties(kq_inspect PROPERTIES OUTPUT_NAME "kq-inspect")
+target_link_libraries(kq_inspect PRIVATE kq_core)
+kq_enable_c_warnings(kq_inspect)
 
 if(KQ_ENABLE_CUDA)
     enable_language(CUDA)
@@ -113,6 +123,17 @@ if(KQ_BUILD_TESTS)
     target_link_libraries(kq_smoke_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_smoke_test)
     add_test(NAME kq_smoke COMMAND kq_smoke_test)
+
+    add_executable(kq_gguf_test tests/gguf_test.c)
+    target_link_libraries(kq_gguf_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_gguf_test)
+    add_test(NAME kq_gguf_synthetic COMMAND kq_gguf_test)
+
+    add_executable(kq_gguf_integration_test tests/gguf_integration.c)
+    target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_gguf_integration_test)
+    add_test(NAME kq_gguf_real_artifact COMMAND kq_gguf_integration_test)
+    set_tests_properties(kq_gguf_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
 
     if(KQ_ENABLE_CUDA)
         add_executable(kq_cuda_smoke_test tests/cuda_smoke.c)

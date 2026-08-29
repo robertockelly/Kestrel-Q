@@ -41,6 +41,12 @@ Responsibilities:
 - expose typed tensor descriptors;
 - reject unsupported layouts.
 
+Task 2.0 establishes the first production boundary beneath the model loader: a
+Windows-native read-only file/view layer and target-first GGUF v3 parser. It
+exposes immutable physical metadata and tensor descriptors without payload
+pointers. Canonical Qwen identities remain a separate Task 2.1 layer rather
+than being inferred from GGUF names.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.
@@ -95,6 +101,13 @@ Responsibilities:
 - optional direct/unbuffered experiments;
 - streaming metrics;
 - persistent session/state storage later.
+
+The initial implemented storage primitive uses `CreateFileW`,
+`CreateFileMappingW` and bounded `MapViewOfFile` logical views. Windows
+allocation-granularity alignment is internal to the view object; checked
+64-bit logical offsets and lengths remain visible to callers. Task 2.0 maps
+header/directory address space read-only and does not intentionally dereference
+tensor payload during normal inspection.
 
 ## 4. Memory hierarchy
 

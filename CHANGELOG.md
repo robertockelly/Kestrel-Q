@@ -66,6 +66,19 @@ The project is currently pre-alpha.
   required before final scheduler/residency design. It must separate OS page
   cache, explicit Kestrel-Q RAM cache and cold physical reads; it does not block
   Task 2 loader/correctness work.
+- Completed Task 2.0 and accepted ADR 0008: the first production C17 runtime
+  component is a Kestrel-Q-owned, Windows-native, read-only GGUF v3 layer with
+  bounded logical mappings, immutable physical descriptors and no llama.cpp or
+  GGML runtime dependency. Task 2.1 remains not started and
+  `KQ-BACKLOG-BENCH-002` remains deferred.
+- Reproduced the complete Epic 1 structural oracle through `kq-inspect` on the
+  registered 111 GB artifact without a full-file hash or intentional payload
+  access. File size/last-write time remained unchanged and the parser reported
+  `payload_bytes_accessed = 0`.
+- Fixed two intermediate MSVC C4701 warnings caused by conservative data-flow
+  analysis of parser locals populated through status-returning helpers. Explicit
+  initialization restored a warning-free `/W4` build; the clean CPU/CUDA build
+  gate protects against recurrence.
 
 ### Added
 
@@ -120,3 +133,14 @@ The project is currently pre-alpha.
   error before a valid manifest; a final scan also removed 19 zero-tensor
   llama.cpp vocabulary GGUF fixtures from ignored cache and added source-tree
   fixture rejection. Corrected regeneration is byte-identical.
+- Production `kq_status`, Win32 `kq_file`/bounded-view and target-first `kq_gguf`
+  APIs with checked 64-bit arithmetic, bounded file-backed strings, seven
+  target tensor block geometries, duplicate/alignment/span validation and
+  deterministic cleanup on every tested failure path.
+- `kq-inspect` structural summary CLI plus deterministic runtime-created GGUF
+  fixtures covering one valid seven-type container and 21 malformed cases,
+  including truncation, strings/arrays, overflow, rank/dimensions, type,
+  duplicate name, alignment/span and quantized-geometry failures.
+- Opt-in `KQ_GGUF_PATH` integration coverage asserting the exact artifact size,
+  version, architecture, metadata/tensor counts, packed bytes, overhead and all
+  tensor-type counts without committing or modifying model payload.

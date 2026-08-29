@@ -1,0 +1,47 @@
+#ifndef KQ_STATUS_H
+#define KQ_STATUS_H
+
+#include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum kq_status {
+    KQ_STATUS_OK = 0,
+    KQ_STATUS_INVALID_ARGUMENT,
+    KQ_STATUS_OUT_OF_MEMORY,
+    KQ_STATUS_FILE_OPEN_FAILED,
+    KQ_STATUS_FILE_SIZE_FAILED,
+    KQ_STATUS_FILE_MAP_FAILED,
+    KQ_STATUS_TRUNCATED,
+    KQ_STATUS_BAD_MAGIC,
+    KQ_STATUS_UNSUPPORTED_VERSION,
+    KQ_STATUS_MALFORMED_METADATA,
+    KQ_STATUS_UNSUPPORTED_METADATA,
+    KQ_STATUS_MALFORMED_TENSOR,
+    KQ_STATUS_UNSUPPORTED_TENSOR_TYPE,
+    KQ_STATUS_ARITHMETIC_OVERFLOW,
+    KQ_STATUS_LIMIT_EXCEEDED,
+    KQ_STATUS_INVALID_ALIGNMENT,
+    KQ_STATUS_SPAN_OUT_OF_RANGE,
+    KQ_STATUS_DUPLICATE_METADATA,
+    KQ_STATUS_DUPLICATE_TENSOR,
+    KQ_STATUS_INCONSISTENT_DATA_SECTION
+} kq_status;
+
+#define KQ_DIAGNOSTIC_CAPACITY 256U
+
+typedef struct kq_diagnostic {
+    kq_status status;
+    char message[KQ_DIAGNOSTIC_CAPACITY];
+} kq_diagnostic;
+
+const char *kq_status_string(kq_status status);
+void kq_diagnostic_clear(kq_diagnostic *diagnostic);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
