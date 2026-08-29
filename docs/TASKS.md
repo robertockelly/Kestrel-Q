@@ -74,8 +74,8 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Task 2.0 is complete/pass; Task 2.1 has
-not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0 and 2.1 are complete/pass;
+Task 2.2 has not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -93,7 +93,18 @@ not started.
 - [x] Implement physical datatype/block registry (Task 2.0)
 - [x] Implement inspection CLI (Task 2.0 summary mode)
 - [x] Add malformed-artifact tests (Task 2.0)
-- [ ] Task 2.1 — Canonical tensor registry and semantic descriptors
+- [x] Task 2.1 — Canonical tensor registry and semantic descriptors:
+  - target `qwen4exp` identity and 48/36/12, 512-expert/top-k-10 topology:
+    **VERIFIED**;
+  - initial-text semantic registry: **1,294 / 1,294**;
+  - physical GGUF coverage: **1,224 / 1,224**, unknown = 0;
+  - metadata-derived PLE semantics: **3**, unbound required = 0;
+  - complete Epic 1 mapping-oracle comparison and deterministic native dump:
+    **PASS**;
+  - semantic inspection payload bytes accessed: **0**;
+  - ADR 0009 canonical semantic tensor registry: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Task 2.2 — Quantized tensor views and block geometry
 
 ## Epic 3 — CPU correctness engine
 

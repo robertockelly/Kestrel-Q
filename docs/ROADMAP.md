@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Task 2.0 is complete/pass
-  and Task 2.1 remains **NOT STARTED**.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0 and 2.1 are
+  complete/pass and Task 2.2 remains **NOT STARTED**.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -43,8 +43,13 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   layer: read-only Win32 mapping, bounded logical views, checked physical tensor
   descriptors, `kq-inspect`, malformed-artifact coverage and exact reproduction
   of the 111 GB artifact's structural oracle with zero payload bytes accessed.
-- R1/Epic 2 remains in progress. Task 2.1 canonical semantic descriptors and
-  later loader work have not started.
+- Task 2.1 is complete/pass. ADR 0009 accepts the immutable canonical semantic
+  registry: exact `qwen4exp` identity/topology validation, 1,294/1,294
+  initial-text semantics, 1,224/1,224 physical coverage, explicit split/fused/
+  metadata relations and zero payload bytes accessed. The complete native dump
+  matches the pinned Epic 1 mapping oracle.
+- R1/Epic 2 remains in progress. Task 2.2 quantized tensor views and later
+  loader work have not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.

@@ -17,17 +17,6 @@
 #define KQ_GGUF_DEFAULT_ALIGNMENT 32ULL
 #define KQ_GGUF_MAX_ALIGNMENT 4096ULL
 
-enum {
-    KQ_GGUF_VALUE_UINT16 = 2,
-    KQ_GGUF_VALUE_UINT32 = 4,
-    KQ_GGUF_VALUE_INT32 = 5,
-    KQ_GGUF_VALUE_FLOAT32 = 6,
-    KQ_GGUF_VALUE_BOOL = 7,
-    KQ_GGUF_VALUE_STRING = 8,
-    KQ_GGUF_VALUE_ARRAY = 9,
-    KQ_GGUF_VALUE_UINT64 = 10
-};
-
 typedef struct kq_reader {
     const unsigned char *data;
     uint64_t length;
@@ -404,6 +393,7 @@ static kq_status kq_read_metadata_scalar(kq_reader *reader,
 
 static kq_status kq_read_metadata_array(kq_reader *reader,
                                         kq_gguf_metadata *metadata) {
+    const unsigned char *array_data = NULL;
     uint32_t element_type;
     uint64_t length;
     uint64_t bytes;
@@ -437,7 +427,12 @@ static kq_status kq_read_metadata_array(kq_reader *reader,
                                   "GGUF int32 array byte count overflows");
                 return KQ_STATUS_ARITHMETIC_OVERFLOW;
             }
-            return kq_reader_take(reader, bytes, NULL);
+            status = kq_reader_take(reader, bytes, &array_data);
+            if (status == KQ_STATUS_OK) {
+                metadata->array_data.data = array_data;
+                metadata->array_data.length = bytes;
+            }
+            return status;
         case KQ_GGUF_VALUE_UINT64:
             if (!kq_u64_mul_checked(length, 8U, &bytes)) {
                 kq_diagnostic_set(reader->diagnostic,
@@ -445,7 +440,12 @@ static kq_status kq_read_metadata_array(kq_reader *reader,
                                   "GGUF uint64 array byte count overflows");
                 return KQ_STATUS_ARITHMETIC_OVERFLOW;
             }
-            return kq_reader_take(reader, bytes, NULL);
+            status = kq_reader_take(reader, bytes, &array_data);
+            if (status == KQ_STATUS_OK) {
+                metadata->array_data.data = array_data;
+                metadata->array_data.length = bytes;
+            }
+            return status;
         case KQ_GGUF_VALUE_STRING:
             for (index = 0U; index < length; ++index) {
                 status = kq_reader_string(reader, &ignored_string);
@@ -498,6 +498,9 @@ static kq_status kq_parse_metadata(kq_reader *reader, kq_gguf *gguf) {
             status = kq_read_metadata_scalar(reader,
                                              value_type,
                                              &scalar_value);
+            if (status == KQ_STATUS_OK) {
+                metadata->scalar_value = scalar_value;
+            }
         }
         if (status != KQ_STATUS_OK) {
             return status;
@@ -1021,6 +1024,21 @@ const kq_gguf_metadata *kq_gguf_metadata_at(const kq_gguf *gguf,
     return &gguf->metadata[(size_t)index];
 }
 
+const kq_gguf_metadata *kq_gguf_find_metadata(const kq_gguf *gguf,
+                                              const char *key) {
+    uint64_t index;
+    if (gguf == NULL || key == NULL) {
+        return NULL;
+    }
+    for (index = 0U; index < gguf->metadata_count; ++index) {
+        if (kq_string_view_equal_cstr(&gguf->metadata[(size_t)index].key,
+                                      key)) {
+            return &gguf->metadata[(size_t)index];
+        }
+    }
+    return NULL;
+}
+
 const kq_gguf_tensor *kq_gguf_tensor_at(const kq_gguf *gguf,
                                         uint64_t index) {
     if (gguf == NULL || index >= gguf->tensor_count) {
@@ -1042,4 +1060,73 @@ const kq_gguf_tensor *kq_gguf_find_tensor(const kq_gguf *gguf,
         }
     }
     return NULL;
+}
+
+int kq_gguf_metadata_u16(const kq_gguf_metadata *metadata, uint16_t *value) {
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_UINT16) {
+        return 0;
+    }
+    *value = (uint16_t)metadata->scalar_value;
+    return 1;
+}
+
+int kq_gguf_metadata_u32(const kq_gguf_metadata *metadata, uint32_t *value) {
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_UINT32) {
+        return 0;
+    }
+    *value = (uint32_t)metadata->scalar_value;
+    return 1;
+}
+
+int kq_gguf_metadata_i32(const kq_gguf_metadata *metadata, int32_t *value) {
+    uint32_t bits;
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_INT32) {
+        return 0;
+    }
+    bits = (uint32_t)metadata->scalar_value;
+    memcpy(value, &bits, sizeof(bits));
+    return 1;
+}
+
+int kq_gguf_metadata_array_i32_at(const kq_gguf_metadata *metadata,
+                                  uint64_t index,
+                                  int32_t *value) {
+    const unsigned char *data;
+    uint32_t bits;
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_ARRAY ||
+        metadata->array_element_type != KQ_GGUF_VALUE_INT32 ||
+        index >= metadata->array_length || metadata->array_data.data == NULL) {
+        return 0;
+    }
+    data = metadata->array_data.data + (size_t)(index * 4U);
+    bits = (uint32_t)data[0] |
+           ((uint32_t)data[1] << 8U) |
+           ((uint32_t)data[2] << 16U) |
+           ((uint32_t)data[3] << 24U);
+    memcpy(value, &bits, sizeof(bits));
+    return 1;
+}
+
+int kq_gguf_metadata_array_u64_at(const kq_gguf_metadata *metadata,
+                                  uint64_t index,
+                                  uint64_t *value) {
+    const unsigned char *data;
+    uint64_t result = 0U;
+    unsigned int byte_index;
+    if (metadata == NULL || value == NULL ||
+        metadata->value_type != KQ_GGUF_VALUE_ARRAY ||
+        metadata->array_element_type != KQ_GGUF_VALUE_UINT64 ||
+        index >= metadata->array_length || metadata->array_data.data == NULL) {
+        return 0;
+    }
+    data = metadata->array_data.data + (size_t)(index * 8U);
+    for (byte_index = 0U; byte_index < 8U; ++byte_index) {
+        result |= (uint64_t)data[byte_index] << (byte_index * 8U);
+    }
+    *value = result;
+    return 1;
 }

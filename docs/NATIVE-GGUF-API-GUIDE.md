@@ -1,6 +1,6 @@
 # NATIVE-GGUF-API-GUIDE.md
 
-Status: **IMPLEMENTED / TASK 2.0 COMPLETE**
+Status: **IMPLEMENTED / TASKS 2.0–2.1 COMPLETE**
 
 ## File boundary
 
@@ -29,6 +29,8 @@ void      kq_gguf_close(kq_gguf *);
 uint64_t kq_gguf_metadata_count(...);
 uint64_t kq_gguf_tensor_count(...);
 
+const kq_gguf_metadata *kq_gguf_metadata_at(...);
+const kq_gguf_metadata *kq_gguf_find_metadata(...);
 const kq_gguf_tensor *kq_gguf_tensor_at(...);
 const kq_gguf_tensor *kq_gguf_find_tensor(const kq_gguf *, const char *);
 ```
@@ -37,8 +39,17 @@ Use `(ptr,length)` string views for untrusted file-backed strings.
 
 Tensor descriptors contain name, rank, dimensions, GGUF type, element count, offset and packed bytes. They do not require a payload pointer.
 
+Task 2.1 extends metadata descriptors with retained scalar bits and bounded raw
+views for fixed-width numeric arrays. Typed helpers expose uint16/uint32/int32
+scalars and indexed int32/uint64 array values. String arrays remain validated
+and length-addressable but are not flattened or copied. These are still
+header/directory views, not tensor payload access.
+
 Task 2.0 is target-first: GGUF v3 and the metadata/tensor types required by the verified Qwen artifact. Unsupported forms fail closed.
 
 `kq_gguf` retains a header/directory view into the caller-owned `kq_file`.
 Close the GGUF before the file. Returned metadata/tensor/string views are
 immutable and remain valid only until `kq_gguf_close`.
+
+Canonical model semantics are exposed separately by `include/kq_model.h`; see
+`docs/KQ-SEMANTIC-API.md`.

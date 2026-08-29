@@ -79,6 +79,24 @@ The project is currently pre-alpha.
   analysis of parser locals populated through status-returning helpers. Explicit
   initialization restored a warning-free `/W4` build; the clean CPU/CUDA build
   gate protects against recurrence.
+- Completed Task 2.1 and accepted ADR 0009: a target-specific immutable
+  Qwen3.8-Flash-Next semantic registry now validates the complete `qwen4exp`
+  identity/topology and reconciles 1,294 initial-text meanings with all 1,224
+  registered physical GGUF tensors and three metadata-derived PLE meanings.
+- Preserved the exact non-one-to-one representation boundary: 48 MoE gate/up
+  and 12 QSA index query/key splits, 128 logical PLE table members fused into
+  one physical tensor, and explicit PLE address metadata. Routed expert stacks
+  retain their 512-expert axis without fabricating per-expert tensors.
+- Confirmed the complete deterministic native registry against every
+  initial-text row and physical name in the pinned Epic 1 mapping oracle, with
+  zero unknown physical tensors, zero unbound required semantics and zero
+  payload bytes accessed. `KQ-BACKLOG-BENCH-002` remains deferred and placement
+  values remain annotations rather than scheduler policy.
+- Fixed two Task 2.1 implementation findings before the clean gate: explicit
+  pointer initialization resolved conservative MSVC C4701/C4703 diagnostics,
+  and semantic CLI dispatch was moved after successful GGUF parsing after an
+  initial null-GGUF ordering failure. Synthetic and CLI-oracle regressions cover
+  both corrected paths.
 
 ### Added
 
@@ -144,3 +162,13 @@ The project is currently pre-alpha.
 - Opt-in `KQ_GGUF_PATH` integration coverage asserting the exact artifact size,
   version, architecture, metadata/tensor counts, packed bytes, overhead and all
   tensor-type counts without committing or modifying model payload.
+- Production `kq_model` C17 API with stable semantic IDs, canonical
+  component/role/layer descriptors, explicit binding cardinality, expert/fused
+  geometry, runtime scope and preliminary placement annotations. Construction
+  reads only Task 2.0 metadata/descriptors and has no global mutable state.
+- `kq-inspect --semantic-summary`, exact semantic lookup and deterministic TSV
+  dump modes, all retaining `payload_bytes_accessed = 0`.
+- A complete in-memory Task 2.1 target fixture with 20 fail-closed mutations,
+  real-artifact semantic integration, and a standard-library Python validator
+  that uses the Epic 1 CSV only as a test/research oracle; production has no
+  research-file or Python dependency.

@@ -22,6 +22,17 @@ enum {
     KQ_GGUF_TYPE_BF16 = 30
 };
 
+enum {
+    KQ_GGUF_VALUE_UINT16 = 2,
+    KQ_GGUF_VALUE_UINT32 = 4,
+    KQ_GGUF_VALUE_INT32 = 5,
+    KQ_GGUF_VALUE_FLOAT32 = 6,
+    KQ_GGUF_VALUE_BOOL = 7,
+    KQ_GGUF_VALUE_STRING = 8,
+    KQ_GGUF_VALUE_ARRAY = 9,
+    KQ_GGUF_VALUE_UINT64 = 10
+};
+
 typedef struct kq_string_view {
     const unsigned char *data;
     uint64_t length;
@@ -39,7 +50,9 @@ typedef struct kq_gguf_metadata {
     uint32_t value_type;
     uint32_t array_element_type;
     uint64_t array_length;
+    uint64_t scalar_value;
     kq_string_view string_value;
+    kq_string_view array_data;
 } kq_gguf_metadata;
 
 typedef struct kq_gguf_tensor {
@@ -76,6 +89,8 @@ kq_string_view kq_gguf_architecture(const kq_gguf *gguf);
 
 const kq_gguf_metadata *kq_gguf_metadata_at(const kq_gguf *gguf,
                                             uint64_t index);
+const kq_gguf_metadata *kq_gguf_find_metadata(const kq_gguf *gguf,
+                                              const char *key);
 const kq_gguf_tensor *kq_gguf_tensor_at(const kq_gguf *gguf,
                                         uint64_t index);
 const kq_gguf_tensor *kq_gguf_find_tensor(const kq_gguf *gguf,
@@ -86,6 +101,15 @@ int kq_string_view_equal(const kq_string_view *left,
                          const kq_string_view *right);
 int kq_string_view_equal_cstr(const kq_string_view *view,
                               const char *text);
+int kq_gguf_metadata_u16(const kq_gguf_metadata *metadata, uint16_t *value);
+int kq_gguf_metadata_u32(const kq_gguf_metadata *metadata, uint32_t *value);
+int kq_gguf_metadata_i32(const kq_gguf_metadata *metadata, int32_t *value);
+int kq_gguf_metadata_array_i32_at(const kq_gguf_metadata *metadata,
+                                  uint64_t index,
+                                  int32_t *value);
+int kq_gguf_metadata_array_u64_at(const kq_gguf_metadata *metadata,
+                                  uint64_t index,
+                                  uint64_t *value);
 
 #ifdef __cplusplus
 }

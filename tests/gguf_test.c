@@ -315,10 +315,13 @@ static void test_valid_fixture(const test_fixture *fixture) {
     kq_file_view *view = NULL;
     kq_gguf *gguf = NULL;
     const kq_gguf_tensor *tensor;
+    const kq_gguf_metadata *metadata;
     const kq_gguf_type_info *type_info;
     kq_string_view architecture;
     kq_status status;
     unsigned int index;
+    uint32_t metadata_u32 = 0U;
+    int32_t metadata_i32 = 0;
 
     if (!write_temp_fixture(fixture, fixture->size, path)) {
         fprintf(stderr, "FAIL: valid fixture could not be written\n");
@@ -407,6 +410,18 @@ static void test_valid_fixture(const test_fixture *fixture) {
                "out-of-range tensor lookup must return NULL");
     test_check(kq_gguf_find_tensor(gguf, "missing") == NULL,
                "unknown tensor lookup must return NULL");
+    metadata = kq_gguf_find_metadata(gguf, "general.alignment");
+    test_check(kq_gguf_metadata_u32(metadata, &metadata_u32) &&
+                   metadata_u32 == TEST_ALIGNMENT,
+               "typed scalar metadata lookup must preserve uint32 values");
+    metadata = kq_gguf_find_metadata(gguf, "test.array0");
+    test_check(kq_gguf_metadata_array_i32_at(metadata, 2U, &metadata_i32) &&
+                   metadata_i32 == 3,
+               "typed array metadata lookup must preserve bounded values");
+    test_check(!kq_gguf_metadata_array_i32_at(metadata, 3U, &metadata_i32),
+               "metadata array lookup must reject out-of-range indices");
+    test_check(kq_gguf_find_metadata(gguf, "missing") == NULL,
+               "unknown metadata lookup must return NULL");
 
     tensor = kq_gguf_find_tensor(gguf, "t3");
     test_check(tensor != NULL && tensor->type_id == KQ_GGUF_TYPE_Q8_0,

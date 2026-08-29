@@ -1,6 +1,6 @@
 # `kq-inspect`
 
-Status: **TASK 2.0 COMPLETE / PASS**
+Status: **TASK 2.0 COMPLETE / PASS; TASK 2.1 SEMANTIC MODES IMPLEMENTED**
 
 `kq-inspect` is the first native Kestrel-Q diagnostics executable. It opens one
 GGUF through the read-only Windows file layer and prints structural facts only.
@@ -9,6 +9,9 @@ GGUF through the read-only Windows file layer and prints structural facts only.
 
 ```powershell
 build-cpu\Release\kq-inspect.exe <model.gguf>
+build-cpu\Release\kq-inspect.exe --semantic-summary <model.gguf>
+build-cpu\Release\kq-inspect.exe --semantic <stable-id> <model.gguf>
+build-cpu\Release\kq-inspect.exe --semantic-dump <model.gguf>
 ```
 
 The path is a command-line input and is never persisted by the tool. The real
@@ -49,6 +52,20 @@ diagnostic and exit non-zero.
 
 The command does not hash the full file, dump tensor values, dereference tensor
 payload, dequantize data or allocate the model footprint. Its mapped address
-range is virtual; only header/directory bytes are parsed. Current Task 2.0 has a
-single summary mode. Metadata/tensor listing, JSON output and canonical semantic
-interpretation remain future work.
+range is virtual; only header/directory bytes are parsed. The default Task 2.0
+mode remains the physical summary. Metadata/tensor listing and JSON output
+remain future work.
+
+## Semantic diagnostics
+
+`--semantic-summary` constructs the Task 2.1 immutable model registry and
+prints identity/topology, semantic/physical coverage, relation counts,
+placement annotations and `payload_bytes_accessed`. For the registered artifact
+it reports 1,294 semantics, 1,224/1,224 unique physical coverage, three
+metadata-derived entries, 48/36/12 layers, 512 experts/top-k 10 and zero
+unknown/unbound entries.
+
+`--semantic <stable-id>` shows one canonical descriptor and its ordered
+physical or metadata binding. `--semantic-dump` emits deterministic TSV used by
+the research-only Epic 1 oracle validator. None of these modes opens a tensor
+payload view.

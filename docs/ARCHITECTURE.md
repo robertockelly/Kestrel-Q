@@ -44,8 +44,14 @@ Responsibilities:
 Task 2.0 establishes the first production boundary beneath the model loader: a
 Windows-native read-only file/view layer and target-first GGUF v3 parser. It
 exposes immutable physical metadata and tensor descriptors without payload
-pointers. Canonical Qwen identities remain a separate Task 2.1 layer rather
-than being inferred from GGUF names.
+pointers.
+
+Task 2.1 adds the separate Qwen3.8-Flash-Next semantic registry. The
+`qwen4exp` adapter validates the complete target topology and maps all initial
+text semantics to immutable stable IDs with explicit renamed, transformed,
+split, fused and metadata-derived bindings. Future GDN/QSA/MoE/PLE code consumes
+these IDs rather than raw GGUF names. The registry retains no payload pointers,
+performs no allocation/scheduling and fails on every unknown physical tensor.
 
 ### Tensor runtime
 

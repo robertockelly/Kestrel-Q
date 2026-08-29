@@ -8,6 +8,7 @@
 
 #include "kq_file.h"
 #include "kq_gguf.h"
+#include "kq_model.h"
 #include "kq_status.h"
 
 #define KQ_TEST_SKIP 77
@@ -62,6 +63,7 @@ int main(void) {
     kq_diagnostic diagnostic;
     kq_file *file = NULL;
     kq_gguf *gguf = NULL;
+    kq_model *model = NULL;
     const kq_gguf_tensor *tensor;
     kq_string_view architecture;
     uint64_t observed_counts[sizeof(expected_types) /
@@ -177,10 +179,60 @@ int main(void) {
         }
     }
 
-    printf("real GGUF oracle: PASS, payload_bytes_accessed=0\n");
+    status = kq_model_open_from_gguf(gguf, &model, &diagnostic);
+    if (status != KQ_STATUS_OK) {
+        print_error(status, &diagnostic);
+        goto cleanup;
+    }
+    if (kq_model_hidden_size(model) != 2560U ||
+        kq_model_vocabulary_size(model) != 248320U ||
+        kq_model_context_length(model) != 262144U ||
+        kq_model_semantic_tensor_count(model) != 1294U ||
+        kq_model_metadata_derived_count(model) != 3U ||
+        kq_model_physical_tensor_count(model) != EXPECTED_TENSOR_COUNT ||
+        kq_model_physical_coverage_count(model) != EXPECTED_TENSOR_COUNT ||
+        kq_model_unknown_physical_count(model) != 0U ||
+        kq_model_unbound_required_count(model) != 0U ||
+        kq_model_layer_count(model) != 48U ||
+        kq_model_gdn_layer_count(model) != 36U ||
+        kq_model_qsa_layer_count(model) != 12U ||
+        kq_model_expert_count(model) != 512U ||
+        kq_model_expert_top_k(model) != 10U ||
+        kq_model_relation_count(model,
+                                KQ_BINDING_RENAMED_ONE_TO_ONE) != 847U ||
+        kq_model_relation_count(model,
+                                KQ_BINDING_TRANSFORMED_LAYOUT) != 256U ||
+        kq_model_relation_count(
+            model,
+            KQ_BINDING_ONE_CANONICAL_TO_MULTIPLE_PHYSICAL) != 60U ||
+        kq_model_relation_count(
+            model,
+            KQ_BINDING_MULTIPLE_CANONICAL_TO_ONE_PHYSICAL) != 128U ||
+        kq_model_relation_count(model,
+                                KQ_BINDING_METADATA_DERIVED) != 3U ||
+        kq_model_placement_count(
+            model, KQ_PLACEMENT_ALWAYS_NEEDED_CANDIDATE) != 1061U ||
+        kq_model_placement_count(
+            model, KQ_PLACEMENT_ROUTED_EXPERT_CACHE_CANDIDATE) != 96U ||
+        kq_model_placement_count(
+            model, KQ_PLACEMENT_PLE_DISK_BACKED_CANDIDATE) != 137U ||
+        kq_model_find_semantic_tensor(
+            model, "layer.03.qsa.indexer.qk") == NULL ||
+        kq_model_find_semantic_tensor(
+            model, "layer.01.ple.table.127") == NULL ||
+        kq_model_find_semantic_tensor(
+            model, "layer.01.ple.address.head_offsets") == NULL ||
+        kq_gguf_payload_bytes_accessed(gguf) != 0U) {
+        fprintf(stderr, "real GGUF semantic registry oracle mismatch\n");
+        goto cleanup;
+    }
+
+    printf("real GGUF physical/semantic oracle: PASS, "
+           "semantics=1294, payload_bytes_accessed=0\n");
     result = 0;
 
 cleanup:
+    kq_model_close(model);
     kq_gguf_close(gguf);
     kq_file_close(file);
     if (path != NULL && have_before_attributes &&

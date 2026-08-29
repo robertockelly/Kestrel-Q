@@ -42,6 +42,7 @@ endfunction()
 add_library(kq_core
     src/kq_file_win32.c
     src/kq_gguf.c
+    src/kq_model.c
     src/kq_runtime.c
     src/kq_status.c
 )
@@ -129,11 +130,34 @@ if(KQ_BUILD_TESTS)
     kq_enable_c_warnings(kq_gguf_test)
     add_test(NAME kq_gguf_synthetic COMMAND kq_gguf_test)
 
+    add_executable(kq_model_test tests/model_test.c)
+    target_link_libraries(kq_model_test PRIVATE kq_core)
+    target_include_directories(kq_model_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_model_test)
+    add_test(NAME kq_model_semantic_synthetic COMMAND kq_model_test)
+
     add_executable(kq_gguf_integration_test tests/gguf_integration.c)
     target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_gguf_integration_test)
     add_test(NAME kq_gguf_real_artifact COMMAND kq_gguf_integration_test)
     set_tests_properties(kq_gguf_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
+    find_package(Python3 COMPONENTS Interpreter QUIET)
+    if(Python3_Interpreter_FOUND)
+        add_test(
+            NAME kq_model_semantic_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-semantic-registry.py
+                --inspect $<TARGET_FILE:kq_inspect>
+                --mapping
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/canonical-gguf-mapping.csv
+        )
+        set_tests_properties(kq_model_semantic_oracle PROPERTIES
+            SKIP_RETURN_CODE 77
+        )
+    endif()
 
     if(KQ_ENABLE_CUDA)
         add_executable(kq_cuda_smoke_test tests/cuda_smoke.c)

@@ -48,6 +48,14 @@ const char *kq_status_string(kq_status status) {
             return "duplicate GGUF tensor name";
         case KQ_STATUS_INCONSISTENT_DATA_SECTION:
             return "inconsistent GGUF data section";
+        case KQ_STATUS_UNSUPPORTED_MODEL:
+            return "unsupported model";
+        case KQ_STATUS_MODEL_TOPOLOGY_MISMATCH:
+            return "model topology mismatch";
+        case KQ_STATUS_SEMANTIC_MAPPING_FAILED:
+            return "semantic tensor mapping failed";
+        case KQ_STATUS_UNKNOWN_PHYSICAL_TENSOR:
+            return "unknown physical tensor";
         default:
             return "unknown Kestrel-Q status";
     }

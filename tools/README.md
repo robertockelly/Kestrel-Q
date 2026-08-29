@@ -125,3 +125,21 @@ python tools/validate-reference-goldens.py `
 
 Both tools are research-only. Transformers/tokenizers/Jinja are isolated
 generation dependencies; neither tool is a production runtime dependency.
+
+## Task 2.1 semantic-registry oracle
+
+`validate-semantic-registry.py` runs the native `kq-inspect --semantic-dump`
+mode twice, requires byte-identical output, and compares every initial-text
+canonical identity/relation/physical name against the pinned Task 1.3
+`canonical-gguf-mapping.csv`. It also requires 1,224 unique physical names and
+three metadata-derived semantics. The local model is resolved only from
+`KQ_GGUF_PATH` unless an explicit test path is supplied.
+
+```powershell
+python tools/validate-semantic-registry.py `
+  --inspect build-cpu/Release/kq-inspect.exe `
+  --mapping research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/canonical-gguf-mapping.csv
+```
+
+The validator is test/research-only. `kq_model` and the production runtime do
+not read CSV/JSON evidence and do not depend on Python.
