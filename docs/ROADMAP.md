@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.8 are
-  complete/pass; the next model-operator task has not started.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.9 are
+  complete/pass; the next integration task has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -86,7 +86,13 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   contracts, and all 48 real target bindings validate with zero payload bytes
   touched. Packed selected-expert footprints are structural facts, not an
   I/O-per-token claim.
-- R1/Epic 2 remains in progress. The next model-operator task has not started.
+- Task 2.9 is complete/pass. ADR 0017 accepts a scalar C17 PLE value reference:
+  exact Task 2.4 address intents drive a storage-neutral row provider, explicit
+  transactional value history and canonical projection/gate/dilated-conv
+  execution. Independent calibration, holdout, state and address-integration
+  evidence passes. Real bounded IQ4_NL plumbing touches 1,440 logical packed
+  bytes; no final cache, prefetch or scheduling policy was introduced.
+- R1/Epic 2 remains in progress. The next integration task has not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.
@@ -96,7 +102,8 @@ Minimal CPU reference inference and reference-vector parity.
 - GDN scalar reference execution: **COMPLETE / PASS via Task 2.6**.
 - QSA scalar reference execution: **COMPLETE / PASS via Task 2.7**.
 - MoE scalar reference execution: **COMPLETE / PASS via Task 2.8**.
-- Other model-specific operators and full reference inference: **NOT STARTED**.
+- PLE value scalar reference execution: **COMPLETE / PASS via Task 2.9**.
+- Complete layer composition and full reference inference: **NOT STARTED**.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

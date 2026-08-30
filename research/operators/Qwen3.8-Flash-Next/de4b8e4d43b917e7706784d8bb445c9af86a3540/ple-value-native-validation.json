@@ -1,0 +1,502 @@
+{
+  "address_observed": {
+    "conv_norm": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 7.152557373046875e-07,
+      "max_expected_abs": 2.9849133491516113,
+      "max_rel": 6.313831171610463e-06,
+      "max_ulp": 95
+    },
+    "conv_output": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 2.442751407623291,
+      "max_rel": 3.011138857228291e-06,
+      "max_ulp": 46
+    },
+    "conv_pre_activation": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 3.1690258979797363,
+      "max_rel": 3.136459222893643e-06,
+      "max_ulp": 51
+    },
+    "embedding": {
+      "count": 480,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 1.99285888671875,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "final_state": {
+      "count": 432,
+      "exact_bits": false,
+      "max_abs": 7.152557373046875e-07,
+      "max_expected_abs": 2.9849133491516113,
+      "max_rel": 6.313831171610463e-06,
+      "max_ulp": 95
+    },
+    "gate_raw": {
+      "count": 30,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 2.2760143280029297,
+      "max_rel": 9.103280640277143e-07,
+      "max_ulp": 13
+    },
+    "gate_transformed": {
+      "count": 30,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 1.5086464881896973,
+      "max_rel": 4.568275991114886e-07,
+      "max_ulp": 5
+    },
+    "gated_value": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 2.86102294921875e-06,
+      "max_expected_abs": 7.7402238845825195,
+      "max_rel": 6.401756720835049e-06,
+      "max_ulp": 65
+    },
+    "key_norm": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 2.5543010234832764,
+      "max_rel": 1.0366472253482289e-05,
+      "max_ulp": 101
+    },
+    "key_projection": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 1.430511474609375e-06,
+      "max_expected_abs": 9.727546691894531,
+      "max_rel": 1.0368818887840486e-05,
+      "max_ulp": 144
+    },
+    "lookup": {
+      "count": 480,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 1.99285888671875,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "operator_output": {
+      "count": 240,
+      "exact_bits": false,
+      "max_abs": 2.86102294921875e-06,
+      "max_expected_abs": 7.681358814239502,
+      "max_rel": 1.6179746193714707e-05,
+      "max_ulp": 192
+    },
+    "query_norm": {
+      "count": 240,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 2.3233163356781006,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "value_projection": {
+      "count": 120,
+      "exact_bits": false,
+      "max_abs": 3.814697265625e-06,
+      "max_expected_abs": 11.613840103149414,
+      "max_rel": 6.206785257643656e-06,
+      "max_ulp": 64
+    }
+  },
+  "authority": {
+    "expected_values_source": "pinned Transformers Class-C; never Kestrel-Q",
+    "oracle_hashes": {
+      "ple-value-address-integration.json": "05d8a20270b3a904f408d1f473050299442ee0dade009ef1fe51edc919931b09",
+      "ple-value-calibration.json": "bc4b9d51ba37e1f5b3630bab587637b047b54069297d7a34aa4209e8a3dcd389",
+      "ple-value-contract.json": "9e61eb76d9c96c4535eb50436b1d68f23a900e1be02fede15ef38b1edb098acb",
+      "ple-value-holdout.json": "17eb9bc2c5ab63e6dc54d059f2c5643deeff56785631851dda4f3fb345b3c786",
+      "ple-value-state-vectors.json": "d35b375ba7133af587591cc40becc445bd5ec2a6488f385964743a9cfcf5f9a2"
+    }
+  },
+  "characterization_metrics": {
+    "address-eos-boundary": {
+      "lookups": 64,
+      "scratch": 1192
+    },
+    "address-history-10": {
+      "lookups": 160,
+      "scratch": 1192
+    },
+    "address-length-1": {
+      "lookups": 16,
+      "scratch": 1192
+    },
+    "cal-length-1": {
+      "lookups": 4,
+      "scratch": 1096
+    },
+    "cal-length-10": {
+      "lookups": 40,
+      "scratch": 1096
+    },
+    "cal-length-3": {
+      "lookups": 12,
+      "scratch": 1096
+    },
+    "cal-length-9": {
+      "lookups": 36,
+      "scratch": 1096
+    },
+    "holdout-length-11": {
+      "lookups": 44,
+      "scratch": 1096
+    },
+    "holdout-length-2": {
+      "lookups": 8,
+      "scratch": 1096
+    },
+    "holdout-length-4": {
+      "lookups": 16,
+      "scratch": 1096
+    }
+  },
+  "contracts": {
+    "conv_norm": {
+      "abs_limit": 5.289324462864897e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 2.5462586879730225,
+        "max_rel": 6.788833229256748e-07,
+        "max_ulp": 7
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 5.980648570366549e-06,
+      "ulp_limit": 58
+    },
+    "conv_output": {
+      "abs_limit": 6.535275815622299e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 3.8527333736419678,
+        "max_rel": 9.938777132861572e-06,
+        "max_ulp": 113
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 6.154001142998193e-05,
+      "ulp_limit": 694
+    },
+    "conv_pre_activation": {
+      "abs_limit": 6.607558134419378e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 3.9285268783569336,
+        "max_rel": 9.696057331709663e-06,
+        "max_ulp": 108
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 6.0083692623070484e-05,
+      "ulp_limit": 664
+    },
+    "embedding": {
+      "abs_limit": 0.0,
+      "calibration_observed": {
+        "count": 184,
+        "exact_bits": true,
+        "max_abs": 0.0,
+        "max_expected_abs": 0.993438720703125,
+        "max_rel": 0.0,
+        "max_ulp": 0
+      },
+      "class": "EXACT_BITS",
+      "rel_limit": 0.0,
+      "ulp_limit": 0
+    },
+    "final_state": {
+      "abs_limit": 5.289324235491222e-06,
+      "calibration_observed": {
+        "count": 576,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 2.5462584495544434,
+        "max_rel": 6.788833229256748e-07,
+        "max_ulp": 7
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 5.980648570366549e-06,
+      "ulp_limit": 58
+    },
+    "gate_raw": {
+      "abs_limit": 3.932195909328584e-06,
+      "calibration_observed": {
+        "count": 46,
+        "exact_bits": false,
+        "max_abs": 3.5762786865234375e-07,
+        "max_expected_abs": 1.8732062578201294,
+        "max_rel": 1.3133575258940024e-05,
+        "max_ulp": 170
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 8.070880018645265e-05,
+      "ulp_limit": 1036
+    },
+    "gate_transformed": {
+      "abs_limit": 4.3450844486869755e-06,
+      "calibration_observed": {
+        "count": 46,
+        "exact_bits": false,
+        "max_abs": 5.066394805908203e-07,
+        "max_expected_abs": 1.368651270866394,
+        "max_rel": 6.525758271518568e-06,
+        "max_ulp": 68
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 4.106189826192391e-05,
+      "ulp_limit": 424
+    },
+    "gated_value": {
+      "abs_limit": 3.8607253145528375e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 3.5762786865234375e-07,
+        "max_expected_abs": 1.7982639074325562,
+        "max_rel": 6.449302804569615e-07,
+        "max_ulp": 10
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 5.776930315554268e-06,
+      "ulp_limit": 76
+    },
+    "key_norm": {
+      "abs_limit": 4.705957735495758e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 3.5762786865234375e-07,
+        "max_expected_abs": 2.6845543384552,
+        "max_rel": 3.432659235340829e-06,
+        "max_ulp": 48
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 2.2503304044857472e-05,
+      "ulp_limit": 304
+    },
+    "key_projection": {
+      "abs_limit": 3.6422482025955105e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 2.384185791015625e-07,
+        "max_expected_abs": 2.31917405128479,
+        "max_rel": 3.444445401234834e-06,
+        "max_ulp": 37
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 2.2574021040221504e-05,
+      "ulp_limit": 238
+    },
+    "lookup": {
+      "abs_limit": 0.0,
+      "calibration_observed": {
+        "count": 184,
+        "exact_bits": true,
+        "max_abs": 0.0,
+        "max_expected_abs": 0.993438720703125,
+        "max_rel": 0.0,
+        "max_ulp": 0
+      },
+      "class": "EXACT_BITS",
+      "rel_limit": 0.0,
+      "ulp_limit": 0
+    },
+    "operator_output": {
+      "abs_limit": 6.805760222050594e-06,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": false,
+        "max_abs": 5.364418029785156e-07,
+        "max_expected_abs": 3.761356830596924,
+        "max_rel": 2.151462994836489e-05,
+        "max_ulp": 256
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 0.00013099512832300184,
+      "ulp_limit": 1552
+    },
+    "query_norm": {
+      "abs_limit": 0.0,
+      "calibration_observed": {
+        "count": 368,
+        "exact_bits": true,
+        "max_abs": 0.0,
+        "max_expected_abs": 2.4816389083862305,
+        "max_rel": 0.0,
+        "max_ulp": 0
+      },
+      "class": "EXACT_BITS",
+      "rel_limit": 0.0,
+      "ulp_limit": 0
+    },
+    "value_projection": {
+      "abs_limit": 3.642100637080148e-06,
+      "calibration_observed": {
+        "count": 184,
+        "exact_bits": false,
+        "max_abs": 2.384185791015625e-07,
+        "max_expected_abs": 2.319019317626953,
+        "max_rel": 4.479774267161194e-07,
+        "max_ulp": 6
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "six-times calibration maximum plus bounded F32 guard",
+      "rel_limit": 4.595213193109216e-06,
+      "ulp_limit": 52
+    }
+  },
+  "holdout_observed": {
+    "conv_norm": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 2.4339916706085205,
+      "max_rel": 7.661256032281468e-07,
+      "max_ulp": 11
+    },
+    "conv_output": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 2.457617998123169,
+      "max_rel": 3.492840695319797e-06,
+      "max_ulp": 47
+    },
+    "conv_pre_activation": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 3.5762786865234375e-07,
+      "max_expected_abs": 3.738197088241577,
+      "max_rel": 3.6511520249385213e-06,
+      "max_ulp": 43
+    },
+    "embedding": {
+      "count": 136,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 0.9935302734375,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "final_state": {
+      "count": 432,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 2.4339916706085205,
+      "max_rel": 7.661256032281468e-07,
+      "max_ulp": 11
+    },
+    "gate_raw": {
+      "count": 34,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 1.912986159324646,
+      "max_rel": 7.629223550077984e-07,
+      "max_ulp": 8
+    },
+    "gate_transformed": {
+      "count": 34,
+      "exact_bits": false,
+      "max_abs": 1.4901161193847656e-07,
+      "max_expected_abs": 1.3831074237823486,
+      "max_rel": 4.2649133892051204e-07,
+      "max_ulp": 5
+    },
+    "gated_value": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 1.1920928955078125e-07,
+      "max_expected_abs": 1.9506778717041016,
+      "max_rel": 8.706514324828019e-07,
+      "max_ulp": 12
+    },
+    "key_norm": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 3.5762786865234375e-07,
+      "max_expected_abs": 2.3854117393493652,
+      "max_rel": 5.6173212289899095e-06,
+      "max_ulp": 59
+    },
+    "key_projection": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 3.2433595657348633,
+      "max_rel": 5.585302462746032e-06,
+      "max_ulp": 48
+    },
+    "lookup": {
+      "count": 136,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 0.9935302734375,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "operator_output": {
+      "count": 272,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 2.812295436859131,
+      "max_rel": 2.9652143293982467e-05,
+      "max_ulp": 256
+    },
+    "query_norm": {
+      "count": 272,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 2.132718801498413,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "value_projection": {
+      "count": 136,
+      "exact_bits": false,
+      "max_abs": 1.341104507446289e-07,
+      "max_expected_abs": 2.6160812377929688,
+      "max_rel": 7.132794242028072e-07,
+      "max_ulp": 9
+    }
+  },
+  "results": {
+    "address_integration_cases": 3,
+    "calibration": "PASS",
+    "calibration_cases": 4,
+    "exact_address_consumption": "PASS",
+    "holdout": "PASS",
+    "holdout_cases": 3,
+    "prefill_decode": "PASS",
+    "state": "PASS"
+  },
+  "schema": "kq-ple-value-native-validation-v1"
+}

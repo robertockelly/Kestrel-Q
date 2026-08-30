@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.8 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.9 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -25,6 +25,10 @@ Initial task order:
    **COMPLETE / PASS**
 8. Task 2.7 — QSA reference operator and independent golden vectors.
    **COMPLETE / PASS**
+9. Task 2.8 — MoE reference operator and independent golden vectors.
+   **COMPLETE / PASS**
+10. Task 2.9 — PLE value reference operator and independent golden vectors.
+    **COMPLETE / PASS**
 
 Constraints:
 
@@ -54,3 +58,11 @@ zero model-payload bytes touched. ADR 0016 is ACCEPTED. No GR composition, PLE
 value execution, complete layer, full forward, SIMD/CUDA model kernel,
 cache/prefetch policy or scheduler is introduced; the next model-operator task
 is **NOT STARTED**.
+
+Task 2.9 characterizes and implements the scalar PLE value path over exact Task
+2.4 intents. Independent calibration, disjoint holdout, state-transition and
+address-integration evidence pass. The real target validates all 128 members,
+the fused IQ4_NL table and six dense bindings; a bounded synchronous provider
+touches 1,440 logical packed bytes. ADR 0017 is ACCEPTED. The next integration
+task is **NOT STARTED**, and no final PLE cache/prefetch/residency policy,
+complete layer or full forward is introduced.

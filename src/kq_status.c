@@ -102,6 +102,12 @@ const char *kq_status_string(kq_status status) {
             return "invalid QSA stream state";
         case KQ_STATUS_INCOMPATIBLE_MOE:
             return "incompatible MoE configuration";
+        case KQ_STATUS_INCOMPATIBLE_PLE_VALUE:
+            return "incompatible PLE value configuration";
+        case KQ_STATUS_INVALID_PLE_VALUE_STATE:
+            return "invalid PLE value stream state";
+        case KQ_STATUS_PLE_LOOKUP_FAILED:
+            return "PLE value lookup failed";
         default:
             return "unknown Kestrel-Q status";
     }

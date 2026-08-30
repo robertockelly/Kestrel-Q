@@ -92,6 +92,15 @@ layers reconcile (43 ordinary, layer 2, and layers 4/30/46/47) with zero model
 payload bytes touched. This strengthens structural plumbing evidence only; it
 does not turn the table into measured I/O/token or a residency policy.
 
+Task 2.9 independently reconciles the PLE footprint through the native
+semantic registry and bounded view/dequant path. The 128 fused IQ4_NL logical
+members each span 225,001,080 packed bytes, for 28,800,138,240 table bytes.
+The six dense PLE tensors add 35,102,720 bytes, yielding the existing exact
+28,835,240,960-byte PLE total. A representative Task 2.4 address set reads 16
+rows, five IQ4_NL blocks per row: 1,440 logical packed bytes and 80 blocks.
+That is bounded correctness evidence, not an I/O/token, cache-hit or throughput
+measurement.
+
 ## Imatrix and provenance
 
 The artifact records:

@@ -121,6 +121,16 @@ calibration/holdout and 512/top-10 routing vectors define correctness. Real
 integration opens bounded expert-member views without dereferencing payload;
 it adds no cache, residency, prefetch, scheduler or optimized MoE kernel.
 
+Task 2.9 adds the scalar C17 PLE value reference boundary. It consumes Task
+2.4's exact ordered logical member/row intents, resolves rows through a
+storage-neutral provider and keeps a separate explicit nine-position value
+history. The reference prefill/decode path validates projection, group RMS
+normalization, gating, dilated depthwise convolution and final combination
+against pinned independent Class-C calibration, holdout and state evidence.
+The real GGUF provider uses Task 2.2 member views and Task 2.5 IQ4_NL decode
+under a hard logical-byte budget. It is synchronous correctness plumbing, not
+a final disk cache, prefetch, residency or scheduling policy.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

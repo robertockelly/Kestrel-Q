@@ -365,6 +365,38 @@ The project is currently pre-alpha.
   Task 2.0–2.7 regressions, the real 48-layer MoE structural gate and the
   deterministic independent oracle. Kestrel-Q emits no new `/W4` warnings;
   only the previously documented NVCC-generated external C4211 remains.
+- Completed Task 2.9 and accepted ADR 0017. The production runtime now has a
+  scalar C17 Qwen3.8 PLE value reference that consumes exact Task 2.4 logical
+  intents, projects and gates table rows, applies the canonical nine-position
+  dilation-3 depthwise convolution, and maintains an explicit transactional
+  value state. Address state and value state remain separate.
+- Generated pinned independent Class-C evidence before native comparison:
+  four reduced calibration cases, three disjoint holdout cases, value-state
+  transitions and three real-address-stream cases pass separate per-checkpoint
+  contracts. Lookup/embedding identity and intent order are exact; Kestrel-Q
+  never defines expected values and no BF16 checkpoint was downloaded.
+- Added strict real target validation for all 128 logical PLE members, the
+  fused IQ4_NL binding and six dense semantics. The table reconciles to
+  28,800,138,240 packed bytes and the complete PLE family to 28,835,240,960.
+  Sixteen bounded rows touch 1,440 logical packed bytes in 80 blocks under the
+  8 MiB guard. No raw payload is committed and no throughput/residency claim is
+  inferred.
+- Corrected Task 2.9 development findings before the clean gate. The oracle
+  generator initially shadowed its output-directory variable with a decode
+  tensor; the native convolution draft tried to source dilated history from a
+  current-token buffer; and the native validator attempted set subtraction
+  against a dictionary. Root-cause fixes plus deterministic regeneration,
+  prefix-prefill/decode equivalence and state regressions cover all three.
+- `/W4` also caught reversed scalar numeric-helper arguments in the first PLE
+  value draft. Correct signatures, explicit position/block arithmetic checks
+  and output/scratch alias rejection now preserve fail-closed transactional
+  behavior. The synchronous GGUF row provider remains correctness plumbing,
+  not a disk cache, prefetcher, scheduler or full-layer implementation;
+  `KQ-BACKLOG-BENCH-002` remains deferred.
+- Final clean Task 2.9 Release validation passes CPU 29/29 and CUDA 31/31,
+  including all Task 2.0–2.8 regressions, the bounded real PLE-row gate and the
+  deterministic independent oracle. Kestrel-Q emits no new `/W4` warning;
+  only the previously documented NVCC-generated external C4211 remains.
 
 ### Added
 

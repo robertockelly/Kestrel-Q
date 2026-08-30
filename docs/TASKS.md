@@ -74,10 +74,10 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.8 are complete/pass. The
-native runtime now includes independently validated scalar GDN, QSA and MoE
-reference paths. GR composition, PLE values, complete layers and a full
-forward path have not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.9 are complete/pass. The
+native runtime now includes independently validated scalar GDN, QSA, MoE and
+PLE-value reference paths. GR composition, complete layers and a full forward
+path have not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -201,7 +201,20 @@ forward path have not started.
   - real model payload bytes touched: **0**;
   - ADR 0016: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Next model-operator task: **NOT STARTED**.
+- [x] Task 2.9 — PLE value reference operator and independent golden vectors:
+  - pinned layer-2 PLE lookup/projection/gate/value-history/convolution
+    contract: **CHARACTERIZED / VERIFIED**;
+  - independent reduced calibration, disjoint holdout, state and Task 2.4
+    address-integration vectors: **PASS**;
+  - scalar batch-1 prefill/decode with explicit transactional nine-position
+    value state: **PASS**;
+  - all 128 logical members, fused IQ4_NL table and six dense semantic
+    bindings: **PASS**;
+  - table bytes **28,800,138,240**, total PLE bytes **28,835,240,960**;
+  - bounded real sample: **1,440 logical packed bytes / 80 blocks**;
+  - ADR 0017: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Next integration task: **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
 
@@ -215,6 +228,7 @@ forward path have not started.
 - [x] Selected routed/shared expert execution (Task 2.8 scalar reference)
 - [x] GDN scalar reference path (Task 2.6)
 - [x] QSA scalar reference path (Task 2.7)
+- [x] PLE value scalar reference path (Task 2.9)
 - [ ] Logits
 - [ ] Sampling
 - [ ] Reference-vector validation

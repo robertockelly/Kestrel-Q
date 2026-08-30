@@ -421,3 +421,46 @@ python tools/validate-native-moe.py `
 
 Production C17 MoE code reads no evidence file and links no Python,
 Transformers, PyTorch or NumPy runtime.
+
+## Task 2.9 PLE value Class-C oracle
+
+`generate-ple-value-reference.py` verifies the pinned official config and
+Transformers source hashes, imports `Qwen4ExpTextPLELayer` from revision
+`805a9e939fa8c1bff8d8ffdf041c051b71a914aa`, and generates expected values
+before native comparison. Tier A uses the canonical equations with bounded F32
+dimensions for four calibration and three disjoint holdout cases. Tier B
+combines real Task 2.4 canonical address streams with deterministic synthetic
+tables and weights. State vectors cover prefix prefill plus decode, replay and
+the nine-position dilation boundary. No checkpoint weights are downloaded or
+loaded.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/venv/Lib/site-packages').Path
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-ple-value-reference.py `
+  --checkout .research-cache/task-1.4/transformers `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --output-dir $out `
+  --verify
+```
+
+`validate-native-ple-value.py` drives the test-only `kq_ple_value_probe`,
+derives independent per-checkpoint floating contracts from calibration only,
+then applies them unchanged to disjoint holdout and state. Lookup and embedding
+bits plus Task 2.4 intent fields compare exactly. Normal mode writes native
+validation and updates the deterministic manifest; `--verify` requires both to
+remain byte-identical.
+
+```powershell
+python tools/validate-native-ple-value.py `
+  --probe build-cpu/Release/kq_ple_value_probe.exe `
+  --evidence-dir $out `
+  --verify
+```
+
+The real CTest integration uses `KQ_GGUF_PATH` only, resolves rows through
+Task 2.2 views and Task 2.5 IQ4_NL decode, and enforces an 8 MiB logical packed
+payload guard. Production C17 PLE value code reads no evidence JSON and links
+no Python, Transformers, PyTorch or NumPy runtime.

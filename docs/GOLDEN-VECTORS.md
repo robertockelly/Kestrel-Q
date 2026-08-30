@@ -103,6 +103,23 @@ requires exact expert selection across seven Tier-B cases.
 | `moe-native-validation.json` | `6920c7750c95d52c1299d167a7a3b053c12d7f418626127a87aba09c438dae62` |
 | `moe-manifest.json` | `3b730e0fbb47940c57358b73aaa4db60b9c03c007450b20ecfb3a76842deb1c8` |
 
+Task 2.9 uses the same governed namespace. The independent generator imports
+the pinned `Qwen4ExpTextPLELayer`, produces reduced calibration, disjoint
+holdout and value-state expectations before native execution, and separately
+feeds real Task 2.4 address streams into deterministic synthetic tables. The
+native validator applies calibration-derived contracts unchanged to holdout;
+intent fields and lookup/embedding identity compare exactly.
+
+| Task 2.9 asset | SHA-256 |
+|---|---|
+| `ple-value-contract.json` | `9e61eb76d9c96c4535eb50436b1d68f23a900e1be02fede15ef38b1edb098acb` |
+| `ple-value-calibration.json` | `bc4b9d51ba37e1f5b3630bab587637b047b54069297d7a34aa4209e8a3dcd389` |
+| `ple-value-holdout.json` | `17eb9bc2c5ab63e6dc54d059f2c5643deeff56785631851dda4f3fb345b3c786` |
+| `ple-value-state-vectors.json` | `d35b375ba7133af587591cc40becc445bd5ec2a6488f385964743a9cfcf5f9a2` |
+| `ple-value-address-integration.json` | `05d8a20270b3a904f408d1f473050299442ee0dade009ef1fe51edc919931b09` |
+| `ple-value-native-validation.json` | `472b24242c22b2896ce0daa1891bbe0cd99c1b6c14f2107dacd58c5780e7d0f4` |
+| `ple-value-manifest.json` | `dc4f0ca4a0303d37c49aec9549f54cc84bbd437a73044679e430ac5599d56589` |
+
 The Class-C full-model plan fixes three prompt IDs, batch 1, BF16, text-only,
 greedy generation, no vision/MTP/speculation, exact dependencies and hooks
 spanning embedding/GR, early GDN, PLE, first QSA, routers, middle/late layers,

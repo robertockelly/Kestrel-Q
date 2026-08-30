@@ -1,0 +1,37 @@
+{
+  "expected_values_from_kestrel_q": false,
+  "files": {
+    "ple-value-address-integration.json": {
+      "bytes": 180446,
+      "sha256": "05d8a20270b3a904f408d1f473050299442ee0dade009ef1fe51edc919931b09"
+    },
+    "ple-value-calibration.json": {
+      "bytes": 144467,
+      "sha256": "bc4b9d51ba37e1f5b3630bab587637b047b54069297d7a34aa4209e8a3dcd389"
+    },
+    "ple-value-contract.json": {
+      "bytes": 54678,
+      "sha256": "9e61eb76d9c96c4535eb50436b1d68f23a900e1be02fede15ef38b1edb098acb"
+    },
+    "ple-value-holdout.json": {
+      "bytes": 107264,
+      "sha256": "17eb9bc2c5ab63e6dc54d059f2c5643deeff56785631851dda4f3fb345b3c786"
+    },
+    "ple-value-native-validation.json": {
+      "bytes": 14255,
+      "class": "native-validation-against-independent-Class-C",
+      "sha256": "472b24242c22b2896ce0daa1891bbe0cd99c1b6c14f2107dacd58c5780e7d0f4",
+      "status": "GENERATED_VERIFIED"
+    },
+    "ple-value-state-vectors.json": {
+      "bytes": 23257,
+      "sha256": "d35b375ba7133af587591cc40becc445bd5ec2a6488f385964743a9cfcf5f9a2"
+    }
+  },
+  "full_model_weights_downloaded": false,
+  "generation_tool": "tools/generate-ple-value-reference.py",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "offline": true,
+  "schema": "kq-ple-value-evidence-manifest-v1",
+  "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+}

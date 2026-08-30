@@ -67,6 +67,15 @@ failure leaves externally visible state unchanged. This transactional baseline
 does not define final cache allocation, sharing, crop, eviction or scheduling
 policy.
 
+Task 2.9 revalidated the PLE dilated-convolution tail independently of Task
+2.4's token/address history. The value state is exactly the most recent nine
+positions of normalized gated values, shape `[B,10240,9]`; kernel width 4 and
+dilation 3 read history at `t-9`, `t-6` and `t-3` plus the current value. The
+released semantic state is BF16 and occupies 184,320 bytes at batch 1. The F32
+scalar-reference container occupies 368,640 bytes and is explicitly labeled
+as a correctness representation, not released runtime storage. Task 2.9 stages
+and commits this state transactionally across prefill/decode.
+
 Claim sources: [KQ-ARCH-GDN-004], [KQ-ARCH-QSA-004],
 [KQ-ARCH-GR-003], [KQ-ARCH-PLE-004], [KQ-ARCH-MTP-004].
 
