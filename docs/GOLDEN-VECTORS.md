@@ -120,6 +120,21 @@ intent fields and lookup/embedding identity compare exactly.
 | `ple-value-native-validation.json` | `472b24242c22b2896ce0daa1891bbe0cd99c1b6c14f2107dacd58c5780e7d0f4` |
 | `ple-value-manifest.json` | `dc4f0ca4a0303d37c49aec9549f54cc84bbd437a73044679e430ac5599d56589` |
 
+Task 2.10 adds independent complete-layer evidence from the pinned
+`Qwen4ExpTextDecoderLayer` and `Qwen4ExpTextGatedResidual`. Reduced ordinary
+GDN, QSA and PLE-GDN families each have calibration and disjoint holdout cases;
+native output is compared to those expectations and never generates them.
+
+| Task 2.10 asset | SHA-256 |
+|---|---|
+| `layer-contract.json` | `c79f460ac7d68d4b15b0aec8a19d110f38a5bfe6b507e92e3f431b96877140a6` |
+| `layer-calibration.json` | `6bc9c9aeab0a952e4c090be62f3630ee33502ae3be55006b3b0f0d16b914e40b` |
+| `layer-holdout.json` | `9d2d5a74b05558b7328dc9133a8ea25b0f71bf44ba6c43b94fe9fe5496b7bb93` |
+| `layer-state-vectors.json` | `0ee833074cdca8558f31d955b978809743a41b7bbcbac079b9fbd38705b9929b` |
+| `layer-family-vectors.json` | `87d15c93931792abfd6dd853c0dc661a02cebf8a8d2e0d5fe8c2a6e8353fddcd` |
+| `layer-native-validation.json` | `ab5688724722c8f22c0970b34c70325f7422f42c6beba564900e15216b509b0f` |
+| `layer-manifest.json` | `75f58a60366bcb7f47934d8d4e14e4ceb76b636716c23928520e4a9355ee291f` |
+
 The Class-C full-model plan fixes three prompt IDs, batch 1, BF16, text-only,
 greedy generation, no vision/MTP/speculation, exact dependencies and hooks
 spanning embedding/GR, early GDN, PLE, first QSA, routers, middle/late layers,

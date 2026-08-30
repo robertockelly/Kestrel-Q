@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.9 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.10 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -29,6 +29,8 @@ Initial task order:
    **COMPLETE / PASS**
 10. Task 2.9 — PLE value reference operator and independent golden vectors.
     **COMPLETE / PASS**
+11. Task 2.10 — Canonical transformer-layer composition and GR/residual
+    reference. **COMPLETE / PASS**
 
 Constraints:
 
@@ -66,3 +68,10 @@ the fused IQ4_NL table and six dense bindings; a bounded synchronous provider
 touches 1,440 logical packed bytes. ADR 0017 is ACCEPTED. The next integration
 task is **NOT STARTED**, and no final PLE cache/prefetch/residency policy,
 complete layer or full forward is introduced.
+
+Task 2.10 pins the complete decoder-layer/GR contract and composes the existing
+operators for 35 ordinary-GDN, 12 QSA and one PLE-GDN family. Independent
+complete-layer calibration/holdout, prefill/decode/reset and transactional
+rollback pass; 48/48 target descriptors validate with zero payload access.
+ADR 0018 is ACCEPTED. Embedding, a 48-layer executor, final norm, LM head,
+logits and the final scheduler remain **NOT STARTED**.

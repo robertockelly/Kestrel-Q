@@ -58,6 +58,8 @@ add_library(kq_core
     src/kq_gdn.c
     src/kq_gdn_qwen38.c
     src/kq_gguf.c
+    src/kq_layer.c
+    src/kq_layer_qwen38.c
     src/kq_model.c
     src/kq_moe.c
     src/kq_moe_qwen38.c
@@ -91,6 +93,8 @@ if(MSVC)
         src/kq_moe.c src/kq_moe_qwen38.c
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
+    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c APPEND PROPERTY
+        COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
@@ -98,6 +102,8 @@ else()
         src/kq_qsa.c src/kq_qsa_qwen38.c
         src/kq_moe.c src/kq_moe_qwen38.c
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
+        COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
+    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -326,6 +332,24 @@ if(KQ_BUILD_TESTS)
     target_include_directories(kq_ple_value_probe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
     kq_enable_c_warnings(kq_ple_value_probe)
 
+    add_executable(kq_layer_test tests/layer_test.c)
+    target_link_libraries(kq_layer_test PRIVATE kq_core)
+    target_include_directories(kq_layer_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_layer_test)
+    add_test(NAME kq_layer_synthetic COMMAND kq_layer_test)
+
+    add_executable(kq_layer_integration_test tests/layer_integration.c)
+    target_link_libraries(kq_layer_integration_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_layer_integration_test)
+    add_test(NAME kq_layer_real_artifact COMMAND kq_layer_integration_test)
+    set_tests_properties(kq_layer_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(kq_layer_probe tests/layer_probe.c)
+    target_link_libraries(kq_layer_probe PRIVATE kq_core)
+    target_include_directories(kq_layer_probe PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+    kq_enable_c_warnings(kq_layer_probe)
+
     add_executable(kq_numeric_integration_test tests/numeric_integration.c)
     target_link_libraries(kq_numeric_integration_test PRIVATE kq_core)
     target_include_directories(kq_numeric_integration_test PRIVATE
@@ -430,6 +454,15 @@ if(KQ_BUILD_TESTS)
             COMMAND ${Python3_EXECUTABLE}
                 ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-ple-value.py
                 --probe $<TARGET_FILE:kq_ple_value_probe>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+                --verify
+        )
+        add_test(
+            NAME kq_layer_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-layer.py
+                --probe $<TARGET_FILE:kq_layer_probe>
                 --evidence-dir
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
                 --verify

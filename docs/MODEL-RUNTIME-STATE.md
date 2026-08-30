@@ -200,6 +200,13 @@ Transactionally, a failed step must not expose partially advanced state. A
 future runtime must either validate all operations before commit or provide a
 rollback/crop path for GDN, QSA, PLE and position state together.
 
+Task 2.10 implements that rule for one layer by retaining committed and staging
+suboperator slots. Ordinary GDN semantic state is 3,227,648 bytes per batch-1
+layer (FP32 recurrence plus BF16 convolution tail). QSA remains 2,304 bytes per
+retained token per layer. The PLE-GDN layer adds the 32-byte address history and
+184,320-byte BF16 PLE value tail for 3,412,000 semantic persistent bytes. GR
+branches, gates, MoE routes and layer scratch are explicitly excluded.
+
 ## Optional-state boundaries
 
 ### MTP

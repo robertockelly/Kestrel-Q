@@ -8,6 +8,29 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 2.10 and accepted ADR 0018: a scalar C17 one-layer reference
+  now composes exact Qwen3.8 PLE placement, four-branch Gated Residual reads and
+  writes, GDN/QSA and MoE for all three canonical layer families.
+- Added independent pinned-Transformers complete-layer calibration and disjoint
+  holdout evidence. Ordinary GDN, QSA and PLE-GDN native results pass their
+  family-specific `2e-6` maximum-absolute contracts without using Kestrel-Q as
+  an oracle.
+- Made complete-layer oracle regeneration fail closed on the pinned
+  `tokenizers==0.23.1` dependency after a global-environment version mismatch
+  was detected during final reproducibility validation.
+- Added committed/staging persistent layer state. Synthetic prefill/decode,
+  two-step decode, reset/replay and a forced downstream MoE failure prove no partial visible
+  GDN/QSA/PLE state advance; all 48 target layer configs validate with zero
+  model-payload bytes touched.
+- Fixed a Task 2.10 internal state-clone bug found by the PLE split-decode
+  regression: the first implementation returned immediately after cloning GDN
+  state and therefore skipped PLE address/value history. Cloning now continues
+  through every family-owned substate before execution.
+- Fixed the initial Task 2.10 GR activation path after the numeric API correctly
+  rejected an in-place input/output alias. The layer implementation now uses
+  explicit scalar sigmoid/SiLU evaluation with the governed strict-FP contract;
+  the independent layer oracle and alias/failure regressions cover the fix.
+
 - Replaced the provisional MIT license with Apache License 2.0.
 - Added contribution and dependency licensing/provenance rules.
 - Documented the validated KQ-01 Windows, MSVC, CMake, CUDA and GPU baseline.

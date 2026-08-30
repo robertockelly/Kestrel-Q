@@ -1,0 +1,20 @@
+{
+  "families": [
+    {
+      "case_id": "KQ-LAYER-CAL-GDN",
+      "family": "GDN",
+      "output_sha256": "b44bfacda69a81cfcfb647fa8a280f79e2eeac946baa49a154bb910cd31d2761"
+    },
+    {
+      "case_id": "KQ-LAYER-CAL-QSA",
+      "family": "QSA",
+      "output_sha256": "56db76bca4abd30afa23991a798577f54903073867d63d0e3e73e6effb6e27d5"
+    },
+    {
+      "case_id": "KQ-LAYER-CAL-PLE_GDN",
+      "family": "PLE_GDN",
+      "output_sha256": "dde920c1606b76c74ff2c47026890959d9b7dce0df9e360117780ef81a6ab732"
+    }
+  ],
+  "schema": "kq-layer-family-v1"
+}

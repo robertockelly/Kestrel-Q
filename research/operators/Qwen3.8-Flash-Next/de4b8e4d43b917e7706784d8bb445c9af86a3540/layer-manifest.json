@@ -1,0 +1,16 @@
+{
+  "files": {
+    "layer-calibration.json": "6bc9c9aeab0a952e4c090be62f3630ee33502ae3be55006b3b0f0d16b914e40b",
+    "layer-contract.json": "c79f460ac7d68d4b15b0aec8a19d110f38a5bfe6b507e92e3f431b96877140a6",
+    "layer-family-vectors.json": "87d15c93931792abfd6dd853c0dc661a02cebf8a8d2e0d5fe8c2a6e8353fddcd",
+    "layer-holdout.json": "9d2d5a74b05558b7328dc9133a8ea25b0f71bf44ba6c43b94fe9fe5496b7bb93",
+    "layer-native-validation.json": "ab5688724722c8f22c0970b34c70325f7422f42c6beba564900e15216b509b0f",
+    "layer-state-vectors.json": "0ee833074cdca8558f31d955b978809743a41b7bbcbac079b9fbd38705b9929b"
+  },
+  "generation": {
+    "network": false,
+    "self_oracle": false
+  },
+  "schema": "kq-layer-manifest-v1",
+  "status": "PASS"
+}

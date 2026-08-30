@@ -108,6 +108,10 @@ const char *kq_status_string(kq_status status) {
             return "invalid PLE value stream state";
         case KQ_STATUS_PLE_LOOKUP_FAILED:
             return "PLE value lookup failed";
+        case KQ_STATUS_INCOMPATIBLE_LAYER:
+            return "incompatible transformer-layer configuration";
+        case KQ_STATUS_INVALID_LAYER_STATE:
+            return "invalid transformer-layer stream state";
         default:
             return "unknown Kestrel-Q status";
     }

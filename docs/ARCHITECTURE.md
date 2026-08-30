@@ -131,6 +131,15 @@ The real GGUF provider uses Task 2.2 member views and Task 2.5 IQ4_NL decode
 under a hard logical-byte budget. It is synchronous correctness plumbing, not
 a final disk cache, prefetch, residency or scheduling policy.
 
+Task 2.10 adds the first complete one-layer scalar reference boundary. It
+implements the exact four-branch Gated Residual reads/writes owned by the
+decoder layer and composes PLE-at-layer-1, GDN/QSA and MoE in pinned canonical
+order. Persistent GDN/QSA/PLE state executes through a committed/staging pair;
+the active slot changes only after the final GR write, so downstream failure
+cannot partially advance a request. All 35 ordinary-GDN, 12 QSA and one
+PLE-GDN target configs validate without payload access. This remains one-layer
+correctness plumbing, not an embedding/model-loop/logits executor or scheduler.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

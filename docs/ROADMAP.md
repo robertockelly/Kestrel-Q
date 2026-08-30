@@ -33,7 +33,7 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.9 are
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.10 are
   complete/pass; the next integration task has not started.
 
 ## R1 — Read the model
@@ -92,6 +92,10 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   execution. Independent calibration, holdout, state and address-integration
   evidence passes. Real bounded IQ4_NL plumbing touches 1,440 logical packed
   bytes; no final cache, prefetch or scheduling policy was introduced.
+- Task 2.10 is complete/pass. ADR 0018 accepts the scalar one-layer reference:
+  exact layer-owned GR semantics compose PLE/GDN/QSA/MoE for all three layer
+  families, persistent substates commit transactionally, 48/48 target configs
+  validate, and real model payload touched is zero.
 - R1/Epic 2 remains in progress. The next integration task has not started.
 
 ## R2 — Compute correctly
@@ -103,7 +107,8 @@ Minimal CPU reference inference and reference-vector parity.
 - QSA scalar reference execution: **COMPLETE / PASS via Task 2.7**.
 - MoE scalar reference execution: **COMPLETE / PASS via Task 2.8**.
 - PLE value scalar reference execution: **COMPLETE / PASS via Task 2.9**.
-- Complete layer composition and full reference inference: **NOT STARTED**.
+- Complete one-layer scalar composition: **COMPLETE / PASS via Task 2.10**.
+- Embedding, 48-layer execution, final norm/LM head/logits: **NOT STARTED**.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

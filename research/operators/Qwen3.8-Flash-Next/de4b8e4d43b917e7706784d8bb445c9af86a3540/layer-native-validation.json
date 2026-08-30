@@ -1,0 +1,65 @@
+{
+  "records": [
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "calibration",
+      "count": 128,
+      "family": "GDN",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2069940567016602e-06,
+      "pass": true
+    },
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "calibration",
+      "count": 128,
+      "family": "QSA",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2069940567016602e-06,
+      "pass": true
+    },
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "calibration",
+      "count": 128,
+      "family": "PLE_GDN",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2665987014770508e-06,
+      "pass": true
+    },
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "holdout",
+      "count": 128,
+      "family": "GDN",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2069940567016602e-06,
+      "pass": true
+    },
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "holdout",
+      "count": 128,
+      "family": "QSA",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2069940567016602e-06,
+      "pass": true
+    },
+    {
+      "contract": "CALIBRATED_FLOAT",
+      "corpus": "holdout",
+      "count": 128,
+      "family": "PLE_GDN",
+      "limit_abs": 2e-06,
+      "max_abs": 1.2740492820739746e-06,
+      "pass": true
+    }
+  ],
+  "schema": "kq-layer-native-validation-v1",
+  "self_oracle": false,
+  "status": "PASS",
+  "transactional_state": {
+    "prefill_decode": "covered_by_kq_layer_synthetic",
+    "rollback": "covered_after_mixer_before_moe_commit"
+  }
+}

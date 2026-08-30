@@ -270,6 +270,14 @@ The four branches are activations carried through the layer stack for the token
 positions in the current forward call. They are not an additional
 context-growing autoregressive cache. [KQ-ARCH-GR-003]
 
+Task 2.10 executable characterization confirms the exact decoder-layer order:
+optional layer-1 PLE branchwise addition, attention GR read, GDN/QSA, attention
+GR write, MoE GR read, MoE, then MoE GR write. Each GR Group-RMSNorm uses
+epsilon `1e-6`; the rank-320 down result and four injection logits are divided
+by four before activation. The elementwise read gates and four scalar write
+gates use distinct parameter sets around attention and MoE. No additional
+layer norm or persistent GR cache exists at this boundary.
+
 The technical report demonstrates that GR residual branches can be stored in
 FP8 with almost no reported quality loss and describes fused read/write kernels.
 The released checkpoint and Tier B reference use BF16 activations by default;

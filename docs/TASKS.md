@@ -214,6 +214,17 @@ path have not started.
   - bounded real sample: **1,440 logical packed bytes / 80 blocks**;
   - ADR 0017: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+- [x] Task 2.10 — Canonical transformer-layer composition and GR/residual:
+  - exact pinned decoder-layer order and four-branch rank-320 GR contract:
+    **CHARACTERIZED / VERIFIED**;
+  - independent ordinary-GDN, QSA and PLE-GDN calibration/holdout vectors:
+    **PASS**;
+  - scalar prefill/decode, reset/replay and committed/staging rollback:
+    **PASS**;
+  - target families: **35 ordinary GDN / 12 QSA / 1 PLE-GDN**, 48/48 valid;
+  - persistent semantic state reconciled and real payload bytes touched: **0**;
+  - ADR 0018: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 - [ ] Next integration task: **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
@@ -229,6 +240,7 @@ path have not started.
 - [x] GDN scalar reference path (Task 2.6)
 - [x] QSA scalar reference path (Task 2.7)
 - [x] PLE value scalar reference path (Task 2.9)
+- [x] Complete one-layer scalar reference composition (Task 2.10)
 - [ ] Logits
 - [ ] Sampling
 - [ ] Reference-vector validation

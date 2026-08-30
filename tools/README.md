@@ -464,3 +464,33 @@ The real CTest integration uses `KQ_GGUF_PATH` only, resolves rows through
 Task 2.2 views and Task 2.5 IQ4_NL decode, and enforces an 8 MiB logical packed
 payload guard. Production C17 PLE value code reads no evidence JSON and links
 no Python, Transformers, PyTorch or NumPy runtime.
+
+## Task 2.10 complete-layer Class-C oracle
+
+`generate-layer-reference.py` runs offline against the same pinned Qwen
+Transformers checkout. It imports the canonical decoder layer and GR modules,
+generates deterministic reduced ordinary-GDN, QSA and PLE-GDN expectations
+before native execution, and writes the governed `layer-*.json` assets under
+the existing operator evidence root. No checkpoint weights are loaded.
+The offline environment must provide CPU PyTorch and `tokenizers==0.23.1`,
+the exact dependency accepted by the pinned Transformers checkout. The
+generator rejects a different tokenizers version before writing evidence;
+neither dependency is used by production Kestrel-Q.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/venv/Lib/site-packages').Path
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-layer-reference.py `
+  --checkout .research-cache/task-1.4/transformers `
+  --output-dir $out
+python tools/validate-native-layer.py `
+  --probe build-cpu/Release/kq_layer_probe.exe `
+  --evidence-dir $out
+```
+
+The validator derives family-specific limits from calibration only, applies
+them unchanged to disjoint holdout, records native validation, and supports
+`--verify` for CTest byte identity. Production C17 reads none of these files
+and has no Python/PyTorch/Transformers dependency.

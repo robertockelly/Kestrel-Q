@@ -1,0 +1,34 @@
+{
+  "authority": {
+    "config_sha256": "889658f2508e8c61d409b02e70e0d78d8d4452ec65aaafbe129805d213d2e74b",
+    "license": "Apache-2.0",
+    "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+    "source_sha256": "91e9b1e9c74efe373cd989fe1974a8fa305f4aad43628dbcbd03dac20437814f",
+    "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+  },
+  "canonical": {
+    "branches": 4,
+    "class": "Qwen4ExpTextDecoderLayer",
+    "gdn_layers": 36,
+    "gr_class": "Qwen4ExpTextGatedResidual",
+    "ple_zero_based_layer": 1,
+    "qsa_layers": 12,
+    "rank": 320,
+    "target_hidden": 2560
+  },
+  "oracle_environment": {
+    "python": "3.13.12",
+    "tokenizers": "0.23.1",
+    "torch": "2.11.0+cpu",
+    "transformers": "5.16.0.dev0"
+  },
+  "reduced": {
+    "branches": 4,
+    "experts": 4,
+    "hidden": 8,
+    "intermediate": 4,
+    "rank": 4,
+    "top_k": 2
+  },
+  "schema": "kq-layer-contract-v1"
+}

@@ -1,0 +1,35 @@
+{
+  "cases": [
+    {
+      "decode_steps": 2,
+      "family": "GDN",
+      "final_position": 4,
+      "initial_state": "ZERO",
+      "persistent_state": "suboperator-only; exact state tensors remain governed by the pinned GDN/QSA/PLE operator evidence",
+      "post_failure_continuation": "REQUIRED",
+      "prefill_length": 2,
+      "reset_replay": "REQUIRED"
+    },
+    {
+      "decode_steps": 2,
+      "family": "QSA",
+      "final_position": 4,
+      "initial_state": "ZERO",
+      "persistent_state": "suboperator-only; exact state tensors remain governed by the pinned GDN/QSA/PLE operator evidence",
+      "post_failure_continuation": "REQUIRED",
+      "prefill_length": 2,
+      "reset_replay": "REQUIRED"
+    },
+    {
+      "decode_steps": 2,
+      "family": "PLE_GDN",
+      "final_position": 4,
+      "initial_state": "ZERO",
+      "persistent_state": "suboperator-only; exact state tensors remain governed by the pinned GDN/QSA/PLE operator evidence",
+      "post_failure_continuation": "REQUIRED",
+      "prefill_length": 2,
+      "reset_replay": "REQUIRED"
+    }
+  ],
+  "schema": "kq-layer-state-v1"
+}
