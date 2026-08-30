@@ -225,6 +225,19 @@ invalidation. [KQ-ARCH-QSA-004]
 The report's KL/distillation losses are training-only. They are not required to
 produce inference logits. [KQ-ARCH-QSA-005]
 
+Task 2.7 executable characterization fixes the remaining scalar-reference
+details. The combined query projection emits per-head query then gate halves;
+the query/gate width is 12,288. Core attention uses scale `1/sqrt(256) = 1/16`,
+FP32 softmax and the sigmoid gate before the output projection. The indexer
+stores its 128-wide projected key **before** normalization and RoPE. Complete
+four-token raw-key blocks are averaged in FP32, cast back to the activation
+dtype, normalized and positioned at their first token. Candidate scores are the
+sum over four heads of positive query/block-key dot products divided by
+`sqrt(128)`. Top-k block membership is exact; selected blocks are gathered in
+selection order, four tokens per block, followed by the visible 0–3-token
+incomplete tail. No additional mandatory local window exists in the pinned
+implementation.
+
 ## Gated Residual
 
 GR widens the residual activation into four independent 2,560-wide branches.

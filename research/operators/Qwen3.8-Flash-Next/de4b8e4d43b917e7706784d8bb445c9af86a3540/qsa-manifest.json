@@ -1,0 +1,36 @@
+{
+  "expected_values_from_kestrel_q": false,
+  "files": {
+    "qsa-calibration.json": {
+      "bytes": 61837,
+      "sha256": "3ec63b771300d47eccc11e027b5fc7637f99983f51373aa7dbbb4784c4987d2f"
+    },
+    "qsa-contract.json": {
+      "bytes": 10609,
+      "sha256": "043e30c051436a6789257538323f9685bd79330dfe259a8bc78037f5a3aa3878"
+    },
+    "qsa-holdout.json": {
+      "bytes": 29915,
+      "sha256": "34e57d551e5aefd4aa040b92ed3564bd6b00dda310f4742a258e69d7f15cbc71"
+    },
+    "qsa-native-validation.json": {
+      "bytes": 3537,
+      "sha256": "80123f3a88e9373dffadc16ba8fd09337d984881328db0d1caceb9bb469e26ee"
+    },
+    "qsa-selection-vectors.json": {
+      "bytes": 262030,
+      "sha256": "65c59c290210fef8851d867b6d7f6d19f864fd5d84584ca1a82048b20f571c33"
+    },
+    "qsa-state-vectors.json": {
+      "bytes": 39972,
+      "sha256": "76ff49375e63d6dcbb485c8cd41e9f3fd219c4d11d478601e30629c2689c68e1"
+    }
+  },
+  "full_model_weights_downloaded": false,
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "native_validation_tool": "tools/validate-native-qsa.py",
+  "offline": true,
+  "oracle_generation_tool": "tools/generate-qsa-reference.py",
+  "schema": "kq-qsa-evidence-manifest-v1",
+  "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+}

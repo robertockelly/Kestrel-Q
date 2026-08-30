@@ -32,6 +32,9 @@ Detailed byte accounting, allocator policy and placement are Task 1.2 work.
 | Position count | request | request/context | scalar per sequence | logical next position | integer | yes |
 | Cached QSA position IDs | hybrid cache/reference implementation | request/context | grows with `T` | text-only equivalent of `[3,B,T]` | integer | reference-specific representation; equivalent position state required |
 | QSA pooled block keys/scores/top-k/mask | each QSA call | current call | transient; derived from `T` | implementation-dependent | mixed: FP32 scoring in Tier B, masks bool/float | yes, transient |
+| MoE route IDs/weights | each layer/current tokens | current sublayer | transient | `[B*N,10]` each | IDs integer; score path FP32 then activation dtype | yes, transient |
+| MTP draft cache/state | optional MTP module | speculative request | depends on draft steps/context | one QSA/MoE draft layer plus input-fusion state | not fixed by Task 1.1 | no |
+| Vision features/M-RoPE state | optional vision wrapper | multimodal request | input-dependent | vision-grid dependent | model dtype/integer positions | no |
 
 Task 2.6 revalidated the two GDN rows directly against the pinned
 `Qwen4ExpTextGatedDeltaNet` and `LinearAttentionLayer` cache implementation.
@@ -47,9 +50,22 @@ for both so its arithmetic can be isolated without the full BF16 checkpoint.
 Observed batch-1 per-layer target storage is 3,227,696 owned bytes including
 the state object/allocation overhead; the semantic payload remains 81,920
 convolution bytes plus 3,145,728 recurrent bytes.
-| MoE route IDs/weights | each layer/current tokens | current sublayer | transient | `[B*N,10]` each | IDs integer; score path FP32 then activation dtype | yes, transient |
-| MTP draft cache/state | optional MTP module | speculative request | depends on draft steps/context | one QSA/MoE draft layer plus input-fusion state | not fixed by Task 1.1 | no |
-| Vision features/M-RoPE state | optional vision wrapper | multimodal request | input-dependent | vision-grid dependent | model dtype/integer positions | no |
+
+Task 2.7 revalidated all three QSA state rows against the pinned
+`Qwen4ExpTextAttention`, `Qwen4ExpTextQSAIndexer` and `DynamicIndexedLayer`
+path. At batch 1 and BF16, one context token consumes exactly 1,024 K bytes,
+1,024 V bytes and 256 raw-index-key bytes per QSA layer: 2,304 bytes per layer
+and 27,648 bytes across all 12 layers. The reference derives complete-block
+summaries on demand, so there is no persistent block-summary cache or
+partial-block buffer overhead in this semantic baseline. The native scalar
+reference uses F32 storage only in its reduced executable correctness config;
+the real target descriptor remains BF16.
+
+Native QSA prefill/decode has explicit capacity and current length. It stages
+all new K/V/raw-index entries and outputs before committing, so an operator
+failure leaves externally visible state unchanged. This transactional baseline
+does not define final cache allocation, sharing, crop, eviction or scheduling
+policy.
 
 Claim sources: [KQ-ARCH-GDN-004], [KQ-ARCH-QSA-004],
 [KQ-ARCH-GR-003], [KQ-ARCH-PLE-004], [KQ-ARCH-MTP-004].

@@ -287,6 +287,46 @@ The project is currently pre-alpha.
   Real-config timing now starts after registry construction, while reduced
   execution timing uses a second no-observer run; timings remain explicitly
   descriptive rather than performance guarantees.
+- Completed Task 2.7 and accepted ADR 0015. The production runtime now has an
+  immutable C17 Qwen3.8 QSA scalar-reference config, explicit bounded
+  K/V/raw-index stream state, transactional batch-1 prefill and decode, exact
+  sparse-selection observation and synchronous intermediate checkpoints. It
+  adds no GR composition, MoE, PLE value, complete-layer/full-forward, SIMD or
+  CUDA model execution and no final cache/scheduler policy.
+- Characterized the pinned `Qwen4ExpTextAttention` and
+  `Qwen4ExpTextQSAIndexer` contract before native code and generated independent
+  Class-C calibration, disjoint holdout, cache-transition and exact sparse
+  selection evidence. A second bounded oracle configuration crosses the
+  512-block limit at 512 and 513 complete blocks and covers deterministic ties
+  and positive near-ties. Native floating checkpoints pass their separately
+  calibrated contracts; block IDs, token positions, counts and ordering pass
+  exact comparison. Kestrel-Q never supplies expected values.
+- Added target QSA semantic integration for all 12 real QSA layers and
+  fail-closed rejection of all 36 GDN IDs, missing/wrong semantics, malformed
+  ordered `index_qk` splits, physical type/shape errors, invalid state/count/
+  position/finiteness, selection-capacity errors and forbidden aliasing. The
+  target BF16 descriptor reconciles exactly to 2,304 semantic bytes per token
+  per layer and 27,648 across all 12 layers. Real payload bytes touched remain
+  zero and no hard-coded artifact offset is used.
+- Fixed two Task 2.7 research-validation findings before the clean gate. The
+  canonical boolean selection mask preserves membership rather than top-k
+  gather order, so the generator now verifies sorted membership while capturing
+  `aten::topk` order independently. Initial calibration under-covered longer
+  K/V and raw-index state arithmetic; two disjoint longer random calibration
+  cases and value-by-value holdout checks now protect those classes. Checked
+  64-bit arithmetic and a malformed physical split-shape regression also close
+  scratch/state-span overflow and near-match binding paths.
+- The first clean Task 2.7 CPU gate exposed an inconsistent state-construction
+  status: capacity beyond the validated context limit was grouped with malformed
+  arguments despite the public contract reserving `LIMIT_EXCEEDED`. State
+  construction now clears a supplied output before validation, distinguishes
+  invalid/zero capacity from an exceeded context limit, and the exact regression
+  remains in the fail-closed suite before the clean rerun.
+- The next clean rerun rejected a newly added test assumption rather than the
+  selector: canonical QSA deliberately applies `min(limit, candidates)`, so a
+  nominal limit above the available candidates is valid. The regression now
+  exercises the actual invalid ranges—zero selection limit and a candidate
+  count outside the 32-bit block-ID domain—without changing canonical behavior.
 
 ### Added
 

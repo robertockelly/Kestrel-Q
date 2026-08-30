@@ -336,3 +336,44 @@ python tools/validate-native-gdn.py `
 Python, PyTorch, NumPy and Transformers remain ignored test/research
 dependencies. The C17 production GDN code reads no evidence JSON and links no
 oracle framework.
+
+## Task 2.7 QSA Class-C oracle
+
+`generate-qsa-reference.py` is the offline independent QSA generator. It
+verifies the pinned official model/config and Transformers source hashes,
+imports `Qwen4ExpTextAttention`/`Qwen4ExpTextQSAIndexer`, and emits expectations
+before native comparison. Tier A uses the canonical module's supported reduced
+F32 dimensions for calibration, disjoint holdout and state transitions. Tier B
+uses a bounded 512/513-complete-block configuration to cross the released
+selection limit and records exact top-k membership/order, including ties. It
+does not download or load checkpoint weights.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/venv/Lib/site-packages').Path
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-qsa-reference.py `
+  --checkout .research-cache/task-1.4/transformers `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --output-dir $out
+```
+
+`validate-native-qsa.py` drives the test-only `kq_qsa_probe`, derives separate
+per-checkpoint limits from calibration only, and applies them value-by-value to
+the disjoint holdout/state cases. Candidate/selected block IDs, gathered token
+positions, counts and ordering compare exactly. Normal mode records
+deterministic native evidence; CTest `--verify` mode requires all files
+to remain byte-identical. The probe also reports one high-resolution,
+no-observer execution timing for characterization; timing is deliberately
+excluded from deterministic evidence and correctness decisions.
+
+```powershell
+python tools/validate-native-qsa.py `
+  --probe build-cpu/Release/kq_qsa_probe.exe `
+  --evidence-dir $out
+```
+
+The Python/oracle stack remains an ignored research/test dependency. Production
+C17 QSA code reads no evidence JSON and links no Transformers, PyTorch, NumPy
+or Python runtime.

@@ -49,12 +49,14 @@ metadata before generation succeeds.
 | `quantized/gguf-vector-plan.json` | `DEFERRED_CAPABLE_REFERENCE_ENV` | `b51e4e25cda36dcf2fdcc14bbd2394b3a03a8e9ec74b45a3497f50a9a5d83c07` |
 
 Task 1.4 did not mark standalone GR, GDN, QSA or MoE floating vectors generated.
-Task 2.6 has now satisfied the GDN portion only: a pinned offline Transformers
+Task 2.6 satisfied the GDN portion: a pinned offline Transformers
 `Qwen4ExpTextGatedDeltaNet` produces reduced-shape Class-C calibration,
 disjoint holdout and state-transition evidence before native execution. The
 native scalar path is compared to those expectations across 24 output/state/
-checkpoint classes. GR, QSA and MoE vectors remain planned and are not inferred
-from the GDN result.
+checkpoint classes. Task 2.7 now independently satisfies the QSA portion with
+reduced Class-C floating calibration/holdout/cache-state evidence and exact
+sparse block/token selection evidence. GR and MoE vectors remain planned and
+are not inferred from either operator result.
 
 The Task 2.6 namespace is
 `research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
@@ -69,6 +71,21 @@ validation. No real model weight bytes or self-oracle values are present.
 | `gdn-state-vectors.json` | `fed6f9a2f5db8a3b669776a54213202ddb15ba3b19856853b9458cc45eb4680a` |
 | `gdn-native-validation.json` | `6d8ee4499e811d59158dabefce51382142e152663c115889c2f2e9ef910a2eeb` |
 | `gdn-manifest.json` | `b0c5e6de7c76972b876c48e31f913fb57c84c51877a64c9ca404f73f82e35964` |
+
+Task 2.7 uses the same governed operator namespace. The QSA generator imports
+only the pinned offline Transformers source and creates expectations before
+native execution. A separate validator compares native scalar results to those
+files; Kestrel-Q never writes expected values.
+
+| Task 2.7 asset | SHA-256 |
+|---|---|
+| `qsa-contract.json` | `043e30c051436a6789257538323f9685bd79330dfe259a8bc78037f5a3aa3878` |
+| `qsa-calibration.json` | `3ec63b771300d47eccc11e027b5fc7637f99983f51373aa7dbbb4784c4987d2f` |
+| `qsa-holdout.json` | `34e57d551e5aefd4aa040b92ed3564bd6b00dda310f4742a258e69d7f15cbc71` |
+| `qsa-selection-vectors.json` | `65c59c290210fef8851d867b6d7f6d19f864fd5d84584ca1a82048b20f571c33` |
+| `qsa-state-vectors.json` | `76ff49375e63d6dcbb485c8cd41e9f3fd219c4d11d478601e30629c2689c68e1` |
+| `qsa-native-validation.json` | `80123f3a88e9373dffadc16ba8fd09337d984881328db0d1caceb9bb469e26ee` |
+| `qsa-manifest.json` | `15a1100fb764c01a0aed91e3e8edc156b995003688ab63665156696ad425cf3b` |
 
 The Class-C full-model plan fixes three prompt IDs, batch 1, BF16, text-only,
 greedy generation, no vision/MTP/speculation, exact dependencies and hooks

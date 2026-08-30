@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.6 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.7 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -23,6 +23,8 @@ Initial task order:
    **COMPLETE / PASS**
 7. Task 2.6 — GDN reference operator and independent golden vectors.
    **COMPLETE / PASS**
+8. Task 2.7 — QSA reference operator and independent golden vectors.
+   **COMPLETE / PASS**
 
 Constraints:
 
@@ -37,11 +39,11 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Task 2.6 builds the first model-specific operator above the Task 2.5 scalar
-boundary. The pinned Class-C Qwen GDN module provides reduced-shape calibration,
-disjoint holdout and state-transition expectations before native comparison.
-Scalar prefill/decode and explicit convolution/recurrent state pass; 36 real
-GDN bindings validate and 12 QSA layers reject without payload access. ADR 0014
-is ACCEPTED. No GR composition, QSA, MoE, PLE value execution, complete layer,
-full forward, SIMD/CUDA model kernel, cache, prefetch or scheduler policy is
-introduced; the next model-operator task is **NOT STARTED**.
+Task 2.7 adds the second model-specific scalar reference boundary. The pinned
+Class-C Qwen QSA module provides reduced-shape calibration, disjoint holdout,
+cache-state and exact threshold-crossing sparse-selection expectations before
+native comparison. Scalar prefill/decode and explicit K/V/raw-index state pass;
+12 real QSA bindings validate and 36 GDN layers reject without payload access.
+ADR 0015 is ACCEPTED. No GR composition, MoE, PLE value execution, complete
+layer, full forward, SIMD/CUDA model kernel, cache/prefetch policy or scheduler
+is introduced; the next model-operator task is **NOT STARTED**.

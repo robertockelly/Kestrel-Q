@@ -101,6 +101,16 @@ final output and both state classes. The real artifact validates all 36 GDN
 layers and rejects 12 QSA layers without opening a payload view. GR composition,
 QSA, MoE, PLE value math, full layers and optimized kernels remain absent.
 
+Task 2.7 adds the scalar C17 QSA reference boundary. Immutable descriptors
+validate the nine canonical attention/indexer semantics and the ordered
+physical `index_qk` split. Explicit bounded stream state owns semantic K, V and
+raw index-key history; prefill and one-token decode stage output/state and
+commit only after success. Sparse candidate and selected block/token IDs are
+observable exact-discrete outputs, while independently calibrated floating
+checkpoints cover projections, RoPE, scores, attention and final output. The
+real artifact validates 12 QSA layers and rejects 36 GDN layers without reading
+payload. This is not a production cache scheduler or optimized attention path.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

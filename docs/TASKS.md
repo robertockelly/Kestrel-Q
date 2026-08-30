@@ -74,10 +74,10 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.6 are complete/pass. The
-native runtime now includes the first independently validated model-specific
-operator, the scalar GDN reference path. QSA, GR composition, MoE, PLE values,
-complete layers and a full forward path have not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.7 are complete/pass. The
+native runtime now includes independently validated scalar GDN and QSA
+reference paths. GR composition, MoE, PLE values, complete layers and a full
+forward path have not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -171,6 +171,20 @@ complete layers and a full forward path have not started.
     touched: **0**;
   - ADR 0014: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+- [x] Task 2.7 — QSA reference operator and independent golden vectors:
+  - exact pinned `Qwen4ExpTextAttention` and `Qwen4ExpTextQSAIndexer`
+    contract: **CHARACTERIZED / VERIFIED**;
+  - independent reduced Class-C calibration, disjoint holdout, cache-state
+    and exact sparse-selection vectors: **PASS**;
+  - scalar batch-1 prefill/decode, transactional state and exact selected
+    block/token observation: **PASS**;
+  - candidate-count boundaries at and above the 512-block limit, including
+    deterministic tie cases: **EXACT DISCRETE PASS**;
+  - all 12 real QSA configs valid, all 36 GDN IDs rejected, target state growth
+    = **2,304 bytes/token/layer** and **27,648 bytes/token across 12 layers**;
+  - real model payload bytes touched: **0**;
+  - ADR 0015: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine
 
@@ -183,7 +197,7 @@ complete layers and a full forward path have not started.
 - [ ] MoE routing
 - [ ] Expert execution
 - [x] GDN scalar reference path (Task 2.6)
-- [ ] QSA path
+- [x] QSA scalar reference path (Task 2.7)
 - [ ] Logits
 - [ ] Sampling
 - [ ] Reference-vector validation

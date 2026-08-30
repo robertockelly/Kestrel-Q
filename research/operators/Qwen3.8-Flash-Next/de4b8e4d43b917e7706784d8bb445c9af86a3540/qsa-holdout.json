@@ -1,0 +1,1297 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "attention_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000803f",
+            "00000000",
+            "00000000",
+            "ecfcf13d",
+            "62c0613f",
+            "00000000",
+            "fb5f013e",
+            "2c9d2a3f",
+            "572b543e",
+            "0000803f",
+            "00000000",
+            "00000000",
+            "a1afc03e",
+            "2fa81f3f",
+            "00000000",
+            "6bc9f23e",
+            "115ee33d",
+            "135fd43e"
+          ],
+          "shape": [
+            1,
+            2,
+            3,
+            3
+          ]
+        },
+        "output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "44c92941",
+            "7cd27941",
+            "1848bfc0",
+            "7d83c641",
+            "b74e04c2",
+            "d32c1d42",
+            "04200fc1",
+            "7c655141",
+            "83bba1c0",
+            "b4ab1940",
+            "e4159c3f",
+            "98d72a3f",
+            "8efd2441",
+            "8bafb1c0",
+            "e0ca0b41",
+            "8ae006c0",
+            "424b73c0",
+            "debb32be",
+            "3a13bb3f",
+            "80875dbe",
+            "582416be",
+            "c0fb77c0",
+            "0213a740",
+            "f6e5d7bf"
+          ],
+          "shape": [
+            1,
+            3,
+            8
+          ]
+        },
+        "selection": [
+          {
+            "absolute_position": 0,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 0,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0
+            ],
+            "visible_count": 1
+          },
+          {
+            "absolute_position": 1,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 1,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1
+            ],
+            "visible_count": 2
+          },
+          {
+            "absolute_position": 2,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 2,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1,
+              2
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1,
+              2
+            ],
+            "visible_count": 3
+          }
+        ],
+        "state": {
+          "key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "c70d95bf",
+              "27fdb03e",
+              "d0a458bf",
+              "bcb3d7bd",
+              "4453013f",
+              "9a5cbd3e",
+              "f6ab39bf",
+              "39e9d53f",
+              "ed1e973e",
+              "60a4ac3e",
+              "bef6fbbd",
+              "72c804c0"
+            ],
+            "shape": [
+              1,
+              1,
+              3,
+              4
+            ]
+          },
+          "length": 3,
+          "raw_index_key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "00dd0d3f",
+              "aabf9541",
+              "1c762840",
+              "de5b39c1",
+              "cb7b55c1",
+              "14734940",
+              "7a100e41",
+              "8de129c1",
+              "62223e41",
+              "d651a6c0",
+              "1c3f0cc1",
+              "721db141"
+            ],
+            "shape": [
+              1,
+              3,
+              4
+            ]
+          },
+          "value": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "6ab3c2c0",
+              "f85e5140",
+              "c8b2adc0",
+              "b93d85c1",
+              "9a22e540",
+              "ce88de3f",
+              "3e229840",
+              "9c26ff40",
+              "5ed13e41",
+              "da3ab040",
+              "dd3e2841",
+              "30d4adbf"
+            ],
+            "shape": [
+              1,
+              1,
+              3,
+              4
+            ]
+          }
+        }
+      },
+      "id": "holdout-length-3",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "0034a1bf",
+          "006e4340",
+          "00f24840",
+          "000c1bc0",
+          "006a05c0",
+          "009255c0",
+          "00b84cbf",
+          "009cfabf",
+          "0060183e",
+          "0040cb3e",
+          "004060c0",
+          "001cac3f",
+          "00e42540",
+          "00007abf",
+          "00403d40",
+          "002266c0",
+          "00900dbf",
+          "008c85bf",
+          "00e091be",
+          "00508f3f",
+          "00c45440",
+          "00426a40",
+          "003c7ac0",
+          "00c8723f"
+        ],
+        "shape": [
+          1,
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "expected": {
+        "attention_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000803f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "acff843e",
+            "29803d3f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "f6b55d3e",
+            "b4f2533e",
+            "d695133f",
+            "00000000",
+            "00000000",
+            "ee7ca43e",
+            "d76c153e",
+            "fab90d3e",
+            "abefc93e",
+            "00000000",
+            "48500d3e",
+            "fcfd8c3e",
+            "880f023e",
+            "d2aaf83d",
+            "6627ad3e",
+            "0000803f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "e308ff3d",
+            "e41e603f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "6e6ca93e",
+            "3789a63d",
+            "a278163f",
+            "00000000",
+            "00000000",
+            "2857693e",
+            "2d1b833e",
+            "199d833d",
+            "f851e73e",
+            "00000000",
+            "8b05d23d",
+            "eaf84e3e",
+            "359c6b3e",
+            "3898673d",
+            "0641d13e"
+          ],
+          "shape": [
+            1,
+            2,
+            5,
+            5
+          ]
+        },
+        "output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "b8a1c2bf",
+            "1b17f2c1",
+            "b68f18c1",
+            "982264c1",
+            "2eb528c1",
+            "dc39e840",
+            "8e60d441",
+            "58d87c41",
+            "1c11153f",
+            "bc0d5ec0",
+            "b698d5c0",
+            "10fb7f3f",
+            "10ae3641",
+            "986499c0",
+            "ed22a0c0",
+            "7a0a12c1",
+            "40a7863d",
+            "bac09fc1",
+            "e806febf",
+            "258c24c1",
+            "d8579ac0",
+            "6cc9963f",
+            "5685a541",
+            "1ac83d41",
+            "92e424bf",
+            "16b8c4bf",
+            "929592bf",
+            "802036bd",
+            "d8ce7a40",
+            "b54439c0",
+            "60e3a1bf",
+            "68b256c0",
+            "7c434a3f",
+            "0b6a0bc1",
+            "6a98f73f",
+            "17d3a0c0",
+            "585538bf",
+            "f159edbf",
+            "e0ac3041",
+            "0233c140"
+          ],
+          "shape": [
+            1,
+            5,
+            8
+          ]
+        },
+        "selection": [
+          {
+            "absolute_position": 0,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 0,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0
+            ],
+            "visible_count": 1
+          },
+          {
+            "absolute_position": 1,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 1,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1
+            ],
+            "visible_count": 2
+          },
+          {
+            "absolute_position": 2,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 2,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1,
+              2
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1,
+              2
+            ],
+            "visible_count": 3
+          },
+          {
+            "absolute_position": 3,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 3,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "selection_limit": 1,
+            "tail_positions": [],
+            "visible_count": 4
+          },
+          {
+            "absolute_position": 4,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1bd9c53f"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 4,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "selection_limit": 1,
+            "tail_positions": [
+              4
+            ],
+            "visible_count": 5
+          }
+        ],
+        "state": {
+          "key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "76f2653e",
+              "d23d60bf",
+              "98c7e2be",
+              "d60a4dbf",
+              "33db59bf",
+              "6606953e",
+              "fe0ee93e",
+              "d1aa4c3f",
+              "b1fa333f",
+              "0897113f",
+              "98c7e2be",
+              "d60a4dbf",
+              "d93fb73d",
+              "b01a65bf",
+              "fe0ee93e",
+              "d1aa4c3f",
+              "4a484fbf",
+              "c222ce3e",
+              "98c7e2be",
+              "d60a4dbf"
+            ],
+            "shape": [
+              1,
+              1,
+              5,
+              4
+            ]
+          },
+          "length": 5,
+          "raw_index_key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "739a62c0",
+              "b01c9341",
+              "d109873f",
+              "76e94ac0",
+              "77d25f40",
+              "dcb193c1",
+              "29a687bf",
+              "9eda5340",
+              "739a62c0",
+              "b01c9341",
+              "d109873f",
+              "76e94ac0",
+              "77d25f40",
+              "dcb193c1",
+              "29a687bf",
+              "9eda5340",
+              "739a62c0",
+              "b01c9341",
+              "d109873f",
+              "76e94ac0"
+            ],
+            "shape": [
+              1,
+              5,
+              4
+            ]
+          },
+          "value": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "20a60d41",
+              "0596b040",
+              "992ab5c0",
+              "d5006fc0",
+              "14e00ec1",
+              "1b73b4c0",
+              "d5b4af40",
+              "593e7240",
+              "20a60d41",
+              "0596b040",
+              "992ab5c0",
+              "d5006fc0",
+              "14e00ec1",
+              "1b73b4c0",
+              "d5b4af40",
+              "593e7240",
+              "20a60d41",
+              "0596b040",
+              "992ab5c0",
+              "d5006fc0"
+            ],
+            "shape": [
+              1,
+              1,
+              5,
+              4
+            ]
+          }
+        }
+      },
+      "id": "holdout-length-5",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "00d0a0bf",
+          "00de7140",
+          "00101e3f",
+          "001808c0",
+          "00d04f40",
+          "00422940",
+          "00842940",
+          "003c28c0",
+          "00d0a03f",
+          "005e71c0",
+          "00101abf",
+          "00980940",
+          "00d04dc0",
+          "00c226c0",
+          "008426c0",
+          "00bc2b40",
+          "00d0a0bf",
+          "00de7140",
+          "00101e3f",
+          "001808c0",
+          "00d04f40",
+          "00422940",
+          "00842940",
+          "003c28c0",
+          "00d0a03f",
+          "005e71c0",
+          "00101abf",
+          "00980940",
+          "00d04dc0",
+          "00c226c0",
+          "008426c0",
+          "00bc2b40",
+          "00d0a0bf",
+          "00de7140",
+          "00101e3f",
+          "001808c0",
+          "00d04f40",
+          "00422940",
+          "00842940",
+          "003c28c0"
+        ],
+        "shape": [
+          1,
+          5,
+          8
+        ]
+      }
+    },
+    {
+      "expected": {
+        "attention_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000803f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "7160d13e",
+            "c84f173f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "3ca0e43e",
+            "f3c3673e",
+            "ce7da73e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "ead4123f",
+            "69fd423e",
+            "dfaac53d",
+            "84d90e3e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "1d62fa3e",
+            "a00d963e",
+            "9a44c73d",
+            "1d014a3d",
+            "dafb913d",
+            "00000000",
+            "00000000",
+            "00000000",
+            "7973613e",
+            "d541c33e",
+            "70086a3e",
+            "51659b3d",
+            "99871d3d",
+            "9eaf633d",
+            "00000000",
+            "00000000",
+            "1c1c8b3d",
+            "2923523e",
+            "90feb53e",
+            "e5225a3e",
+            "2fd7903d",
+            "5cd4123d",
+            "7338543d",
+            "00000000",
+            "b6e40c3d",
+            "2053863d",
+            "bbe84a3e",
+            "f1bbaf3e",
+            "05a2523e",
+            "bcdb8b3d",
+            "66c70d3d",
+            "aceb4c3d",
+            "0000803f",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "2f2f3d3f",
+            "a1a1853e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "5ffecf3e",
+            "3da9e03e",
+            "cab01e3e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "f3d2ee3d",
+            "23bdb73e",
+            "7076c63e",
+            "662f0c3e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "ee9b133d",
+            "a537e63d",
+            "0c1eb13e",
+            "7e4fbf3e",
+            "1c22073e",
+            "00000000",
+            "00000000",
+            "00000000",
+            "55b1003d",
+            "abf80e3d",
+            "f0fbde3d",
+            "6f8dab3e",
+            "ba4cb93e",
+            "31e3023e",
+            "00000000",
+            "00000000",
+            "d2bba43d",
+            "abaeec3c",
+            "a478033d",
+            "530ccd3d",
+            "e0c09d3e",
+            "1965aa3e",
+            "fdb7f03d",
+            "00000000",
+            "0fd2593e",
+            "3ab1813d",
+            "1956ba3c",
+            "b802cf3c",
+            "676ea13d",
+            "ca64783e",
+            "3726863e",
+            "9f83bd3d"
+          ],
+          "shape": [
+            1,
+            2,
+            8,
+            8
+          ]
+        },
+        "output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "b9e7a3c1",
+            "576013c1",
+            "00b6b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "566013c1",
+            "ffb5b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "576013c1",
+            "ffb5b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "576013c1",
+            "00b6b740",
+            "03468fc1",
+            "127b4041",
+            "5b8524c2",
+            "1f28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "566013c1",
+            "ffb5b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "566013c1",
+            "feb5b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "576013c1",
+            "00b6b740",
+            "03468fc1",
+            "127b4041",
+            "5b8524c2",
+            "1e28d341",
+            "c4b151c1",
+            "b9e7a3c1",
+            "566013c1",
+            "ffb5b740",
+            "03468fc1",
+            "127b4041",
+            "5a8524c2",
+            "1e28d341",
+            "c4b151c1"
+          ],
+          "shape": [
+            1,
+            8,
+            8
+          ]
+        },
+        "selection": [
+          {
+            "absolute_position": 0,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 0,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0
+            ],
+            "visible_count": 1
+          },
+          {
+            "absolute_position": 1,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 1,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1
+            ],
+            "visible_count": 2
+          },
+          {
+            "absolute_position": 2,
+            "candidate_block_ids": [],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [],
+              "shape": [
+                0
+              ]
+            },
+            "query_index": 2,
+            "selected_block_ids": [],
+            "selected_token_positions": [
+              0,
+              1,
+              2
+            ],
+            "selection_limit": 0,
+            "tail_positions": [
+              0,
+              1,
+              2
+            ],
+            "visible_count": 3
+          },
+          {
+            "absolute_position": 3,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "3b7cbc3f"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 3,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "selection_limit": 1,
+            "tail_positions": [],
+            "visible_count": 4
+          },
+          {
+            "absolute_position": 4,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9d550140"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 4,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "selection_limit": 1,
+            "tail_positions": [
+              4
+            ],
+            "visible_count": 5
+          },
+          {
+            "absolute_position": 5,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "16ef4b3f"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 5,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "selection_limit": 1,
+            "tail_positions": [
+              4,
+              5
+            ],
+            "visible_count": 6
+          },
+          {
+            "absolute_position": 6,
+            "candidate_block_ids": [
+              0
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "73e5113f"
+              ],
+              "shape": [
+                1
+              ]
+            },
+            "query_index": 6,
+            "selected_block_ids": [
+              0
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "selection_limit": 1,
+            "tail_positions": [
+              4,
+              5,
+              6
+            ],
+            "visible_count": 7
+          },
+          {
+            "absolute_position": 7,
+            "candidate_block_ids": [
+              0,
+              1
+            ],
+            "candidate_scores": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "82330d40",
+                "3b7cbc3f"
+              ],
+              "shape": [
+                2
+              ]
+            },
+            "query_index": 7,
+            "selected_block_ids": [
+              0,
+              1
+            ],
+            "selected_token_positions": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "selection_limit": 2,
+            "tail_positions": [],
+            "visible_count": 8
+          }
+        ],
+        "state": {
+          "key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "5e3fa5bf",
+              "e529053f",
+              "232ee33c",
+              "0cf969bf",
+              "704f91bf",
+              "42274ebf",
+              "232ee33c",
+              "0cf969bf",
+              "c497833d",
+              "8cf7b1bf",
+              "232ee33c",
+              "0cf969bf",
+              "a2329a3f",
+              "717832bf",
+              "232ee33c",
+              "0cf969bf",
+              "fc669e3f",
+              "f213233f",
+              "232ee33c",
+              "0cf969bf",
+              "96c7073e",
+              "bc58b13f",
+              "232ee33c",
+              "0cf969bf",
+              "d00f8cbf",
+              "89345c3f",
+              "232ee33c",
+              "0cf969bf",
+              "e852a8bf",
+              "167ae9be",
+              "232ee33c",
+              "0cf969bf"
+            ],
+            "shape": [
+              1,
+              1,
+              8,
+              4
+            ]
+          },
+          "length": 8,
+          "raw_index_key": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f",
+              "8b0a0b41",
+              "7c6220c0",
+              "adc4fbbf",
+              "4fc3643f"
+            ],
+            "shape": [
+              1,
+              8,
+              4
+            ]
+          },
+          "value": {
+            "dtype": "float32",
+            "f32_le_hex": [
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940",
+              "b208a341",
+              "476ab540",
+              "1a9c8141",
+              "43d77940"
+            ],
+            "shape": [
+              1,
+              1,
+              8,
+              4
+            ]
+          }
+        }
+      },
+      "id": "holdout-length-8-repeated",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0",
+          "0068a0bf",
+          "00b05fc0",
+          "00d4f3bf",
+          "0048eabf",
+          "0030143f",
+          "0058203f",
+          "0098f3bf",
+          "002a53c0"
+        ],
+        "shape": [
+          1,
+          8,
+          8
+        ]
+      }
+    }
+  ],
+  "comparison_class": "CALIBRATED_FLOAT",
+  "schema": "kq-qsa-holdout-v1"
+}
