@@ -1,0 +1,70 @@
+{
+  "asset_id": "KQ-NUMERIC-MANIFEST-001",
+  "assets": [
+    {
+      "path": "dequant-vectors.json",
+      "sha256": "e95da6399fccd1940b01c15f9dc039f2062f39fbb31a946f86bb354b2e87f8b6"
+    },
+    {
+      "path": "primitive-calibration.json",
+      "sha256": "c63c25b09afde94a51cbb9f63bb2fce1b4743771c9dee328d88fbfa075ff91d4"
+    },
+    {
+      "path": "primitive-holdout.json",
+      "sha256": "ca8feec63f84028b9b35c9f3bc1afaf6a44f18817d1dda82466593edb593e6bb"
+    },
+    {
+      "path": "real-gguf-samples.json",
+      "sha256": "5a4846d74b029389dc80cef24172b37623c2e815f9bec36b59cc079e3e6e3a79"
+    }
+  ],
+  "generation": {
+    "real": "python tools/capture-real-numeric-samples.py --real-probe <KQ_REAL_PROBE> --llama-oracle <PINNED_HELPER> --output <OUTPUT>/real-gguf-samples.json",
+    "regeneration_order": [
+      "synthetic",
+      "real",
+      "synthetic (manifest refresh)"
+    ],
+    "synthetic": "python tools/generate-numeric-evidence.py --llama-oracle <PINNED_HELPER> --native-probe <KQ_PROBE> --output-dir <OUTPUT>"
+  },
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracles": [
+    {
+      "class": "Q",
+      "implementation": "ggml-org/llama.cpp",
+      "license": "MIT",
+      "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a"
+    },
+    {
+      "class": "primitive",
+      "implementation": "Python/NumPy explicit F32 scalar order",
+      "license": "BSD-3-Clause",
+      "model_semantics_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+      "numpy": "2.5.2",
+      "python": "3.13.12"
+    }
+  ],
+  "safety": {
+    "raw_real_model_bytes_committed": 0,
+    "real_payload_sample_budget_bytes": 1048576
+  },
+  "schema_version": 1,
+  "tools": [
+    {
+      "path": "generate-numeric-evidence.py",
+      "sha256": "9a87d461ed4658d385b6044a2187657127f521f9419e05802e1aa19d52575b39"
+    },
+    {
+      "path": "capture-real-numeric-samples.py",
+      "sha256": "af2e3f4419a8f1805ee921e602f5f72de15bb26ca0888a238883b36de4ceeb44"
+    },
+    {
+      "path": "validate-native-numerics.py",
+      "sha256": "d70c039e0adccfcebcd97218e3561c8e347cc95c01232faf6ae5515634536d50"
+    },
+    {
+      "path": "llama-dequant-oracle.cpp",
+      "sha256": "5f916b646326686733caa3fdf6ca725f81d4ad209bf75fd93b26811a0ba84a2f"
+    }
+  ]
+}

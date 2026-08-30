@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.4 are
-  complete/pass; Task 2.5 has not started.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.5 are
+  complete/pass; the next model-operator task has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -65,10 +65,21 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   emits 16 canonical member/row intents per token. All original and expanded
   pinned-oracle vectors pass exactly; no PLE payload view, I/O, cache, prefetch
   or scheduler behavior was introduced. ADR 0012 is accepted.
-- R1/Epic 2 remains in progress. Task 2.5 has not started.
+- Task 2.5 is complete/pass. ADR 0013 accepts a scalar `/fp:strict` CPU
+  reference layer for all seven registered storage decoders, bounded
+  block-by-block row-dot and the characterized generic F32 primitive set.
+  Independent synthetic calibration/holdout passes, and nine bounded real
+  blocks cover all seven formats in 612 payload bytes without committing raw
+  weights or implementing a model operator.
+- R1/Epic 2 remains in progress. The next model-operator task has not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.
+
+- Low-level scalar storage and arithmetic reference boundary: **COMPLETE /
+  PASS via Task 2.5**.
+- Model-specific operator execution and full reference inference: **NOT
+  STARTED**.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

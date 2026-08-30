@@ -57,6 +57,7 @@ add_library(kq_core
     src/kq_file_win32.c
     src/kq_gguf.c
     src/kq_model.c
+    src/kq_numeric.c
     src/kq_ple.c
     src/kq_runtime.c
     src/kq_sha256.c
@@ -73,6 +74,14 @@ target_include_directories(kq_core
 target_link_libraries(kq_core PRIVATE kq_utf8proc)
 
 kq_enable_c_warnings(kq_core)
+
+if(MSVC)
+    set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
+        COMPILE_OPTIONS /fp:strict)
+else()
+    set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
+        COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
+endif()
 
 add_executable(kq
     src/main.c
@@ -210,6 +219,24 @@ if(KQ_BUILD_TESTS)
     target_link_libraries(kq_ple_probe PRIVATE kq_core)
     kq_enable_c_warnings(kq_ple_probe)
 
+    add_executable(kq_numeric_test tests/numeric_test.c)
+    target_link_libraries(kq_numeric_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_numeric_test)
+    add_test(NAME kq_numeric_synthetic COMMAND kq_numeric_test)
+
+    add_executable(kq_numeric_probe tests/numeric_probe.c)
+    target_link_libraries(kq_numeric_probe PRIVATE kq_core)
+    kq_enable_c_warnings(kq_numeric_probe)
+
+    add_executable(kq_numeric_integration_test tests/numeric_integration.c)
+    target_link_libraries(kq_numeric_integration_test PRIVATE kq_core)
+    target_include_directories(kq_numeric_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_numeric_integration_test)
+    add_test(NAME kq_numeric_real_artifact COMMAND kq_numeric_integration_test)
+    set_tests_properties(kq_numeric_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
     add_executable(kq_gguf_integration_test tests/gguf_integration.c)
     target_link_libraries(kq_gguf_integration_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_gguf_integration_test)
@@ -265,6 +292,14 @@ if(KQ_BUILD_TESTS)
         )
         set_tests_properties(kq_ple_canonical_oracle PROPERTIES
             SKIP_RETURN_CODE 77
+        )
+        add_test(
+            NAME kq_numeric_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-numerics.py
+                --probe $<TARGET_FILE:kq_numeric_probe>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/numerics/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
         )
     endif()
 

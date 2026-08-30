@@ -84,6 +84,14 @@ const char *kq_status_string(kq_status status) {
             return "incompatible PLE configuration";
         case KQ_STATUS_INVALID_PLE_STATE:
             return "invalid PLE stream state";
+        case KQ_STATUS_MALFORMED_QUANTIZED_DATA:
+            return "malformed quantized data";
+        case KQ_STATUS_NUMERIC_DOMAIN:
+            return "invalid numeric domain";
+        case KQ_STATUS_DIMENSION_MISMATCH:
+            return "numeric dimension mismatch";
+        case KQ_STATUS_ALIASING_VIOLATION:
+            return "forbidden numeric buffer aliasing";
         default:
             return "unknown Kestrel-Q status";
     }

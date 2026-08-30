@@ -81,6 +81,15 @@ semantic registry and its metadata-derived arrays, and address generation
 opens no tensor view or storage path. ADR 0012 accepts this prefetch-consumable
 semantic boundary while leaving all I/O/cache/prefetch policy deferred.
 
+Task 2.5 adds a separate scalar CPU numeric boundary above bounded Task 2.2
+views. It decodes F32, BF16, Q5_1, Q8_0, Q4_K, Q5_K and IQ4_NL blocks to F32,
+supports an explicit physical-order versus canonical-order view contract and
+provides a block-by-block quantized row dot with fixed 1,024-byte scratch. The
+generic F32 helpers are compiled without fast math or contraction and validated
+against pinned independent calibration/holdout evidence. The layer is a future
+optimized-kernel oracle, not a model graph: no GDN/QSA/GR/MoE/PLE value
+operator, full forward pass, scheduler or CUDA model kernel is present.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

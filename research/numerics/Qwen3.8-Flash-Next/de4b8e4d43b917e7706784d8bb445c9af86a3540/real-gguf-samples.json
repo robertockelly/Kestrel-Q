@@ -1,0 +1,148 @@
+{
+  "access_path": "semantic descriptor -> Task 2.2 bounded view/member -> one packed block -> Task 2.5 scalar decode",
+  "artifact": {
+    "filename": "Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf",
+    "id": "KQ-MODEL-ARTIFACT-001",
+    "identity_verification": "registered Task 1.0 identity; this bounded run rechecked exact file size and target model compatibility without rehashing the full file",
+    "registered_sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+    "registered_size_bytes": 111334654400,
+    "unsloth_revision": "c8b5954a88c2775c546b92593eda40ea041d3176"
+  },
+  "asset_id": "KQ-NUMERIC-REAL-GGUF-001",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle": {
+    "implementation": "ggml-org/llama.cpp",
+    "license": "MIT",
+    "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a"
+  },
+  "samples": [
+    {
+      "decoded_element_count": 1,
+      "decoded_max_hexfloat": "0x1.9a00000000000p-9",
+      "decoded_min_hexfloat": "0x1.9a00000000000p-9",
+      "decoded_output_sha256": "b68b52f097752db96b9cdca7dd937187c9afbc3f6f0de8fe854eeb1898900b6e",
+      "decoded_sum_f64_hexfloat": "0x1.9a00000000000p-9",
+      "id": "real-f32-router",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 4,
+      "physical_type": "F32",
+      "semantic_id": "layer.00.moe.router"
+    },
+    {
+      "decoded_element_count": 1,
+      "decoded_max_hexfloat": "-0x1.1800000000000p-6",
+      "decoded_min_hexfloat": "-0x1.1800000000000p-6",
+      "decoded_output_sha256": "72e062e38cfb3f30b95a40ce35730ee198f9b940a03c4ce8140b7a8e2c9afb07",
+      "decoded_sum_f64_hexfloat": "-0x1.1800000000000p-6",
+      "id": "real-bf16-qsa-query",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 2,
+      "physical_type": "BF16",
+      "semantic_id": "layer.11.qsa.indexer.qk"
+    },
+    {
+      "decoded_element_count": 32,
+      "decoded_max_hexfloat": "0x1.67f8000000000p-6",
+      "decoded_min_hexfloat": "-0x1.7180000000000p-6",
+      "decoded_output_sha256": "7c9bb7a87ea50b6f2099fa3b71efc4be30f7d4f8e6086c16b2e2abe35cb22574",
+      "decoded_sum_f64_hexfloat": "0x1.0f10000000000p-6",
+      "id": "real-q5-1-expert",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 24,
+      "physical_type": "Q5_1",
+      "semantic_id": "layer.00.moe.routed.down"
+    },
+    {
+      "decoded_element_count": 256,
+      "decoded_max_hexfloat": "0x1.2de5800000000p-5",
+      "decoded_min_hexfloat": "-0x1.6a50000000000p-5",
+      "decoded_output_sha256": "b365c035e0d4135a2f8cc5d5347d51cb81f73f2bf2ddeb90e02c856b40185b8d",
+      "decoded_sum_f64_hexfloat": "-0x1.41ec540000000p-2",
+      "id": "real-q4-k-expert-gate",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 144,
+      "physical_type": "Q4_K",
+      "semantic_id": "layer.00.moe.routed.gate_up"
+    },
+    {
+      "decoded_element_count": 32,
+      "decoded_max_hexfloat": "0x1.3250000000000p-6",
+      "decoded_min_hexfloat": "-0x1.760e000000000p-5",
+      "decoded_output_sha256": "ce53c8d059a01023ba77220da6478caae3e44e92aa0b3155ee986c80edfbb904",
+      "decoded_sum_f64_hexfloat": "-0x1.52b6000000000p-4",
+      "id": "real-q8-0-shared",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 34,
+      "physical_type": "Q8_0",
+      "semantic_id": "layer.00.moe.shared.down"
+    },
+    {
+      "decoded_element_count": 32,
+      "decoded_max_hexfloat": "0x1.43f3000000000p-5",
+      "decoded_min_hexfloat": "-0x1.34a5000000000p-5",
+      "decoded_output_sha256": "e908fe538d158a62370adbf6c599a8075c919470ca1dbe4571441467fb0e3085",
+      "decoded_sum_f64_hexfloat": "0x1.3218000000000p-7",
+      "id": "real-layer2-q8-down",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 34,
+      "physical_type": "Q8_0",
+      "semantic_id": "layer.02.moe.routed.down"
+    },
+    {
+      "decoded_element_count": 256,
+      "decoded_max_hexfloat": "0x1.5defe00000000p-5",
+      "decoded_min_hexfloat": "-0x1.206c000000000p-5",
+      "decoded_output_sha256": "f182da5cf8f9193cc723f3b6391f4471b51cd3297697d6c1f8dfcdfffdf7f98e",
+      "decoded_sum_f64_hexfloat": "0x1.919b1c0000000p-2",
+      "id": "real-layer2-q5-k-gate",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 176,
+      "physical_type": "Q5_K",
+      "semantic_id": "layer.02.moe.routed.gate_up"
+    },
+    {
+      "decoded_element_count": 256,
+      "decoded_max_hexfloat": "0x1.66a8e00000000p-5",
+      "decoded_min_hexfloat": "-0x1.7e6a000000000p-5",
+      "decoded_output_sha256": "9e7f301b5cb311af5cbae18aeb651c623f89866fdbd3905cdb44be02adc1ffed",
+      "decoded_sum_f64_hexfloat": "0x1.d009480000000p-3",
+      "id": "real-layer2-q5-k-up",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 176,
+      "physical_type": "Q5_K",
+      "semantic_id": "layer.02.moe.routed.gate_up"
+    },
+    {
+      "decoded_element_count": 32,
+      "decoded_max_hexfloat": "0x1.7157800000000p-6",
+      "decoded_min_hexfloat": "-0x1.9155000000000p-7",
+      "decoded_output_sha256": "f07ee3415fd2fe638e05cd6effacabeba382eb412be1ef312d16bfb09eb89d54",
+      "decoded_sum_f64_hexfloat": "0x1.515a000000000p-8",
+      "id": "real-iq4-nl-ple",
+      "logical_block_index": 0,
+      "oracle_comparison": "EXACT_BITS_PASS",
+      "packed_bytes_touched": 18,
+      "physical_type": "IQ4_NL",
+      "semantic_id": "layer.01.ple.table.064"
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "oracle_mismatches": 0,
+    "raw_model_bytes_recorded": 0,
+    "real_model_payload_blocks_touched": 9,
+    "real_model_payload_logical_bytes_touched": 612,
+    "sample_budget_bytes": 1048576,
+    "samples": 9,
+    "types": 7,
+    "within_budget": true
+  }
+}

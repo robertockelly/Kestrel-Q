@@ -113,3 +113,10 @@ streams and one tokenizer-to-PLE integration case at
 (SHA-256 `b9c9be4d927d59c9ac12ba2313034cda5a1857d5484fca479327c9b771cb9671`).
 Expected values come only from the pinned canonical oracle; the native runtime
 is never its own oracle.
+
+Task 2.5 does not modify or replace any Task 1.4 golden. Its low-level floating
+and quantized-storage evidence lives separately under `research/numerics/`:
+synthetic dequant expected values come from the pinned Class-Q llama.cpp helper,
+and primitive calibration/holdout expected values come from an explicitly
+ordered pinned NumPy oracle. Model-operator vectors above remain planned and
+must not be inferred from the low-level primitive evidence.

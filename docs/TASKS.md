@@ -74,9 +74,10 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.4 are complete/pass. The
-native runtime now reaches deterministic tokenization, chat formatting and PLE
-logical-address generation without tensor math; Task 2.5 has not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.5 are complete/pass. The
+native runtime now reaches bounded scalar decode/reference numerics after
+deterministic tokenization, chat formatting and PLE logical addressing. No
+model operator or forward path has started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -143,12 +144,26 @@ logical-address generation without tensor math; Task 2.5 has not started.
   - PLE payload views opened / model tensor payload touched: **0 / 0**;
   - ADR 0012: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Task 2.5 — CPU reference tensor primitives: **NOT STARTED**.
+- [x] Task 2.5 — CPU reference numeric primitives and quantized dequantization:
+  - exact seven-format block/decode and `/fp:strict` scalar contract:
+    **CHARACTERIZED / VERIFIED**;
+  - bounded block-by-block quantized row-dot with 1,024-byte scratch:
+    **EXACT PASS**;
+  - selected generic F32 primitives with 31-case independent calibration and
+    21-case holdout: **PASS**;
+  - 39 synthetic Class-Q dequant cases and seven row-dot cases:
+    **EXACT BITS PASS**;
+  - nine semantic/view-resolved real blocks covering all seven formats:
+    **612 bytes / 9 blocks / EXACT BITS PASS**;
+  - no raw real-model bytes committed; no full-tensor dequantization or model
+    operator implemented;
+  - ADR 0013: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine
 
-- [ ] Tensor primitives
-- [ ] Reference dequantization
+- [x] Scalar reference tensor primitives (Task 2.5 low-level boundary)
+- [x] Reference dequantization (Task 2.5 seven registered formats)
 - [ ] Tokenizer
 - [ ] Embeddings
 - [ ] Normalization

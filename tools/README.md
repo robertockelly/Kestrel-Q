@@ -244,3 +244,53 @@ python tools/validate-native-ple.py `
   --golden research/goldens/Qwen3.8-Flash-Next/canonical/ple-address-vectors.json `
   --differential research/ple/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/canonical-differential.json
 ```
+
+## Task 2.5 numeric oracles
+
+`llama-dequant-oracle.cpp` is a research-only Class-Q helper built against the
+ignored checkout/build of
+`ggml-org/llama.cpp@90c26fcd4b2114b4aa39d09d69318cb8f438d27a` (MIT). It calls the pinned
+GGML F32 decode trait for synthetic blocks; F32 uses the equivalent
+bit-preserving copy because that trait intentionally has no conversion
+callback. Production Kestrel-Q neither compiles nor links this helper.
+
+```powershell
+$llamaSource = (Resolve-Path .research-cache/task-1.4/llama.cpp).Path
+$llamaBuild = (Resolve-Path .research-cache/task-1.4/llama.cpp/build-kq-oracle).Path
+cmake -S tools/llama-dequant-oracle `
+  -B .research-cache/task-2.5/llama-oracle-build `
+  -G "Visual Studio 17 2022" -A x64 `
+  -DLLAMA_CPP_SOURCE_DIR="$llamaSource" `
+  -DLLAMA_CPP_BUILD_DIR="$llamaBuild"
+cmake --build .research-cache/task-2.5/llama-oracle-build --config Release
+```
+
+`generate-numeric-evidence.py` uses that helper for dequant expected values and
+Python 3.13.12/NumPy 2.5.2 (BSD-3-Clause) for explicitly ordered F32 primitive
+expected values. It records native output only as an observation, derives
+per-primitive calibration contracts, checks a disjoint holdout and emits the
+synthetic evidence/manifest.
+
+`capture-real-numeric-samples.py` invokes the test-only native view probe and
+holds each raw block only in subprocess memory while comparing it to the pinned
+llama helper. The committed file contains hashes/statistics, not packed model
+bytes. It requires the exact registered artifact via `KQ_GGUF_PATH`, rechecks
+its 111,334,654,400-byte size and enforces the 1 MiB guard.
+
+```powershell
+$out = 'research/numerics/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+$llama = '.research-cache/task-2.5/llama-oracle-build/Release/kq_llama_dequant_oracle.exe'
+$native = 'build-cpu/Release/kq_numeric_probe.exe'
+$real = 'build-cpu/Release/kq_numeric_integration_test.exe'
+.research-cache/task-1.4/venv/Scripts/python.exe tools/generate-numeric-evidence.py `
+  --llama-oracle $llama --native-probe $native --output-dir $out
+.research-cache/task-1.4/venv/Scripts/python.exe tools/capture-real-numeric-samples.py `
+  --real-probe $real --llama-oracle $llama --output "$out/real-gguf-samples.json"
+.research-cache/task-1.4/venv/Scripts/python.exe tools/generate-numeric-evidence.py `
+  --llama-oracle $llama --native-probe $native --output-dir $out
+```
+
+`validate-native-numerics.py` verifies manifest hashes, all 39 synthetic
+decode vectors, seven row-dot cases and all 31 calibration/21 holdout cases
+through `kq_numeric_probe`. It uses only the Python standard library and is a
+CTest/research dependency, never a production dependency.

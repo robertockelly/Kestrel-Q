@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.4 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.5 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -19,7 +19,8 @@ Initial task order:
 4. Task 2.3 — Native tokenizer and chat formatting.
    **COMPLETE / PASS**
 5. Task 2.4 — Native PLE address engine. **COMPLETE / PASS**
-6. Task 2.5 — CPU reference tensor primitives. **NOT STARTED**
+6. Task 2.5 — CPU reference numeric primitives and quantized dequantization.
+   **COMPLETE / PASS**
 
 Constraints:
 
@@ -34,9 +35,10 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Task 2.4 completes the weight-independent PLE address boundary. An immutable
-model-validated config and explicit 32-byte stream state emit 16 ordered
-canonical member/row intents per token. Exact original and expanded independent
-oracles pass with zero PLE payload views and zero tensor payload bytes touched.
-ADR 0012 is ACCEPTED. No lookup, I/O, cache, prefetch or scheduler policy is
-introduced; Task 2.5 is **NOT STARTED**.
+Task 2.5 completes the low-level scalar storage/arithmetic reference boundary.
+All seven registered formats match the pinned independent Class-Q decoder,
+generic primitives have separate calibration/holdout contracts, and nine real
+semantic/view-resolved blocks match in 612 bytes under the 1 MiB guard. ADR
+0013 is ACCEPTED. No full tensor materialization, model operator, forward path,
+SIMD/CUDA numeric kernel, cache, prefetch or scheduler policy is introduced;
+the next model-operator task is **NOT STARTED**.

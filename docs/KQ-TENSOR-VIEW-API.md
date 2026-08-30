@@ -65,5 +65,7 @@ one read-only Win32 mapping object; it does not copy tensor payload.
 - `SPLIT_SEGMENT`: one ordered physical part of a canonical semantic;
 - `FUSED_MEMBER`: one bounded canonical member inside a shared physical tensor.
 
-No accessor promises typed scalar values. Dequantization and execution remain
-future, separately tested APIs.
+No accessor itself promises typed scalar values. Task 2.5's separate numeric
+API is the first bounded consumer: it can decode an explicit physical block
+range or require canonical-contiguous ordering. It never changes the view's
+ownership/lifetime and rejects transformed-layout canonical misuse.

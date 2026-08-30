@@ -227,6 +227,33 @@ The project is currently pre-alpha.
   conservatively reported C4701 for run metrics populated through successful
   status-returning calls; explicit initialization restores a warning-free
   `/W4` path without weakening error handling.
+- Completed Task 2.5 and accepted ADR 0013. The production C17 runtime now has
+  an MSVC `/fp:strict` scalar reference layer for bit-preserving F32/BF16 and
+  independently validated Q5_1, Q8_0, Q4_K, Q5_K and IQ4_NL block decode, plus
+  a block-by-block quantized-row dot with fixed 1,024-byte scratch.
+- Added only the characterized generic F32 primitives: add/multiply/scale/dot,
+  sigmoid, SiLU, SwiGLU combine, Qwen weight-delta RMSNorm, softmax, stable
+  lower-index-tie top-k and selected-weight renormalization. No SIMD, CUDA
+  numeric kernel, model operator, full forward path, sampler or scheduler was
+  introduced.
+- Added pinned independent Task 2.5 evidence: 39 llama.cpp Class-Q synthetic
+  decode cases, seven row-dot cases, 31 NumPy calibration cases and 21 disjoint
+  holdout cases. Bit-exact/discrete operations remain exact; sigmoid, SiLU,
+  softmax and SwiGLU use separately measured ULP contracts rather than a
+  blanket tolerance.
+- Performed the first deliberately bounded real-model payload validation via
+  semantic descriptor and Task 2.2 views. Nine blocks cover all seven formats,
+  routed experts, the layer-2 Q8_0/Q5_K mix and PLE IQ4_NL; exactly 612 packed
+  bytes were touched under the 1 MiB guard and every decoded hash matched the
+  independent pinned llama.cpp helper. No raw sampled block was committed and
+  no storage-throughput/residency claim is made.
+- Corrected four Task 2.5 development findings before the clean gate: a dot
+  test expected-value transcription (`1` versus the recomputed `-5`), the
+  research helper's incorrect assumption that GGML F32 exposes a `to_float`
+  callback, an 11-versus-12-field real-evidence parser count, and a dot-alias
+  guard initially inserted in the binary-vector helper. Exact regression and
+  deterministic regeneration cover each corrected path; no invalid real raw
+  evidence was written.
 
 ### Added
 
