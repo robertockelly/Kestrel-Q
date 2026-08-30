@@ -90,6 +90,17 @@ against pinned independent calibration/holdout evidence. The layer is a future
 optimized-kernel oracle, not a model graph: no GDN/QSA/GR/MoE/PLE value
 operator, full forward pass, scheduler or CUDA model kernel is present.
 
+Task 2.6 adds the first model-specific execution boundary: a scalar C17
+Qwen3.8 GDN reference operator. Immutable layer descriptors validate all nine
+canonical GDN semantics and preserve transformed GGUF relations; explicit
+per-stream convolution/recurrent state supports transactional batch-1 prefill,
+one-token decode and reset. A released-model BF16 state descriptor remains
+separate from the executable F32 correctness descriptor. Independent pinned
+Class-C calibration/holdout/state vectors validate intermediate checkpoints,
+final output and both state classes. The real artifact validates all 36 GDN
+layers and rejects 12 QSA layers without opening a payload view. GR composition,
+QSA, MoE, PLE value math, full layers and optimized kernels remain absent.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

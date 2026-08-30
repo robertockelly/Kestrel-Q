@@ -1,0 +1,35 @@
+{
+  "assets": [
+    {
+      "path": "gdn-contract.json",
+      "sha256": "1b51bced8c0c6cb74e7cef1ce506339b2b6ccdc214c17cd3afdb0a343226fe93"
+    },
+    {
+      "path": "gdn-calibration.json",
+      "sha256": "ea13e2d8a307a41cea964015436fd895a5f4e285437d2fb9007448baf85e3a05"
+    },
+    {
+      "path": "gdn-holdout.json",
+      "sha256": "eb33540fa2ccce2237981b62c336dbe3ec0c38101675a21e5a0defb38facd8f7"
+    },
+    {
+      "path": "gdn-state-vectors.json",
+      "sha256": "fed6f9a2f5db8a3b669776a54213202ddb15ba3b19856853b9458cc45eb4680a"
+    },
+    {
+      "path": "gdn-native-validation.json",
+      "sha256": "6d8ee4499e811d59158dabefce51382142e152663c115889c2f2e9ef910a2eeb"
+    }
+  ],
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle_class": "C",
+  "oracle_license": "Apache-2.0",
+  "safety": {
+    "full_bf16_checkpoint_downloaded": false,
+    "kestrel_q_used_as_expected_value_source": false,
+    "real_model_payload_bytes_touched": 0
+  },
+  "schema": "KQ-GDN-MANIFEST-v1",
+  "status": "COMPLETE_PASS",
+  "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+}

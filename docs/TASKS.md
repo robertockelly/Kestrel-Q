@@ -74,10 +74,10 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.5 are complete/pass. The
-native runtime now reaches bounded scalar decode/reference numerics after
-deterministic tokenization, chat formatting and PLE logical addressing. No
-model operator or forward path has started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.6 are complete/pass. The
+native runtime now includes the first independently validated model-specific
+operator, the scalar GDN reference path. QSA, GR composition, MoE, PLE values,
+complete layers and a full forward path have not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -159,6 +159,18 @@ model operator or forward path has started.
     operator implemented;
   - ADR 0013: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+- [x] Task 2.6 — GDN reference operator and independent golden vectors:
+  - exact pinned `Qwen4ExpTextGatedDeltaNet` contract and nine tensor roles:
+    **CHARACTERIZED / VERIFIED**;
+  - independent reduced F32 Class-C calibration, disjoint holdout and state
+    vectors: **PASS**;
+  - scalar batch-1 prefill, incremental decode, reset, transactional state and
+    21 intermediate checkpoint classes: **PASS**;
+  - native split-prefill/decode and reset/replay: **EXACT BITS PASS**;
+  - all 36 real GDN configs valid, all 12 QSA IDs rejected, real payload bytes
+    touched: **0**;
+  - ADR 0014: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine
 
@@ -170,7 +182,8 @@ model operator or forward path has started.
 - [ ] Core block execution
 - [ ] MoE routing
 - [ ] Expert execution
-- [ ] GDN/QSA path
+- [x] GDN scalar reference path (Task 2.6)
+- [ ] QSA path
 - [ ] Logits
 - [ ] Sampling
 - [ ] Reference-vector validation

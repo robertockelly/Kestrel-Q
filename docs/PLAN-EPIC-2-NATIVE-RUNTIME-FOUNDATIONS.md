@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.5 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.6 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -21,6 +21,8 @@ Initial task order:
 5. Task 2.4 — Native PLE address engine. **COMPLETE / PASS**
 6. Task 2.5 — CPU reference numeric primitives and quantized dequantization.
    **COMPLETE / PASS**
+7. Task 2.6 — GDN reference operator and independent golden vectors.
+   **COMPLETE / PASS**
 
 Constraints:
 
@@ -35,10 +37,11 @@ Constraints:
 - `CHANGELOG.md` updated for every material iteration.
 - `KQ-BACKLOG-BENCH-002` stays deferred until scheduler design.
 
-Task 2.5 completes the low-level scalar storage/arithmetic reference boundary.
-All seven registered formats match the pinned independent Class-Q decoder,
-generic primitives have separate calibration/holdout contracts, and nine real
-semantic/view-resolved blocks match in 612 bytes under the 1 MiB guard. ADR
-0013 is ACCEPTED. No full tensor materialization, model operator, forward path,
-SIMD/CUDA numeric kernel, cache, prefetch or scheduler policy is introduced;
-the next model-operator task is **NOT STARTED**.
+Task 2.6 builds the first model-specific operator above the Task 2.5 scalar
+boundary. The pinned Class-C Qwen GDN module provides reduced-shape calibration,
+disjoint holdout and state-transition expectations before native comparison.
+Scalar prefill/decode and explicit convolution/recurrent state pass; 36 real
+GDN bindings validate and 12 QSA layers reject without payload access. ADR 0014
+is ACCEPTED. No GR composition, QSA, MoE, PLE value execution, complete layer,
+full forward, SIMD/CUDA model kernel, cache, prefetch or scheduler policy is
+introduced; the next model-operator task is **NOT STARTED**.

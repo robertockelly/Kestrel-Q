@@ -55,6 +55,8 @@ endif()
 add_library(kq_core
     src/kq_chat.c
     src/kq_file_win32.c
+    src/kq_gdn.c
+    src/kq_gdn_qwen38.c
     src/kq_gguf.c
     src/kq_model.c
     src/kq_numeric.c
@@ -78,8 +80,12 @@ kq_enable_c_warnings(kq_core)
 if(MSVC)
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
+    set_property(SOURCE src/kq_gdn.c src/kq_gdn_qwen38.c APPEND PROPERTY
+        COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
+        COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
+    set_property(SOURCE src/kq_gdn.c src/kq_gdn_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -228,6 +234,27 @@ if(KQ_BUILD_TESTS)
     target_link_libraries(kq_numeric_probe PRIVATE kq_core)
     kq_enable_c_warnings(kq_numeric_probe)
 
+    add_executable(kq_gdn_probe tests/gdn_probe.c)
+    target_link_libraries(kq_gdn_probe PRIVATE kq_core)
+    target_include_directories(kq_gdn_probe PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_gdn_probe)
+
+    add_executable(kq_gdn_test tests/gdn_test.c)
+    target_link_libraries(kq_gdn_test PRIVATE kq_core)
+    target_include_directories(kq_gdn_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_gdn_test)
+    add_test(NAME kq_gdn_synthetic COMMAND kq_gdn_test)
+
+    add_executable(kq_gdn_integration_test tests/gdn_integration.c)
+    target_link_libraries(kq_gdn_integration_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_gdn_integration_test)
+    add_test(NAME kq_gdn_real_artifact COMMAND kq_gdn_integration_test)
+    set_tests_properties(kq_gdn_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
     add_executable(kq_numeric_integration_test tests/numeric_integration.c)
     target_link_libraries(kq_numeric_integration_test PRIVATE kq_core)
     target_include_directories(kq_numeric_integration_test PRIVATE
@@ -300,6 +327,14 @@ if(KQ_BUILD_TESTS)
                 --probe $<TARGET_FILE:kq_numeric_probe>
                 --evidence-dir
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/numerics/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+        )
+        add_test(
+            NAME kq_gdn_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-gdn.py
+                --probe $<TARGET_FILE:kq_gdn_probe>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
         )
     endif()
 

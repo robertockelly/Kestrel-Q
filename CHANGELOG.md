@@ -254,6 +254,39 @@ The project is currently pre-alpha.
   guard initially inserted in the binary-vector helper. Exact regression and
   deterministic regeneration cover each corrected path; no invalid real raw
   evidence was written.
+- Completed Task 2.6 and accepted ADR 0014. The first model-specific production
+  operator is an immutable C17 Qwen3.8 GDN scalar reference with explicit
+  convolution/recurrent stream state, transactional batch-1 prefill and
+  one-token decode, bounded caller scratch and synchronous intermediate
+  checkpoint observation. It adds no GR composition, QSA, MoE, PLE value,
+  complete-layer/full-forward, SIMD or CUDA model execution.
+- Characterized the exact pinned `Qwen4ExpTextGatedDeltaNet` contract before
+  native code and generated an independent Class-C evidence namespace from the
+  pinned offline Transformers module. Five calibration, five disjoint holdout
+  and five state/continuation cases cover sequence/history boundaries,
+  repeated/alternating/masked input, non-zero state, reset/replay and two decode
+  steps. All final output/state and 21 emitted intermediate checkpoint classes
+  pass their per-class calibrated contracts; native split-prefill/decode and
+  reset/replay are bit-identical. Kestrel-Q never supplies expected values.
+- Added target semantic integration for all 36 real GDN layers and fail-closed
+  rejection for all 12 QSA IDs, missing/wrong semantics, shape/dtype/type/
+  transformed-layout mismatches, invalid state/count/capacity/finiteness and
+  forbidden aliasing. The released BF16 state descriptor and executable F32
+  scalar-reference descriptor validate the same nine canonical bindings. No
+  real payload view was opened and real model payload bytes touched remain
+  zero; the full BF16 checkpoint was not downloaded.
+- Fixed two Task 2.6 build findings before the clean gate. MSVC C4090 arose from
+  an aggregate `memcpy` of pointer-to-const semantic descriptors; explicit
+  element assignment preserves qualifiers. Adding probe timing then exposed
+  conservative C4701 analysis across status/timer checks; explicit
+  `LARGE_INTEGER` initialization preserves fail-closed flow. Focused rebuilds
+  are warning-free and regression tests cover the affected construction and
+  oracle paths.
+- Corrected Task 2.6 characterization timing before publication: the first
+  draft included registry construction and checkpoint-observer/output work.
+  Real-config timing now starts after registry construction, while reduced
+  execution timing uses a second no-observer run; timings remain explicitly
+  descriptive rather than performance guarantees.
 
 ### Added
 

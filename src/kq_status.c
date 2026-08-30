@@ -92,6 +92,10 @@ const char *kq_status_string(kq_status status) {
             return "numeric dimension mismatch";
         case KQ_STATUS_ALIASING_VIOLATION:
             return "forbidden numeric buffer aliasing";
+        case KQ_STATUS_INCOMPATIBLE_GDN:
+            return "incompatible GDN configuration";
+        case KQ_STATUS_INVALID_GDN_STATE:
+            return "invalid GDN stream state";
         default:
             return "unknown Kestrel-Q status";
     }

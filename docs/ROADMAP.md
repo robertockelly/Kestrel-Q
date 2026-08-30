@@ -33,7 +33,7 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.5 are
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.6 are
   complete/pass; the next model-operator task has not started.
 
 ## R1 — Read the model
@@ -71,6 +71,10 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   Independent synthetic calibration/holdout passes, and nine bounded real
   blocks cover all seven formats in 612 payload bytes without committing raw
   weights or implementing a model operator.
+- Task 2.6 is complete/pass. ADR 0014 accepts the first model-specific scalar
+  reference operator: canonical Qwen3.8 GDN prefill/decode and explicit state
+  pass independent calibration, holdout and transition vectors. All 36 real
+  GDN descriptors validate, 12 QSA IDs reject and real payload touched is zero.
 - R1/Epic 2 remains in progress. The next model-operator task has not started.
 
 ## R2 — Compute correctly
@@ -78,8 +82,8 @@ Minimal CPU reference inference and reference-vector parity.
 
 - Low-level scalar storage and arithmetic reference boundary: **COMPLETE /
   PASS via Task 2.5**.
-- Model-specific operator execution and full reference inference: **NOT
-  STARTED**.
+- GDN scalar reference execution: **COMPLETE / PASS via Task 2.6**.
+- Other model-specific operators and full reference inference: **NOT STARTED**.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

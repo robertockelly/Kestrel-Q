@@ -32,6 +32,21 @@ Detailed byte accounting, allocator policy and placement are Task 1.2 work.
 | Position count | request | request/context | scalar per sequence | logical next position | integer | yes |
 | Cached QSA position IDs | hybrid cache/reference implementation | request/context | grows with `T` | text-only equivalent of `[3,B,T]` | integer | reference-specific representation; equivalent position state required |
 | QSA pooled block keys/scores/top-k/mask | each QSA call | current call | transient; derived from `T` | implementation-dependent | mixed: FP32 scoring in Tier B, masks bool/float | yes, transient |
+
+Task 2.6 revalidated the two GDN rows directly against the pinned
+`Qwen4ExpTextGatedDeltaNet` and `LinearAttentionLayer` cache implementation.
+The convolution state is exactly the last four **pre-convolution projected
+QKV** values per channel, not convolved output. Reset zeroes both state classes
+and clears the initialized flag. The scalar operator performs a bounded
+working-state scan and commits only after successful prefill/decode, so an
+operator-local failure does not expose a partially advanced GDN state.
+
+The released-model descriptor retains BF16 convolution storage and F32
+recurrent storage. The independent reduced reference configuration uses F32
+for both so its arithmetic can be isolated without the full BF16 checkpoint.
+Observed batch-1 per-layer target storage is 3,227,696 owned bytes including
+the state object/allocation overhead; the semantic payload remains 81,920
+convolution bytes plus 3,145,728 recurrent bytes.
 | MoE route IDs/weights | each layer/current tokens | current sublayer | transient | `[B*N,10]` each | IDs integer; score path FP32 then activation dtype | yes, transient |
 | MTP draft cache/state | optional MTP module | speculative request | depends on draft steps/context | one QSA/MoE draft layer plus input-fusion state | not fixed by Task 1.1 | no |
 | Vision features/M-RoPE state | optional vision wrapper | multimodal request | input-dependent | vision-grid dependent | model dtype/integer positions | no |

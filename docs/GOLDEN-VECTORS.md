@@ -48,10 +48,27 @@ metadata before generation succeeds.
 | `canonical/full-model-vector-plan.json` | `DEFERRED_CAPABLE_REFERENCE_ENV` | `852c326c6c1ba89fd87c7717c5297eb6fd3ae7b087ee1ede5169473d4d87a7a9` |
 | `quantized/gguf-vector-plan.json` | `DEFERRED_CAPABLE_REFERENCE_ENV` | `b51e4e25cda36dcf2fdcc14bbd2394b3a03a8e9ec74b45a3497f50a9a5d83c07` |
 
-No standalone GR, GDN, QSA or MoE floating vector was marked generated. Task
-1.4 did not install or execute a full tensor framework, and an isolated
-weight-free operator harness was not independently validated. The operator plan
-therefore fixes the future schema and preserves the independent-oracle gate.
+Task 1.4 did not mark standalone GR, GDN, QSA or MoE floating vectors generated.
+Task 2.6 has now satisfied the GDN portion only: a pinned offline Transformers
+`Qwen4ExpTextGatedDeltaNet` produces reduced-shape Class-C calibration,
+disjoint holdout and state-transition evidence before native execution. The
+native scalar path is compared to those expectations across 24 output/state/
+checkpoint classes. GR, QSA and MoE vectors remain planned and are not inferred
+from the GDN result.
+
+The Task 2.6 namespace is
+`research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
+Its manifest pins the exact source/config hashes, all oracle assets and native
+validation. No real model weight bytes or self-oracle values are present.
+
+| Task 2.6 asset | SHA-256 |
+|---|---|
+| `gdn-contract.json` | `1b51bced8c0c6cb74e7cef1ce506339b2b6ccdc214c17cd3afdb0a343226fe93` |
+| `gdn-calibration.json` | `ea13e2d8a307a41cea964015436fd895a5f4e285437d2fb9007448baf85e3a05` |
+| `gdn-holdout.json` | `eb33540fa2ccce2237981b62c336dbe3ec0c38101675a21e5a0defb38facd8f7` |
+| `gdn-state-vectors.json` | `fed6f9a2f5db8a3b669776a54213202ddb15ba3b19856853b9458cc45eb4680a` |
+| `gdn-native-validation.json` | `6d8ee4499e811d59158dabefce51382142e152663c115889c2f2e9ef910a2eeb` |
+| `gdn-manifest.json` | `b0c5e6de7c76972b876c48e31f913fb57c84c51877a64c9ca404f73f82e35964` |
 
 The Class-C full-model plan fixes three prompt IDs, batch 1, BF16, text-only,
 greedy generation, no vision/MTP/speculation, exact dependencies and hooks

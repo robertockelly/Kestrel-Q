@@ -100,3 +100,20 @@ aggregate accelerator and host/storage headroom. The Class-Q gate uses a fixed
 CPU-only llama.cpp invocation, explicit mmap, zero GPU layers, greedy sampling
 and no speculation on a machine with at least 256 GiB RAM and NVMe storage.
 Neither gate was executed or fabricated during Task 1.4.
+
+## Task 2.6 isolated GDN oracle
+
+Task 2.6 instantiates the pinned Class-C
+`Qwen4ExpTextGatedDeltaNet` directly from Transformers revision
+`805a9e939fa8c1bff8d8ffdf041c051b71a914aa`. The canonical class accepts the
+selected reduced dimensions without changing its convolution, head-repeat,
+gated-delta, norm/gate or cache algorithms. Exact synthetic weights, inputs and
+initial states produce calibration, disjoint holdout and state-transition
+expectations before the native operator is run.
+
+The native probe is comparison-only. It cannot write expected arrays and its
+timing is excluded from deterministic hashes. A separate real-artifact test
+validates all 36 semantic configurations and 12 QSA rejections with zero model
+payload access; it is not substituted for the Class-C algorithm oracle. The
+full BF16 checkpoint remains undownloaded and future full-weight target
+checkpoints remain separate acceptance gates.

@@ -294,3 +294,45 @@ $real = 'build-cpu/Release/kq_numeric_integration_test.exe'
 decode vectors, seven row-dot cases and all 31 calibration/21 holdout cases
 through `kq_numeric_probe`. It uses only the Python standard library and is a
 CTest/research dependency, never a production dependency.
+
+## Task 2.6 GDN Class-C oracle
+
+`generate-gdn-reference.py` is a research-only offline Class-C generator. It
+verifies the exact official config and four pinned Transformers source hashes,
+imports `Qwen4ExpTextGatedDeltaNet` from revision
+`805a9e939fa8c1bff8d8ffdf041c051b71a914aa`, and instantiates the module with a
+bounded reduced F32 configuration supported by the canonical class. Exact
+power-of-two synthetic inputs/weights feed five calibration, five disjoint
+holdout and prefill/decode/reset state cases. It runs before native comparison,
+does not import Kestrel-Q and downloads no checkpoint.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/venv/Lib/site-packages').Path
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-gdn-reference.py `
+  --transformers-source .research-cache/task-1.4/transformers/src `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --output-dir $out
+```
+
+`validate-native-gdn.py` sends those independent arrays to the test-only
+`kq_gdn_probe`, derives per-checkpoint limits from calibration only, and
+requires the untouched limits to pass holdout and state cases. It separately
+requires native split-prefill/decode and reset/replay bit identity. With
+`--write-validation` it emits deterministic comparison evidence and finalizes
+the manifest; normal CTest mode recomputes the result and requires byte
+identity. High-resolution timing printed by the probe is characterization only
+and is intentionally excluded from hashed deterministic evidence.
+
+```powershell
+python tools/validate-native-gdn.py `
+  --probe build-cpu/Release/kq_gdn_probe.exe `
+  --evidence-dir $out `
+  --write-validation
+```
+
+Python, PyTorch, NumPy and Transformers remain ignored test/research
+dependencies. The C17 production GDN code reads no evidence JSON and links no
+oracle framework.

@@ -177,6 +177,14 @@ Chunking, triangular solves and fused per-step kernels are implementation
 choices; the sequential recurrence above is the semantic reference.
 [KQ-ARCH-GDN-004] [KQ-ARCH-GDN-005]
 
+Task 2.6 executable characterization sharpens two implementation boundaries.
+The four-position convolution state stores the latest **pre-convolution fused
+QKV projection values**, then convolution and SiLU produce Q/K/V. GDN's gated
+RMS normalization is applied to each 128-wide recurrent output before the
+sigmoid `z` gate and output projection. The surrounding Gated Residual input
+mix, injection and residual addition belong to `Qwen4ExpTextDecoderLayer`, not
+`Qwen4ExpTextGatedDeltaNet`; they are not part of the native GDN operator.
+
 ## Qwen Sparse Attention
 
 Each QSA layer has 24 query heads, 2 KV heads and 256 dimensions per head. It
