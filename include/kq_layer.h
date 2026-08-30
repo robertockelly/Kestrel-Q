@@ -8,6 +8,7 @@
 #include "kq_ple.h"
 #include "kq_ple_value.h"
 #include "kq_qsa.h"
+#include "kq_weight_provider.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,6 +83,10 @@ typedef struct kq_layer_metrics {
     uint64_t scratch_bytes;
     uint64_t gr_workspace_bytes;
     uint64_t transaction_staging_bytes;
+    uint64_t qsa_selection_events;
+    uint64_t qsa_candidate_blocks;
+    uint64_t qsa_selected_blocks;
+    uint64_t qsa_selected_tokens;
 } kq_layer_metrics;
 
 /* The model/GGUF/file owner must outlive the returned immutable config. */
@@ -118,6 +123,11 @@ kq_status kq_layer_required_scratch_bytes(
     uint64_t token_count, uint64_t *scratch_bytes,
     kq_diagnostic *diagnostic);
 
+kq_status kq_layer_required_quantized_scratch_bytes(
+    const kq_layer_config *config, const kq_layer_state *state,
+    uint64_t token_count, uint64_t *scratch_bytes,
+    kq_diagnostic *diagnostic);
+
 kq_status kq_layer_prefill_f32(
     const kq_layer_config *config, const kq_layer_weights_f32 *weights,
     const float *hidden_branches, const uint32_t *token_ids,
@@ -134,6 +144,22 @@ kq_status kq_layer_decode_f32(
     uint64_t scratch_bytes, kq_layer_checkpoint_observer observer,
     void *observer_user_data, kq_layer_metrics *metrics,
     kq_diagnostic *diagnostic);
+
+kq_status kq_layer_prefill_quantized_f32(
+    const kq_layer_config *config, kq_weight_provider *provider,
+    const float *branches, const uint32_t *token_ids, uint64_t token_count,
+    const uint8_t *padding_mask, float *output, uint64_t output_capacity,
+    kq_layer_state *state, void *scratch, uint64_t scratch_bytes,
+    kq_layer_checkpoint_observer observer, void *observer_user_data,
+    kq_layer_metrics *metrics, kq_diagnostic *diagnostic);
+
+kq_status kq_layer_decode_quantized_f32(
+    const kq_layer_config *config, kq_weight_provider *provider,
+    const float *branches, uint32_t token_id,
+    float *output, uint64_t output_capacity, kq_layer_state *state,
+    void *scratch, uint64_t scratch_bytes,
+    kq_layer_checkpoint_observer observer, void *observer_user_data,
+    kq_layer_metrics *metrics, kq_diagnostic *diagnostic);
 
 const char *kq_layer_family_name(kq_layer_family family);
 const char *kq_layer_checkpoint_kind_name(kq_layer_checkpoint_kind kind);

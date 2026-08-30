@@ -8,6 +8,7 @@
 
 #include "kq_internal.h"
 #include "kq_numeric.h"
+#include "kq_weight_provider.h"
 
 typedef struct kq_gdn_workspace {
     float *conv_state;
@@ -270,16 +271,45 @@ static void kq_gdn_emit(kq_gdn_checkpoint_observer observer,
     observer(&checkpoint, user_data);
 }
 
-static kq_status kq_gdn_project(const float *weights,
+static kq_status kq_gdn_project(const kq_gdn_config *config,
+                                const kq_gdn_weights_f32 *weights,
+                                kq_weight_provider *provider,
+                                uint32_t role_index,
                                 uint64_t rows,
                                 uint64_t columns,
                                 const float *input,
                                 float *output,
+                                void *weight_scratch,
+                                uint64_t weight_scratch_bytes,
                                 kq_diagnostic *diagnostic) {
+    static const size_t offsets[KQ_GDN_WEIGHT_ROLE_COUNT] = {
+        offsetof(kq_gdn_weights_f32, a_log),
+        offsetof(kq_gdn_weights_f32, conv),
+        offsetof(kq_gdn_weights_f32, dt_bias),
+        offsetof(kq_gdn_weights_f32, alpha),
+        offsetof(kq_gdn_weights_f32, beta),
+        offsetof(kq_gdn_weights_f32, qkv),
+        offsetof(kq_gdn_weights_f32, gate),
+        offsetof(kq_gdn_weights_f32, norm),
+        offsetof(kq_gdn_weights_f32, output)
+    };
     uint64_t row;
     kq_status status;
+    const float *matrix;
+    if (provider != NULL) {
+        if (config->tensors[role_index] == NULL)
+            return kq_gdn_execute_fail(diagnostic,
+                KQ_STATUS_SEMANTIC_MAPPING_FAILED,
+                "GDN provider matrix semantic is missing");
+        return kq_weight_provider_linear_f32(
+            provider, config->tensors[role_index], KQ_BINDING_PART_WHOLE,
+            KQ_WEIGHT_PROVIDER_NO_EXPERT, rows, columns, input, output, rows,
+            weight_scratch, weight_scratch_bytes, diagnostic);
+    }
+    matrix = *(const float *const *)((const unsigned char *)weights +
+                                     offsets[role_index]);
     for (row = 0U; row < rows; ++row) {
-        status = kq_f32_dot(weights + row * columns, input, columns,
+        status = kq_f32_dot(matrix + row * columns, input, columns,
                             &output[row], diagnostic);
         if (status != KQ_STATUS_OK) {
             return status;
@@ -340,6 +370,7 @@ static kq_status kq_gdn_validate_call(
     kq_gdn_state *state,
     void *scratch,
     uint64_t scratch_bytes,
+    int provider_mode,
     uint64_t *hidden_count,
     kq_diagnostic *diagnostic) {
     uint64_t bytes;
@@ -350,7 +381,7 @@ static kq_status kq_gdn_validate_call(
     kq_status status;
 
     if (config == NULL || config->magic != KQ_GDN_CONFIG_MAGIC ||
-        weights == NULL || hidden_states == NULL || output == NULL ||
+        (!provider_mode && weights == NULL) || hidden_states == NULL || output == NULL ||
         state == NULL || state->magic != KQ_GDN_STATE_MAGIC ||
         state->config != config || state->conv_state == NULL ||
         state->recurrent_state == NULL || scratch == NULL ||
@@ -407,9 +438,9 @@ static kq_status kq_gdn_validate_call(
     if (status != KQ_STATUS_OK) {
         return status;
     }
-    status = kq_gdn_validate_weights(config, weights, diagnostic);
-    if (status != KQ_STATUS_OK) {
-        return status;
+    if (!provider_mode) {
+        status = kq_gdn_validate_weights(config, weights, diagnostic);
+        if (status != KQ_STATUS_OK) return status;
     }
     if (!kq_gdn_exec_u64_mul(*hidden_count, sizeof(float), &bytes) ||
         !kq_gdn_exec_u64_mul(output_capacity, sizeof(float), &output_bytes) ||
@@ -437,12 +468,13 @@ static kq_status kq_gdn_validate_call(
                               conv_state_bytes) ||
         kq_gdn_ranges_overlap(output, output_bytes, state->recurrent_state,
                               recurrent_state_bytes) ||
-        kq_gdn_weights_overlap(weights, output, output_bytes) ||
-        kq_gdn_weights_overlap(weights, scratch, scratch_bytes) ||
-        kq_gdn_weights_overlap(weights, state->conv_state,
-                               conv_state_bytes) ||
-        kq_gdn_weights_overlap(weights, state->recurrent_state,
-                               recurrent_state_bytes)) {
+        (!provider_mode &&
+         (kq_gdn_weights_overlap(weights, output, output_bytes) ||
+          kq_gdn_weights_overlap(weights, scratch, scratch_bytes) ||
+          kq_gdn_weights_overlap(weights, state->conv_state,
+                                 conv_state_bytes) ||
+          kq_gdn_weights_overlap(weights, state->recurrent_state,
+                                 recurrent_state_bytes)))) {
         return kq_gdn_execute_fail(diagnostic, KQ_STATUS_ALIASING_VIOLATION,
                                    "GDN input, output, state, and scratch must not overlap");
     }
@@ -453,9 +485,10 @@ static kq_status kq_gdn_validate_call(
     return KQ_STATUS_OK;
 }
 
-kq_status kq_gdn_execute_f32(
+static kq_status kq_gdn_execute_common(
     const kq_gdn_config *config,
     const kq_gdn_weights_f32 *weights,
+    kq_weight_provider *provider,
     const float *hidden_states,
     uint64_t sequence_length,
     const uint8_t *padding_mask,
@@ -464,6 +497,8 @@ kq_status kq_gdn_execute_f32(
     kq_gdn_state *state,
     void *scratch,
     uint64_t scratch_bytes,
+    void *weight_scratch,
+    uint64_t weight_scratch_bytes,
     kq_gdn_checkpoint_observer observer,
     void *observer_user_data,
     kq_diagnostic *diagnostic) {
@@ -488,7 +523,8 @@ kq_status kq_gdn_execute_f32(
     status = kq_gdn_validate_call(config, weights, hidden_states,
                                   sequence_length, padding_mask, output,
                                   output_capacity, state, scratch,
-                                  scratch_bytes, &hidden_count, diagnostic);
+                                  scratch_bytes, provider != NULL,
+                                  &hidden_count, diagnostic);
     if (status != KQ_STATUS_OK) {
         return status;
     }
@@ -519,21 +555,27 @@ kq_status kq_gdn_execute_f32(
                     KQ_GDN_CHECKPOINT_MASKED_INPUT, token, 1U,
                     hidden_size, 0U, 0U, workspace.masked_input, hidden_size);
 
-        status = kq_gdn_project(weights->qkv, config->conv_channels,
+        status = kq_gdn_project(config, weights, provider, 5U,
+                                config->conv_channels,
                                 hidden_size, workspace.masked_input,
-                                workspace.projected_qkv, diagnostic);
+                                workspace.projected_qkv, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_gdn_project(weights->gate, config->value_dimension,
+        status = kq_gdn_project(config, weights, provider, 6U,
+                                config->value_dimension,
                                 hidden_size, workspace.masked_input,
-                                workspace.projected_gate, diagnostic);
+                                workspace.projected_gate, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_gdn_project(weights->beta, value_heads,
+        status = kq_gdn_project(config, weights, provider, 4U, value_heads,
                                 hidden_size, workspace.masked_input,
-                                workspace.projected_beta, diagnostic);
+                                workspace.projected_beta, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_gdn_project(weights->alpha, value_heads,
+        status = kq_gdn_project(config, weights, provider, 3U, value_heads,
                                 hidden_size, workspace.masked_input,
-                                workspace.projected_alpha, diagnostic);
+                                workspace.projected_alpha, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
 
         kq_gdn_emit(observer, observer_user_data,
@@ -781,10 +823,11 @@ kq_status kq_gdn_execute_f32(
                     value_heads, value_dimension, 0U,
                     workspace.core_output, config->value_dimension);
 
-        status = kq_gdn_project(weights->output, hidden_size,
+        status = kq_gdn_project(config, weights, provider, 8U, hidden_size,
                                 config->value_dimension,
                                 workspace.core_output,
-                                workspace.operator_output, diagnostic);
+                                workspace.operator_output, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
         status = kq_gdn_validate_finite(
             workspace.operator_output, hidden_size,
@@ -804,4 +847,62 @@ kq_status kq_gdn_execute_f32(
            (size_t)config->recurrent_elements * sizeof(float));
     state->initialized = 1;
     return KQ_STATUS_OK;
+}
+
+kq_status kq_gdn_execute_f32(
+    const kq_gdn_config *config, const kq_gdn_weights_f32 *weights,
+    const float *hidden_states, uint64_t sequence_length,
+    const uint8_t *padding_mask, float *output, uint64_t output_capacity,
+    kq_gdn_state *state, void *scratch, uint64_t scratch_bytes,
+    kq_gdn_checkpoint_observer observer, void *observer_user_data,
+    kq_diagnostic *diagnostic) {
+    return kq_gdn_execute_common(config, weights, NULL, hidden_states,
+        sequence_length, padding_mask, output, output_capacity, state,
+        scratch, scratch_bytes, NULL, 0U, observer, observer_user_data,
+        diagnostic);
+}
+
+kq_status kq_gdn_execute_quantized(
+    const kq_gdn_config *config, kq_weight_provider *provider,
+    const float *hidden_states, uint64_t sequence_length,
+    const uint8_t *padding_mask, float *output, uint64_t output_capacity,
+    kq_gdn_state *state, void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_gdn_checkpoint_observer observer, void *observer_user_data,
+    kq_diagnostic *diagnostic) {
+    kq_gdn_weights_f32 resolved;
+    float *cursor = (float *)weight_scratch;
+    float *temporary;
+    uint64_t vector_count = 48U + 40960U + 48U + 128U;
+    uint64_t vector_bytes = vector_count * sizeof(float);
+    uint64_t temporary_count = 40960U;
+    uint64_t temporary_bytes = temporary_count * sizeof(float);
+    kq_status status;
+    if (provider == NULL || weight_scratch == NULL ||
+        weight_scratch_bytes < vector_bytes + temporary_bytes + 65536U)
+        return kq_gdn_execute_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                                   "GDN provider weight scratch is too small");
+    memset(&resolved, 0, sizeof(resolved));
+    resolved.a_log = cursor; resolved.a_log_count = 48U; cursor += 48U;
+    resolved.conv = cursor; resolved.conv_count = 40960U; cursor += 40960U;
+    resolved.dt_bias = cursor; resolved.dt_bias_count = 48U; cursor += 48U;
+    resolved.norm = cursor; resolved.norm_count = 128U; cursor += 128U;
+    temporary = cursor;
+#define LOAD_GDN_VECTOR(field, role_index) do { \
+    status = kq_weight_provider_vector_f32(provider, config->tensors[role_index], \
+        resolved.field##_count, (float *)resolved.field, resolved.field##_count, \
+        temporary, temporary_bytes, diagnostic); \
+    if (status != KQ_STATUS_OK) return status; \
+} while (0)
+    LOAD_GDN_VECTOR(a_log, 0U);
+    LOAD_GDN_VECTOR(conv, 1U);
+    LOAD_GDN_VECTOR(dt_bias, 2U);
+    LOAD_GDN_VECTOR(norm, 7U);
+#undef LOAD_GDN_VECTOR
+    cursor = (float *)((unsigned char *)temporary + temporary_bytes);
+    return kq_gdn_execute_common(config, &resolved, provider, hidden_states,
+        sequence_length, padding_mask, output, output_capacity, state,
+        scratch, scratch_bytes, cursor,
+        weight_scratch_bytes - vector_bytes - temporary_bytes,
+        observer, observer_user_data, diagnostic);
 }

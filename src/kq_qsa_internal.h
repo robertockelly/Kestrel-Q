@@ -2,6 +2,7 @@
 #define KQ_QSA_INTERNAL_H
 
 #include "kq_qsa.h"
+#include "kq_weight_provider.h"
 
 #define KQ_QSA_CONFIG_MAGIC UINT32_C(0x4b515143)
 #define KQ_QSA_STATE_MAGIC UINT32_C(0x4b515153)
@@ -89,5 +90,15 @@ kq_status kq_qsa_execute_f32(
     kq_qsa_checkpoint_observer checkpoint_observer,
     void *observer_user_data,
     kq_diagnostic *diagnostic);
+
+kq_status kq_qsa_execute_quantized(
+    const kq_qsa_config *config, kq_weight_provider *provider,
+    const float *hidden_states, uint64_t sequence_length,
+    float *output, uint64_t output_capacity, kq_qsa_state *state,
+    void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_qsa_selection_observer selection_observer,
+    kq_qsa_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic);
 
 #endif

@@ -8,6 +8,37 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 2.11 and accepted ADR 0019: a bounded semantic target-weight
+  provider now executes the accepted scalar GDN, QSA, MoE, PLE-value and
+  complete-layer equations directly from the registered quantized GGUF without
+  materializing a complete target matrix in F32.
+- Added independent exact-GGUF target-layer evidence. Pinned llama.cpp Class-Q
+  decoding plus pinned Transformers equations validate calibration and
+  disjoint holdout for ordinary GDN layer 0, QSA layer 3 and PLE-GDN layer 1;
+  all 18 floating comparisons and exact MoE/QSA/PLE decisions pass without a
+  Kestrel-Q self-oracle.
+- Validated 48/48 target layer configurations with zero preflight payload
+  dereference. The accepted correctness run accounts 772,826,304 logical
+  packed bytes including rollback injections, below 768 MiB, while only
+  selected routed experts and the 32 requested PLE rows are accessed.
+- Fixed a Task 2.11 semantic-trace capacity failure exposed by the real
+  PLE-GDN run: the initial 96-entry bound could not represent its 109 unique
+  touched semantics. The bounded capacity is now 256 and the complete real
+  integration covers the regression.
+- Removed redundant gated-residual weight reads discovered by the real payload
+  budget: the complete layer previously recomputed identical attention/MoE GR
+  reads solely to recover write gates. Per-token write gates are now retained
+  and reused, preserving Task 2.10 exact synthetic output while keeping the
+  target correctness run under its hard payload ceiling.
+- Hardened provider failure behavior: capacity/alias/budget failures are
+  detected before payload dereference or visible output mutation, QPC timing
+  conversion uses checked 64-bit arithmetic, and injected failures before the
+  first read and after 7,332,736 bytes preserve complete layer state.
+- Documented the concrete First Correct Native Token boundary. Token embedding,
+  48-layer state orchestration, final mixing/norm, LM head/logits, greedy
+  argmax and native decode remain not started; cache/prefetch policy remains
+  deferred with `KQ-BACKLOG-BENCH-002`.
+
 - Completed Task 2.10 and accepted ADR 0018: a scalar C17 one-layer reference
   now composes exact Qwen3.8 PLE placement, four-branch Gated Residual reads and
   writes, GDN/QSA and MoE for all three canonical layer families.

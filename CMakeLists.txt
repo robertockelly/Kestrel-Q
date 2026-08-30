@@ -74,6 +74,7 @@ add_library(kq_core
     src/kq_status.c
     src/kq_tensor_view.c
     src/kq_tokenizer.c
+    src/kq_weight_provider.c
 )
 
 target_include_directories(kq_core
@@ -93,7 +94,8 @@ if(MSVC)
         src/kq_moe.c src/kq_moe_qwen38.c
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
-    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c APPEND PROPERTY
+    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
+        src/kq_weight_provider.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
@@ -103,7 +105,8 @@ else()
         src/kq_moe.c src/kq_moe_qwen38.c
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
-    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c APPEND PROPERTY
+    set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
+        src/kq_weight_provider.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -344,6 +347,17 @@ if(KQ_BUILD_TESTS)
     add_test(NAME kq_layer_real_artifact COMMAND kq_layer_integration_test)
     set_tests_properties(kq_layer_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
 
+    add_executable(kq_target_layer_integration_test
+        tests/target_layer_integration.c)
+    target_link_libraries(kq_target_layer_integration_test PRIVATE kq_core)
+    target_include_directories(kq_target_layer_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_target_layer_integration_test)
+    add_test(NAME kq_target_layer_real_artifact
+        COMMAND kq_target_layer_integration_test)
+    set_tests_properties(kq_target_layer_real_artifact PROPERTIES
+        SKIP_RETURN_CODE 77)
+
     add_executable(kq_layer_probe tests/layer_probe.c)
     target_link_libraries(kq_layer_probe PRIVATE kq_core)
     target_include_directories(kq_layer_probe PRIVATE
@@ -467,6 +481,17 @@ if(KQ_BUILD_TESTS)
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
                 --verify
         )
+        add_test(
+            NAME kq_target_layer_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-target-layer.py
+                --probe $<TARGET_FILE:kq_target_layer_integration_test>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+                --verify
+        )
+        set_tests_properties(kq_target_layer_independent_oracle PROPERTIES
+            SKIP_RETURN_CODE 77)
     endif()
 
     if(KQ_ENABLE_CUDA)

@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.10 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.11 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -31,6 +31,8 @@ Initial task order:
     **COMPLETE / PASS**
 11. Task 2.10 — Canonical transformer-layer composition and GR/residual
     reference. **COMPLETE / PASS**
+12. Task 2.11 — Target quantized layer execution through bounded semantic
+    weight access. **COMPLETE / PASS**
 
 Constraints:
 
@@ -75,3 +77,12 @@ complete-layer calibration/holdout, prefill/decode/reset and transactional
 rollback pass; 48/48 target descriptors validate with zero payload access.
 ADR 0018 is ACCEPTED. Embedding, a 48-layer executor, final norm, LM head,
 logits and the final scheduler remain **NOT STARTED**.
+
+Task 2.11 connects those equations to the exact registered GGUF through a
+semantic weight provider backed only by Task 2.2 views and Task 2.5 numerics.
+Independent pinned llama.cpp decode plus pinned Transformers equations validates
+two calibration profiles and a disjoint holdout for ordinary GDN, QSA and
+PLE-GDN prefill/decode. Exact route/access/PLE decisions, 48/48 provider
+preflight and transactional failures pass under the 768 MiB logical payload
+ceiling. ADR 0019 is ACCEPTED. Embedding, full 48-layer orchestration, final
+norm, LM head/logits/argmax and native token decode remain **NOT STARTED**.

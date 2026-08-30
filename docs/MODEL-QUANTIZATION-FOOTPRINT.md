@@ -101,6 +101,14 @@ rows, five IQ4_NL blocks per row: 1,440 logical packed bytes and 80 blocks.
 That is bounded correctness evidence, not an I/O/token, cache-hit or throughput
 measurement.
 
+Task 2.11 executes two real target tokens for one representative layer of each
+family without materializing a complete matrix. The main run requests
+765,493,568 logical packed bytes; two fail-closed rollback cases add 7,332,736,
+for 772,826,304 bytes under the 768 MiB correctness ceiling. It touches exactly
+the selected 10 routed experts per token (three member views per expert) and 16
+PLE rows per PLE token. These counts include repeated synchronous correctness
+reads and are neither an I/O/token baseline nor a proposed cache policy.
+
 ## Imatrix and provenance
 
 The artifact records:

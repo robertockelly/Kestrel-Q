@@ -207,6 +207,14 @@ retained token per layer. The PLE-GDN layer adds the 32-byte address history and
 184,320-byte BF16 PLE value tail for 3,412,000 semantic persistent bytes. GR
 branches, gates, MoE routes and layer scratch are explicitly excluded.
 
+Task 2.11 preserves the same state objects while replacing F32 test weights
+with bounded target-quantized access. Real ordinary-GDN, QSA and PLE-GDN
+prefill+decode runs advance position from zero to two. Provider-budget failures
+before the first payload and after the GR stage leave the active slot, output
+and position unchanged; the inactive staging slot is overwritten from the
+committed slot on the next call. No weight-provider accounting or diagnostic
+trace is persistent model context.
+
 ## Optional-state boundaries
 
 ### MTP

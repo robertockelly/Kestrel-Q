@@ -9,6 +9,8 @@
 
 #include "kq_internal.h"
 #include "kq_numeric.h"
+#include "kq_weight_provider.h"
+#include "kq_weight_provider_internal.h"
 
 typedef struct kq_moe_workspace {
     float *router_logits;
@@ -242,6 +244,35 @@ static void kq_moe_select_top_k(const float *probabilities,
     }
 }
 
+static kq_status kq_moe_finish_route(
+    const kq_moe_config *config, const float *router_logits,
+    float *router_probabilities, uint32_t *selected_expert_ids,
+    float *selected_weights, kq_diagnostic *diagnostic) {
+    const kq_moe_dimensions *d = &config->dimensions;
+    float selected_sum = 0.0f;
+    uint32_t position;
+    kq_status status = kq_f32_softmax(router_logits, d->expert_count,
+                                      router_probabilities, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    kq_moe_select_top_k(router_probabilities, d->expert_count, d->top_k,
+                        selected_expert_ids);
+    for (position = 0U; position < d->top_k; ++position) {
+        selected_weights[position] =
+            router_probabilities[selected_expert_ids[position]];
+        selected_sum += selected_weights[position];
+    }
+    if (!(selected_sum > 0.0f) || !isfinite(selected_sum))
+        return kq_moe_exec_fail(diagnostic, KQ_STATUS_NUMERIC_DOMAIN,
+                                "MoE selected routing weight sum is invalid");
+    for (position = 0U; position < d->top_k; ++position) {
+        selected_weights[position] /= selected_sum;
+        if (!isfinite(selected_weights[position]))
+            return kq_moe_exec_fail(diagnostic, KQ_STATUS_NUMERIC_DOMAIN,
+                                    "MoE selected routing weight is invalid");
+    }
+    return KQ_STATUS_OK;
+}
+
 kq_status kq_moe_route_f32(
     const kq_moe_config *config, const float *router_weight,
     uint64_t router_weight_count, const float *hidden_token,
@@ -257,7 +288,6 @@ kq_status kq_moe_route_f32(
     uint64_t expert_bytes;
     uint64_t top_float_bytes;
     uint64_t top_id_bytes;
-    float selected_sum = 0.0f;
     uint32_t position;
     kq_status status;
     kq_diagnostic_clear(diagnostic);
@@ -340,61 +370,65 @@ kq_status kq_moe_route_f32(
             diagnostic);
         if (status != KQ_STATUS_OK) return status;
     }
-    status = kq_f32_softmax(router_logits, d->expert_count,
-                            router_probabilities, diagnostic);
-    if (status != KQ_STATUS_OK) return status;
-    kq_moe_select_top_k(router_probabilities, d->expert_count, d->top_k,
-                        selected_expert_ids);
-    for (position = 0U; position < d->top_k; ++position) {
-        selected_weights[position] =
-            router_probabilities[selected_expert_ids[position]];
-        selected_sum = selected_sum + selected_weights[position];
-    }
-    if (!(selected_sum > 0.0f) || !isfinite(selected_sum)) {
-        return kq_moe_exec_fail(diagnostic, KQ_STATUS_NUMERIC_DOMAIN,
-                                "MoE selected routing weight sum is invalid");
-    }
-    for (position = 0U; position < d->top_k; ++position) {
-        selected_weights[position] = selected_weights[position] / selected_sum;
-        if (!isfinite(selected_weights[position])) {
-            return kq_moe_exec_fail(diagnostic, KQ_STATUS_NUMERIC_DOMAIN,
-                                    "MoE selected routing weight is invalid");
-        }
-    }
-    return KQ_STATUS_OK;
+    return kq_moe_finish_route(config, router_logits, router_probabilities,
+                               selected_expert_ids, selected_weights,
+                               diagnostic);
 }
 
 static kq_status kq_moe_expert(const kq_moe_config *config,
                                const kq_moe_weights_f32 *weights,
+                               kq_weight_provider *provider,
                                uint32_t expert_id, const float *input,
                                float *gate, float *up, float *activated,
-                               float *output,
+                               float *output, void *weight_scratch,
+                               uint64_t weight_scratch_bytes,
                                kq_diagnostic *diagnostic) {
     const kq_moe_dimensions *d = &config->dimensions;
     uint64_t matrix = (uint64_t)d->routed_intermediate_size * d->hidden_size;
     uint64_t down_matrix = (uint64_t)d->hidden_size *
         d->routed_intermediate_size;
-    const float *gate_weight = weights->routed_gate +
-        (uint64_t)expert_id * matrix;
-    const float *up_weight = weights->routed_up +
-        (uint64_t)expert_id * matrix;
-    const float *down_weight = weights->routed_down +
-        (uint64_t)expert_id * down_matrix;
-    kq_status status = kq_moe_project(
-        gate_weight, d->routed_intermediate_size, d->hidden_size,
-        input, gate, diagnostic);
+    const float *gate_weight = provider == NULL ? weights->routed_gate +
+        (uint64_t)expert_id * matrix : NULL;
+    const float *up_weight = provider == NULL ? weights->routed_up +
+        (uint64_t)expert_id * matrix : NULL;
+    const float *down_weight = provider == NULL ? weights->routed_down +
+        (uint64_t)expert_id * down_matrix : NULL;
+    kq_status status;
+    if (provider != NULL)
+        status = kq_weight_provider_linear_f32(
+            provider, config->tensors[2], KQ_BINDING_PART_GATE, expert_id,
+            d->routed_intermediate_size, d->hidden_size, input, gate,
+            d->routed_intermediate_size, weight_scratch,
+            weight_scratch_bytes, diagnostic);
+    else
+        status = kq_moe_project(gate_weight, d->routed_intermediate_size,
+                                d->hidden_size, input, gate, diagnostic);
     if (status == KQ_STATUS_OK) {
-        status = kq_moe_project(up_weight, d->routed_intermediate_size,
-                                d->hidden_size, input, up, diagnostic);
+        if (provider != NULL)
+            status = kq_weight_provider_linear_f32(
+                provider, config->tensors[2], KQ_BINDING_PART_UP, expert_id,
+                d->routed_intermediate_size, d->hidden_size, input, up,
+                d->routed_intermediate_size, weight_scratch,
+                weight_scratch_bytes, diagnostic);
+        else
+            status = kq_moe_project(up_weight, d->routed_intermediate_size,
+                                    d->hidden_size, input, up, diagnostic);
     }
     if (status == KQ_STATUS_OK) {
         status = kq_f32_swiglu(gate, up, d->routed_intermediate_size,
                                activated, diagnostic);
     }
     if (status == KQ_STATUS_OK) {
-        status = kq_moe_project(down_weight, d->hidden_size,
-                                d->routed_intermediate_size, activated,
-                                output, diagnostic);
+        if (provider != NULL)
+            status = kq_weight_provider_linear_f32(
+                provider, config->tensors[1], KQ_BINDING_PART_WHOLE, expert_id,
+                d->hidden_size, d->routed_intermediate_size, activated,
+                output, d->hidden_size, weight_scratch,
+                weight_scratch_bytes, diagnostic);
+        else
+            status = kq_moe_project(down_weight, d->hidden_size,
+                                    d->routed_intermediate_size, activated,
+                                    output, diagnostic);
     }
     return status;
 }
@@ -567,10 +601,12 @@ static int kq_moe_find_selected(const uint32_t *selected,
     return 0;
 }
 
-kq_status kq_moe_execute_f32(
+static kq_status kq_moe_execute_common(
     const kq_moe_config *config, const kq_moe_weights_f32 *weights,
+    kq_weight_provider *provider,
     const float *hidden_states, uint64_t token_count, float *output,
     uint64_t output_capacity, void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
     kq_moe_route_observer route_observer,
     kq_moe_checkpoint_observer checkpoint_observer,
     void *observer_user_data, kq_diagnostic *diagnostic) {
@@ -581,7 +617,7 @@ kq_status kq_moe_execute_f32(
     uint64_t token;
     kq_status status;
     kq_diagnostic_clear(diagnostic);
-    if (!kq_moe_config_valid(config) || weights == NULL ||
+    if (!kq_moe_config_valid(config) || (provider == NULL && weights == NULL) ||
         hidden_states == NULL || output == NULL || scratch == NULL) {
         return kq_moe_exec_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
                                 "complete MoE execution arguments are required");
@@ -604,7 +640,7 @@ kq_status kq_moe_execute_f32(
     }
     status = kq_moe_validate_finite(hidden_states, value_count,
                                     "MoE input must be finite", diagnostic);
-    if (status == KQ_STATUS_OK) {
+    if (status == KQ_STATUS_OK && provider == NULL) {
         status = kq_moe_validate_weights(config, weights, diagnostic);
     }
     if (status != KQ_STATUS_OK) return status;
@@ -617,7 +653,7 @@ kq_status kq_moe_execute_f32(
         return kq_moe_exec_fail(diagnostic, KQ_STATUS_ALIASING_VIOLATION,
                                 "MoE input, output, and scratch must not overlap");
     }
-    if (kq_moe_weights_overlap_writable(
+    if (provider == NULL && kq_moe_weights_overlap_writable(
             weights, output, value_bytes, scratch, scratch_bytes)) {
         return kq_moe_exec_fail(diagnostic, KQ_STATUS_ALIASING_VIOLATION,
                                 "MoE weights must not overlap writable execution buffers");
@@ -635,12 +671,30 @@ kq_status kq_moe_execute_f32(
         float shared_scale_logit = 0.0f;
         float shared_scale = 0.0f;
 
-        status = kq_moe_route_f32(
-            config, weights->router, weights->router_count, input,
-            w.router_logits, d->expert_count, w.router_probabilities,
-            d->expert_count, w.selected_ids, d->top_k,
-            w.selected_weights, d->top_k, diagnostic);
+        if (provider != NULL) {
+            status = kq_weight_provider_linear_f32(
+                provider, config->tensors[0], KQ_BINDING_PART_WHOLE,
+                KQ_WEIGHT_PROVIDER_NO_EXPERT, d->expert_count,
+                d->hidden_size, input, w.router_logits, d->expert_count,
+                weight_scratch, weight_scratch_bytes, diagnostic);
+            if (status == KQ_STATUS_OK)
+                status = kq_moe_finish_route(
+                    config, w.router_logits, w.router_probabilities,
+                    w.selected_ids, w.selected_weights, diagnostic);
+        } else {
+            status = kq_moe_route_f32(
+                config, weights->router, weights->router_count, input,
+                w.router_logits, d->expert_count, w.router_probabilities,
+                d->expert_count, w.selected_ids, d->top_k,
+                w.selected_weights, d->top_k, diagnostic);
+        }
         if (status != KQ_STATUS_OK) return status;
+        if (provider != NULL) {
+            status = kq_weight_provider_record_route(
+                provider, config->layer_id, w.selected_ids, d->top_k,
+                diagnostic);
+            if (status != KQ_STATUS_OK) return status;
+        }
         if (route_observer != NULL) {
             kq_moe_route route;
             route.token_index = token;
@@ -669,9 +723,10 @@ kq_status kq_moe_execute_f32(
             uint32_t top_k_position = 0U;
             if (!kq_moe_find_selected(w.selected_ids, d->top_k, expert,
                                       &top_k_position)) continue;
-            status = kq_moe_expert(config, weights, expert, input,
+            status = kq_moe_expert(config, weights, provider, expert, input,
                                    w.expert_gate, w.expert_up,
                                    w.expert_activated, w.expert_output,
+                                   weight_scratch, weight_scratch_bytes,
                                    diagnostic);
             if (status != KQ_STATUS_OK) return status;
             kq_moe_emit(checkpoint_observer, observer_user_data,
@@ -713,14 +768,24 @@ kq_status kq_moe_execute_f32(
                     KQ_MOE_NO_EXPERT, UINT32_MAX, 1U, d->hidden_size, 0U,
                     w.routed_sum, d->hidden_size);
 
-        status = kq_moe_project(weights->shared_gate,
-                                d->shared_intermediate_size, d->hidden_size,
-                                input, w.shared_gate, diagnostic);
+        status = provider != NULL ? kq_weight_provider_linear_f32(
+            provider, config->tensors[4], KQ_BINDING_PART_WHOLE,
+            KQ_WEIGHT_PROVIDER_NO_EXPERT, d->shared_intermediate_size,
+            d->hidden_size, input, w.shared_gate, d->shared_intermediate_size,
+            weight_scratch, weight_scratch_bytes, diagnostic) :
+            kq_moe_project(weights->shared_gate,
+                           d->shared_intermediate_size, d->hidden_size,
+                           input, w.shared_gate, diagnostic);
         if (status == KQ_STATUS_OK) {
-            status = kq_moe_project(weights->shared_up,
-                                    d->shared_intermediate_size,
-                                    d->hidden_size, input, w.shared_up,
-                                    diagnostic);
+            status = provider != NULL ? kq_weight_provider_linear_f32(
+                provider, config->tensors[5], KQ_BINDING_PART_WHOLE,
+                KQ_WEIGHT_PROVIDER_NO_EXPERT, d->shared_intermediate_size,
+                d->hidden_size, input, w.shared_up, d->shared_intermediate_size,
+                weight_scratch, weight_scratch_bytes, diagnostic) :
+                kq_moe_project(weights->shared_up,
+                               d->shared_intermediate_size,
+                               d->hidden_size, input, w.shared_up,
+                               diagnostic);
         }
         if (status == KQ_STATUS_OK) {
             status = kq_f32_swiglu(w.shared_gate, w.shared_up,
@@ -728,15 +793,26 @@ kq_status kq_moe_execute_f32(
                                    w.shared_activated, diagnostic);
         }
         if (status == KQ_STATUS_OK) {
-            status = kq_moe_project(weights->shared_down, d->hidden_size,
-                                    d->shared_intermediate_size,
-                                    w.shared_activated, w.shared_output,
-                                    diagnostic);
+            status = provider != NULL ? kq_weight_provider_linear_f32(
+                provider, config->tensors[3], KQ_BINDING_PART_WHOLE,
+                KQ_WEIGHT_PROVIDER_NO_EXPERT, d->hidden_size,
+                d->shared_intermediate_size, w.shared_activated,
+                w.shared_output, d->hidden_size, weight_scratch,
+                weight_scratch_bytes, diagnostic) :
+                kq_moe_project(weights->shared_down, d->hidden_size,
+                               d->shared_intermediate_size,
+                               w.shared_activated, w.shared_output,
+                               diagnostic);
         }
         if (status == KQ_STATUS_OK) {
-            status = kq_f32_dot(weights->shared_gate_weight, input,
-                                d->hidden_size, &shared_scale_logit,
-                                diagnostic);
+            status = provider != NULL ? kq_weight_provider_linear_f32(
+                provider, config->tensors[6], KQ_BINDING_PART_WHOLE,
+                KQ_WEIGHT_PROVIDER_NO_EXPERT, 1U, d->hidden_size, input,
+                &shared_scale_logit, 1U, weight_scratch,
+                weight_scratch_bytes, diagnostic) :
+                kq_f32_dot(weights->shared_gate_weight, input,
+                           d->hidden_size, &shared_scale_logit,
+                           diagnostic);
         }
         if (status == KQ_STATUS_OK) {
             status = kq_f32_sigmoid(&shared_scale_logit, 1U,
@@ -788,6 +864,40 @@ kq_status kq_moe_execute_f32(
                     token_output, d->hidden_size);
     }
     return KQ_STATUS_OK;
+}
+
+kq_status kq_moe_execute_f32(
+    const kq_moe_config *config, const kq_moe_weights_f32 *weights,
+    const float *hidden_states, uint64_t token_count, float *output,
+    uint64_t output_capacity, void *scratch, uint64_t scratch_bytes,
+    kq_moe_route_observer route_observer,
+    kq_moe_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic) {
+    return kq_moe_execute_common(config, weights, NULL, hidden_states,
+        token_count, output, output_capacity, scratch, scratch_bytes,
+        NULL, 0U, route_observer, checkpoint_observer, observer_user_data,
+        diagnostic);
+}
+
+kq_status kq_moe_execute_quantized(
+    const kq_moe_config *config, kq_weight_provider *provider,
+    const float *hidden_states, uint64_t token_count,
+    float *output, uint64_t output_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_moe_route_observer route_observer,
+    kq_moe_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic) {
+    kq_moe_weights_f32 unresolved;
+    if (provider == NULL || weight_scratch == NULL ||
+        weight_scratch_bytes < 65536U)
+        return kq_moe_exec_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                                "MoE provider weight scratch is too small");
+    memset(&unresolved, 0, sizeof(unresolved));
+    return kq_moe_execute_common(config, &unresolved, provider, hidden_states,
+        token_count, output, output_capacity, scratch, scratch_bytes,
+        weight_scratch, weight_scratch_bytes, route_observer,
+        checkpoint_observer, observer_user_data, diagnostic);
 }
 
 const char *kq_moe_checkpoint_kind_name(kq_moe_checkpoint_kind kind) {

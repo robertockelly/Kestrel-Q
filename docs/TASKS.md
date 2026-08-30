@@ -225,7 +225,22 @@ path have not started.
   - persistent semantic state reconciled and real payload bytes touched: **0**;
   - ADR 0018: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] Next integration task: **NOT STARTED**.
+- [x] Task 2.11 — Target quantized layer execution:
+  - semantic GGUF weight provider over Task 2.2 views and Task 2.5 numerics:
+    **COMPLETE / PASS**;
+  - ordinary GDN layer 0, QSA layer 3 and PLE-GDN layer 1 real quantized
+    prefill+decode: **PASS**;
+  - independent pinned llama.cpp decode + Transformers equation calibration
+    and disjoint holdout: **PASS**;
+  - top-10 route order/access, QSA local selection and 32 PLE intents:
+    **EXACT DISCRETE PASS**;
+  - provider preflight: **48/48 PASS**, no unsupported semantic/type/transform;
+  - aggregate correctness payload: **772,826,304 bytes**, below 768 MiB;
+  - transactional provider failures: **PASS**;
+  - ADR 0019: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] First Correct Native Token / next model integration task:
+  **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
 
@@ -241,6 +256,7 @@ path have not started.
 - [x] QSA scalar reference path (Task 2.7)
 - [x] PLE value scalar reference path (Task 2.9)
 - [x] Complete one-layer scalar reference composition (Task 2.10)
+- [x] Real target-quantized single-layer execution (Task 2.11)
 - [ ] Logits
 - [ ] Sampling
 - [ ] Reference-vector validation

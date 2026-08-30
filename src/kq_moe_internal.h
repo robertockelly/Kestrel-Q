@@ -2,6 +2,7 @@
 #define KQ_MOE_INTERNAL_H
 
 #include "kq_moe.h"
+#include "kq_weight_provider.h"
 
 #define KQ_MOE_CONFIG_MAGIC UINT32_C(0x4b514d43)
 #define KQ_MOE_WEIGHT_ROLE_COUNT 7U
@@ -51,5 +52,15 @@ kq_status kq_moe_test_config_create(
 int kq_moe_config_valid(const kq_moe_config *config);
 int kq_moe_u64_add(uint64_t left, uint64_t right, uint64_t *output);
 int kq_moe_u64_mul(uint64_t left, uint64_t right, uint64_t *output);
+
+kq_status kq_moe_execute_quantized(
+    const kq_moe_config *config, kq_weight_provider *provider,
+    const float *hidden_states, uint64_t token_count,
+    float *output, uint64_t output_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_moe_route_observer route_observer,
+    kq_moe_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic);
 
 #endif

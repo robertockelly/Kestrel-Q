@@ -10,6 +10,7 @@
 
 #include "kq_internal.h"
 #include "kq_numeric.h"
+#include "kq_weight_provider.h"
 
 static kq_status fail(kq_diagnostic *d,kq_status s,const char *m){kq_diagnostic_set(d,s,"%s",m);return s;}
 static int finite_array(const float *v,uint64_t n){uint64_t i;if(v==NULL)return 0;for(i=0;i<n;++i)if(!isfinite(v[i]))return 0;return 1;}
@@ -20,9 +21,17 @@ static int overlap(const void *a,uint64_t an,const void *b,uint64_t bn){
     return x+(uintptr_t)an>y&&y+(uintptr_t)bn>x;
 }
 
-static kq_status dot_rows(const float *weight,uint64_t rows,uint64_t cols,
-                          const float *input,float *output,kq_diagnostic *d){
-    uint64_t r;for(r=0;r<rows;++r){kq_status s=kq_f32_dot(weight+r*cols,input,cols,&output[r],d);if(s!=KQ_STATUS_OK)return s;}return KQ_STATUS_OK;}
+static kq_status dot_rows(const kq_ple_value_config *config,
+                          const float *weight,kq_weight_provider *provider,
+                          uint32_t role_index,uint64_t rows,uint64_t cols,
+                          const float *input,float *output,
+                          void *weight_scratch,uint64_t weight_scratch_bytes,
+                          kq_diagnostic *d){
+    uint64_t r;if(provider!=NULL)return kq_weight_provider_linear_f32(
+        provider,config->dense[role_index],KQ_BINDING_PART_WHOLE,
+        KQ_WEIGHT_PROVIDER_NO_EXPERT,rows,cols,input,output,rows,
+        weight_scratch,weight_scratch_bytes,d);
+    for(r=0;r<rows;++r){kq_status s=kq_f32_dot(weight+r*cols,input,cols,&output[r],d);if(s!=KQ_STATUS_OK)return s;}return KQ_STATUS_OK;}
 
 static void emit(kq_ple_value_checkpoint_observer observer,void *user,
                  kq_ple_value_checkpoint_kind kind,uint64_t token,
@@ -45,9 +54,11 @@ static kq_status validate_weights(const kq_ple_value_config *c,const kq_ple_valu
 }
 
 static kq_status run(const kq_ple_value_config *c,kq_ple_value_state *state,
- const kq_ple_value_weights_f32 *w,const kq_ple_value_lookup_provider *p,
+ const kq_ple_value_weights_f32 *w,kq_weight_provider *weight_provider,
+ const kq_ple_value_lookup_provider *p,
  const float *hidden,uint64_t tokens,const kq_ple_address_intent *intents,uint64_t intent_count,
  float *output,uint64_t output_capacity,void *scratch,uint64_t scratch_bytes,
+ void *weight_scratch,uint64_t weight_scratch_bytes,
  kq_ple_value_checkpoint_observer observer,void *user,kq_ple_value_run_metrics *metrics,kq_diagnostic *d){
     const kq_ple_value_dimensions *g;float *at,*staged,*embedding,*row,*value,*key,*key_norm,*query_norm,*gated,*conv_norm,*conv_pre,*conv_out;
     uint64_t needed_intents,needed_output,output_bytes,next_position,t,i,j,branch,position;
@@ -72,7 +83,7 @@ static kq_status run(const kq_ple_value_config *c,kq_ple_value_state *state,
     if(output_capacity<needed_output||scratch_bytes<c->scratch_bytes)return fail(d,KQ_STATUS_BUFFER_TOO_SMALL,"PLE output or scratch capacity is too small");
     if(p->logical_member_count!=g->logical_member_count||p->member_rows!=g->member_rows||p->row_width!=g->row_width)
         return fail(d,KQ_STATUS_INCOMPATIBLE_PLE_VALUE,"lookup provider geometry mismatch");
-    status=validate_weights(c,w,d);if(status!=KQ_STATUS_OK)return status;
+    if(weight_provider==NULL){status=validate_weights(c,w,d);if(status!=KQ_STATUS_OK)return status;}
     if(!finite_array(hidden,needed_output))return fail(d,KQ_STATUS_NUMERIC_DOMAIN,"non-finite PLE hidden input");
     if(overlap(output,output_bytes,hidden,output_bytes)||overlap(output,output_bytes,state->history,c->state_bytes)||
        overlap(output,output_bytes,scratch,c->scratch_bytes)||overlap(output,output_bytes,w->key_projection,key_bytes)||
@@ -101,8 +112,8 @@ static kq_status run(const kq_ple_value_config *c,kq_ple_value_state *state,
         }
         emit(observer,user,KQ_PLE_VALUE_CHECKPOINT_RAW_LOOKUPS,t,embedding,e,2U,g->head_count,g->row_width,0U);
         emit(observer,user,KQ_PLE_VALUE_CHECKPOINT_EMBEDDING,t,embedding,e,1U,e,0U,0U);
-        status=dot_rows(w->key_projection,b,e,embedding,key,d);if(status!=KQ_STATUS_OK)return status;
-        status=dot_rows(w->value_projection,h,e,embedding,value,d);if(status!=KQ_STATUS_OK)return status;
+        status=dot_rows(c,w->key_projection,weight_provider,0U,b,e,embedding,key,weight_scratch,weight_scratch_bytes,d);if(status!=KQ_STATUS_OK)return status;
+        status=dot_rows(c,w->value_projection,weight_provider,1U,h,e,embedding,value,weight_scratch,weight_scratch_bytes,d);if(status!=KQ_STATUS_OK)return status;
         emit(observer,user,KQ_PLE_VALUE_CHECKPOINT_KEY_PROJECTION,t,key,b,2U,g->residual_branches,h,0U);
         emit(observer,user,KQ_PLE_VALUE_CHECKPOINT_VALUE_PROJECTION,t,value,h,1U,h,0U,0U);
         for(branch=0U;branch<g->residual_branches;++branch){float raw,transformed,sig;
@@ -139,5 +150,38 @@ static kq_status run(const kq_ple_value_config *c,kq_ple_value_state *state,
     }return KQ_STATUS_OK;
 }
 
-kq_status kq_ple_value_prefill_f32(const kq_ple_value_config *c,kq_ple_value_state *s,const kq_ple_value_weights_f32 *w,const kq_ple_value_lookup_provider *p,const float *h,uint64_t n,const kq_ple_address_intent *i,uint64_t ic,float *o,uint64_t oc,void *sc,uint64_t sb,kq_ple_value_checkpoint_observer ob,void *u,kq_ple_value_run_metrics *m,kq_diagnostic *d){return run(c,s,w,p,h,n,i,ic,o,oc,sc,sb,ob,u,m,d);}
-kq_status kq_ple_value_decode_f32(const kq_ple_value_config *c,kq_ple_value_state *s,const kq_ple_value_weights_f32 *w,const kq_ple_value_lookup_provider *p,const float *h,const kq_ple_address_intent *i,uint64_t ic,float *o,uint64_t oc,void *sc,uint64_t sb,kq_ple_value_checkpoint_observer ob,void *u,kq_ple_value_run_metrics *m,kq_diagnostic *d){return run(c,s,w,p,h,1U,i,ic,o,oc,sc,sb,ob,u,m,d);}
+kq_status kq_ple_value_prefill_f32(const kq_ple_value_config *c,kq_ple_value_state *s,const kq_ple_value_weights_f32 *w,const kq_ple_value_lookup_provider *p,const float *h,uint64_t n,const kq_ple_address_intent *i,uint64_t ic,float *o,uint64_t oc,void *sc,uint64_t sb,kq_ple_value_checkpoint_observer ob,void *u,kq_ple_value_run_metrics *m,kq_diagnostic *d){return run(c,s,w,NULL,p,h,n,i,ic,o,oc,sc,sb,NULL,0U,ob,u,m,d);}
+kq_status kq_ple_value_decode_f32(const kq_ple_value_config *c,kq_ple_value_state *s,const kq_ple_value_weights_f32 *w,const kq_ple_value_lookup_provider *p,const float *h,const kq_ple_address_intent *i,uint64_t ic,float *o,uint64_t oc,void *sc,uint64_t sb,kq_ple_value_checkpoint_observer ob,void *u,kq_ple_value_run_metrics *m,kq_diagnostic *d){return run(c,s,w,NULL,p,h,1U,i,ic,o,oc,sc,sb,NULL,0U,ob,u,m,d);}
+
+kq_status kq_ple_value_execute_quantized(
+    const kq_ple_value_config *c,kq_ple_value_state *state,
+    kq_weight_provider *provider,const kq_ple_value_lookup_provider *lookup,
+    const float *hidden,uint64_t tokens,const kq_ple_address_intent *intents,
+    uint64_t intent_count,float *output,uint64_t output_capacity,
+    void *scratch,uint64_t scratch_bytes,void *weight_scratch,
+    uint64_t weight_scratch_bytes,kq_ple_value_checkpoint_observer observer,
+    void *user,kq_ple_value_run_metrics *metrics,kq_diagnostic *d){
+    kq_ple_value_weights_f32 w;float *cursor=(float *)weight_scratch,*temporary;
+    uint64_t vector_count=UINT64_C(10240)*3U+UINT64_C(40960);
+    uint64_t vector_bytes=vector_count*sizeof(float);
+    uint64_t temporary_bytes=UINT64_C(40960)*sizeof(float);kq_status status;
+    if(provider==NULL||weight_scratch==NULL||weight_scratch_bytes<vector_bytes+temporary_bytes+65536U)
+        return fail(d,KQ_STATUS_BUFFER_TOO_SMALL,"PLE provider weight scratch is too small");
+    memset(&w,0,sizeof(w));
+    w.norm_key=cursor;w.norm_key_count=10240U;cursor+=10240U;
+    w.norm_query=cursor;w.norm_query_count=10240U;cursor+=10240U;
+    w.norm_conv=cursor;w.norm_conv_count=10240U;cursor+=10240U;
+    w.convolution=cursor;w.convolution_count=40960U;cursor+=40960U;
+    temporary=cursor;
+#define LOAD_PLE_VECTOR(field,role_index) do { \
+    status=kq_weight_provider_vector_f32(provider,c->dense[role_index],w.field##_count,(float *)w.field,w.field##_count,temporary,temporary_bytes,d); \
+    if(status!=KQ_STATUS_OK)return status; \
+} while(0)
+    LOAD_PLE_VECTOR(norm_key,2U);LOAD_PLE_VECTOR(norm_query,3U);
+    LOAD_PLE_VECTOR(norm_conv,4U);LOAD_PLE_VECTOR(convolution,5U);
+#undef LOAD_PLE_VECTOR
+    cursor=(float *)((unsigned char *)temporary+temporary_bytes);
+    return run(c,state,&w,provider,lookup,hidden,tokens,intents,intent_count,
+        output,output_capacity,scratch,scratch_bytes,cursor,
+        weight_scratch_bytes-vector_bytes-temporary_bytes,observer,user,metrics,d);
+}

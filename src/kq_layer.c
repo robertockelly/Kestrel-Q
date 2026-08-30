@@ -21,6 +21,7 @@
 #define KQ_LAYER_TARGET_RANK 320U
 #define KQ_LAYER_TARGET_COUNT 48U
 #define KQ_LAYER_TARGET_PLE_LAYER 1U
+#define KQ_LAYER_QUANTIZED_WEIGHT_SCRATCH_BYTES UINT64_C(1048576)
 
 static int kq_layer_add_u64(uint64_t a, uint64_t b, uint64_t *out) {
     if (out == NULL || UINT64_MAX - a < b) return 0;
@@ -456,11 +457,11 @@ kq_status kq_layer_required_scratch_bytes(
         return KQ_STATUS_INVALID_ARGUMENT;
     width = (uint64_t)config->dimensions.hidden_size * config->dimensions.branch_count;
     if (!kq_layer_mul_u64(token_count, width * 3U +
-                          (uint64_t)config->dimensions.hidden_size * 4U,
+                          (uint64_t)config->dimensions.hidden_size * 4U +
+                          (uint64_t)config->dimensions.branch_count * 2U,
                           &float_count) ||
         !kq_layer_add_u64(float_count, width * 2U +
-                          config->dimensions.gr_rank +
-                          config->dimensions.branch_count, &float_count) ||
+                          config->dimensions.gr_rank, &float_count) ||
         !kq_layer_mul_u64(float_count, sizeof(float), &base))
         return KQ_STATUS_ARITHMETIC_OVERFLOW;
     if (config->ple != NULL) {
@@ -488,10 +489,27 @@ kq_status kq_layer_required_scratch_bytes(
     return KQ_STATUS_OK;
 }
 
+kq_status kq_layer_required_quantized_scratch_bytes(
+    const kq_layer_config *config, const kq_layer_state *state,
+    uint64_t token_count, uint64_t *scratch_bytes,
+    kq_diagnostic *diagnostic) {
+    uint64_t base;
+    kq_status status;
+    if (scratch_bytes == NULL) return KQ_STATUS_INVALID_ARGUMENT;
+    status = kq_layer_required_scratch_bytes(config, state, token_count,
+                                             &base, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    if (!kq_layer_add_u64(base, KQ_LAYER_QUANTIZED_WEIGHT_SCRATCH_BYTES,
+                          scratch_bytes))
+        return KQ_STATUS_ARITHMETIC_OVERFLOW;
+    return KQ_STATUS_OK;
+}
+
 typedef struct kq_layer_buffers {
     float *ple_output; float *current; float *mixed; float *block_output;
     float *after_mixer; float *moe_input; float *moe_output;
     float *normalized; float *read_gate; float *rank; float *write_gate;
+    float *attention_write_gates; float *moe_write_gates;
     kq_ple_address_intent *intents; void *sub_scratch; uint64_t sub_bytes;
 } kq_layer_buffers;
 
@@ -506,7 +524,9 @@ static void kq_layer_partition(const kq_layer_config *c, uint64_t tokens,
     b->after_mixer=p;p+=tokens*w;b->moe_input=p;p+=tokens*h;
     b->moe_output=p;p+=tokens*h;b->normalized=p;p+=w;
     b->read_gate=p;p+=w;b->rank=p;p+=c->dimensions.gr_rank;
-    b->write_gate=p;p+=c->dimensions.branch_count;
+    b->attention_write_gates=p;p+=tokens*c->dimensions.branch_count;
+    b->moe_write_gates=p;p+=tokens*c->dimensions.branch_count;
+    b->write_gate=NULL;
     if (c->ple != NULL) {
         b->intents=(kq_ple_address_intent *)p;
         p=(float *)((unsigned char *)p + tokens*KQ_PLE_ADDRESSES_PER_TOKEN*sizeof(*b->intents));
@@ -515,19 +535,43 @@ static void kq_layer_partition(const kq_layer_config *c, uint64_t tokens,
     b->sub_bytes=total-(uint64_t)((unsigned char *)p-(unsigned char *)scratch);
 }
 
+typedef struct kq_layer_qsa_observation {
+    uint64_t events;
+    uint64_t candidate_blocks;
+    uint64_t selected_blocks;
+    uint64_t selected_tokens;
+} kq_layer_qsa_observation;
+
+static void kq_layer_observe_qsa_selection(
+    const kq_qsa_selection *selection, void *user_data) {
+    kq_layer_qsa_observation *observation =
+        (kq_layer_qsa_observation *)user_data;
+    if (selection == NULL || observation == NULL) return;
+    observation->events += 1U;
+    observation->candidate_blocks += selection->candidate_count;
+    observation->selected_blocks += selection->selected_block_count;
+    observation->selected_tokens += selection->selected_token_count;
+}
+
 static kq_status kq_layer_execute(
     const kq_layer_config *config, const kq_layer_weights_f32 *weights,
+    kq_weight_provider *provider,
     const float *input, const uint32_t *tokens, uint64_t count,
     const uint8_t *padding_mask, float *output, uint64_t output_capacity,
     kq_layer_state *state, void *scratch, uint64_t scratch_bytes,
     int decode, kq_layer_checkpoint_observer observer, void *observer_user,
     kq_layer_metrics *metrics, kq_diagnostic *diagnostic) {
     kq_layer_buffers b;
-    uint64_t required, width, total, t;
+    uint64_t required, base_required, width, total, t;
     uint32_t active, staging;
     kq_status status;
+    void *weight_scratch = NULL;
+    uint64_t weight_scratch_bytes = 0U;
+    kq_layer_qsa_observation qsa_observation;
     LARGE_INTEGER frequency, start, end;
-    if (!kq_layer_config_valid(config) || weights == NULL || input == NULL ||
+    memset(&qsa_observation, 0, sizeof(qsa_observation));
+    if (!kq_layer_config_valid(config) ||
+        ((weights == NULL) == (provider == NULL)) || input == NULL ||
         output == NULL || !kq_layer_state_valid(state) || state->config != config ||
         scratch == NULL || count == 0U || (decode && count != 1U) ||
         output == input || (void *)output == scratch || (const void *)input == scratch)
@@ -535,21 +579,33 @@ static kq_status kq_layer_execute(
     width=(uint64_t)config->dimensions.hidden_size*config->dimensions.branch_count;
     if (!kq_layer_mul_u64(count,width,&total)) return KQ_STATUS_ARITHMETIC_OVERFLOW;
     if (output_capacity < total) return KQ_STATUS_BUFFER_TOO_SMALL;
-    status=kq_layer_required_scratch_bytes(config,state,count,&required,diagnostic);
+    status=kq_layer_required_scratch_bytes(config,state,count,&base_required,diagnostic);
     if(status!=KQ_STATUS_OK)return status;
+    if (provider != NULL) {
+        if (!kq_layer_add_u64(base_required,
+                              KQ_LAYER_QUANTIZED_WEIGHT_SCRATCH_BYTES,
+                              &required))
+            return KQ_STATUS_ARITHMETIC_OVERFLOW;
+    } else required = base_required;
     if(scratch_bytes<required)return KQ_STATUS_BUFFER_TOO_SMALL;
-    if (config->ple != NULL && (tokens == NULL || weights->ple_value == NULL ||
-                               weights->ple_provider == NULL))
+    if (config->ple != NULL &&
+        (tokens == NULL ||
+         (provider == NULL && (weights->ple_value == NULL ||
+                               weights->ple_provider == NULL))))
         return KQ_STATUS_INCOMPATIBLE_LAYER;
     if (config->ple == NULL && tokens != NULL) { /* token IDs are irrelevant outside PLE */ }
-    if (weights->moe == NULL ||
+    if (provider == NULL && (weights->moe == NULL ||
         (config->gdn != NULL && weights->gdn == NULL) ||
-        (config->qsa != NULL && weights->qsa == NULL))
+        (config->qsa != NULL && weights->qsa == NULL)))
         return KQ_STATUS_INCOMPATIBLE_LAYER;
     active=state->active_slot;staging=1U-active;
     status=kq_layer_copy_slot(state,active,staging,diagnostic);
     if(status!=KQ_STATUS_OK)return status;
-    kq_layer_partition(config,count,scratch,scratch_bytes,&b);
+    kq_layer_partition(config,count,scratch,base_required,&b);
+    if (provider != NULL) {
+        weight_scratch = (unsigned char *)scratch + base_required;
+        weight_scratch_bytes = scratch_bytes - base_required;
+    }
     QueryPerformanceFrequency(&frequency);QueryPerformanceCounter(&start);
     for(t=0U;t<count;++t)
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_INPUT,t,2U,
@@ -564,7 +620,15 @@ static kq_status kq_layer_execute(
             :kq_ple_generate_prefill(config->ple,&state->ple[staging],tokens,count,b.intents,
                     count*KQ_PLE_ADDRESSES_PER_TOKEN,&needed,&address_metrics,diagnostic);
         if(status!=KQ_STATUS_OK)return status;
-        status=decode?kq_ple_value_decode_f32(config->ple_value,state->ple_value[staging],
+        if (provider != NULL) {
+            kq_ple_value_lookup_provider lookup =
+                kq_weight_provider_ple_lookup_interface(provider);
+            status = kq_ple_value_execute_quantized(
+                config->ple_value, state->ple_value[staging], provider,
+                &lookup, input, count, b.intents, needed, b.ple_output,
+                total, b.sub_scratch, b.sub_bytes, weight_scratch,
+                weight_scratch_bytes, NULL, NULL, NULL, diagnostic);
+        } else status=decode?kq_ple_value_decode_f32(config->ple_value,state->ple_value[staging],
                     weights->ple_value,weights->ple_provider,input,b.intents,needed,b.ple_output,width,
                     b.sub_scratch,b.sub_bytes,NULL,NULL,NULL,diagnostic)
             :kq_ple_value_prefill_f32(config->ple_value,state->ple_value[staging],weights->ple_value,
@@ -580,9 +644,15 @@ static kq_status kq_layer_execute(
         }
     } else memcpy(b.current,input,(size_t)(total*sizeof(float)));
     for(t=0U;t<count;++t){
-        status=kq_layer_gr_read_f32(config,&weights->attention_gr,b.current+t*width,
+        status=provider!=NULL?kq_layer_gr_read_quantized_f32(
+            config,provider,0U,b.current+t*width,b.normalized,b.read_gate,
+            b.mixed+t*config->dimensions.hidden_size,b.rank,
+            b.attention_write_gates+t*config->dimensions.branch_count,
+            weight_scratch,weight_scratch_bytes,diagnostic)
+            :kq_layer_gr_read_f32(config,&weights->attention_gr,b.current+t*width,
             b.normalized,b.read_gate,b.mixed+t*config->dimensions.hidden_size,
-            b.rank,b.write_gate,diagnostic);if(status!=KQ_STATUS_OK)return status;
+            b.rank,b.attention_write_gates+t*config->dimensions.branch_count,
+            diagnostic);if(status!=KQ_STATUS_OK)return status;
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_ATTN_GR_NORMALIZED,t,2U,
             config->dimensions.branch_count,config->dimensions.hidden_size,b.normalized,width);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_ATTN_GR_READ_GATE,t,2U,
@@ -590,30 +660,48 @@ static kq_status kq_layer_execute(
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MIXER_INPUT,t,1U,
             config->dimensions.hidden_size,0U,b.mixed+t*config->dimensions.hidden_size,config->dimensions.hidden_size);
     }
-    if(config->gdn!=NULL)status=decode?kq_gdn_decode_f32(config->gdn,weights->gdn,b.mixed,b.block_output,
+    if(config->gdn!=NULL)status=provider!=NULL?kq_gdn_execute_quantized(
+            config->gdn,provider,b.mixed,count,padding_mask,b.block_output,
+            count*config->dimensions.hidden_size,state->gdn[staging],
+            b.sub_scratch,b.sub_bytes,weight_scratch,weight_scratch_bytes,
+            NULL,NULL,diagnostic)
+        :(decode?kq_gdn_decode_f32(config->gdn,weights->gdn,b.mixed,b.block_output,
             config->dimensions.hidden_size,state->gdn[staging],b.sub_scratch,b.sub_bytes,NULL,NULL,diagnostic)
         :kq_gdn_prefill_f32(config->gdn,weights->gdn,b.mixed,count,padding_mask,b.block_output,
-            count*config->dimensions.hidden_size,state->gdn[staging],b.sub_scratch,b.sub_bytes,NULL,NULL,diagnostic);
-    else status=decode?kq_qsa_decode_f32(config->qsa,weights->qsa,b.mixed,b.block_output,
-            config->dimensions.hidden_size,state->qsa[staging],b.sub_scratch,b.sub_bytes,NULL,NULL,NULL,diagnostic)
+            count*config->dimensions.hidden_size,state->gdn[staging],b.sub_scratch,b.sub_bytes,NULL,NULL,diagnostic));
+    else status=provider!=NULL?kq_qsa_execute_quantized(
+            config->qsa,provider,b.mixed,count,b.block_output,
+            count*config->dimensions.hidden_size,state->qsa[staging],
+            b.sub_scratch,b.sub_bytes,weight_scratch,weight_scratch_bytes,
+            kq_layer_observe_qsa_selection,NULL,&qsa_observation,diagnostic)
+        :(decode?kq_qsa_decode_f32(config->qsa,weights->qsa,b.mixed,b.block_output,
+            config->dimensions.hidden_size,state->qsa[staging],b.sub_scratch,b.sub_bytes,
+            kq_layer_observe_qsa_selection,NULL,&qsa_observation,diagnostic)
         :kq_qsa_prefill_f32(config->qsa,weights->qsa,b.mixed,count,b.block_output,
-            count*config->dimensions.hidden_size,state->qsa[staging],b.sub_scratch,b.sub_bytes,NULL,NULL,NULL,diagnostic);
+            count*config->dimensions.hidden_size,state->qsa[staging],b.sub_scratch,b.sub_bytes,
+            kq_layer_observe_qsa_selection,NULL,&qsa_observation,diagnostic));
     if(status!=KQ_STATUS_OK)return status;
     for(t=0U;t<count;++t){
-        status=kq_layer_gr_read_f32(config,&weights->attention_gr,b.current+t*width,
-            b.normalized,b.read_gate,b.mixed+t*config->dimensions.hidden_size,
-            b.rank,b.write_gate,diagnostic);if(status!=KQ_STATUS_OK)return status;
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MIXER_OUTPUT,t,1U,
             config->dimensions.hidden_size,0U,b.block_output+t*config->dimensions.hidden_size,config->dimensions.hidden_size);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_ATTN_GR_WRITE_GATE,t,1U,
-            config->dimensions.branch_count,0U,b.write_gate,config->dimensions.branch_count);
+            config->dimensions.branch_count,0U,
+            b.attention_write_gates+t*config->dimensions.branch_count,
+            config->dimensions.branch_count);
         kq_layer_gr_write_f32(config,b.current+t*width,b.block_output+t*config->dimensions.hidden_size,
-                             b.write_gate,b.after_mixer+t*width);
+            b.attention_write_gates+t*config->dimensions.branch_count,
+            b.after_mixer+t*width);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_AFTER_MIXER_RESIDUAL,t,2U,
             config->dimensions.branch_count,config->dimensions.hidden_size,b.after_mixer+t*width,width);
-        status=kq_layer_gr_read_f32(config,&weights->moe_gr,b.after_mixer+t*width,
+        status=provider!=NULL?kq_layer_gr_read_quantized_f32(
+            config,provider,4U,b.after_mixer+t*width,b.normalized,b.read_gate,
+            b.moe_input+t*config->dimensions.hidden_size,b.rank,
+            b.moe_write_gates+t*config->dimensions.branch_count,
+            weight_scratch,weight_scratch_bytes,diagnostic)
+            :kq_layer_gr_read_f32(config,&weights->moe_gr,b.after_mixer+t*width,
             b.normalized,b.read_gate,b.moe_input+t*config->dimensions.hidden_size,
-            b.rank,b.write_gate,diagnostic);if(status!=KQ_STATUS_OK)return status;
+            b.rank,b.moe_write_gates+t*config->dimensions.branch_count,
+            diagnostic);if(status!=KQ_STATUS_OK)return status;
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MOE_GR_NORMALIZED,t,2U,
             config->dimensions.branch_count,config->dimensions.hidden_size,b.normalized,width);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MOE_GR_READ_GATE,t,2U,
@@ -621,19 +709,23 @@ static kq_status kq_layer_execute(
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MOE_INPUT,t,1U,
             config->dimensions.hidden_size,0U,b.moe_input+t*config->dimensions.hidden_size,config->dimensions.hidden_size);
     }
-    status=kq_moe_execute_f32(config->moe,weights->moe,b.moe_input,count,b.moe_output,
+    status=provider!=NULL?kq_moe_execute_quantized(
+        config->moe,provider,b.moe_input,count,b.moe_output,
+        count*config->dimensions.hidden_size,b.sub_scratch,b.sub_bytes,
+        weight_scratch,weight_scratch_bytes,NULL,NULL,NULL,diagnostic)
+        :kq_moe_execute_f32(config->moe,weights->moe,b.moe_input,count,b.moe_output,
         count*config->dimensions.hidden_size,b.sub_scratch,b.sub_bytes,NULL,NULL,NULL,diagnostic);
     if(status!=KQ_STATUS_OK)return status;
     for(t=0U;t<count;++t){
-        status=kq_layer_gr_read_f32(config,&weights->moe_gr,b.after_mixer+t*width,
-            b.normalized,b.read_gate,b.moe_input+t*config->dimensions.hidden_size,
-            b.rank,b.write_gate,diagnostic);if(status!=KQ_STATUS_OK)return status;
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MOE_OUTPUT,t,1U,
             config->dimensions.hidden_size,0U,b.moe_output+t*config->dimensions.hidden_size,config->dimensions.hidden_size);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_MOE_GR_WRITE_GATE,t,1U,
-            config->dimensions.branch_count,0U,b.write_gate,config->dimensions.branch_count);
+            config->dimensions.branch_count,0U,
+            b.moe_write_gates+t*config->dimensions.branch_count,
+            config->dimensions.branch_count);
         kq_layer_gr_write_f32(config,b.after_mixer+t*width,b.moe_output+t*config->dimensions.hidden_size,
-                             b.write_gate,output+t*width);
+            b.moe_write_gates+t*config->dimensions.branch_count,
+            output+t*width);
         kq_layer_emit(observer,observer_user,KQ_LAYER_CHECKPOINT_OUTPUT,t,2U,
             config->dimensions.branch_count,config->dimensions.hidden_size,output+t*width,width);
     }
@@ -643,6 +735,10 @@ static kq_status kq_layer_execute(
     if(metrics!=NULL){memset(metrics,0,sizeof(*metrics));metrics->tokens_processed=count;
         metrics->scratch_bytes=required;metrics->gr_workspace_bytes=config->gr_workspace_bytes;
         metrics->transaction_staging_bytes=state->owned_bytes;
+        metrics->qsa_selection_events=qsa_observation.events;
+        metrics->qsa_candidate_blocks=qsa_observation.candidate_blocks;
+        metrics->qsa_selected_blocks=qsa_observation.selected_blocks;
+        metrics->qsa_selected_tokens=qsa_observation.selected_tokens;
         if(frequency.QuadPart>0)metrics->elapsed_nanoseconds=(uint64_t)(((end.QuadPart-start.QuadPart)*UINT64_C(1000000000))/(uint64_t)frequency.QuadPart);}
     return KQ_STATUS_OK;
 }
@@ -652,12 +748,25 @@ kq_status kq_layer_prefill_f32(
     const uint32_t *ids,uint64_t n,const uint8_t *mask,float *o,uint64_t cap,
     kq_layer_state *s,void *scratch,uint64_t scratch_bytes,
     kq_layer_checkpoint_observer observer,void *user,kq_layer_metrics *metrics,
-    kq_diagnostic *d){return kq_layer_execute(c,w,h,ids,n,mask,o,cap,s,scratch,scratch_bytes,0,observer,user,metrics,d);}
+    kq_diagnostic *d){return kq_layer_execute(c,w,NULL,h,ids,n,mask,o,cap,s,scratch,scratch_bytes,0,observer,user,metrics,d);}
 kq_status kq_layer_decode_f32(
     const kq_layer_config *c,const kq_layer_weights_f32 *w,const float *h,
     uint32_t id,float *o,uint64_t cap,kq_layer_state *s,void *scratch,
     uint64_t scratch_bytes,kq_layer_checkpoint_observer observer,void *user,
-    kq_layer_metrics *metrics,kq_diagnostic *d){return kq_layer_execute(c,w,h,&id,1U,NULL,o,cap,s,scratch,scratch_bytes,1,observer,user,metrics,d);}
+    kq_layer_metrics *metrics,kq_diagnostic *d){return kq_layer_execute(c,w,NULL,h,&id,1U,NULL,o,cap,s,scratch,scratch_bytes,1,observer,user,metrics,d);}
+
+kq_status kq_layer_prefill_quantized_f32(
+    const kq_layer_config *c,kq_weight_provider *provider,const float *h,
+    const uint32_t *ids,uint64_t n,const uint8_t *mask,float *o,uint64_t cap,
+    kq_layer_state *s,void *scratch,uint64_t scratch_bytes,
+    kq_layer_checkpoint_observer observer,void *user,kq_layer_metrics *metrics,
+    kq_diagnostic *d){return kq_layer_execute(c,NULL,provider,h,ids,n,mask,o,cap,s,scratch,scratch_bytes,0,observer,user,metrics,d);}
+
+kq_status kq_layer_decode_quantized_f32(
+    const kq_layer_config *c,kq_weight_provider *provider,const float *h,
+    uint32_t id,float *o,uint64_t cap,kq_layer_state *s,void *scratch,
+    uint64_t scratch_bytes,kq_layer_checkpoint_observer observer,void *user,
+    kq_layer_metrics *metrics,kq_diagnostic *d){return kq_layer_execute(c,NULL,provider,h,&id,1U,NULL,o,cap,s,scratch,scratch_bytes,1,observer,user,metrics,d);}
 
 const char *kq_layer_family_name(kq_layer_family f){switch(f){case KQ_LAYER_FAMILY_GDN:return "GDN";case KQ_LAYER_FAMILY_QSA:return "QSA";case KQ_LAYER_FAMILY_PLE_GDN:return "PLE_GDN";default:return "INVALID";}}
 const char *kq_layer_checkpoint_kind_name(kq_layer_checkpoint_kind k){static const char *n[]={"INPUT","PLE_OUTPUT","PLE_ENHANCED_INPUT","ATTN_GR_NORMALIZED","ATTN_GR_READ_GATE","MIXER_INPUT","MIXER_OUTPUT","ATTN_GR_WRITE_GATE","AFTER_MIXER_RESIDUAL","MOE_GR_NORMALIZED","MOE_GR_READ_GATE","MOE_INPUT","MOE_OUTPUT","MOE_GR_WRITE_GATE","OUTPUT"};return (unsigned)k<sizeof(n)/sizeof(n[0])?n[k]:"UNKNOWN";}

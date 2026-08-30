@@ -2,6 +2,7 @@
 #define KQ_PLE_VALUE_INTERNAL_H
 
 #include "kq_ple_value.h"
+#include "kq_weight_provider.h"
 
 #define KQ_PLE_VALUE_CONFIG_MAGIC UINT32_C(0x4b515643)
 #define KQ_PLE_VALUE_STATE_MAGIC UINT32_C(0x4b515653)
@@ -66,5 +67,17 @@ kq_status kq_ple_value_config_create_from_source(
 int kq_ple_value_config_valid(const kq_ple_value_config *config);
 int kq_ple_value_u64_add(uint64_t a, uint64_t b, uint64_t *out);
 int kq_ple_value_u64_mul(uint64_t a, uint64_t b, uint64_t *out);
+
+kq_status kq_ple_value_execute_quantized(
+    const kq_ple_value_config *config, kq_ple_value_state *state,
+    kq_weight_provider *weight_provider,
+    const kq_ple_value_lookup_provider *lookup_provider,
+    const float *hidden_states, uint64_t token_count,
+    const kq_ple_address_intent *intents, uint64_t intent_count,
+    float *output, uint64_t output_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_ple_value_checkpoint_observer observer, void *observer_user_data,
+    kq_ple_value_run_metrics *metrics, kq_diagnostic *diagnostic);
 
 #endif

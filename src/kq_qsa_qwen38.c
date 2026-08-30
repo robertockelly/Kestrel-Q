@@ -9,6 +9,7 @@
 
 #include "kq_internal.h"
 #include "kq_numeric.h"
+#include "kq_weight_provider.h"
 
 typedef struct kq_qsa_workspace {
     float *pending_key;
@@ -203,11 +204,22 @@ static void kq_qsa_workspace_init(const kq_qsa_config *config,
         &cursor, config->dimensions.hidden_size);
 }
 
-static kq_status kq_qsa_project(const float *weights, uint64_t rows,
+static kq_status kq_qsa_project(const kq_qsa_config *config,
+                                const float *weights,
+                                kq_weight_provider *provider,
+                                uint32_t role_index,
+                                kq_binding_part_role part_role,
+                                uint64_t rows,
                                 uint64_t columns, const float *input,
-                                float *output,
+                                float *output, void *weight_scratch,
+                                uint64_t weight_scratch_bytes,
                                 kq_diagnostic *diagnostic) {
     uint64_t row;
+    if (provider != NULL)
+        return kq_weight_provider_linear_f32(
+            provider, config->tensors[role_index], part_role,
+            KQ_WEIGHT_PROVIDER_NO_EXPERT, rows, columns, input, output, rows,
+            weight_scratch, weight_scratch_bytes, diagnostic);
     for (row = 0U; row < rows; ++row) {
         kq_status status = kq_f32_dot(weights + row * columns, input,
                                       columns, &output[row], diagnostic);
@@ -383,7 +395,7 @@ static kq_status kq_qsa_validate_call(
     const kq_qsa_config *config, const kq_qsa_weights_f32 *weights,
     const float *hidden, uint64_t sequence, float *output,
     uint64_t output_capacity, kq_qsa_state *state, void *scratch,
-    uint64_t scratch_bytes, uint64_t *hidden_count,
+    uint64_t scratch_bytes, uint64_t *hidden_count, int provider_mode,
     kq_diagnostic *diagnostic) {
     uint64_t required_scratch;
     uint64_t hidden_bytes;
@@ -394,7 +406,7 @@ static kq_status kq_qsa_validate_call(
     uint64_t state_raw_bytes;
     uint64_t total_length;
     kq_status status;
-    if (!kq_qsa_config_valid(config) || weights == NULL || hidden == NULL ||
+    if (!kq_qsa_config_valid(config) || (!provider_mode && weights == NULL) || hidden == NULL ||
         output == NULL || !kq_qsa_state_valid(state) ||
         state->config != config || scratch == NULL || hidden_count == NULL) {
         return kq_qsa_exec_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
@@ -427,8 +439,10 @@ static kq_status kq_qsa_validate_call(
     status = kq_qsa_validate_finite(hidden, *hidden_count,
                                     "QSA input must be finite", diagnostic);
     if (status != KQ_STATUS_OK) return status;
-    status = kq_qsa_validate_weights(config, weights, diagnostic);
-    if (status != KQ_STATUS_OK) return status;
+    if (!provider_mode) {
+        status = kq_qsa_validate_weights(config, weights, diagnostic);
+        if (status != KQ_STATUS_OK) return status;
+    }
     if (state->length != 0U) {
         status = kq_qsa_validate_finite((const float *)state->key_cache,
             state->length * config->key_values_per_token,
@@ -474,11 +488,13 @@ static kq_status kq_qsa_validate_call(
     return KQ_STATUS_OK;
 }
 
-kq_status kq_qsa_execute_f32(
+static kq_status kq_qsa_execute_common(
     const kq_qsa_config *config, const kq_qsa_weights_f32 *weights,
+    kq_weight_provider *provider,
     const float *hidden_states, uint64_t sequence_length,
     float *output, uint64_t output_capacity, kq_qsa_state *state,
     void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
     kq_qsa_selection_observer selection_observer,
     kq_qsa_checkpoint_observer checkpoint_observer,
     void *observer_user_data, kq_diagnostic *diagnostic) {
@@ -496,7 +512,7 @@ kq_status kq_qsa_execute_f32(
     status = kq_qsa_validate_call(
         config, weights, hidden_states, sequence_length, output,
         output_capacity, state, scratch, scratch_bytes, &hidden_count,
-        diagnostic);
+        provider != NULL, diagnostic);
     if (status != KQ_STATUS_OK) return status;
     d = &config->dimensions;
     initial_length = state->length;
@@ -520,23 +536,32 @@ kq_status kq_qsa_execute_f32(
         float *pending_raw = w.pending_raw +
             token * config->raw_index_values_per_token;
 
-        status = kq_qsa_project(weights->query, 2U * q_width,
+        status = kq_qsa_project(config, weights->query, provider, 4U,
+                                KQ_BINDING_PART_WHOLE, 2U * q_width,
                                 d->hidden_size, input,
-                                w.projected_query_gate, diagnostic);
+                                w.projected_query_gate, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_qsa_project(weights->key, kv_width, d->hidden_size,
-                                input, w.key, diagnostic);
+        status = kq_qsa_project(config, weights->key, provider, 1U,
+                                KQ_BINDING_PART_WHOLE, kv_width, d->hidden_size,
+                                input, w.key, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_qsa_project(weights->value, kv_width, d->hidden_size,
-                                input, w.value, diagnostic);
+        status = kq_qsa_project(config, weights->value, provider, 5U,
+                                KQ_BINDING_PART_WHOLE, kv_width, d->hidden_size,
+                                input, w.value, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_qsa_project(weights->index_query, iq_width,
+        status = kq_qsa_project(config, weights->index_query, provider, 6U,
+                                KQ_BINDING_PART_INDEX_QUERY, iq_width,
                                 d->hidden_size, input, w.index_query,
-                                diagnostic);
+                                weight_scratch, weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
-        status = kq_qsa_project(weights->index_key,
+        status = kq_qsa_project(config, weights->index_key, provider, 6U,
+                                KQ_BINDING_PART_INDEX_KEY,
                                 d->index_head_dimension, d->hidden_size,
-                                input, w.raw_index_key, diagnostic);
+                                input, w.raw_index_key, weight_scratch,
+                                weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
 
         for (head = 0U; head < d->query_head_count; ++head) {
@@ -755,9 +780,10 @@ kq_status kq_qsa_execute_f32(
                     w.head_context[head * d->head_dimension + feature] * sigmoid;
             }
         }
-        status = kq_qsa_project(weights->output, d->hidden_size, q_width,
+        status = kq_qsa_project(config, weights->output, provider, 2U,
+                                KQ_BINDING_PART_WHOLE, d->hidden_size, q_width,
                                 w.gated_context, w.operator_output,
-                                diagnostic);
+                                weight_scratch, weight_scratch_bytes, diagnostic);
         if (status != KQ_STATUS_OK) return status;
         status = kq_qsa_validate_finite(
             w.operator_output, d->hidden_size,
@@ -800,4 +826,61 @@ kq_status kq_qsa_execute_f32(
     memcpy(output, w.staged_output, hidden_count * sizeof(float));
     state->length = initial_length + sequence_length;
     return KQ_STATUS_OK;
+}
+
+kq_status kq_qsa_execute_f32(
+    const kq_qsa_config *config, const kq_qsa_weights_f32 *weights,
+    const float *hidden_states, uint64_t sequence_length,
+    float *output, uint64_t output_capacity, kq_qsa_state *state,
+    void *scratch, uint64_t scratch_bytes,
+    kq_qsa_selection_observer selection_observer,
+    kq_qsa_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic) {
+    return kq_qsa_execute_common(config, weights, NULL, hidden_states,
+        sequence_length, output, output_capacity, state, scratch,
+        scratch_bytes, NULL, 0U, selection_observer, checkpoint_observer,
+        observer_user_data, diagnostic);
+}
+
+kq_status kq_qsa_execute_quantized(
+    const kq_qsa_config *config, kq_weight_provider *provider,
+    const float *hidden_states, uint64_t sequence_length,
+    float *output, uint64_t output_capacity, kq_qsa_state *state,
+    void *scratch, uint64_t scratch_bytes,
+    void *weight_scratch, uint64_t weight_scratch_bytes,
+    kq_qsa_selection_observer selection_observer,
+    kq_qsa_checkpoint_observer checkpoint_observer,
+    void *observer_user_data, kq_diagnostic *diagnostic) {
+    kq_qsa_weights_f32 resolved;
+    float *cursor = (float *)weight_scratch;
+    float *temporary;
+    uint64_t vector_bytes = UINT64_C(768) * sizeof(float);
+    uint64_t temporary_bytes = UINT64_C(256) * sizeof(float);
+    kq_status status;
+    if (provider == NULL || weight_scratch == NULL ||
+        weight_scratch_bytes < vector_bytes + temporary_bytes + 65536U)
+        return kq_qsa_exec_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                                "QSA provider weight scratch is too small");
+    memset(&resolved, 0, sizeof(resolved));
+    resolved.key_norm = cursor; resolved.key_norm_count = 256U; cursor += 256U;
+    resolved.query_norm = cursor; resolved.query_norm_count = 256U; cursor += 256U;
+    resolved.index_key_norm = cursor; resolved.index_key_norm_count = 128U; cursor += 128U;
+    resolved.index_query_norm = cursor; resolved.index_query_norm_count = 128U; cursor += 128U;
+    temporary = cursor;
+#define LOAD_QSA_VECTOR(field, role_index) do { \
+    status = kq_weight_provider_vector_f32(provider, config->tensors[role_index], \
+        resolved.field##_count, (float *)resolved.field, resolved.field##_count, \
+        temporary, temporary_bytes, diagnostic); \
+    if (status != KQ_STATUS_OK) return status; \
+} while (0)
+    LOAD_QSA_VECTOR(key_norm, 0U);
+    LOAD_QSA_VECTOR(query_norm, 3U);
+    LOAD_QSA_VECTOR(index_key_norm, 7U);
+    LOAD_QSA_VECTOR(index_query_norm, 8U);
+#undef LOAD_QSA_VECTOR
+    cursor = (float *)((unsigned char *)temporary + temporary_bytes);
+    return kq_qsa_execute_common(config, &resolved, provider, hidden_states,
+        sequence_length, output, output_capacity, state, scratch, scratch_bytes,
+        cursor, weight_scratch_bytes - vector_bytes - temporary_bytes,
+        selection_observer, checkpoint_observer, observer_user_data, diagnostic);
 }

@@ -1,0 +1,91 @@
+{
+  "calibration": [
+    {
+      "family": "GDN",
+      "state": {}
+    },
+    {
+      "family": "QSA",
+      "state": {
+        "indexer_keys": {
+          "elements": 256,
+          "sha256": "1cc0f072beab9b92877708e1500a3793f024e786282960b3ab2f438ebd1f3b26",
+          "tensor_count": 1
+        },
+        "keys": {
+          "elements": 1024,
+          "sha256": "1121499afb625de14fe4140774f90d8935906b39a14f489b52c1fb7d647000eb",
+          "tensor_count": 1
+        },
+        "values": {
+          "elements": 1024,
+          "sha256": "0b5f6680daa83e20d8dfb311dd58e1540206cb02cf1dd6ebaffb8dd2af6a4986",
+          "tensor_count": 1
+        }
+      }
+    },
+    {
+      "family": "PLE_GDN",
+      "state": {}
+    },
+    {
+      "family": "GDN",
+      "state": {}
+    },
+    {
+      "family": "QSA",
+      "state": {
+        "indexer_keys": {
+          "elements": 256,
+          "sha256": "17041b90376764fcf3bf03c2cea0aedbc1ffa79aced146bdfc0aca104425d3a6",
+          "tensor_count": 1
+        },
+        "keys": {
+          "elements": 1024,
+          "sha256": "b3e771408957743e49fd807f778aa5fdbccd383252f12787c9b5290c4f50024d",
+          "tensor_count": 1
+        },
+        "values": {
+          "elements": 1024,
+          "sha256": "49445a0d2d1acba7ada4f7793ec8cd5d9843ce5fd6bb181ef4ce9ecdf8a6e9a0",
+          "tensor_count": 1
+        }
+      }
+    },
+    {
+      "family": "PLE_GDN",
+      "state": {}
+    }
+  ],
+  "holdout": [
+    {
+      "family": "GDN",
+      "state": {}
+    },
+    {
+      "family": "QSA",
+      "state": {
+        "indexer_keys": {
+          "elements": 256,
+          "sha256": "51a8497a6ca7db202acef0d2ec45a2db5a853bd3c7dccf80f8373374eaea0767",
+          "tensor_count": 1
+        },
+        "keys": {
+          "elements": 1024,
+          "sha256": "1ec5fe82a568ec550a27eec9d50cf2af455f1cd361e1c3ce870a3b74599c2293",
+          "tensor_count": 1
+        },
+        "values": {
+          "elements": 1024,
+          "sha256": "ea30032eda96efc02a9006098b688dbffd76d9f9fc2f8d1a738780803f3d440e",
+          "tensor_count": 1
+        }
+      }
+    },
+    {
+      "family": "PLE_GDN",
+      "state": {}
+    }
+  ],
+  "schema": "kq-target-layer-state-vectors-v1"
+}

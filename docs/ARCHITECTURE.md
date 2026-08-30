@@ -140,6 +140,18 @@ cannot partially advance a request. All 35 ordinary-GDN, 12 QSA and one
 PLE-GDN target configs validate without payload access. This remains one-layer
 correctness plumbing, not an embedding/model-loop/logits executor or scheduler.
 
+Task 2.11 adds the semantic target-weight provider and executes those same
+layer equations directly from the verified quantized GGUF. The provider hides
+physical row orientation, GDN converter transforms, QSA/MoE split parts,
+contiguous routed-expert members and fused PLE rows behind canonical
+operations. Each operation uses Task 2.2 bounded views and Task 2.5 numerics,
+stages output transactionally and materializes at most a small vector—not a
+complete matrix—in F32. Independent llama.cpp decoding plus pinned Transformers
+equations validates ordinary GDN, QSA and PLE-GDN prefill/decode, exact MoE/QSA/
+PLE decisions and 48/48 provider preflight. This is synchronous correctness
+plumbing; it is not a cache, prefetcher, scheduler, 48-layer executor or model
+entry/logits path.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

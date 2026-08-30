@@ -494,3 +494,49 @@ The validator derives family-specific limits from calibration only, applies
 them unchanged to disjoint holdout, records native validation, and supports
 `--verify` for CTest byte identity. Production C17 reads none of these files
 and has no Python/PyTorch/Transformers dependency.
+
+## Task 2.11 exact-GGUF target-layer oracle
+
+`llama-dequant-oracle.cpp` retains its Task 2.5 pinned llama.cpp provenance and
+adds the research-only `dequant-file` mode. That mode decodes an explicitly
+bounded physical span to an ignored F32 cache file; it rejects more than
+256 MiB per invocation and is never linked into production Kestrel-Q.
+
+`generate-target-layer-reference.py` verifies the registered GGUF size and
+SHA-256, exact Epic 1 physical inventory, pinned Transformers checkout, pinned
+oracle packages and official config. It uses the llama helper as the only
+packed-storage decoder, applies the verified converter-layout inverses, and
+executes separate canonical equations for deterministic ordinary GDN layer 0,
+QSA layer 3 and PLE-GDN layer 1. It writes no packed weight bytes to governed
+evidence.
+
+```powershell
+$gguf = [Environment]::GetEnvironmentVariable('KQ_GGUF_PATH', 'User')
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-target-layer-reference.py `
+  --gguf $gguf `
+  --inventory research/model-gguf/Qwen3.8-Flash-Next/c8b5954a88c2775c546b92593eda40ea041d3176/gguf-tensor-inventory.csv `
+  --llama-helper .research-cache/task-2.5/llama-oracle-build/Release/kq_llama_dequant_oracle.exe `
+  --transformers-checkout .research-cache/task-1.4/transformers `
+  --oracle-site-packages .research-cache/task-1.4/venv/Lib/site-packages `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --cache-dir .research-cache/task-2.11/dequant `
+  --output-dir $out
+```
+
+`validate-target-layer.py` runs the native real-artifact integration for two
+calibration profiles and a disjoint holdout. It derives per-family/per-phase
+floating limits from calibration only, requires holdout PASS, and compares
+route order, selected-expert membership/access and PLE intents exactly. Host
+timings are deliberately removed from deterministic evidence.
+
+```powershell
+$env:KQ_GGUF_PATH = [Environment]::GetEnvironmentVariable('KQ_GGUF_PATH', 'User')
+python tools/validate-target-layer.py `
+  --probe build-cpu/Release/kq_target_layer_integration_test.exe `
+  --evidence-dir $out `
+  --verify
+```
+
+Production C17 target-layer code reads no research CSV/JSON and links no
+llama.cpp, Python, NumPy, PyTorch or Transformers runtime.

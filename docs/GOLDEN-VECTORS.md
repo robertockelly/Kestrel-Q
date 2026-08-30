@@ -202,3 +202,22 @@ synthetic dequant expected values come from the pinned Class-Q llama.cpp helper,
 and primitive calibration/holdout expected values come from an explicitly
 ordered pinned NumPy oracle. Model-operator vectors above remain planned and
 must not be inferred from the low-level primitive evidence.
+
+Task 2.11 adds a separate exact-GGUF operator namespace under
+`research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
+The pinned llama.cpp helper independently decodes requested target rows and
+pinned Transformers components execute canonical layer equations. Two
+calibration profiles and a disjoint holdout cover GDN layer 0, QSA layer 3 and
+PLE-GDN layer 1, each with prefill plus decode. Native output is only the
+comparison subject. Floating outputs use recorded per-family/per-phase
+calibration limits; route order, selected expert membership/access, QSA local
+selection and PLE member/row requests remain exact discrete results.
+
+| Task 2.11 evidence | SHA-256 |
+|---|---|
+| `target-layer-contract.json` | `99a3fc74ede825ee2ddc6fcbb2e9d11ee51df375bfae9e1c8354a76d2a09d0e6` |
+| `target-layer-calibration.json` | `bbeb38e15d90f895d0b54f3ee382f0b31a148cec4a32838b78e087079d0b5d70` |
+| `target-layer-holdout.json` | `3b85e035bfa79b6a8160ec779ee9cb766c491cb5a0ba109e47560b7c792ab162` |
+| `target-layer-state-vectors.json` | `b5a3d6c4025042541b96c6b90c27cafcdcd0852ec4ae9339a60242bb0482f13f` |
+| `target-layer-native-validation.json` | `94dab5eedda76dc37ccf7de829765c91169bce463bcd8b9adfe5e9c9a0f923b9` |
+| `target-layer-manifest.json` | `c520b958f35209462f02dbac47564cd8f6889f174dd16c42e23ee8182f300b00` |

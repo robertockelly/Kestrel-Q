@@ -2,6 +2,7 @@
 #define KQ_GDN_INTERNAL_H
 
 #include "kq_gdn.h"
+#include "kq_weight_provider.h"
 
 #define KQ_GDN_CONFIG_MAGIC UINT32_C(0x4b514743)
 #define KQ_GDN_STATE_MAGIC UINT32_C(0x4b514753)
@@ -73,6 +74,23 @@ kq_status kq_gdn_execute_f32(
     kq_gdn_state *state,
     void *scratch,
     uint64_t scratch_bytes,
+    kq_gdn_checkpoint_observer observer,
+    void *observer_user_data,
+    kq_diagnostic *diagnostic);
+
+kq_status kq_gdn_execute_quantized(
+    const kq_gdn_config *config,
+    kq_weight_provider *provider,
+    const float *hidden_states,
+    uint64_t sequence_length,
+    const uint8_t *padding_mask,
+    float *output,
+    uint64_t output_capacity,
+    kq_gdn_state *state,
+    void *scratch,
+    uint64_t scratch_bytes,
+    void *weight_scratch,
+    uint64_t weight_scratch_bytes,
     kq_gdn_checkpoint_observer observer,
     void *observer_user_data,
     kq_diagnostic *diagnostic);

@@ -33,8 +33,8 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.10 are
-  complete/pass; the next integration task has not started.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.11 are
+  complete/pass; the First Correct Native Token task has not started.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -96,7 +96,12 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   exact layer-owned GR semantics compose PLE/GDN/QSA/MoE for all three layer
   families, persistent substates commit transactionally, 48/48 target configs
   validate, and real model payload touched is zero.
-- R1/Epic 2 remains in progress. The next integration task has not started.
+- Task 2.11 is complete/pass. ADR 0019 accepts the semantic target-weight
+  provider: the same scalar layer equations execute directly from bounded GGUF
+  views for ordinary GDN, QSA and PLE-GDN prefill/decode. Independent Class-Q
+  decode plus canonical equations, exact route/access/PLE decisions, 48/48
+  provider preflight and rollback pass under the 768 MiB correctness ceiling.
+- R1/Epic 2 remains in progress. First Correct Native Token has not started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.
@@ -108,6 +113,8 @@ Minimal CPU reference inference and reference-vector parity.
 - MoE scalar reference execution: **COMPLETE / PASS via Task 2.8**.
 - PLE value scalar reference execution: **COMPLETE / PASS via Task 2.9**.
 - Complete one-layer scalar composition: **COMPLETE / PASS via Task 2.10**.
+- Real target-quantized single-layer execution: **COMPLETE / PASS via Task
+  2.11**.
 - Embedding, 48-layer execution, final norm/LM head/logits: **NOT STARTED**.
 
 ## R3 — Use the GPU
