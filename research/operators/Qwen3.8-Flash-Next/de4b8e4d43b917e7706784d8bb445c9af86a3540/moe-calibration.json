@@ -1,0 +1,3584 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "final_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "ba8fb442",
+            "91b787c2",
+            "7a3d0d42",
+            "4565dac2",
+            "c24407c3",
+            "8873cbc2"
+          ],
+          "shape": [
+            1,
+            6
+          ]
+        },
+        "gated_shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "08f55fc0",
+            "ce678bc0",
+            "ea586541",
+            "c2ea51c1",
+            "04943ac1",
+            "5d74ac40"
+          ],
+          "shape": [
+            1,
+            6
+          ]
+        },
+        "routed_weighted_sum": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "628fbb42",
+            "28027ec2",
+            "80cea741",
+            "ed27c0c2",
+            "0337f7c2",
+            "ce3ad6c2"
+          ],
+          "shape": [
+            1,
+            6
+          ]
+        },
+        "router_logits": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "4203b43f",
+            "c0a792c0",
+            "d1fcd0c0",
+            "5a60243f"
+          ],
+          "shape": [
+            1,
+            4
+          ]
+        },
+        "router_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "87522e3f",
+            "379cdf3a",
+            "ec0c7f39",
+            "765ba23e"
+          ],
+          "shape": [
+            1,
+            4
+          ]
+        },
+        "selected_expert_ids": [
+          [
+            0,
+            3
+          ]
+        ],
+        "selected_experts": [
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "16e740be",
+                "dd99c4bf",
+                "33912840",
+                "465e9fc2"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9e2f3fc0",
+                "542376bf",
+                "a69b9bbf",
+                "f50b1141"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "43900943",
+                "bb11b2c2",
+                "8c5d8941",
+                "d077f4c2",
+                "d2961bc3",
+                "0baa1dc3"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6326a83f",
+                "5cd3b840",
+                "999317c1",
+                "98a70cc1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "78b6bb42",
+                "29fc72c2",
+                "44713b41",
+                "7acba6c2",
+                "474fd4c2",
+                "2924d7c2"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "fe6a5d3e",
+                "e87f0742",
+                "4cd18bc1",
+                "58565fc0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d201a5c0",
+                "3826ca40",
+                "de2b3f40",
+                "ac357c40"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d00976be",
+                "b9c70ac1",
+                "052de941",
+                "92a41fc2",
+                "88b85bc2",
+                "709db73f"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "8939eac0",
+                "bee7ab40",
+                "b7acc4c0",
+                "5e1967bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "20589cbd",
+                "f25f30c0",
+                "bb2b1441",
+                "98e34ac1",
+                "f19e8bc1",
+                "e65ae93e"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          }
+        ],
+        "selected_weights": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "afa92e3f",
+            "a2aca23e"
+          ],
+          "shape": [
+            1,
+            2
+          ]
+        },
+        "shared_activated": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "4608c7c0",
+            "964ad83f",
+            "2c85313c",
+            "67db8fba"
+          ],
+          "shape": [
+            1,
+            4
+          ]
+        },
+        "shared_gate": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "c1537e3f"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "shared_gate_logit": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "6ac5a040"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "shared_gate_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "64098740",
+            "5991a63f",
+            "8ff4dec0",
+            "42fb12c1"
+          ],
+          "shape": [
+            1,
+            4
+          ]
+        },
+        "shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "246e61c0",
+            "8b528cc0",
+            "19db6641",
+            "394c53c1",
+            "2fce3bc1",
+            "c096ad40"
+          ],
+          "shape": [
+            1,
+            6
+          ]
+        },
+        "shared_up_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "286fbfbf",
+            "dc72d33f",
+            "fa79d3bf",
+            "4851953f"
+          ],
+          "shape": [
+            1,
+            4
+          ]
+        }
+      },
+      "id": "cal-length-1-random",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "0000f7be",
+          "00201ac0",
+          "0078e93f",
+          "0094cbbf",
+          "00e0f53f",
+          "0000303e"
+        ],
+        "shape": [
+          1,
+          1,
+          6
+        ]
+      }
+    },
+    {
+      "expected": {
+        "final_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00e930be",
+            "133424c1",
+            "8062643e",
+            "de589341",
+            "8f3699c1",
+            "859a1441",
+            "00e930be",
+            "133424c1",
+            "8062643e",
+            "de589341",
+            "8f3699c1",
+            "859a1441",
+            "40e930be",
+            "133424c1",
+            "8062643e",
+            "de589341",
+            "8f3699c1",
+            "869a1441"
+          ],
+          "shape": [
+            3,
+            6
+          ]
+        },
+        "gated_shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "e73708c1",
+            "25352bc1",
+            "36e51f41",
+            "509532c1",
+            "40422fc1",
+            "56b1dd40",
+            "e73708c1",
+            "25352bc1",
+            "36e51f41",
+            "509532c1",
+            "40422fc1",
+            "56b1dd40",
+            "e73708c1",
+            "25352bc1",
+            "36e51f41",
+            "509532c1",
+            "40422fc1",
+            "57b1dd40"
+          ],
+          "shape": [
+            3,
+            6
+          ]
+        },
+        "routed_weighted_sum": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "43740541",
+            "3a22e03e",
+            "ac531cc1",
+            "86a3ec41",
+            "de2a03c1",
+            "68071740",
+            "43740541",
+            "3a22e03e",
+            "ac531cc1",
+            "86a3ec41",
+            "de2a03c1",
+            "68071740",
+            "42740541",
+            "4622e03e",
+            "ac531cc1",
+            "86a3ec41",
+            "de2a03c1",
+            "69071740"
+          ],
+          "shape": [
+            3,
+            6
+          ]
+        },
+        "router_logits": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "93a59f40",
+            "888ceebd",
+            "7686babf",
+            "60c8ca40",
+            "93a59f40",
+            "888ceebd",
+            "7686babf",
+            "60c8ca40",
+            "93a59f40",
+            "888ceebd",
+            "7886babf",
+            "60c8ca40"
+          ],
+          "shape": [
+            3,
+            4
+          ]
+        },
+        "router_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "66d0523e",
+            "899fa33a",
+            "663fab39",
+            "afe44a3f",
+            "66d0523e",
+            "899fa33a",
+            "663fab39",
+            "afe44a3f",
+            "66d0523e",
+            "899fa33a",
+            "663fab39",
+            "afe44a3f"
+          ],
+          "shape": [
+            3,
+            4
+          ]
+        },
+        "selected_expert_ids": [
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "selected_experts": [
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "63cbfec0",
+                "de2be43c",
+                "6b029ac1",
+                "e4c1f53f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d94c4e40",
+                "cce590bf",
+                "bf91be40",
+                "face9340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "a6801141",
+                "ee238c3f",
+                "83a343c1",
+                "08151442",
+                "1e7a16c1",
+                "2f644c40"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1e6224c0",
+                "70b2cebd",
+                "7e6c4fc0",
+                "d8ebd63e"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1d00e740",
+                "c87c5e3f",
+                "664c1bc1",
+                "8a18eb41",
+                "e1e5eec0",
+                "0d3f2240"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e3e73abf",
+                "ad66c7be",
+                "46311640",
+                "f875d6bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "eac3f3bf",
+                "7a2a82bf",
+                "84452840",
+                "e0e6e43f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "7e24ae40",
+                "7de005c0",
+                "d59a9fbe",
+                "c4726f3f",
+                "3a5363c0",
+                "bc9a59bf"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "524e3d40",
+                "0b8cb83f",
+                "3cfa743f",
+                "42fb8bbf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9ca18f3f",
+                "4fd7dcbe",
+                "04a483bd",
+                "b27e453e",
+                "ed7e3bbf",
+                "707a33be"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "63cbfec0",
+                "de2be43c",
+                "6b029ac1",
+                "e4c1f53f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d94c4e40",
+                "cce590bf",
+                "bf91be40",
+                "face9340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "a6801141",
+                "ee238c3f",
+                "83a343c1",
+                "08151442",
+                "1e7a16c1",
+                "2f644c40"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1e6224c0",
+                "70b2cebd",
+                "7e6c4fc0",
+                "d8ebd63e"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1d00e740",
+                "c87c5e3f",
+                "664c1bc1",
+                "8a18eb41",
+                "e1e5eec0",
+                "0d3f2240"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e3e73abf",
+                "ad66c7be",
+                "46311640",
+                "f875d6bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "eac3f3bf",
+                "7a2a82bf",
+                "84452840",
+                "e0e6e43f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "7e24ae40",
+                "7de005c0",
+                "d59a9fbe",
+                "c4726f3f",
+                "3a5363c0",
+                "bc9a59bf"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "524e3d40",
+                "0b8cb83f",
+                "3cfa743f",
+                "42fb8bbf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9ca18f3f",
+                "4fd7dcbe",
+                "04a483bd",
+                "b27e453e",
+                "ed7e3bbf",
+                "707a33be"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "63cbfec0",
+                "de2be43c",
+                "6b029ac1",
+                "e4c1f53f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d94c4e40",
+                "cce590bf",
+                "bf91be40",
+                "face9340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "a6801141",
+                "ee238c3f",
+                "83a343c1",
+                "08151442",
+                "1e7a16c1",
+                "2f644c40"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1e6224c0",
+                "70b2cebd",
+                "7e6c4fc0",
+                "d8ebd63e"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1d00e740",
+                "c87c5e3f",
+                "664c1bc1",
+                "8a18eb41",
+                "e1e5eec0",
+                "0d3f2240"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e3e73abf",
+                "ad66c7be",
+                "46311640",
+                "f875d6bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "eac3f3bf",
+                "7a2a82bf",
+                "84452840",
+                "e0e6e43f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "7e24ae40",
+                "7de005c0",
+                "d59a9fbe",
+                "c4726f3f",
+                "3a5363c0",
+                "bc9a59bf"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "524e3d40",
+                "0b8cb83f",
+                "3cfa743f",
+                "42fb8bbf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9ca18f3f",
+                "4fd7dcbe",
+                "04a483bd",
+                "b27e453e",
+                "ed7e3bbf",
+                "707a33be"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          }
+        ],
+        "selected_weights": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "9e364b3f",
+            "8825533e",
+            "9e364b3f",
+            "8825533e",
+            "9e364b3f",
+            "8825533e"
+          ],
+          "shape": [
+            3,
+            2
+          ]
+        },
+        "shared_activated": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "1640583e",
+            "79f7c040",
+            "bd6054bf",
+            "616a43bf",
+            "1640583e",
+            "79f7c040",
+            "bd6054bf",
+            "616a43bf",
+            "1640583e",
+            "79f7c040",
+            "ba6054bf",
+            "616a43bf"
+          ],
+          "shape": [
+            3,
+            4
+          ]
+        },
+        "shared_gate": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0ed3733f",
+            "0ed3733f",
+            "0ed3733f"
+          ],
+          "shape": [
+            3,
+            1
+          ]
+        },
+        "shared_gate_logit": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "23cf3f40",
+            "23cf3f40",
+            "23cf3f40"
+          ],
+          "shape": [
+            3,
+            1
+          ]
+        },
+        "shared_gate_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "732272c0",
+            "3f807f40",
+            "90ad68bf",
+            "f09c143f",
+            "732272c0",
+            "3f807f40",
+            "90ad68bf",
+            "f09c143f",
+            "732272c0",
+            "3f807f40",
+            "88ad68bf",
+            "f09c143f"
+          ],
+          "shape": [
+            3,
+            4
+          ]
+        },
+        "shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "42050fc1",
+            "cac133c1",
+            "3ee12741",
+            "3e803bc1",
+            "af0238c1",
+            "5cc3e840",
+            "42050fc1",
+            "cac133c1",
+            "3ee12741",
+            "3e803bc1",
+            "af0238c1",
+            "5cc3e840",
+            "42050fc1",
+            "cac133c1",
+            "3ee12741",
+            "3e803bc1",
+            "af0238c1",
+            "5dc3e840"
+          ],
+          "shape": [
+            3,
+            6
+          ]
+        },
+        "shared_up_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "60a020c0",
+            "9ae9c43f",
+            "a4614b40",
+            "dc3f03c0",
+            "60a020c0",
+            "9ae9c43f",
+            "a4614b40",
+            "dc3f03c0",
+            "60a020c0",
+            "9ae9c43f",
+            "a4614b40",
+            "dc3f03c0"
+          ],
+          "shape": [
+            3,
+            4
+          ]
+        }
+      },
+      "id": "cal-length-3-repeated",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "0070f5be",
+          "0060d7bf",
+          "00c832bf",
+          "00aca5bf",
+          "00583fbf",
+          "0058ecbf",
+          "0070f5be",
+          "0060d7bf",
+          "00c832bf",
+          "00aca5bf",
+          "00583fbf",
+          "0058ecbf",
+          "0070f5be",
+          "0060d7bf",
+          "00c832bf",
+          "00aca5bf",
+          "00583fbf",
+          "0058ecbf"
+        ],
+        "shape": [
+          1,
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "expected": {
+        "final_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "f8f021c2",
+            "c7a39d42",
+            "00f2ddc1",
+            "827c9442",
+            "0ee201c2",
+            "8d80ae41",
+            "9ade99c1",
+            "ec5aefc0",
+            "473a14c2",
+            "0c37ab41",
+            "d87002c1",
+            "0e0039c2",
+            "f8f021c2",
+            "c7a39d42",
+            "00f2ddc1",
+            "827c9442",
+            "0ee201c2",
+            "8d80ae41",
+            "9ade99c1",
+            "ec5aefc0",
+            "473a14c2",
+            "0c37ab41",
+            "d87002c1",
+            "0e0039c2"
+          ],
+          "shape": [
+            4,
+            6
+          ]
+        },
+        "gated_shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "1f03a6c1",
+            "39a0b442",
+            "d2dcd240",
+            "81719c42",
+            "190e6cc1",
+            "34954e42",
+            "1d130840",
+            "7ccf1940",
+            "1644a7c1",
+            "2e3d9241",
+            "da198041",
+            "2ed9c6c0",
+            "1f03a6c1",
+            "39a0b442",
+            "d2dcd240",
+            "81719c42",
+            "190e6cc1",
+            "34954e42",
+            "1d130840",
+            "7ccf1940",
+            "1644a7c1",
+            "2e3d9241",
+            "da198041",
+            "2ed9c6c0"
+          ],
+          "shape": [
+            4,
+            6
+          ]
+        },
+        "routed_weighted_sum": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "d1de9dc1",
+            "91e337c1",
+            "9a5409c2",
+            "d39f7ec0",
+            "10bd8dc1",
+            "dba9eec1",
+            "fee0aac1",
+            "55211ec1",
+            "783081c1",
+            "f0ce4740",
+            "4652c1c1",
+            "e82420c2",
+            "d1de9dc1",
+            "91e337c1",
+            "9a5409c2",
+            "d39f7ec0",
+            "10bd8dc1",
+            "dba9eec1",
+            "fee0aac1",
+            "55211ec1",
+            "783081c1",
+            "f0ce4740",
+            "4652c1c1",
+            "e82420c2"
+          ],
+          "shape": [
+            4,
+            6
+          ]
+        },
+        "router_logits": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "bf230941",
+            "2f368b40",
+            "40746740",
+            "85804041",
+            "0ef00ac1",
+            "3f448dc0",
+            "86996ac0",
+            "cefd41c1",
+            "bf230941",
+            "2f368b40",
+            "40746740",
+            "85804041",
+            "0ef00ac1",
+            "3f448dc0",
+            "86996ac0",
+            "cefd41c1"
+          ],
+          "shape": [
+            4,
+            4
+          ]
+        },
+        "router_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "ec6cf93c",
+            "7c6fea39",
+            "33136139",
+            "3a09783f",
+            "ab8d923b",
+            "259ea33e",
+            "6c022d3f",
+            "cb3e1639",
+            "ec6cf93c",
+            "7c6fea39",
+            "33136139",
+            "3a09783f",
+            "ab8d923b",
+            "259ea33e",
+            "6c022d3f",
+            "cb3e1639"
+          ],
+          "shape": [
+            4,
+            4
+          ]
+        },
+        "selected_expert_ids": [
+          [
+            3,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "selected_experts": [
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "76a3ca41",
+                "08f5123c",
+                "87b93fc0",
+                "dae61241"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e9a83941",
+                "504d09c1",
+                "f0c60e41",
+                "7c83a940"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6d68aec1",
+                "1e8844c1",
+                "97450fc2",
+                "4a5afac0",
+                "b11794c1",
+                "998607c2"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "fcb40b40",
+                "4a5bb2c0",
+                "90e7abbe",
+                "40f6de3f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1918a9c1",
+                "3b8b3ec1",
+                "1de80ac2",
+                "9db9f2c0",
+                "9d948fc1",
+                "8a6503c2"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "dbd093bf",
+                "7f6f4a3f",
+                "8d399342",
+                "48c218be"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "cc5152bf",
+                "a03a89bf",
+                "192dcf40",
+                "9ca4afc0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "21313842",
+                "ed6c5a41",
+                "8af04e41",
+                "d6c0ec42",
+                "3ed5f140",
+                "cafec542"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6a449340",
+                "c01d39c0",
+                "72333641",
+                "0452d340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9494b33f",
+                "f6f4d43e",
+                "31c2c93e",
+                "67d36640",
+                "40c76b3e",
+                "c5094140"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "b9432ac1",
+                "1be6993f",
+                "38a7b03a",
+                "703b4241"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "4cf2e840",
+                "111d31c0",
+                "56d2cec0",
+                "a8058c40"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "ed761d41",
+                "a4eed6c1",
+                "367bddc1",
+                "d1420ec2",
+                "30a19d41",
+                "36dd1dc1"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "683ebbbf",
+                "6732ebc0",
+                "c01b09be",
+                "0bca3340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "61d2d540",
+                "beed91c1",
+                "0d6096c1",
+                "452dc1c1",
+                "c40b5641",
+                "465dd6c0"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "eff37341",
+                "32da0cc2",
+                "04986fbf",
+                "fd9b6bc2"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "5ee95140",
+                "11218f40",
+                "9855af3f",
+                "17b7d040"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6eb0aec2",
+                "4844d041",
+                "c4fa0341",
+                "2ce0a942",
+                "d1e0e9c2",
+                "5cadcfc2"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1e5b9a40",
+                "b4cdfec0",
+                "e25d5bbf",
+                "bab410c1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9755e0c1",
+                "27ba0541",
+                "ac7c2940",
+                "2327da41",
+                "142c16c2",
+                "3f5905c2"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "76a3ca41",
+                "08f5123c",
+                "87b93fc0",
+                "dae61241"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e9a83941",
+                "504d09c1",
+                "f0c60e41",
+                "7c83a940"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6d68aec1",
+                "1e8844c1",
+                "97450fc2",
+                "4a5afac0",
+                "b11794c1",
+                "998607c2"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "fcb40b40",
+                "4a5bb2c0",
+                "90e7abbe",
+                "40f6de3f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1918a9c1",
+                "3b8b3ec1",
+                "1de80ac2",
+                "9db9f2c0",
+                "9d948fc1",
+                "8a6503c2"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "dbd093bf",
+                "7f6f4a3f",
+                "8d399342",
+                "48c218be"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "cc5152bf",
+                "a03a89bf",
+                "192dcf40",
+                "9ca4afc0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "21313842",
+                "ed6c5a41",
+                "8af04e41",
+                "d6c0ec42",
+                "3ed5f140",
+                "cafec542"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6a449340",
+                "c01d39c0",
+                "72333641",
+                "0452d340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9494b33f",
+                "f6f4d43e",
+                "31c2c93e",
+                "67d36640",
+                "40c76b3e",
+                "c5094140"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "b9432ac1",
+                "1be6993f",
+                "38a7b03a",
+                "703b4241"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "4cf2e840",
+                "111d31c0",
+                "56d2cec0",
+                "a8058c40"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "ed761d41",
+                "a4eed6c1",
+                "367bddc1",
+                "d1420ec2",
+                "30a19d41",
+                "36dd1dc1"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 3,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "683ebbbf",
+                "6732ebc0",
+                "c01b09be",
+                "0bca3340"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "61d2d540",
+                "beed91c1",
+                "0d6096c1",
+                "452dc1c1",
+                "c40b5641",
+                "465dd6c0"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "eff37341",
+                "32da0cc2",
+                "04986fbf",
+                "fd9b6bc2"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "5ee95140",
+                "11218f40",
+                "9855af3f",
+                "17b7d040"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "6eb0aec2",
+                "4844d041",
+                "c4fa0341",
+                "2ce0a942",
+                "d1e0e9c2",
+                "5cadcfc2"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 3,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1e5b9a40",
+                "b4cdfec0",
+                "e25d5bbf",
+                "bab410c1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9755e0c1",
+                "27ba0541",
+                "ac7c2940",
+                "2327da41",
+                "142c16c2",
+                "3f5905c2"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          }
+        ],
+        "selected_weights": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "4733783f",
+            "3597f93c",
+            "cfcf2d3f",
+            "6260a43e",
+            "4733783f",
+            "3597f93c",
+            "cfcf2d3f",
+            "6260a43e"
+          ],
+          "shape": [
+            4,
+            2
+          ]
+        },
+        "shared_activated": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "78a7a539",
+            "6d281841",
+            "7a002442",
+            "9e0a5ac2",
+            "432d2842",
+            "8a613a3c",
+            "48e66b3e",
+            "7d8dd7ba",
+            "78a7a539",
+            "6d281841",
+            "7a002442",
+            "9e0a5ac2",
+            "432d2842",
+            "8a613a3c",
+            "48e66b3e",
+            "7d8dd7ba"
+          ],
+          "shape": [
+            4,
+            4
+          ]
+        },
+        "shared_gate": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "6fa3393f",
+            "20cf883e",
+            "6fa3393f",
+            "20cf883e"
+          ],
+          "shape": [
+            4,
+            1
+          ]
+        },
+        "shared_gate_logit": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "f85b783f",
+            "f42181bf",
+            "f85b783f",
+            "f42181bf"
+          ],
+          "shape": [
+            4,
+            1
+          ]
+        },
+        "shared_gate_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "30953cc1",
+            "c1d8d540",
+            "16caa440",
+            "5f8e2541",
+            "c85f3e41",
+            "68fdd7c0",
+            "8a6da6c0",
+            "b6bb26c1",
+            "30953cc1",
+            "c1d8d540",
+            "16caa440",
+            "5f8e2541",
+            "c85f3e41",
+            "68fdd7c0",
+            "8a6da6c0",
+            "b6bb26c1"
+          ],
+          "shape": [
+            4,
+            4
+          ]
+        },
+        "shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "59efe4c1",
+            "6c16f942",
+            "73641141",
+            "44bdd742",
+            "4ec3a2c1",
+            "02718e42",
+            "30a0fe40",
+            "1de80f41",
+            "eb7e9cc2",
+            "9dd28842",
+            "89b46f42",
+            "6a0bbac1",
+            "59efe4c1",
+            "6c16f942",
+            "73641141",
+            "44bdd742",
+            "4ec3a2c1",
+            "02718e42",
+            "30a0fe40",
+            "1de80f41",
+            "eb7e9cc2",
+            "9dd28842",
+            "89b46f42",
+            "6a0bbac1"
+          ],
+          "shape": [
+            4,
+            6
+          ]
+        },
+        "shared_up_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "b68861c0",
+            "1961b63f",
+            "97200041",
+            "a495a8c0",
+            "fe266240",
+            "0d67b8bf",
+            "784a01c1",
+            "4670a940",
+            "b68861c0",
+            "1961b63f",
+            "97200041",
+            "a495a8c0",
+            "fe266240",
+            "0d67b8bf",
+            "784a01c1",
+            "4670a940"
+          ],
+          "shape": [
+            4,
+            4
+          ]
+        }
+      },
+      "id": "cal-length-4-alternating",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "00d0f3be",
+          "00f874bf",
+          "00204ec0",
+          "00887fbf",
+          "009a5ac0",
+          "005877c0",
+          "00d0f33e",
+          "00f8763f",
+          "00204f40",
+          "00c4823f",
+          "009a5c40",
+          "00d87940",
+          "00d0f3be",
+          "00f874bf",
+          "00204ec0",
+          "00887fbf",
+          "009a5ac0",
+          "005877c0",
+          "00d0f33e",
+          "00f8763f",
+          "00204f40",
+          "00c4823f",
+          "009a5c40",
+          "00d87940"
+        ],
+        "shape": [
+          1,
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "expected": {
+        "final_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            6
+          ]
+        },
+        "gated_shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            6
+          ]
+        },
+        "routed_weighted_sum": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            6
+          ]
+        },
+        "router_logits": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            4
+          ]
+        },
+        "router_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000803e",
+            "0000803e",
+            "0000803e",
+            "0000803e",
+            "0000803e",
+            "0000803e",
+            "0000803e",
+            "0000803e"
+          ],
+          "shape": [
+            2,
+            4
+          ]
+        },
+        "selected_expert_ids": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "selected_experts": [
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000",
+                "00000000"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          }
+        ],
+        "selected_weights": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000003f",
+            "0000003f",
+            "0000003f",
+            "0000003f"
+          ],
+          "shape": [
+            2,
+            2
+          ]
+        },
+        "shared_activated": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            4
+          ]
+        },
+        "shared_gate": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "0000003f",
+            "0000003f"
+          ],
+          "shape": [
+            2,
+            1
+          ]
+        },
+        "shared_gate_logit": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            1
+          ]
+        },
+        "shared_gate_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            4
+          ]
+        },
+        "shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            6
+          ]
+        },
+        "shared_up_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000"
+          ],
+          "shape": [
+            2,
+            4
+          ]
+        }
+      },
+      "id": "cal-length-2-zero",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        "shape": [
+          1,
+          2,
+          6
+        ]
+      }
+    },
+    {
+      "expected": {
+        "final_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "bd08d73f",
+            "f2338ec0",
+            "254632be",
+            "18f74fc0",
+            "0858dbbd",
+            "0fb4d3bf",
+            "1a9d8140",
+            "0402dd40",
+            "ece9c2c0",
+            "db158c40",
+            "ce709b40",
+            "5ffd35c0",
+            "35b88d41",
+            "af9aecc1",
+            "e87202c2",
+            "1af81cc2",
+            "69ef8541",
+            "b10303c1",
+            "74d7aa3f",
+            "52a356c0",
+            "c4540141",
+            "b8892241",
+            "3881b640",
+            "70d93b41",
+            "f06a5c42",
+            "ab2eae42",
+            "a740dcc2",
+            "f6a9fcc2",
+            "ee50c542",
+            "c3746142"
+          ],
+          "shape": [
+            5,
+            6
+          ]
+        },
+        "gated_shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "ba92113f",
+            "63ad52c0",
+            "8f04533e",
+            "74c625c0",
+            "0485573f",
+            "4a65a7bf",
+            "99438640",
+            "c132b440",
+            "89e47fc0",
+            "7fae9740",
+            "5f608c40",
+            "e38e4dc0",
+            "21f79f3c",
+            "9306d23c",
+            "254b48be",
+            "14a4313e",
+            "5ae4183e",
+            "31de68bd",
+            "979db6c0",
+            "ddbea33f",
+            "eef86542",
+            "055c27c2",
+            "6de722c2",
+            "1284a741",
+            "cea21141",
+            "05af10c1",
+            "5bc93cc2",
+            "5722ee41",
+            "39f72642",
+            "464cacc1"
+          ],
+          "shape": [
+            5,
+            6
+          ]
+        },
+        "routed_weighted_sum": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "603f8e3f",
+            "027593bf",
+            "5aa5c2be",
+            "92c228bf",
+            "05f072bf",
+            "133bb1be",
+            "eccf14be",
+            "0e3da33f",
+            "50ef05c0",
+            "448ab9be",
+            "f706f13e",
+            "208cbc3e",
+            "37908d41",
+            "31cfecc1",
+            "9daa01c2",
+            "bea91dc2",
+            "a0bd8441",
+            "d31a02c1",
+            "7453e140",
+            "604194c0",
+            "bda345c2",
+            "73fe4f42",
+            "94b73942",
+            "b42e13c1",
+            "3d023842",
+            "8c44c042",
+            "f3b77bc2",
+            "46191cc3",
+            "a3aa6342",
+            "73cd9b42"
+          ],
+          "shape": [
+            5,
+            6
+          ]
+        },
+        "router_logits": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "c0822040",
+            "d6888e3f",
+            "d55e0d40",
+            "9c462b3f",
+            "11b768c0",
+            "1f99ae40",
+            "e6aaca3f",
+            "c67a13c1",
+            "4a24b5c0",
+            "f1ed19c1",
+            "895a79c0",
+            "bf7ec1c0",
+            "10bb01c0",
+            "2d2ee3c0",
+            "5f55aec0",
+            "5c99b53f",
+            "3299bcc0",
+            "20ad3941",
+            "160d5140",
+            "ce4014c1"
+          ],
+          "shape": [
+            5,
+            4
+          ]
+        },
+        "router_probabilities": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "1c4fee3e",
+            "d360ec3d",
+            "5bb5b03e",
+            "4c8d973d",
+            "2b24e738",
+            "95c17a3f",
+            "2ae5a63c",
+            "d3f0de34",
+            "0cda073e",
+            "56c2253b",
+            "b44d463f",
+            "31b0b83d",
+            "3cc9fc3c",
+            "47cd4a39",
+            "1531843a",
+            "f1ca773f",
+            "f9f8d732",
+            "55f07f3f",
+            "eeb97a39",
+            "cf2a6d30"
+          ],
+          "shape": [
+            5,
+            4
+          ]
+        },
+        "selected_expert_ids": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "selected_experts": [
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "941c9bbf",
+                "93efe73a",
+                "f0a3003f",
+                "07fc95be"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "7cbbac3f",
+                "8d1516c0",
+                "008d6a3f",
+                "eb1dc8bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "a2640140",
+                "77ef9cbf",
+                "be65afbf",
+                "4da455bf",
+                "03feeabf",
+                "18f491bd"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "87c190bf",
+                "905b0dbc",
+                "0192443f",
+                "c5818a3f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "4999943f",
+                "aa3a34bf",
+                "766e49bf",
+                "385af5be",
+                "9aef86bf",
+                "019e27bd"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "37c28dbc",
+                "d1c4f03e",
+                "df8deb3d",
+                "b19729bd"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "7ee9a9be",
+                "32c0aa3e",
+                "fe0366be",
+                "07ab8fbf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "cca9eebd",
+                "aeac86bf",
+                "6982743f",
+                "0e77d8be",
+                "1c087d3e",
+                "9f8437bf"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 0,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "5a9cff3d",
+                "50e51a40",
+                "bd9693bf",
+                "76d3193e"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "1d3d4bbd",
+                "af5ee5be",
+                "9637d03e",
+                "db5538be",
+                "7579d73d",
+                "56479cbe"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9be95cbb",
+                "b044163f",
+                "e8ddaf3e",
+                "a1ee2f3a"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "2d5812c1",
+                "d8af17c0",
+                "6886cabe",
+                "af1335c1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "b499ee3e",
+                "cf05043f",
+                "e616e3be",
+                "ed6c85be",
+                "4217483e",
+                "8dad1abe"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "ce4e5d40",
+                "1c6d39c0",
+                "0f1e0ac0",
+                "880c9cc0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "27bde93e",
+                "2c55013f",
+                "6476debe",
+                "f9b482be",
+                "9303443e",
+                "be8617be"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d8dba0c1",
+                "f57ce6c1",
+                "df52e23c",
+                "b05a483f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "ff44d240",
+                "d4524840",
+                "692ed6c0",
+                "66ef22bf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "234eecc1",
+                "cb2e1742",
+                "19c5a2c2",
+                "c432a8c0",
+                "a35a5b41",
+                "aeb0ca41"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 1,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "0f1e44c0",
+                "58b619c1",
+                "076b55c0",
+                "b26b63c0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "91121abf",
+                "f124453f",
+                "0a41d4bf",
+                "3055dbbd",
+                "2f058f3e",
+                "c127043f"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "816430c1",
+                "bca5fe3e",
+                "66b967bd",
+                "df7e8441"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "b9daae40",
+                "5851b9bf",
+                "2c5b61c0",
+                "23378540"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "26e58b41",
+                "c16cffc1",
+                "aa2b06c2",
+                "da432bc2",
+                "3db7b841",
+                "23d116c1"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "48ac01c0",
+                "c003e7bf",
+                "203c0f3f",
+                "194a8140"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d0e06e41",
+                "5913dac1",
+                "6c1ae5c1",
+                "d43812c2",
+                "b5b49d41",
+                "8ec300c1"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "3e47a4c1",
+                "3fcc013f",
+                "42aa0b3c",
+                "1ce5363f"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "26c29b40",
+                "e8e0813e",
+                "d8aa0fc1",
+                "9261ccbf"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d44d9741",
+                "f61d80c1",
+                "5dbccec1",
+                "af7c9cc1",
+                "75bbaac1",
+                "bab812bf"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 2,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "430a88c0",
+                "1f2e6340",
+                "eb21f1c0",
+                "d1012ac0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "87fe3040",
+                "ccde15c0",
+                "82d671c0",
+                "ad0e37c0",
+                "a4b847c0",
+                "3ea2abbd"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "83bdefbd",
+                "51cde7c1",
+                "59d828bb",
+                "033ef13e"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 3,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "e00761c0",
+                "17cf1741",
+                "e28820c0",
+                "bbd404c0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "abe30641",
+                "7b60aec0",
+                "9c3b4ec2",
+                "d2045542",
+                "9da73c42",
+                "53f827c1"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 3,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "50ac933f",
+                "507643c0",
+                "008f5f3c",
+                "ed4d02c0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d2b80241",
+                "52fda8c0",
+                "80dc47c2",
+                "0a704e42",
+                "87d33642",
+                "d6c722c1"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "26f43a41",
+                "53211941",
+                "0ab7ecbb",
+                "29480541"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 0,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "295f4c40",
+                "06df4240",
+                "db55f9c0",
+                "2c4c3f40"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "f52112c2",
+                "c0c7a741",
+                "27d38f41",
+                "d97e4941",
+                "c923bb41",
+                "a070fc41"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 3,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "aeca7340",
+                "cbbd5240",
+                "f8ae0f40",
+                "fe563b40"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "c07890bf",
+                "8edf253f",
+                "a9300e3f",
+                "8d34c73e",
+                "4203393f",
+                "1892793f"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "f501b8b9",
+                "47a4e939",
+                "082f9ec2",
+                "0d3089bb"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 1,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "f29d44c1",
+                "608b33c1",
+                "27490f41",
+                "88a409c1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "a3143842",
+                "5e46c042",
+                "5dc47bc2",
+                "b0261cc3",
+                "6ac46342",
+                "4ed59b42"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 4,
+            "top_k_position": 0,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "3c81c640",
+                "80ea3dc0",
+                "ae530dc1",
+                "59a92940"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "5f093842",
+                "993ac042",
+                "f4b47bc2",
+                "211d1cc3",
+                "79b66342",
+                "c4cb9b42"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          },
+          {
+            "activated": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "9c6e7b3e",
+                "5f4a44bd",
+                "c408a8c1",
+                "e3b3e0c1"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "expert_id": 2,
+            "gate": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "42b199c0",
+                "bf82d5c0",
+                "527c2640",
+                "a1cb0641"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "c908e9c1",
+                "d790a242",
+                "b0b643c1",
+                "7b037c42",
+                "a45641c2",
+                "00cb5b41"
+              ],
+              "shape": [
+                6
+              ]
+            },
+            "token": 4,
+            "top_k_position": 1,
+            "up": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "b8fec8c0",
+                "47d5b540",
+                "f4c50ac1",
+                "ec6b55c0"
+              ],
+              "shape": [
+                4
+              ]
+            },
+            "weighted_output": {
+              "dtype": "float32",
+              "f32_le_hex": [
+                "d43be4bb",
+                "84379f3c",
+                "8dae3fbb",
+                "6fd2763c",
+                "085b3dbc",
+                "e043573b"
+              ],
+              "shape": [
+                6
+              ]
+            }
+          }
+        ],
+        "selected_weights": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "b8ff123f",
+            "8f00da3e",
+            "b1c87a3f",
+            "e5e9a63c",
+            "10915a3f",
+            "c0bb153e",
+            "4717783f",
+            "1c17fd3c",
+            "55f07f3f",
+            "eeb97a39"
+          ],
+          "shape": [
+            5,
+            2
+          ]
+        },
+        "shared_activated": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "fe6d19bf",
+            "3073323f",
+            "54898bbe",
+            "9aa1d240",
+            "b17954bf",
+            "62806dc0",
+            "d5e4153d",
+            "9b101dba",
+            "8110d041",
+            "a3cfdfbc",
+            "1c488d3e",
+            "a9e7b5be",
+            "ec4305c2",
+            "3213853f",
+            "955bd640",
+            "fb01bd3c",
+            "dacdc541",
+            "1ff12cbd",
+            "b17c90bd",
+            "62c91c41"
+          ],
+          "shape": [
+            5,
+            4
+          ]
+        },
+        "shared_gate": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "cddb923e",
+            "ebdd553f",
+            "0752843b",
+            "457e743f",
+            "d9d3783f"
+          ],
+          "shape": [
+            5,
+            1
+          ]
+        },
+        "shared_gate_logit": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "242b69bf",
+            "3ef0cf3f",
+            "0141b0c0",
+            "a7994340",
+            "02fa6240"
+          ],
+          "shape": [
+            5,
+            1
+          ]
+        },
+        "shared_gate_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "1808a9bf",
+            "e73a6b3f",
+            "b88c213f",
+            "baa63440",
+            "8866c5be",
+            "39ed4f3f",
+            "880a7fbf",
+            "61ce0dc1",
+            "22133441",
+            "43cb97c0",
+            "1e2ca9c0",
+            "970193c0",
+            "0b6e5240",
+            "f6260bc0",
+            "91148140",
+            "525efcc0",
+            "e9714740",
+            "3e2de5c0",
+            "4ea882c0",
+            "713e6240"
+          ],
+          "shape": [
+            5,
+            4
+          ]
+        },
+        "shared_output": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "5ec2fd3f",
+            "9f9f37c1",
+            "9aeb373f",
+            "cb7c10c1",
+            "11d83b40",
+            "5be691c0",
+            "05b7a040",
+            "ceb2d740",
+            "112799c0",
+            "5a90b540",
+            "1108a840",
+            "ee0d76c0",
+            "07be9a40",
+            "082bcb40",
+            "f3c041c2",
+            "3bd72b42",
+            "5fe61342",
+            "b84361c1",
+            "cd35bfc0",
+            "b973ab3f",
+            "b5cb7042",
+            "6b3c2fc2",
+            "25922ac2",
+            "5b66af41",
+            "7cd51541",
+            "acda14c1",
+            "743a42c2",
+            "95fff441",
+            "4dc72b42",
+            "b343b1c1"
+          ],
+          "shape": [
+            5,
+            6
+          ]
+        },
+        "shared_up_projection": {
+          "dtype": "float32",
+          "f32_le_hex": [
+            "01d70940",
+            "32d8873f",
+            "fa6029bf",
+            "3c1d1e40",
+            "542eaa40",
+            "841ad3c0",
+            "807a0bbe",
+            "2091f43e",
+            "c0e51340",
+            "89cd2a3f",
+            "17ec25c1",
+            "fc30f740",
+            "4f2d28c1",
+            "8ae295c0",
+            "e253d83f",
+            "f138f9c0",
+            "bc920441",
+            "0267f340",
+            "186c853f",
+            "8a943640"
+          ],
+          "shape": [
+            5,
+            4
+          ]
+        }
+      },
+      "id": "cal-length-5-random",
+      "input": {
+        "dtype": "float32",
+        "f32_le_hex": [
+          "00b0f0be",
+          "0010fd3e",
+          "00e087be",
+          "00e0cfbe",
+          "009040bf",
+          "0000ca3d",
+          "00005340",
+          "0048e1bf",
+          "005a0440",
+          "003e00c0",
+          "00d0cfbe",
+          "00102e40",
+          "00ccfbbf",
+          "0048a33f",
+          "00881140",
+          "00101940",
+          "007e1e40",
+          "004c6340",
+          "0070bc3e",
+          "00b093be",
+          "00f85a40",
+          "00003840",
+          "00a0f03f",
+          "009057c0",
+          "00e8c13f",
+          "00c02940",
+          "009461c0",
+          "00842bc0",
+          "00440840",
+          "00862c40"
+        ],
+        "shape": [
+          1,
+          5,
+          6
+        ]
+      }
+    }
+  ],
+  "comparison_classes": {
+    "floating": "CALIBRATED_FLOAT",
+    "routing": "EXACT_DISCRETE"
+  },
+  "schema": "kq-moe-calibration-v1"
+}

@@ -59,6 +59,8 @@ add_library(kq_core
     src/kq_gdn_qwen38.c
     src/kq_gguf.c
     src/kq_model.c
+    src/kq_moe.c
+    src/kq_moe_qwen38.c
     src/kq_numeric.c
     src/kq_ple.c
     src/kq_qsa.c
@@ -83,13 +85,15 @@ if(MSVC)
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
     set_property(SOURCE src/kq_gdn.c src/kq_gdn_qwen38.c
-        src/kq_qsa.c src/kq_qsa_qwen38.c APPEND PROPERTY
+        src/kq_qsa.c src/kq_qsa_qwen38.c
+        src/kq_moe.c src/kq_moe_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
     set_property(SOURCE src/kq_gdn.c src/kq_gdn_qwen38.c
-        src/kq_qsa.c src/kq_qsa_qwen38.c APPEND PROPERTY
+        src/kq_qsa.c src/kq_qsa_qwen38.c
+        src/kq_moe.c src/kq_moe_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -280,6 +284,27 @@ if(KQ_BUILD_TESTS)
     )
     kq_enable_c_warnings(kq_qsa_probe)
 
+    add_executable(kq_moe_test tests/moe_test.c)
+    target_link_libraries(kq_moe_test PRIVATE kq_core)
+    target_include_directories(kq_moe_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_moe_test)
+    add_test(NAME kq_moe_synthetic COMMAND kq_moe_test)
+
+    add_executable(kq_moe_integration_test tests/moe_integration.c)
+    target_link_libraries(kq_moe_integration_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_moe_integration_test)
+    add_test(NAME kq_moe_real_artifact COMMAND kq_moe_integration_test)
+    set_tests_properties(kq_moe_real_artifact PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(kq_moe_probe tests/moe_probe.c)
+    target_link_libraries(kq_moe_probe PRIVATE kq_core)
+    target_include_directories(kq_moe_probe PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    kq_enable_c_warnings(kq_moe_probe)
+
     add_executable(kq_numeric_integration_test tests/numeric_integration.c)
     target_link_libraries(kq_numeric_integration_test PRIVATE kq_core)
     target_include_directories(kq_numeric_integration_test PRIVATE
@@ -366,6 +391,15 @@ if(KQ_BUILD_TESTS)
             COMMAND ${Python3_EXECUTABLE}
                 ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-qsa.py
                 --probe $<TARGET_FILE:kq_qsa_probe>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+                --verify
+        )
+        add_test(
+            NAME kq_moe_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-moe.py
+                --probe $<TARGET_FILE:kq_moe_probe>
                 --evidence-dir
                 ${CMAKE_CURRENT_SOURCE_DIR}/research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
                 --verify

@@ -53,10 +53,11 @@ Task 2.6 satisfied the GDN portion: a pinned offline Transformers
 `Qwen4ExpTextGatedDeltaNet` produces reduced-shape Class-C calibration,
 disjoint holdout and state-transition evidence before native execution. The
 native scalar path is compared to those expectations across 24 output/state/
-checkpoint classes. Task 2.7 now independently satisfies the QSA portion with
+checkpoint classes. Task 2.7 independently satisfies the QSA portion with
 reduced Class-C floating calibration/holdout/cache-state evidence and exact
-sparse block/token selection evidence. GR and MoE vectors remain planned and
-are not inferred from either operator result.
+sparse block/token selection evidence. Task 2.8 independently satisfies the
+MoE portion with reduced routed/shared/final vectors and 512/top-10 exact
+routing vectors. GR remains planned and is not inferred from these operators.
 
 The Task 2.6 namespace is
 `research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
@@ -86,6 +87,21 @@ files; Kestrel-Q never writes expected values.
 | `qsa-state-vectors.json` | `76ff49375e63d6dcbb485c8cd41e9f3fd219c4d11d478601e30629c2689c68e1` |
 | `qsa-native-validation.json` | `80123f3a88e9373dffadc16ba8fd09337d984881328db0d1caceb9bb469e26ee` |
 | `qsa-manifest.json` | `15a1100fb764c01a0aed91e3e8edc156b995003688ab63665156696ad425cf3b` |
+
+Task 2.8 uses the same governed namespace. The independent generator imports
+the pinned `Qwen4ExpTextSparseMoeBlock` and captures expected values before any
+native execution. Native validation calibrates each floating checkpoint from
+five cases, applies unchanged contracts to four disjoint holdout cases, and
+requires exact expert selection across seven Tier-B cases.
+
+| Task 2.8 asset | SHA-256 |
+|---|---|
+| `moe-contract.json` | `646044a9b187c20503d81b08d294be2df4925e89ddc84e9e9fd375e3efd977bf` |
+| `moe-calibration.json` | `c9d9cde90b3d93c07cfdebab281105eb720c97cd04f94254e2c41d835798f938` |
+| `moe-holdout.json` | `517af0bb054c7aaa3576e0d6b1d3e0e59801eb5aba97fee97f7550250fb34d32` |
+| `moe-routing-vectors.json` | `d148c2e12d93f086f342c75fb997bcc810af0226f5276958147f258d2056f3b2` |
+| `moe-native-validation.json` | `6920c7750c95d52c1299d167a7a3b053c12d7f418626127a87aba09c438dae62` |
+| `moe-manifest.json` | `3b730e0fbb47940c57358b73aaa4db60b9c03c007450b20ecfb3a76842deb1c8` |
 
 The Class-C full-model plan fixes three prompt IDs, batch 1, BF16, text-only,
 greedy generation, no vision/MTP/speculation, exact dependencies and hooks

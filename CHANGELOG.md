@@ -327,6 +327,44 @@ The project is currently pre-alpha.
   nominal limit above the available candidates is valid. The regression now
   exercises the actual invalid ranges—zero selection limit and a candidate
   count outside the 32-bit block-ID domain—without changing canonical behavior.
+- Completed Task 2.8 and accepted ADR 0016. The production runtime now has an
+  immutable, stateless C17 Qwen3.8 MoE scalar reference with FP32 router
+  softmax, exact top-10 observation, selected routed-expert SwiGLU execution,
+  a separate sigmoid-gated shared expert and final routed-plus-shared sum. It
+  adds no PLE-value path, complete layer/full forward, SIMD/CUDA model kernel,
+  expert cache, prefetch, residency policy or scheduler.
+- Generated independent Class-C evidence before native comparison from the
+  pinned Apache-2.0 Transformers `Qwen4ExpTextSparseMoeBlock`. Five reduced
+  calibration cases, four disjoint holdout cases and seven 512-expert/top-10
+  routing cases pass. Expert membership/order/count are exact-discrete; routed,
+  shared and final checkpoints pass separate calibration-only contracts.
+  Kestrel-Q never supplies expected values and no BF16 checkpoint was loaded.
+- Added real semantic integration for all 48 target MoE configs, including the
+  512-expert axes, ordered gate/up splits, shared bindings and physical types.
+  Three bounded member views per layer re-derive 43 ordinary 3,072,000-byte
+  experts, the 3,993,600-byte layer-2 mix and four 3,584,000-byte special-layer
+  experts. The test touches zero real payload bytes; these sizes remain selected
+  parameter footprints, not measured I/O/token.
+- Characterization found that pinned CPU `torch.topk` tie behavior is a partial
+  selection rather than a generic globally stable sort. Tier-B vectors now lock
+  equal, kth-boundary, near-tie, expert-0/511 and dominant-set behavior exactly.
+  Oracle generation initially failed closed because the global environment had
+  `tokenizers` 0.22.2 instead of the pinned 0.23.1; the governed Task 1.4
+  environment resolves the dependency without a production runtime dependency.
+- Fixed a Task 2.8 MSVC C4701 warning caused by conservative data-flow analysis
+  of shared-gate locals assigned through status-returning numeric helpers.
+  Explicit initialization preserves fail-closed status propagation. Writable
+  output/scratch alias checks also cover every F32 weight span before native
+  execution.
+- A final API-boundary review found that the first one-expert helper still
+  accepted complete routed stacks even though it indexed only one expert. The
+  corrected API accepts only the selected member's gate/up/down arrays, with
+  exact shape and writable-alias validation; a regression prevents accidental
+  reintroduction of all-512 materialization at this boundary.
+- Final clean Release validation passes CPU 26/26 and CUDA 28/28, including all
+  Task 2.0–2.7 regressions, the real 48-layer MoE structural gate and the
+  deterministic independent oracle. Kestrel-Q emits no new `/W4` warnings;
+  only the previously documented NVCC-generated external C4211 remains.
 
 ### Added
 

@@ -74,9 +74,9 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.7 are complete/pass. The
-native runtime now includes independently validated scalar GDN and QSA
-reference paths. GR composition, MoE, PLE values, complete layers and a full
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.8 are complete/pass. The
+native runtime now includes independently validated scalar GDN, QSA and MoE
+reference paths. GR composition, PLE values, complete layers and a full
 forward path have not started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
@@ -185,6 +185,23 @@ forward path have not started.
   - real model payload bytes touched: **0**;
   - ADR 0015: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+- [x] Task 2.8 — MoE reference operator and independent golden vectors:
+  - exact pinned router, top-k, routed-expert, shared-expert/gate and final
+    combination contract: **CHARACTERIZED / VERIFIED**;
+  - independent Tier-A calibration/holdout and Tier-B 512-expert/top-10
+    routing vectors: **PASS**;
+  - expert IDs, membership, order, count and pinned tie behavior:
+    **EXACT DISCRETE PASS**;
+  - scalar selected routed-expert path, separate shared path and final sum:
+    **PASS**;
+  - all 48 target MoE configs, expert axis 512 and ordered gate/up split:
+    **PASS**;
+  - per-expert packed groups: **43 x 3,072,000; layer 2 x 3,993,600; layers
+    4/30/46/47 x 3,584,000 bytes**;
+  - real model payload bytes touched: **0**;
+  - ADR 0016: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [ ] Next model-operator task: **NOT STARTED**.
 
 ## Epic 3 — CPU correctness engine
 
@@ -194,8 +211,8 @@ forward path have not started.
 - [ ] Embeddings
 - [ ] Normalization
 - [ ] Core block execution
-- [ ] MoE routing
-- [ ] Expert execution
+- [x] MoE routing (Task 2.8 scalar reference)
+- [x] Selected routed/shared expert execution (Task 2.8 scalar reference)
 - [x] GDN scalar reference path (Task 2.6)
 - [x] QSA scalar reference path (Task 2.7)
 - [ ] Logits

@@ -377,3 +377,47 @@ python tools/validate-native-qsa.py `
 The Python/oracle stack remains an ignored research/test dependency. Production
 C17 QSA code reads no evidence JSON and links no Transformers, PyTorch, NumPy
 or Python runtime.
+
+## Task 2.8 MoE Class-C oracle
+
+`generate-moe-reference.py` is the offline independent MoE generator. It
+verifies the pinned official config and four Transformers source hashes, then
+imports `Qwen4ExpTextSparseMoeBlock` from revision
+`805a9e939fa8c1bff8d8ffdf041c051b71a914aa`. Tier A preserves canonical
+router/routed/shared equations with hidden size 6, four experts and top-2 for
+five calibration and four disjoint holdout cases. Tier B keeps 512 experts and
+top-10 with bounded hidden width and captures exact tie/boundary routing. It
+does not download or load checkpoint weights.
+
+The pinned checkout requires `tokenizers==0.23.1`. The global development
+environment had 0.22.2, so generation deliberately uses the already governed
+Task 1.4 virtual-environment site-packages through `PYTHONPATH`; the generator
+fails closed on another version and runs with Hugging Face/Transformers offline.
+
+```powershell
+$env:PYTHONPATH = (Resolve-Path '.research-cache/task-1.4/venv/Lib/site-packages').Path
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$out = 'research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-moe-reference.py `
+  --checkout .research-cache/task-1.4/transformers `
+  --config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/config.json `
+  --output-dir $out
+```
+
+`validate-native-moe.py` drives the test-only `kq_moe_probe`. It derives a
+separate floating contract for each routed/shared/final checkpoint from
+calibration only, requires the disjoint holdout to pass, and compares all
+Tier-B expert IDs/order exactly. Timing remains characterization output and is
+excluded from deterministic evidence. CTest `--verify` requires byte-identical
+native evidence and manifest.
+
+```powershell
+python tools/validate-native-moe.py `
+  --probe build-cpu/Release/kq_moe_probe.exe `
+  --evidence-dir $out `
+  --verify
+```
+
+Production C17 MoE code reads no evidence file and links no Python,
+Transformers, PyTorch or NumPy runtime.

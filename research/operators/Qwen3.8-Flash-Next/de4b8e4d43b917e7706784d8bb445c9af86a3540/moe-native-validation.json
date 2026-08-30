@@ -1,0 +1,467 @@
+{
+  "authority": {
+    "expected_values_source": "pinned Transformers Class-C evidence; never Kestrel-Q",
+    "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+    "oracle_hashes": {
+      "moe-calibration.json": "c9d9cde90b3d93c07cfdebab281105eb720c97cd04f94254e2c41d835798f938",
+      "moe-contract.json": "646044a9b187c20503d81b08d294be2df4925e89ddc84e9e9fd375e3efd977bf",
+      "moe-holdout.json": "517af0bb054c7aaa3576e0d6b1d3e0e59801eb5aba97fee97f7550250fb34d32",
+      "moe-routing-vectors.json": "d148c2e12d93f086f342c75fb997bcc810af0226f5276958147f258d2056f3b2"
+    },
+    "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
+  },
+  "characterization_metrics": {
+    "cal-length-1-random": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 1
+    },
+    "cal-length-2-zero": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 2
+    },
+    "cal-length-3-repeated": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 3
+    },
+    "cal-length-4-alternating": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 4
+    },
+    "cal-length-5-random": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 5
+    },
+    "holdout-length-2-random": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 2
+    },
+    "holdout-length-3-random": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 3
+    },
+    "holdout-length-4-repeated": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 4
+    },
+    "holdout-length-5-alternating": {
+      "config_owned_bytes": 152,
+      "scratch_bytes": 264,
+      "tokens": 5
+    }
+  },
+  "contracts": {
+    "final_output": {
+      "abs_limit": 9.501866588834673e-05,
+      "calibration_observed": {
+        "count": 90,
+        "exact_bits": false,
+        "max_abs": 7.62939453125e-06,
+        "max_expected_abs": 135.26858520507812,
+        "max_rel": 8.551905792205793e-06,
+        "max_ulp": 128
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 3.516129748522942e-05,
+      "ulp_limit": 520
+    },
+    "gated_shared_output": {
+      "abs_limit": 7.358214134001173e-05,
+      "calibration_observed": {
+        "count": 90,
+        "exact_bits": false,
+        "max_abs": 7.62939453125e-06,
+        "max_expected_abs": 90.31293487548828,
+        "max_rel": 6.523018006604835e-07,
+        "max_ulp": 7
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 3.562881519048184e-06,
+      "ulp_limit": 36
+    },
+    "routed_activated": {
+      "abs_limit": 6.851393118267879e-05,
+      "calibration_observed": {
+        "count": 120,
+        "exact_bits": false,
+        "max_abs": 7.62939453125e-06,
+        "max_expected_abs": 79.68412780761719,
+        "max_rel": 7.837019769470145e-07,
+        "max_ulp": 12
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 4.0884822241943075e-06,
+      "ulp_limit": 56
+    },
+    "routed_gate": {
+      "abs_limit": 9.674339707999025e-06,
+      "calibration_observed": {
+        "count": 120,
+        "exact_bits": false,
+        "max_abs": 9.5367431640625e-07,
+        "max_expected_abs": 12.28856086730957,
+        "max_rel": 2.479712849252057e-07,
+        "max_ulp": 4
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.9455594561070725e-06,
+      "ulp_limit": 24
+    },
+    "routed_output": {
+      "abs_limit": 0.00013621531979879364,
+      "calibration_observed": {
+        "count": 180,
+        "exact_bits": false,
+        "max_abs": 1.52587890625e-05,
+        "max_expected_abs": 157.6642303466797,
+        "max_rel": 2.509093372564402e-06,
+        "max_ulp": 24
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.0990047806663858e-05,
+      "ulp_limit": 104
+    },
+    "routed_up": {
+      "abs_limit": 9.244708962796722e-06,
+      "calibration_observed": {
+        "count": 120,
+        "exact_bits": false,
+        "max_abs": 9.5367431640625e-07,
+        "max_expected_abs": 11.38755989074707,
+        "max_rel": 2.839884473499618e-07,
+        "max_ulp": 4
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 2.089628105806097e-06,
+      "ulp_limit": 24
+    },
+    "routed_weighted_output": {
+      "abs_limit": 9.732903708936647e-05,
+      "calibration_observed": {
+        "count": 180,
+        "exact_bits": false,
+        "max_abs": 5.7220458984375e-06,
+        "max_expected_abs": 156.11378479003906,
+        "max_rel": 2.457905858746335e-06,
+        "max_ulp": 27
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.078529775139159e-05,
+      "ulp_limit": 116
+    },
+    "routed_weighted_sum": {
+      "abs_limit": 0.00010495125025045127,
+      "calibration_observed": {
+        "count": 90,
+        "exact_bits": false,
+        "max_abs": 7.62939453125e-06,
+        "max_expected_abs": 156.09872436523438,
+        "max_rel": 1.7700529640694227e-06,
+        "max_ulp": 26
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 8.03388617268394e-06,
+      "ulp_limit": 112
+    },
+    "router_logits": {
+      "abs_limit": 9.596092240826692e-06,
+      "calibration_observed": {
+        "count": 60,
+        "exact_bits": false,
+        "max_abs": 9.5367431640625e-07,
+        "max_expected_abs": 12.12446403503418,
+        "max_rel": 1.6953011507534681e-07,
+        "max_ulp": 2
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.6317947767076373e-06,
+      "ulp_limit": 16
+    },
+    "router_probabilities": {
+      "abs_limit": 7.152557373046875e-07,
+      "calibration_observed": {
+        "count": 60,
+        "exact_bits": false,
+        "max_abs": 5.960464477539063e-08,
+        "max_expected_abs": 0.9997609257698059,
+        "max_rel": 1.865792755075262e-06,
+        "max_ulp": 29
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 8.416845336707298e-06,
+      "ulp_limit": 124
+    },
+    "selected_weights": {
+      "abs_limit": 7.152557373046875e-07,
+      "calibration_observed": {
+        "count": 30,
+        "exact_bits": false,
+        "max_abs": 5.960464477539063e-08,
+        "max_expected_abs": 0.9997609257698059,
+        "max_rel": 1.8759920480449067e-07,
+        "max_ulp": 2
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.7040711356242128e-06,
+      "ulp_limit": 16
+    },
+    "shared_activated": {
+      "abs_limit": 4.125135819776915e-05,
+      "calibration_observed": {
+        "count": 60,
+        "exact_bits": false,
+        "max_abs": 3.814697265625e-06,
+        "max_expected_abs": 54.51036834716797,
+        "max_rel": 5.280330083994211e-07,
+        "max_ulp": 5
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 3.0658063500039344e-06,
+      "ulp_limit": 28
+    },
+    "shared_gate": {
+      "abs_limit": 7.152557373046875e-07,
+      "calibration_observed": {
+        "count": 15,
+        "exact_bits": false,
+        "max_abs": 5.960464477539063e-08,
+        "max_expected_abs": 0.9934654831886292,
+        "max_rel": 4.612678569760594e-07,
+        "max_ulp": 4
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 2.7987457443104875e-06,
+      "ulp_limit": 24
+    },
+    "shared_gate_logit": {
+      "abs_limit": 4.533736728262738e-06,
+      "calibration_observed": {
+        "count": 15,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 5.507935047149658,
+        "max_rel": 1.4676255740800887e-07,
+        "max_ulp": 2
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 1.5407245460382855e-06,
+      "ulp_limit": 16
+    },
+    "shared_gate_projection": {
+      "abs_limit": 7.5809402915183455e-06,
+      "calibration_observed": {
+        "count": 60,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 11.898384094238281,
+        "max_rel": 5.24632272124661e-07,
+        "max_ulp": 8
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 3.052203404904894e-06,
+      "ulp_limit": 40
+    },
+    "shared_output": {
+      "abs_limit": 8.990468631964177e-05,
+      "calibration_observed": {
+        "count": 90,
+        "exact_bits": false,
+        "max_abs": 7.62939453125e-06,
+        "max_expected_abs": 124.54379272460938,
+        "max_rel": 7.119793461911464e-07,
+        "max_ulp": 8
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 3.8015917011708356e-06,
+      "ulp_limit": 40
+    },
+    "shared_up_projection": {
+      "abs_limit": 6.919413408468245e-06,
+      "calibration_observed": {
+        "count": 60,
+        "exact_bits": false,
+        "max_abs": 4.76837158203125e-07,
+        "max_expected_abs": 10.511061668395996,
+        "max_rel": 4.5745863430299315e-07,
+        "max_ulp": 4
+      },
+      "class": "CALIBRATED_FLOAT",
+      "margin_rationale": "four-times the disjoint calibration maximum plus a bounded F32 ULP-scale guard for scalar C versus pinned PyTorch reduction and libm ordering",
+      "rel_limit": 2.7835088536182226e-06,
+      "ulp_limit": 24
+    }
+  },
+  "holdout_observed": {
+    "final_output": {
+      "count": 84,
+      "exact_bits": false,
+      "max_abs": 2.288818359375e-05,
+      "max_expected_abs": 172.68289184570312,
+      "max_rel": 1.2743886120633625e-06,
+      "max_ulp": 16
+    },
+    "gated_shared_output": {
+      "count": 84,
+      "exact_bits": false,
+      "max_abs": 7.62939453125e-06,
+      "max_expected_abs": 175.97161865234375,
+      "max_rel": 1.1287390043889888e-06,
+      "max_ulp": 15
+    },
+    "routed_activated": {
+      "count": 112,
+      "exact_bits": false,
+      "max_abs": 7.62939453125e-06,
+      "max_expected_abs": 125.28414916992188,
+      "max_rel": 1.0453467098357963e-06,
+      "max_ulp": 17
+    },
+    "routed_gate": {
+      "count": 112,
+      "exact_bits": false,
+      "max_abs": 9.5367431640625e-07,
+      "max_expected_abs": 18.65013885498047,
+      "max_rel": 1.7127202879425347e-07,
+      "max_ulp": 2
+    },
+    "routed_output": {
+      "count": 168,
+      "exact_bits": false,
+      "max_abs": 1.52587890625e-05,
+      "max_expected_abs": 245.43484497070312,
+      "max_rel": 1.4123695323644478e-06,
+      "max_ulp": 16
+    },
+    "routed_up": {
+      "count": 112,
+      "exact_bits": false,
+      "max_abs": 9.5367431640625e-07,
+      "max_expected_abs": 13.904741287231445,
+      "max_rel": 3.5729355846162256e-07,
+      "max_ulp": 4
+    },
+    "routed_weighted_output": {
+      "count": 168,
+      "exact_bits": false,
+      "max_abs": 1.52587890625e-05,
+      "max_expected_abs": 184.5165252685547,
+      "max_rel": 1.402265973248603e-06,
+      "max_ulp": 19
+    },
+    "routed_weighted_sum": {
+      "count": 84,
+      "exact_bits": false,
+      "max_abs": 3.0517578125e-05,
+      "max_expected_abs": 184.51504516601562,
+      "max_rel": 5.434739411378319e-07,
+      "max_ulp": 8
+    },
+    "router_logits": {
+      "count": 56,
+      "exact_bits": false,
+      "max_abs": 1.9073486328125e-06,
+      "max_expected_abs": 14.843536376953125,
+      "max_rel": 1.7861480645299573e-07,
+      "max_ulp": 2
+    },
+    "router_probabilities": {
+      "count": 56,
+      "exact_bits": false,
+      "max_abs": 5.960464477539063e-08,
+      "max_expected_abs": 0.9999954700469971,
+      "max_rel": 1.93278892191657e-06,
+      "max_ulp": 28
+    },
+    "selected_weights": {
+      "count": 28,
+      "exact_bits": false,
+      "max_abs": 5.960464477539063e-08,
+      "max_expected_abs": 0.9999954700469971,
+      "max_rel": 1.2921912559355997e-07,
+      "max_ulp": 2
+    },
+    "shared_activated": {
+      "count": 56,
+      "exact_bits": false,
+      "max_abs": 1.9073486328125e-06,
+      "max_expected_abs": 88.28854370117188,
+      "max_rel": 1.1698997431017154e-07,
+      "max_ulp": 1
+    },
+    "shared_gate": {
+      "count": 14,
+      "exact_bits": false,
+      "max_abs": 2.2351741790771484e-08,
+      "max_expected_abs": 0.94295734167099,
+      "max_rel": 2.35552208969357e-07,
+      "max_ulp": 3
+    },
+    "shared_gate_logit": {
+      "count": 14,
+      "exact_bits": false,
+      "max_abs": 2.384185791015625e-07,
+      "max_expected_abs": 10.331110000610352,
+      "max_rel": 1.0755887181069122e-07,
+      "max_ulp": 1
+    },
+    "shared_gate_projection": {
+      "count": 56,
+      "exact_bits": true,
+      "max_abs": 0.0,
+      "max_expected_abs": 12.395610809326172,
+      "max_rel": 0.0,
+      "max_ulp": 0
+    },
+    "shared_output": {
+      "count": 84,
+      "exact_bits": false,
+      "max_abs": 7.62939453125e-06,
+      "max_expected_abs": 210.35806274414062,
+      "max_rel": 1.135309604605724e-06,
+      "max_ulp": 16
+    },
+    "shared_up_projection": {
+      "count": 56,
+      "exact_bits": false,
+      "max_abs": 4.76837158203125e-07,
+      "max_expected_abs": 16.032899856567383,
+      "max_rel": 7.835033679284023e-08,
+      "max_ulp": 1
+    }
+  },
+  "results": {
+    "calibration": "PASS",
+    "calibration_cases": 5,
+    "final_combination": "PASS",
+    "holdout": "PASS",
+    "holdout_cases": 4,
+    "routed_path": "PASS",
+    "routing": "EXACT_DISCRETE_PASS",
+    "shared_path": "PASS",
+    "tier_b_routing_cases": 7
+  },
+  "schema": "kq-moe-native-validation-v1"
+}

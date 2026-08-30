@@ -111,6 +111,16 @@ checkpoints cover projections, RoPE, scores, attention and final output. The
 real artifact validates 12 QSA layers and rejects 36 GDN layers without reading
 payload. This is not a production cache scheduler or optimized attention path.
 
+Task 2.8 adds a stateless scalar C17 MoE reference boundary. Immutable
+descriptors validate router, 512-expert routed gate/up/down stacks, ordered
+physical gate/up splits, the separate shared expert and scalar shared gate on
+all 48 text layers. The operator exposes exact top-10 IDs/order and synchronous
+floating checkpoints, executes only selected experts, and combines the routed
+sum with the independently gated shared output. Independent reduced
+calibration/holdout and 512/top-10 routing vectors define correctness. Real
+integration opens bounded expert-member views without dereferencing payload;
+it adds no cache, residency, prefetch, scheduler or optimized MoE kernel.
+
 ### Tensor runtime
 
 Small set of operations required by the target model.

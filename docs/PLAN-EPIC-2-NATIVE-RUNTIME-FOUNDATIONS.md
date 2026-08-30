@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.7 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.8 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -44,6 +44,13 @@ Class-C Qwen QSA module provides reduced-shape calibration, disjoint holdout,
 cache-state and exact threshold-crossing sparse-selection expectations before
 native comparison. Scalar prefill/decode and explicit K/V/raw-index state pass;
 12 real QSA bindings validate and 36 GDN layers reject without payload access.
-ADR 0015 is ACCEPTED. No GR composition, MoE, PLE value execution, complete
-layer, full forward, SIMD/CUDA model kernel, cache/prefetch policy or scheduler
-is introduced; the next model-operator task is **NOT STARTED**.
+ADR 0015 is ACCEPTED.
+
+Task 2.8 characterizes the exact Qwen3.8 MoE router, selected routed experts,
+separate shared expert/gate and final combination before implementing the
+scalar CPU reference. Independent Tier-A calibration/holdout and Tier-B
+512-expert/top-10 routing evidence pass; all 48 target bindings validate with
+zero model-payload bytes touched. ADR 0016 is ACCEPTED. No GR composition, PLE
+value execution, complete layer, full forward, SIMD/CUDA model kernel,
+cache/prefetch policy or scheduler is introduced; the next model-operator task
+is **NOT STARTED**.

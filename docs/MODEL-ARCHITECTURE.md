@@ -297,6 +297,14 @@ requested; ordinary inference uses the routing decision and weights but no
 load-balancing loss. This document makes no claim about GGUF expert storage
 order. [KQ-ARCH-MOE-003]
 
+Task 2.8 executable characterization further pins the reference mechanics:
+the eager path visits selected experts in ascending expert-ID order for the
+routed accumulation, while the observable top-k order remains the pinned CPU
+`torch.topk` order. Exact ties are locked by independent 512-expert vectors;
+they are not generalized into a portability promise about other PyTorch
+backends. The shared expert is evaluated separately and its output is scaled by
+`sigmoid(linear(hidden, shared_expert_gate))` before the final addition.
+
 ## N-gram embedding / PLE
 
 The released model has one PLE at one-indexed layer 2 (config index 1), before

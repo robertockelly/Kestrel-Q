@@ -100,6 +100,8 @@ const char *kq_status_string(kq_status status) {
             return "incompatible QSA configuration";
         case KQ_STATUS_INVALID_QSA_STATE:
             return "invalid QSA stream state";
+        case KQ_STATUS_INCOMPATIBLE_MOE:
+            return "incompatible MoE configuration";
         default:
             return "unknown Kestrel-Q status";
     }

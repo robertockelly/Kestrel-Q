@@ -86,6 +86,12 @@ parameter payload only. It is not measured physical I/O, cache traffic,
 residency, latency or throughput; experts may already be resident or cached and
 the runtime may access them in a different physical pattern.
 
+Task 2.8 independently re-derived the same per-expert spans through the native
+semantic registry and three bounded Task 2.2 member views per layer. All 48
+layers reconcile (43 ordinary, layer 2, and layers 4/30/46/47) with zero model
+payload bytes touched. This strengthens structural plumbing evidence only; it
+does not turn the table into measured I/O/token or a residency policy.
+
 ## Imatrix and provenance
 
 The artifact records:
