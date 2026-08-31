@@ -33,10 +33,11 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.13 are
-  complete/pass, including M1 First Correct Native Token and its first bounded
-  true incremental greedy continuation. The governed Epic 2 plan does not
-  define a closure gate beyond these tasks, so no closure status is invented.
+- Epic 1 is complete/pass. Epic 2 is **COMPLETE / PASS**: its original
+  loader/introspection and runtime-foundation objectives, Project Plan Phase 1
+  exit gates and every explicitly governed Task 2.0–2.13 gate are satisfied.
+  M1 First Correct Native Token and the bounded incremental continuation remain
+  PASS; no Task 2.14 or additional Epic 2 closure criterion is defined.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -114,8 +115,9 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   produce `[271, 248068, 198, 760]`; a failed later step rolls back all
   completed layers and retry reproduces the oracle token. The successful path
   accounts 59,212,012,160 logical packed bytes under 96 GiB, not physical I/O.
-- R1/Epic 2 remains in progress according to its governed plan; no scheduler,
-  cache/prefetch optimization, sampling or CUDA model kernel has started.
+- R1/Epic 2 is complete/pass after the governance-only closure review. No
+  scheduler, cache/prefetch optimization, sampling or CUDA model kernel was
+  started by the review.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.
@@ -133,6 +135,8 @@ Minimal CPU reference inference and reference-vector parity.
   greedy argmax and native decode: **COMPLETE / PASS via Task 2.12**.
 - True incremental bounded greedy continuation and per-step transaction:
   **COMPLETE / PASS via Task 2.13**.
+- Sampling remains future Epic 3 / R2 work. No numbered next task or
+  task-specific plan is currently defined.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

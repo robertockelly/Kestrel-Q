@@ -74,11 +74,11 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.13 are complete/pass. The
-native runtime now includes independently validated scalar operators, complete
-target-quantized layer composition, M1's short-context first token and a true
-incremental four-token greedy continuation. The governed Epic 2 plan does not
-define a closure gate beyond these tasks, so no closure status is invented.
+**Epic 2 status: COMPLETE / PASS.** Tasks 2.0–2.13 are complete/pass. The
+governance-only closure review verified that the original loader/introspection
+and runtime-foundation objectives, the Project Plan Phase 1 exit gates and all
+later explicitly governed Task 2 gates are satisfied. No Task 2.14 or further
+Epic 2 closure criterion exists.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -265,6 +265,12 @@ define a closure gate beyond these tasks, so no closure status is invented.
     ceiling; complete target F32 matrices materialized = **0**;
   - ADR 0021: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
+
+**Epic 2 closure:** **COMPLETE / PASS**. M1 remains PASS, ADR 0021 remains
+accepted and no runtime behavior changed during the closure review.
+`KQ-BACKLOG-BENCH-002` remains deferred and required before final scheduler /
+residency policy, not before Epic 2 closure. The next existing roadmap phase is
+Epic 3 / R2; no numbered next task is currently defined.
 
 ## Epic 3 — CPU correctness engine
 

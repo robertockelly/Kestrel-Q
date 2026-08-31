@@ -8,6 +8,18 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Closed Epic 2 as **COMPLETE / PASS** after a governance-only traceability
+  review. The original loader/introspection and runtime-foundation objectives,
+  the Project Plan Phase 1 exit gates and every explicitly governed Task
+  2.0–2.13 acceptance gate are satisfied; there is no Task 2.14 or other
+  existing unsatisfied Epic 2 criterion. This review changes no runtime,
+  model behavior, build or test evidence.
+- Preserved `KQ-BACKLOG-BENCH-001` and `KQ-BACKLOG-BENCH-002` as deferred
+  future gates. In particular, `KQ-BACKLOG-BENCH-002` remains required before
+  final scheduler/residency design, not Epic 2 closure. The existing roadmap
+  transition is Epic 3 / R2 CPU correctness work, but no numbered next task is
+  currently defined or started.
+
 - Completed Task 2.13 and accepted ADR 0021: the native C17 model executor now
   prefills the prompt exactly once, consumes each selected canonical token ID
   through a true one-token incremental decode and stops on EOG or the caller's
