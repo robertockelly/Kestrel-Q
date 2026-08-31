@@ -215,6 +215,28 @@ and position unchanged; the inactive staging slot is overwritten from the
 committed slot on the next call. No weight-provider accounting or diagnostic
 trace is persistent model context.
 
+Task 2.12 composes exactly one bounded layer-state container per model layer.
+M1 capacity is eight positions, not the model maximum. The successful batch-1
+allocation is 359,881,768 owned bytes, including each Task 2.10 layer's two
+transactional suboperator slots, copy workspace and C object overhead. Peak
+model/layer scratch is 8,693,472 bytes and the complete F32 logits buffer is
+993,280 bytes. These container measurements are distinct from released
+semantic state: 36 fixed GDN states total 116,195,328 bytes; QSA capacity 8
+totals 221,184 bytes across 12 layers (193,536 bytes retained by the seven-token
+prompt); PLE address and released BF16 value state add 32 and 184,320 bytes.
+The 116,600,864-byte semantic capacity total leaves 243,280,904 bytes of the
+owned scalar-correctness container attributable to C-object overhead, F32
+reference representation, transactional duplicate slots and bounded copy
+workspace. Equivalently, the family view is 35 ordinary GDN states at
+3,227,648 bytes each plus one 3,412,000-byte PLE-GDN semantic state and QSA
+growth of 2,304 bytes per retained token per QSA layer.
+
+The M1 public position advances only after final logits, valid argmax and native
+decode. A failed call keeps public position/output unchanged, marks private
+state for reset, and the next call resets all 48 layers. Real faults at layers
+0, 24 and 47 followed by complete token-271 control runs verify this policy.
+M1 does not expose incremental multi-token decode or context save/restore.
+
 ## Optional-state boundaries
 
 ### MTP

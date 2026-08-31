@@ -61,6 +61,7 @@ add_library(kq_core
     src/kq_layer.c
     src/kq_layer_qwen38.c
     src/kq_model.c
+    src/kq_model_exec.c
     src/kq_moe.c
     src/kq_moe_qwen38.c
     src/kq_numeric.c
@@ -95,7 +96,7 @@ if(MSVC)
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
     set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
-        src/kq_weight_provider.c APPEND PROPERTY
+        src/kq_model_exec.c src/kq_weight_provider.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
@@ -106,7 +107,7 @@ else()
         src/kq_ple_value.c src/kq_ple_value_qwen38.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
     set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
-        src/kq_weight_provider.c APPEND PROPERTY
+        src/kq_model_exec.c src/kq_weight_provider.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -123,6 +124,13 @@ add_executable(kq_inspect
 set_target_properties(kq_inspect PROPERTIES OUTPUT_NAME "kq-inspect")
 target_link_libraries(kq_inspect PRIVATE kq_core)
 kq_enable_c_warnings(kq_inspect)
+
+add_executable(kq_run
+    src/run_main.c
+)
+set_target_properties(kq_run PROPERTIES OUTPUT_NAME "kq-run")
+target_link_libraries(kq_run PRIVATE kq_core)
+kq_enable_c_warnings(kq_run)
 
 if(KQ_ENABLE_CUDA)
     enable_language(CUDA)
@@ -206,6 +214,30 @@ if(KQ_BUILD_TESTS)
     )
     kq_enable_c_warnings(kq_model_test)
     add_test(NAME kq_model_semantic_synthetic COMMAND kq_model_test)
+
+    add_executable(kq_model_exec_test tests/model_exec_test.c)
+    target_link_libraries(kq_model_exec_test PRIVATE kq_core)
+    kq_enable_c_warnings(kq_model_exec_test)
+    add_test(NAME kq_model_exec_synthetic COMMAND kq_model_exec_test)
+
+    add_executable(kq_first_token_integration_test
+        tests/first_token_integration.c)
+    target_link_libraries(kq_first_token_integration_test PRIVATE kq_core)
+    target_include_directories(kq_first_token_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_first_token_integration_test)
+    add_test(NAME kq_first_token_real_artifact
+        COMMAND kq_first_token_integration_test)
+    set_tests_properties(kq_first_token_real_artifact PROPERTIES
+        SKIP_RETURN_CODE 77)
+    add_test(NAME kq_run_rejects_vision
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
+                --greedy --vision)
+    add_test(NAME kq_run_rejects_mtp
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
+                --greedy --mtp)
+    set_tests_properties(kq_run_rejects_vision kq_run_rejects_mtp PROPERTIES
+        WILL_FAIL TRUE)
 
     add_executable(kq_tensor_view_test tests/tensor_view_test.c)
     target_link_libraries(kq_tensor_view_test PRIVATE kq_core)

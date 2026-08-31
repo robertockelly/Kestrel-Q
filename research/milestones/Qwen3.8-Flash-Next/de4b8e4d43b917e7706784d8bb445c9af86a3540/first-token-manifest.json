@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "milestone": "M1_FIRST_CORRECT_NATIVE_TOKEN",
+  "status": "PASS",
+  "assets": [
+    {"file": "first-token-contract.json", "sha256": "37c614713fa940f623a918b9d0a10242b7f0cba9d174364377d763869f05f2ae"},
+    {"file": "first-token-oracle.json", "sha256": "02bca9f4c5b90a1e153a35133d10fc9aaa0c1adcf894083ce70c99bfc57add63"},
+    {"file": "first-token-native.json", "sha256": "27dc45eeb4002125010e3e54eec67aca7881b43648eca0a0b752a2aaee7ea546"},
+    {"file": "first-token-validation.json", "sha256": "632f12319b817fe9e043e44df05e00f5c9e20ba3c245292ae45ecd36ec8d1d06"}
+  ],
+  "generation": "deterministic derived summaries from governed independent and native runs",
+  "contains_model_weight_bytes": false,
+  "contains_user_specific_paths": false
+}

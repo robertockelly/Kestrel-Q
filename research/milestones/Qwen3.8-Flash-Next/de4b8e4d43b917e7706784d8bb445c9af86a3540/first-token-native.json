@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "implementation": "Kestrel-Q native C17 scalar reference",
+  "input_token_ids": [9419, 11, 710, 467, 3621, 27325, 13],
+  "tokenizer_exact": true,
+  "layers_executed": 48,
+  "layer_order": "0..47",
+  "selected_token_id": 271,
+  "selected_token_utf8": "\n\n",
+  "selected_token_is_eog": false,
+  "elapsed_nanoseconds": 151061011900,
+  "top_logits": [
+    {"token_id": 271, "logit": 16.6189995},
+    {"token_id": 353, "logit": 15.4765329},
+    {"token_id": 6558, "logit": 14.3168182},
+    {"token_id": 2500, "logit": 14.1558542},
+    {"token_id": 1577, "logit": 14.1249218},
+    {"token_id": 3437, "logit": 13.7550449},
+    {"token_id": 2885, "logit": 13.6086636},
+    {"token_id": 198, "logit": 13.4733791},
+    {"token_id": 220, "logit": 13.2268858},
+    {"token_id": 1394, "logit": 13.1591969}
+  ],
+  "final_layer_last_token_summary": {"elements": 10240, "sum": 157.70635614381172, "squared_sum": 2955.8512304448755, "first": [0.0874961764, 0.410722673, 0.227574557, -0.0258111749]},
+  "final_normalized_hidden_summary": {"elements": 2560, "sum": 225.11687231529504, "squared_sum": 45311.493817871306, "first": [-0.575080872, 1.84995055, 3.77089167, -0.0505739152]},
+  "payload": {
+    "logical_bytes_touched": 40208768960,
+    "quantized_blocks_touched": 1693222880,
+    "unique_semantic_tensors_touched": 1239,
+    "embedding_logical_bytes_touched": 19040,
+    "routed_expert_selections": 3360,
+    "selected_expert_matrix_requests": 10080,
+    "ple_row_requests": 112,
+    "lm_head_logical_bytes_touched": 675430400
+  },
+  "memory": {"persistent_state_bytes": 359881768, "peak_scratch_bytes": 8693472, "logits_bytes": 993280, "complete_f32_weight_matrices": 0},
+  "ignored_raw_capture_sha256": "cc21d5ff31a2b23d2f9219a6e3783d202c0afc75af42c2d36c603f9038a3fc46"
+}

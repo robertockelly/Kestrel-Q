@@ -26,7 +26,9 @@ capacity and scratch. Output is staged and unchanged on error.
 
 `kq_weight_provider_vector_f32` permits only bounded vectors and the explicitly
 supported GDN/PLE convolution vectors. The hard element bound is 65,536;
-complete matrices fail closed.
+complete matrices fail closed. For the exact qwen4exp artifact it also restores
+converter-folded zero-centered deltas for HC, QSA/indexer and PLE norm roles;
+the direct GDN linear-attention norm gamma is not transformed.
 
 `kq_weight_provider_ple_lookup_interface` returns the existing Task 2.9
 storage-neutral callback contract. It decodes exactly one 160-value fused-table

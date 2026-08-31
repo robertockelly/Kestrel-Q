@@ -21,6 +21,7 @@ typedef struct kq_weight_provider_metrics {
     uint64_t logical_payload_bytes_touched;
     uint64_t quantized_blocks_touched;
     uint64_t linear_requests;
+    uint64_t row_requests;
     uint64_t vector_requests;
     uint64_t selected_expert_requests;
     uint64_t ple_row_requests;
@@ -58,6 +59,13 @@ kq_status kq_weight_provider_linear_f32(
     uint64_t rows, uint64_t columns, const float *input,
     float *output, uint64_t output_capacity,
     void *scratch, uint64_t scratch_bytes, kq_diagnostic *diagnostic);
+
+/* Decode exactly one canonical row. Only entry/output row semantics qualify. */
+kq_status kq_weight_provider_row_f32(
+    kq_weight_provider *provider, const kq_semantic_tensor *semantic,
+    uint64_t row_index, uint64_t columns, float *output,
+    uint64_t output_capacity, void *scratch, uint64_t scratch_bytes,
+    kq_diagnostic *diagnostic);
 
 /* Bounded small-vector materialization. Complete matrices are rejected. */
 kq_status kq_weight_provider_vector_f32(

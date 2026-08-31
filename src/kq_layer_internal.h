@@ -66,6 +66,7 @@ kq_status kq_layer_gr_read_quantized_f32(
     float *read_gate, float *mixed, float *rank_workspace,
     float *write_gate, void *weight_scratch, uint64_t weight_scratch_bytes,
     kq_diagnostic *diagnostic);
+
 void kq_layer_gr_write_f32(const kq_layer_config *config,
                            const float *branches, const float *block_output,
                            const float *write_gate, float *output);

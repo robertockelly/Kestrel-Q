@@ -132,7 +132,9 @@ def grouped_to_tiled(torch: Any, count: int, width: int) -> Any:
 
 def assign_gr(torch: Any, module: Any, weights: Weights, prefix: str) -> None:
     with torch.no_grad():
-        module.hc_norm.weight.copy_(weights.get(f"{prefix}_norm.weight"))
+        # The pinned qwen4exp converter inherits Qwen's zero-centred norm rule:
+        # every *norm.weight except linear_attn.norm is stored as 1 + delta.
+        module.hc_norm.weight.copy_(weights.get(f"{prefix}_norm.weight") - 1.0)
         module.input_mix_weight_down.weight.copy_(weights.get(f"{prefix}_down.weight"))
         module.input_mix_weight_up.weight.copy_(weights.get(f"{prefix}_up.weight"))
         module.block_inject_weight.weight.copy_(weights.get(f"{prefix}_inject.weight"))
@@ -167,13 +169,15 @@ def assign_qsa(torch: Any, module: Any, weights: Weights, layer: int) -> None:
         module.k_proj.weight.copy_(weights.get(f"{prefix}.attn_k.weight"))
         module.v_proj.weight.copy_(weights.get(f"{prefix}.attn_v.weight"))
         module.o_proj.weight.copy_(weights.get(f"{prefix}.attn_output.weight"))
-        module.q_norm.weight.copy_(weights.get(f"{prefix}.attn_q_norm.weight"))
-        module.k_norm.weight.copy_(weights.get(f"{prefix}.attn_k_norm.weight"))
+        module.q_norm.weight.copy_(weights.get(f"{prefix}.attn_q_norm.weight") - 1.0)
+        module.k_norm.weight.copy_(weights.get(f"{prefix}.attn_k_norm.weight") - 1.0)
         index_q = weights.get(f"{prefix}.indexer.q_proj.weight")
         index_k = weights.get(f"{prefix}.indexer.k_proj.weight")
         module.indexer.index_qk_proj.weight.copy_(torch.cat((index_q, index_k), dim=0))
-        module.indexer.q_layernorm.weight.copy_(weights.get(f"{prefix}.indexer.q_norm.weight"))
-        module.indexer.k_layernorm.weight.copy_(weights.get(f"{prefix}.indexer.k_norm.weight"))
+        module.indexer.q_layernorm.weight.copy_(
+            weights.get(f"{prefix}.indexer.q_norm.weight") - 1.0)
+        module.indexer.k_layernorm.weight.copy_(
+            weights.get(f"{prefix}.indexer.k_norm.weight") - 1.0)
 
 
 class SelectedMoe:
@@ -307,15 +311,29 @@ def make_input(torch: Any, phase: str, profile: str) -> Any:
         modulus = 41 if phase == "prefill" else 47
         center = 20 if phase == "prefill" else 23
         scale = 2.0 ** (-12 if phase == "prefill" else -13)
+        multiplier = 1
+    elif profile == "calibration-d":
+        modulus = 67 if phase == "prefill" else 71
+        center = 33 if phase == "prefill" else 35
+        scale = 2.0 ** (-12 if phase == "prefill" else -13)
+        multiplier = 17 if phase == "prefill" else 29
+    elif profile == "calibration-c":
+        modulus = 43 if phase == "prefill" else 61
+        center = 21 if phase == "prefill" else 30
+        scale = 2.0 ** (-12 if phase == "prefill" else -13)
+        multiplier = 1
     elif profile == "calibration-b":
         modulus = 53 if phase == "prefill" else 59
         center = 26 if phase == "prefill" else 29
         scale = 2.0 ** (-12 if phase == "prefill" else -13)
+        multiplier = 1
     else:
         modulus = 31 if phase == "prefill" else 37
         center = 15 if phase == "prefill" else 18
         scale = 2.0 ** (-10 if phase == "prefill" else -11)
-    values = [((index % modulus) - center) * scale for index in range(10240)]
+        multiplier = 1
+    values = [(((index * multiplier) % modulus) - center) * scale
+              for index in range(10240)]
     return torch.tensor(values, dtype=torch.float32).reshape(1, 1, 10240)
 
 
@@ -438,10 +456,22 @@ def main() -> None:
             "licenses": {"transformers": "Apache-2.0", "llama.cpp": "MIT"},
         },
         "method": "pinned llama.cpp dequant-file plus pinned Transformers components; no native output input",
+        "converter_zero_centered_gamma_inverse": {
+            "operation": "canonical_delta = stored_gamma - 1",
+            "source_rule": "qwen inherited *norm.weight except linear_attn.norm plus qwen4exp indexer/PLE exceptions",
+            "applied_roles": [
+                "attention_hc_norm", "mlp_hc_norm", "qsa_q_norm",
+                "qsa_k_norm", "qsa_index_q_norm", "qsa_index_k_norm",
+                "ple_norm_key", "ple_norm_query", "ple_norm_conv"
+            ],
+            "excluded_role": "gdn_linear_attn_norm"
+        },
         "representative_layers": {"GDN": 0, "QSA": 3, "PLE_GDN": 1},
         "input_generation": {
             "calibration": "prefill ((i%31)-15)*2^-10; decode ((i%37)-18)*2^-11",
             "calibration_secondary": "prefill ((i%53)-26)*2^-12; decode ((i%59)-29)*2^-13",
+            "calibration_tertiary": "prefill ((i%43)-21)*2^-12; decode ((i%61)-30)*2^-13",
+            "calibration_permuted": "prefill (((17*i)%67)-33)*2^-12; decode (((29*i)%71)-35)*2^-13",
             "holdout": "prefill ((i%41)-20)*2^-12; decode ((i%47)-23)*2^-13",
         },
         "environment": {
@@ -453,7 +483,8 @@ def main() -> None:
     families = (("GDN", 0), ("QSA", 3), ("PLE_GDN", 1))
     calibration = [run_family(torch, modeling, Qwen4ExpTextConfig, DynamicCache,
                               weights, source_config, family, layer, profile)
-                   for profile in ("calibration-a", "calibration-b")
+                   for profile in ("calibration-a", "calibration-b",
+                                   "calibration-c", "calibration-d")
                    for family, layer in families]
     holdout = [run_family(torch, modeling, Qwen4ExpTextConfig, DynamicCache,
                          weights, source_config, family, layer, "holdout")

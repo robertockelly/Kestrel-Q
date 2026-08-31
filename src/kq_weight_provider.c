@@ -86,6 +86,16 @@ static int provider_valid(const kq_weight_provider *p) {
            p->gguf != NULL && p->model != NULL;
 }
 
+static kq_status maybe_fail_test_request(kq_weight_provider *p,
+                                         kq_diagnostic *d) {
+    if (p != NULL && p->test_fail_next_request) {
+        p->test_fail_next_request = 0;
+        return fail(d, KQ_STATUS_LIMIT_EXCEEDED,
+                    "injected weight-provider request failure");
+    }
+    return KQ_STATUS_OK;
+}
+
 static int semantic_owned(const kq_weight_provider *p,
                           const kq_semantic_tensor *s) {
     const kq_semantic_tensor *found;
@@ -157,6 +167,20 @@ static uint64_t grouped_to_tiled(uint64_t canonical, uint64_t width) {
 static int role_reorders_rows(kq_semantic_role role) {
     return role == KQ_ROLE_GDN_ALPHA || role == KQ_ROLE_GDN_BETA ||
            role == KQ_ROLE_GDN_GATE;
+}
+
+static int role_has_folded_zero_centered_gamma(kq_semantic_role role) {
+    /* The pinned qwen4exp converter stores these Gemma-style canonical
+       deltas as physical (1 + delta). GDN_NORM is deliberately absent: its
+       canonical linear-attention norm is a direct gamma. */
+    return role == KQ_ROLE_HC_NORM ||
+           role == KQ_ROLE_QSA_K_NORM ||
+           role == KQ_ROLE_QSA_Q_NORM ||
+           role == KQ_ROLE_QSA_INDEX_K_NORM ||
+           role == KQ_ROLE_QSA_INDEX_Q_NORM ||
+           role == KQ_ROLE_PLE_NORM_KEY ||
+           role == KQ_ROLE_PLE_NORM_QUERY ||
+           role == KQ_ROLE_PLE_NORM_CONV;
 }
 
 static uint64_t physical_row_for(const kq_semantic_tensor *s,
@@ -275,6 +299,8 @@ kq_status kq_weight_provider_linear_f32(kq_weight_provider *p,
         scratch == NULL || rows == 0U || columns == 0U)
         return fail(d, KQ_STATUS_INVALID_ARGUMENT,
                     "invalid semantic linear request");
+    status = maybe_fail_test_request(p, d);
+    if (status != KQ_STATUS_OK) return status;
     if (p->metrics.linear_requests == UINT64_MAX ||
         (expert != KQ_WEIGHT_PROVIDER_NO_EXPERT &&
          p->metrics.selected_expert_requests == UINT64_MAX))
@@ -376,6 +402,91 @@ done:
     return status;
 }
 
+kq_status kq_weight_provider_row_f32(kq_weight_provider *p,
+    const kq_semantic_tensor *s, uint64_t row_index, uint64_t columns,
+    float *output, uint64_t output_capacity, void *scratch,
+    uint64_t scratch_bytes, kq_diagnostic *d) {
+    kq_tensor_view *view = NULL;
+    const kq_tensor_view_info *info;
+    float *staged = (float *)scratch;
+    uint64_t row_count;
+    uint64_t blocks_per_row;
+    uint64_t first_block;
+    uint64_t row_bytes;
+    uint64_t output_bytes;
+    uint64_t decoded = 0U;
+    kq_status status;
+
+    if (!semantic_owned(p, s) || output == NULL || scratch == NULL ||
+        columns == 0U || (s->role != KQ_ROLE_TOKEN_EMBEDDING &&
+                          s->role != KQ_ROLE_LM_HEAD))
+        return fail(d, KQ_STATUS_INVALID_ARGUMENT,
+                    "invalid semantic row request");
+    status = maybe_fail_test_request(p, d);
+    if (status != KQ_STATUS_OK) return status;
+    if (p->metrics.row_requests == UINT64_MAX)
+        return fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                    "weight-provider row request counter overflows");
+    if (!mul_u64(columns, sizeof(float), &output_bytes))
+        return fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                    "weight-provider row byte count overflows");
+    if (output_capacity < columns || scratch_bytes < output_bytes)
+        return fail(d, KQ_STATUS_BUFFER_TOO_SMALL,
+                    "weight-provider row output or scratch is too small");
+    if (ranges_overlap(output, output_bytes, scratch, output_bytes))
+        return fail(d, KQ_STATUS_ALIASING_VIOLATION,
+                    "weight-provider row output and scratch must not overlap");
+
+    status = open_request_view(p, s, KQ_BINDING_PART_WHOLE,
+                               KQ_WEIGHT_PROVIDER_NO_EXPERT, &view, d);
+    if (status != KQ_STATUS_OK) return status;
+    info = kq_tensor_view_get_info(view);
+    if (info == NULL || info->logical_rank != 2U ||
+        info->requested_element_count % columns != 0U) {
+        status = fail(d, KQ_STATUS_DIMENSION_MISMATCH,
+                      "semantic row geometry is not a two-dimensional matrix");
+        goto done_row;
+    }
+    row_count = info->requested_element_count / columns;
+    if (row_index >= row_count) {
+        status = fail(d, KQ_STATUS_SPAN_OUT_OF_RANGE,
+                      "semantic row index is outside the matrix");
+        goto done_row;
+    }
+    if (columns % info->block_elements != 0U) {
+        status = fail(d, KQ_STATUS_INVALID_QUANTIZED_GEOMETRY,
+                      "semantic row is not independently block aligned");
+        goto done_row;
+    }
+    blocks_per_row = columns / info->block_elements;
+    if (!mul_u64(row_index, blocks_per_row, &first_block) ||
+        !mul_u64(blocks_per_row, info->bytes_per_block, &row_bytes)) {
+        status = fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                      "semantic row physical span overflows");
+        goto done_row;
+    }
+    if (!budget_allows(p, row_bytes)) {
+        status = fail(d, KQ_STATUS_LIMIT_EXCEEDED,
+                      "weight-provider payload budget would be exceeded");
+        goto done_row;
+    }
+    status = kq_dequantize_view_blocks_f32(
+        view, first_block, blocks_per_row, KQ_NUMERIC_PHYSICAL_ORDER,
+        staged, columns, &decoded, d);
+    if (status == KQ_STATUS_OK && decoded != columns)
+        status = fail(d, KQ_STATUS_DIMENSION_MISMATCH,
+                      "semantic row decode count mismatch");
+    if (status == KQ_STATUS_OK)
+        status = account(p, s, row_bytes, blocks_per_row, output_bytes, d);
+    if (status == KQ_STATUS_OK) {
+        memcpy(output, staged, (size_t)output_bytes);
+        p->metrics.row_requests += 1U;
+    }
+done_row:
+    kq_tensor_view_close(view);
+    return status;
+}
+
 kq_status kq_weight_provider_vector_f32(kq_weight_provider *p,
     const kq_semantic_tensor *s, uint64_t count, float *output,
     uint64_t capacity, void *scratch, uint64_t scratch_bytes,
@@ -389,6 +500,8 @@ kq_status kq_weight_provider_vector_f32(kq_weight_provider *p,
         count == 0U)
         return fail(d, KQ_STATUS_INVALID_ARGUMENT,
                     "invalid semantic vector request");
+    status = maybe_fail_test_request(p, d);
+    if (status != KQ_STATUS_OK) return status;
     if (count > KQ_WEIGHT_PROVIDER_VECTOR_LIMIT)
         return fail(d, KQ_STATUS_LIMIT_EXCEEDED,
                     "semantic vector request exceeds its bounded limit");
@@ -485,9 +598,7 @@ kq_status kq_weight_provider_vector_f32(kq_weight_provider *p,
                 memcpy(output + i * 4U, physical + physical_row * 4U,
                        4U * sizeof(float));
             }
-        } else if (s->role == KQ_ROLE_PLE_NORM_KEY ||
-                   s->role == KQ_ROLE_PLE_NORM_QUERY ||
-                   s->role == KQ_ROLE_PLE_NORM_CONV) {
+        } else if (role_has_folded_zero_centered_gamma(s->role)) {
             for (i = 0U; i < count; ++i) output[i] = physical[i] - 1.0f;
         } else {
             memcpy(output, physical, (size_t)bytes);
@@ -513,6 +624,8 @@ static kq_status ple_lookup(void *user, uint32_t member, uint64_t row,
     if (!provider_valid(p) || member >= 128U || row >= UINT64_C(2500012) ||
         output == NULL || capacity < 160U)
         return fail(d, KQ_STATUS_INVALID_ARGUMENT, "invalid PLE row request");
+    status = maybe_fail_test_request(p, d);
+    if (status != KQ_STATUS_OK) return status;
     if (p->metrics.ple_row_requests == UINT64_MAX)
         return fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
                     "weight-provider PLE request counter overflows");
@@ -633,6 +746,10 @@ kq_status kq_weight_provider_record_route(
         }
     }
     return KQ_STATUS_OK;
+}
+
+void kq_weight_provider_test_fail_next_request(kq_weight_provider *p) {
+    if (provider_valid(p)) p->test_fail_next_request = 1;
 }
 
 kq_status kq_weight_provider_copy_ple_requests(

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "comparison_class": "EXACT_DISCRETE",
+  "canonical_input_ids_match": true,
+  "native_layers_in_order": 48,
+  "oracle_selected_token_id": 271,
+  "native_selected_token_id": 271,
+  "selected_token_exact_match": true,
+  "decoded_utf8_exact_match": true,
+  "oracle_native_top_two_ids_match": true,
+  "floating_diagnostics": "CHARACTERIZATION_ONLY_NOT_A_FULL_MODEL_TOLERANCE",
+  "final_oracle_normalized_hidden_available": false,
+  "payload_ceiling_bytes": 68719476736,
+  "payload_ceiling_respected": true,
+  "logical_payload_is_physical_io": false,
+  "rollback": {"early_layer": "PASS", "middle_layer": "PASS", "late_layer": "PASS", "control_equivalent_recovery_required": true},
+  "no_self_oracle": true,
+  "no_full_f32_weight_matrix": true,
+  "known_correctness_fixes": [
+    "expanded semantic accounting from the per-layer baseline to the complete 1294-entry registry",
+    "adapted converter-folded zero-centred RMS gammas exactly once at the storage-to-canonical provider boundary",
+    "removed the duplicated PLE gamma conversion exposed by the layer-1 checkpoint divergence"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "M1_FIRST_CORRECT_NATIVE_TOKEN",
+  "baseline_head": "0ac3aa04c0e539cbf128c4e259a08c05472845a0",
+  "canonical_model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+  "llama_cpp_revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+  "gguf": {
+    "artifact_id": "KQ-MODEL-ARTIFACT-001",
+    "filename": "Qwen3.8-Flash-Next-UD-Q4_K_XL.gguf",
+    "size_bytes": 111334654400,
+    "sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2"
+  },
+  "prompt": {
+    "id": "KQ-PROMPT-001",
+    "utf8": "Hello, Kestrel-Q.",
+    "utf8_sha256": "6a013508a5747146c4c37c1cdc104d49d2a75dbaa2950b23e2d72eb8ac2b4787",
+    "canonical_token_ids": [9419, 11, 710, 467, 3621, 27325, 13]
+  },
+  "context_capacity": 8,
+  "batch": 1,
+  "generated_tokens": 1,
+  "execution": "CPU_SCALAR_REFERENCE",
+  "selection": "GREEDY_FIRST_MAXIMUM",
+  "comparison": "EXACT_DISCRETE_NEXT_TOKEN",
+  "payload_ceiling_bytes": 68719476736
+}

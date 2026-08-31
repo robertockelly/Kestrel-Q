@@ -74,10 +74,11 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.9 are complete/pass. The
-native runtime now includes independently validated scalar GDN, QSA, MoE and
-PLE-value reference paths. GR composition, complete layers and a full forward
-path have not started.
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.12 are complete/pass. The
+native runtime now includes independently validated scalar operators, complete
+target-quantized layer composition and M1's short-context 48-layer first-token
+path. The governed Epic 2 plan does not define M1 as its final closure gate;
+no post-M1 task has started.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -239,17 +240,26 @@ path have not started.
   - transactional provider failures: **PASS**;
   - ADR 0019: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
-- [ ] First Correct Native Token / next model integration task:
-  **NOT STARTED**.
+- [x] Task 2.12 — First Correct Native Token:
+  - native tokenizer, bounded real embedding rows, canonical layers 0..47,
+    final hyper-connection mixer, full LM head/logits, greedy argmax and native
+    decode: **COMPLETE / PASS**;
+  - independent pinned llama.cpp Class-Q oracle consumes the exact committed
+    canonical IDs and selects the same token ID 271: **EXACT DISCRETE PASS**;
+  - early/middle/late model-level provider faults plus control-equivalent
+    recovery: **PASS**;
+  - logical payload 40,208,768,960 bytes under the governed 64 GiB M1 ceiling;
+  - ADR 0020: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine
 
 - [x] Scalar reference tensor primitives (Task 2.5 low-level boundary)
 - [x] Reference dequantization (Task 2.5 seven registered formats)
-- [ ] Tokenizer
-- [ ] Embeddings
-- [ ] Normalization
-- [ ] Core block execution
+- [x] Tokenizer (Task 2.3 canonical native path)
+- [x] Embeddings (Task 2.12 bounded target rows)
+- [x] Normalization (Task 2.5 primitives / Task 2.12 final mixer)
+- [x] Core block execution (Tasks 2.6–2.12 scalar target path)
 - [x] MoE routing (Task 2.8 scalar reference)
 - [x] Selected routed/shared expert execution (Task 2.8 scalar reference)
 - [x] GDN scalar reference path (Task 2.6)
@@ -257,9 +267,9 @@ path have not started.
 - [x] PLE value scalar reference path (Task 2.9)
 - [x] Complete one-layer scalar reference composition (Task 2.10)
 - [x] Real target-quantized single-layer execution (Task 2.11)
-- [ ] Logits
+- [x] Logits (Task 2.12 complete target LM head)
 - [ ] Sampling
-- [ ] Reference-vector validation
+- [x] Reference-vector validation (Task 2.12 independent first-token oracle)
 
 ## Epic 4 — CUDA
 

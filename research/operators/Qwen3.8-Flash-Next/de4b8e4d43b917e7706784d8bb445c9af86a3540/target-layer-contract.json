@@ -10,6 +10,22 @@
     "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
     "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa"
   },
+  "converter_zero_centered_gamma_inverse": {
+    "applied_roles": [
+      "attention_hc_norm",
+      "mlp_hc_norm",
+      "qsa_q_norm",
+      "qsa_k_norm",
+      "qsa_index_q_norm",
+      "qsa_index_k_norm",
+      "ple_norm_key",
+      "ple_norm_query",
+      "ple_norm_conv"
+    ],
+    "excluded_role": "gdn_linear_attn_norm",
+    "operation": "canonical_delta = stored_gamma - 1",
+    "source_rule": "qwen inherited *norm.weight except linear_attn.norm plus qwen4exp indexer/PLE exceptions"
+  },
   "environment": {
     "numpy": "2.5.2",
     "python": "3.13.12",
@@ -18,7 +34,9 @@
   },
   "input_generation": {
     "calibration": "prefill ((i%31)-15)*2^-10; decode ((i%37)-18)*2^-11",
+    "calibration_permuted": "prefill (((17*i)%67)-33)*2^-12; decode (((29*i)%71)-35)*2^-13",
     "calibration_secondary": "prefill ((i%53)-26)*2^-12; decode ((i%59)-29)*2^-13",
+    "calibration_tertiary": "prefill ((i%43)-21)*2^-12; decode ((i%61)-30)*2^-13",
     "holdout": "prefill ((i%41)-20)*2^-12; decode ((i%47)-23)*2^-13"
   },
   "method": "pinned llama.cpp dequant-file plus pinned Transformers components; no native output input",

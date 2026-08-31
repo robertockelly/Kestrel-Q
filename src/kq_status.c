@@ -112,6 +112,10 @@ const char *kq_status_string(kq_status status) {
             return "incompatible transformer-layer configuration";
         case KQ_STATUS_INVALID_LAYER_STATE:
             return "invalid transformer-layer stream state";
+        case KQ_STATUS_INCOMPATIBLE_MODEL_EXEC:
+            return "incompatible model execution configuration";
+        case KQ_STATUS_INVALID_MODEL_STATE:
+            return "invalid model execution state";
         default:
             return "unknown Kestrel-Q status";
     }

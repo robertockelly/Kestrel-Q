@@ -733,6 +733,23 @@ int main(void) {
         expect_failure("missing required tensor", &fixture,
                        KQ_STATUS_SEMANTIC_MAPPING_FAILED);
     }
+    if (rebuild(&fixture, "missing LM head") &&
+        fixture_rename_tensor(&fixture, "output.weight", "missing_output.weight")) {
+        expect_failure("missing LM head", &fixture,
+                       KQ_STATUS_SEMANTIC_MAPPING_FAILED);
+    }
+    if (rebuild(&fixture, "missing final norm") &&
+        fixture_rename_tensor(&fixture, "output_hc_norm.weight",
+                              "missing_output_hc_norm.weight")) {
+        expect_failure("missing final norm", &fixture,
+                       KQ_STATUS_SEMANTIC_MAPPING_FAILED);
+    }
+    if (rebuild(&fixture, "missing layer semantic") &&
+        fixture_rename_tensor(&fixture, "blk.17.hc_attn_norm.weight",
+                              "blk.17.missing_hc_attn_norm.weight")) {
+        expect_failure("missing layer semantic", &fixture,
+                       KQ_STATUS_SEMANTIC_MAPPING_FAILED);
+    }
     if (rebuild(&fixture, "unknown physical tensor") &&
         fixture_add_tensor_1d(&fixture, "unknown.weight",
                               KQ_GGUF_TYPE_F32, 1U)) {
@@ -749,6 +766,18 @@ int main(void) {
         tensor = fixture_find_tensor(&fixture, "token_embd.weight");
         tensor->rank = 1U;
         expect_failure("wrong rank", &fixture,
+                       KQ_STATUS_MODEL_TOPOLOGY_MISMATCH);
+    }
+    if (rebuild(&fixture, "wrong LM head shape")) {
+        tensor = fixture_find_tensor(&fixture, "output.weight");
+        tensor->dimensions[1] = 248319U;
+        expect_failure("wrong LM head shape", &fixture,
+                       KQ_STATUS_MODEL_TOPOLOGY_MISMATCH);
+    }
+    if (rebuild(&fixture, "wrong embedding type")) {
+        tensor = fixture_find_tensor(&fixture, "token_embd.weight");
+        tensor->type_id = KQ_GGUF_TYPE_F32;
+        expect_failure("wrong embedding type", &fixture,
                        KQ_STATUS_MODEL_TOPOLOGY_MISMATCH);
     }
     if (rebuild(&fixture, "wrong expert axis")) {

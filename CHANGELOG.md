@@ -8,6 +8,51 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 2.12 / M1 and accepted ADR 0020: the native C17 scalar path
+  tokenizes governed raw UTF-8, reads bounded real embedding rows, executes
+  target layers 0 through 47, applies the final qwen4exp hyper-connection
+  mixer, computes all 248,320 LM-head logits, selects a stable greedy argmax
+  and decodes the selected token without a production llama.cpp/Python
+  dependency or a complete F32 target matrix.
+- Added the independently governed full-model Class-Q oracle and milestone
+  evidence. Pinned llama.cpp receives the explicit Task 1.4 canonical IDs for
+  `KQ-PROMPT-001`, bypasses the divergent GGUF tokenizer, and selects token 271
+  (`\n\n`), exactly matching native Kestrel-Q. Native/oracle top-two IDs also
+  agree; floating logits/checkpoint summaries remain characterization only.
+- Added `kq-run` and the immutable config / explicit bounded-state
+  `kq_model_exec` API. M1 uses context capacity 8 and records 359,881,768 state
+  bytes, 8,693,472 scratch bytes, a 993,280-byte logits buffer and useful
+  phase/layer progress without logging raw weights or full activations.
+- Recorded the M1 logical payload: 40,208,768,960 bytes, 1,693,222,880 blocks,
+  1,239 unique semantics, 19,040 embedding bytes, 3,360 routed selections /
+  10,080 selected-expert matrix requests, 112 PLE rows and 675,430,400 LM-head
+  bytes. The governed ceiling is 64 GiB because the scalar correctness path
+  rereads weights per prompt token; these counters are not physical I/O,
+  page-cache traffic or throughput.
+- Preserved and fixed three whole-model findings. The former 256-entry
+  semantic trace was too small for 1,239 full-run semantics and is now bounded
+  at 2,048. The qwen4exp converter stores zero-centred RMS gamma as `1+delta`,
+  so the provider now restores canonical deltas exactly once. Per-layer oracle
+  checkpoints then exposed an accidental second PLE conversion at layer 1;
+  removing it changed the remaining wrong token 20 to the oracle token 271.
+- Added exact-token regression coverage, invalid/padded ID and bounded-capacity
+  failures, and early/middle/late provider faults. Each real failed run keeps
+  caller outputs/position unchanged and is followed by a complete
+  control-equivalent token-271 recovery.
+- Fixed the rollback recovery order exposed by that strengthened regression.
+  A failed QSA path could leave private staging advanced, and the following
+  call queried scratch geometry before resetting it, producing an invalid-state
+  failure despite an unchanged public position. The executor now resets all
+  dirty private layer state before the scratch query; faults at layers 0, 24
+  and 47 each recover through a complete token-271 control run.
+- Corrected the independent Task 2.11 target-layer oracle after the complete
+  model exposed its incomplete converter inverse. The generator had restored
+  PLE zero-centered gammas but not HC or QSA/indexer gammas, so it now applies
+  the pinned converter rule to every affected canonical role and explicitly
+  excludes the direct GDN linear-attention gamma. Four independent calibration
+  profiles now bound the unchanged disjoint holdout (30 floating comparisons),
+  while all route, selected-expert and PLE-request comparisons remain exact.
+
 - Completed Task 2.11 and accepted ADR 0019: a bounded semantic target-weight
   provider now executes the accepted scalar GDN, QSA, MoE, PLE-value and
   complete-layer equations directly from the registered quantized GGUF without
@@ -34,10 +79,9 @@ The project is currently pre-alpha.
   detected before payload dereference or visible output mutation, QPC timing
   conversion uses checked 64-bit arithmetic, and injected failures before the
   first read and after 7,332,736 bytes preserve complete layer state.
-- Documented the concrete First Correct Native Token boundary. Token embedding,
-  48-layer state orchestration, final mixing/norm, LM head/logits, greedy
-  argmax and native decode remain not started; cache/prefetch policy remains
-  deferred with `KQ-BACKLOG-BENCH-002`.
+- At the Task 2.11 checkpoint, documented the then-unstarted First Correct
+  Native Token boundary; Task 2.12 now completes it. Cache/prefetch policy
+  remains deferred with `KQ-BACKLOG-BENCH-002`.
 
 - Completed Task 2.10 and accepted ADR 0018: a scalar C17 one-layer reference
   now composes exact Qwen3.8 PLE placement, four-branch Gated Residual reads and

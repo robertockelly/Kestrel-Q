@@ -524,7 +524,7 @@ python tools/generate-target-layer-reference.py `
   --output-dir $out
 ```
 
-`validate-target-layer.py` runs the native real-artifact integration for two
+`validate-target-layer.py` runs the native real-artifact integration for four
 calibration profiles and a disjoint holdout. It derives per-family/per-phase
 floating limits from calibration only, requires holdout PASS, and compares
 route order, selected-expert membership/access and PLE intents exactly. Host
@@ -540,3 +540,31 @@ python tools/validate-target-layer.py `
 
 Production C17 target-layer code reads no research CSV/JSON and links no
 llama.cpp, Python, NumPy, PyTorch or Transformers runtime.
+
+## Task 2.12 full-model Class-Q oracle
+
+`llama-first-token-oracle.cpp` is a research/test-only helper for pinned
+`llama.cpp@90c26fcd4b2114b4aa39d09d69318cb8f438d27a` (MIT). Its separate CMake
+project requires explicit `LLAMA_SOURCE_ROOT` and `LLAMA_BUILD_ROOT`; neither
+the helper nor llama.cpp is linked into `kq_core` or `kq-run`. The helper loads
+the verified GGUF CPU-only with mmap and lazy tensor reads, accepts explicit
+canonical IDs and emits bounded top-N/greedy evidence. It deliberately bypasses
+llama.cpp tokenization because Task 2.3 proved the GGUF tokenizer semantics are
+not the canonical production contract.
+
+```powershell
+cmake -S tools/llama-first-token-oracle `
+  -B .research-cache/task-2.12/llama-first-token-oracle-build `
+  -DLLAMA_SOURCE_ROOT=<pinned-llama-checkout> `
+  -DLLAMA_BUILD_ROOT=<pinned-llama-build>
+cmake --build .research-cache/task-2.12/llama-first-token-oracle-build `
+  --config Release
+& .research-cache/task-2.12/llama-first-token-oracle-build/Release/kq_llama_first_token_oracle.exe `
+  --model $env:KQ_GGUF_PATH `
+  --tokens 9419,11,710,467,3621,27325,13 `
+  --context 8 --top-n 20 --threads 16 --output <ignored-output.json>
+```
+
+The governed milestone stores only deterministic derived summaries under
+`research/milestones/`; raw logs, full logits and all model payload remain
+ignored. Kestrel-Q never supplies expected values to this oracle.

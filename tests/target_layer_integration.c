@@ -88,6 +88,10 @@ static int run_layer(kq_weight_provider *provider, const kq_model *model,
     for (index = 0U; index < KQ_TARGET_WIDTH; ++index)
         input[index] = input_profile == 2
             ? (float)((int)(index % 41U) - 20) * 0.000244140625f
+            : input_profile == 4
+                ? (float)((int)((index * 17U) % 67U) - 33) * 0.000244140625f
+            : input_profile == 3
+                ? (float)((int)(index % 43U) - 21) * 0.000244140625f
             : input_profile == 1
                 ? (float)((int)(index % 53U) - 26) * 0.000244140625f
                 : (float)((int)(index % 31U) - 15) * 0.0009765625f;
@@ -124,6 +128,10 @@ static int run_layer(kq_weight_provider *provider, const kq_model *model,
     for (index = 0U; index < KQ_TARGET_WIDTH; ++index)
         input[index] = input_profile == 2
             ? (float)((int)(index % 47U) - 23) * 0.0001220703125f
+            : input_profile == 4
+                ? (float)((int)((index * 29U) % 71U) - 35) * 0.0001220703125f
+            : input_profile == 3
+                ? (float)((int)(index % 61U) - 30) * 0.0001220703125f
             : input_profile == 1
                 ? (float)((int)(index % 59U) - 29) * 0.0001220703125f
                 : (float)((int)(index % 37U) - 18) * 0.00048828125f;
@@ -299,6 +307,10 @@ int wmain(int argc, wchar_t **argv) {
     int dump_values_enabled = 0;
     for (i = 1U; i < (uint32_t)argc; ++i) {
         if (wcscmp(argv[i], L"--holdout") == 0) input_profile = 2;
+        else if (wcscmp(argv[i], L"--calibration-permuted") == 0)
+            input_profile = 4;
+        else if (wcscmp(argv[i], L"--calibration-tertiary") == 0)
+            input_profile = 3;
         else if (wcscmp(argv[i], L"--calibration-secondary") == 0)
             input_profile = 1;
         else if (wcscmp(argv[i], L"--dump-values") == 0)

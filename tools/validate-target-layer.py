@@ -40,6 +40,10 @@ def run_probe(probe: Path, profile: str) -> dict[str, Any]:
         command.append("--holdout")
     elif profile == "calibration-b":
         command.append("--calibration-secondary")
+    elif profile == "calibration-c":
+        command.append("--calibration-tertiary")
+    elif profile == "calibration-d":
+        command.append("--calibration-permuted")
     run = subprocess.run(command, capture_output=True, text=True)
     if run.returncode == 77:
         raise SystemExit(77)
@@ -115,6 +119,8 @@ def main() -> None:
     native_profiles = {
         "calibration-a": run_probe(args.probe.resolve(), "calibration-a"),
         "calibration-b": run_probe(args.probe.resolve(), "calibration-b"),
+        "calibration-c": run_probe(args.probe.resolve(), "calibration-c"),
+        "calibration-d": run_probe(args.probe.resolve(), "calibration-d"),
         "holdout": run_probe(args.probe.resolve(), "holdout"),
     }
     records = []
@@ -158,21 +164,35 @@ def main() -> None:
                                 if case["profile"] == "calibration-a"]}
     calibration_b = {"cases": [case for case in calibration["cases"]
                                 if case["profile"] == "calibration-b"]}
+    calibration_c = {"cases": [case for case in calibration["cases"]
+                                if case["profile"] == "calibration-c"]}
+    calibration_d = {"cases": [case for case in calibration["cases"]
+                                if case["profile"] == "calibration-d"]}
     cal_a_routes, cal_a_ple = expected_trace(calibration_a)
     cal_b_routes, cal_b_ple = expected_trace(calibration_b)
+    cal_c_routes, cal_c_ple = expected_trace(calibration_c)
+    cal_d_routes, cal_d_ple = expected_trace(calibration_d)
     hold_routes, hold_ple = expected_trace(holdout)
     discrete = {
         "calibration_a_route_order_exact": native_profiles["calibration-a"]["routes"] == cal_a_routes,
         "calibration_b_route_order_exact": native_profiles["calibration-b"]["routes"] == cal_b_routes,
+        "calibration_c_route_order_exact": native_profiles["calibration-c"]["routes"] == cal_c_routes,
+        "calibration_d_route_order_exact": native_profiles["calibration-d"]["routes"] == cal_d_routes,
         "holdout_route_order_exact": native_profiles["holdout"]["routes"] == hold_routes,
         "calibration_a_selected_expert_access_exact":
             sorted(native_profiles["calibration-a"]["experts"]) == sorted(cal_a_routes),
         "calibration_b_selected_expert_access_exact":
             sorted(native_profiles["calibration-b"]["experts"]) == sorted(cal_b_routes),
+        "calibration_c_selected_expert_access_exact":
+            sorted(native_profiles["calibration-c"]["experts"]) == sorted(cal_c_routes),
+        "calibration_d_selected_expert_access_exact":
+            sorted(native_profiles["calibration-d"]["experts"]) == sorted(cal_d_routes),
         "holdout_selected_expert_access_exact":
             sorted(native_profiles["holdout"]["experts"]) == sorted(hold_routes),
         "calibration_a_ple_requests_exact": native_profiles["calibration-a"]["ple"] == cal_a_ple,
         "calibration_b_ple_requests_exact": native_profiles["calibration-b"]["ple"] == cal_b_ple,
+        "calibration_c_ple_requests_exact": native_profiles["calibration-c"]["ple"] == cal_c_ple,
+        "calibration_d_ple_requests_exact": native_profiles["calibration-d"]["ple"] == cal_d_ple,
         "holdout_ple_requests_exact": native_profiles["holdout"]["ple"] == hold_ple,
         "qsa_prefill_decode_selection": "asserted by native probe: 0 candidate blocks; tail tokens 1 then 2",
     }
@@ -208,7 +228,9 @@ def main() -> None:
                 print("FAIL", record)
         print(discrete)
         raise SystemExit(1)
-    print("target layer independent validation: PASS; cases=12 exact_discrete=PASS")
+    case_count = len(calibration["cases"]) + len(holdout["cases"])
+    print(f"target layer independent validation: PASS; cases={case_count} "
+          "exact_discrete=PASS")
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ It never downloads canonical BF16 weights and never consumes native output as
 expected data. Temporary decoded rows/matrices stay below ignored
 `.research-cache`; no raw packed or decoded real weight is committed.
 
-Two deterministic calibration profiles and one disjoint holdout cover
+Four deterministic calibration profiles and one disjoint holdout cover
 one-token prefill followed by one decode step for:
 
 | Family | zero-based layer | Result |
@@ -35,7 +35,7 @@ one-token prefill followed by one decode step for:
 | QSA | 3 | PASS |
 | PLE-GDN | 1 | PASS |
 
-All 18 output comparisons (12 calibration and 6 holdout) pass their
+All 30 output comparisons (24 calibration and 6 holdout) pass their
 per-family/per-phase calibrated absolute-or-relative contracts. Observed
 holdout maximum absolute differences are `9.0003014e-6` (GDN decode),
 `6.556511e-6` (QSA prefill) and `1.5050173e-6` (PLE-GDN prefill). Large ULP or

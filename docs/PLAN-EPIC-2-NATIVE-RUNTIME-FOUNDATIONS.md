@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.11 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.12 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -33,6 +33,7 @@ Initial task order:
     reference. **COMPLETE / PASS**
 12. Task 2.11 — Target quantized layer execution through bounded semantic
     weight access. **COMPLETE / PASS**
+13. Task 2.12 — First Correct Native Token. **COMPLETE / PASS**
 
 Constraints:
 
@@ -81,8 +82,18 @@ logits and the final scheduler remain **NOT STARTED**.
 Task 2.11 connects those equations to the exact registered GGUF through a
 semantic weight provider backed only by Task 2.2 views and Task 2.5 numerics.
 Independent pinned llama.cpp decode plus pinned Transformers equations validates
-two calibration profiles and a disjoint holdout for ordinary GDN, QSA and
+four calibration profiles and a disjoint holdout for ordinary GDN, QSA and
 PLE-GDN prefill/decode. Exact route/access/PLE decisions, 48/48 provider
 preflight and transactional failures pass under the 768 MiB logical payload
-ceiling. ADR 0019 is ACCEPTED. Embedding, full 48-layer orchestration, final
-norm, LM head/logits/argmax and native token decode remain **NOT STARTED**.
+ceiling. ADR 0019 is ACCEPTED. At that checkpoint, embedding, full 48-layer
+orchestration, final mixing, LM head/logits/argmax and native token decode were
+not started; Task 2.12 is the separately governed completion of that path.
+
+Task 2.12 composes the accepted components into M1: native tokenizer IDs,
+bounded embedding rows, all 48 target layers in canonical order, the final
+qwen4exp hyper-connection mixer, all 248,320 logits, stable greedy argmax and
+native decode. Pinned llama.cpp independently selects the same token 271 from
+the explicit committed IDs. Three real provider faults recover to the same
+control token. ADR 0020 is ACCEPTED. Epic 2 remains **IN PROGRESS** because
+this plan does not define M1 as its final acceptance gate; no post-M1 task is
+started or invented here.

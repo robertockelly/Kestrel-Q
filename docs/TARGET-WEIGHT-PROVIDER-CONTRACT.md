@@ -50,8 +50,10 @@ The verified Unsloth converter layout is inverted behind the provider:
 - convolution value channels and alpha/beta/gate/A/dt rows receive the same
   proven head permutation;
 - stored GDN `ssm_a = -exp(A_log)` is converted back to canonical `A_log`;
-- PLE norm weights stored with the converter's `+1` convention are restored to
-  canonical zero-centered weights.
+- hyper-connection, QSA query/key, QSA indexer query/key and PLE norm weights
+  stored with the converter's `+1` convention are restored to canonical
+  zero-centered deltas; GDN `linear_attn.norm` is a direct gamma and is
+  deliberately excluded.
 
 No fuzzy name matching or generic transform fallback exists. An unrecognized
 relation, part, type, rank, shape, expert geometry or transformed role fails
@@ -65,7 +67,7 @@ budget, and records unique semantics, linear/vector requests, selected-expert
 requests and PLE rows. The accepted calibration run reports:
 
 ```text
-provider object                         4,232 bytes
+provider object                        18,576 bytes
 main representative execution    765,493,568 logical packed bytes
 two rollback injections             7,332,736 logical packed bytes
 aggregate correctness run         772,826,304 logical packed bytes
@@ -83,6 +85,15 @@ member is opened. The 32 PLE requests are exactly 16 canonical intents for
 each of the layer-1 prefill/decode tokens; no speculative row is opened.
 
 Mapping a Win32 view is not a claim about physical residency or disk reads.
+
+Task 2.12's full-model checkpoint exposed an omission in the original
+independent Task 2.11 generator: it inverted the PLE `+1` transform but not the
+same converter rule for HC and QSA/indexer norms. The production provider now
+performs the complete role-bounded inverse once, and the independent oracle
+generator applies the same source-proven transform before canonical
+Transformers equations. The provider object's larger 18,576-byte measurement
+reflects the bounded semantic trace raised from the per-layer baseline to the
+complete-model 2,048-entry capacity.
 These counters are logical payload accounting, not I/O or performance data.
 Final caching, prefetch and scheduling remain deferred, and
 `KQ-BACKLOG-BENCH-002` remains required before that policy.

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "class": "Q",
+  "implementation": "llama.cpp test-only helper",
+  "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+  "license": "MIT",
+  "mode": {"cpu_only": true, "mmap": true, "tensor_read_lazy": true, "context_capacity": 8, "threads": 16},
+  "input_token_ids": [9419, 11, 710, 467, 3621, 27325, 13],
+  "gguf_tokenizer_bypassed": true,
+  "gguf_tokenizer_bypass_reason": "Task 2.3 proved divergent normalization, pre-tokenization, special-token and chat-template semantics",
+  "selected_token_id": 271,
+  "selected_token_logit": 16.343235,
+  "selected_token_utf8": "\n\n",
+  "selected_token_is_eog": false,
+  "top_logits": [
+    {"token_id": 271, "logit": 16.343235},
+    {"token_id": 353, "logit": 15.5642185},
+    {"token_id": 2500, "logit": 14.1596031},
+    {"token_id": 198, "logit": 14.0825739},
+    {"token_id": 2885, "logit": 14.0155954},
+    {"token_id": 6558, "logit": 13.8484783},
+    {"token_id": 3437, "logit": 13.833375},
+    {"token_id": 1577, "logit": 13.7094364},
+    {"token_id": 1394, "logit": 13.6057186},
+    {"token_id": 220, "logit": 13.4079866}
+  ],
+  "load_elapsed_ms": 112450,
+  "decode_elapsed_ms": 222401,
+  "peak_working_set_bytes": 10436747264,
+  "peak_pagefile_bytes": 1315643392,
+  "private_usage_bytes": 1315590144,
+  "ignored_raw_capture_sha256": "9ac511c688e784f29783895ec4f859f7036725a8b5f52357665af1cfcd9a3c56"
+}

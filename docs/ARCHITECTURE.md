@@ -335,3 +335,24 @@ Names are placeholders. API stability is not promised before the first alpha.
 ## 9. Architecture documents
 
 Major changes require an ADR under `docs/adr/`.
+
+## 10. M1 model-execution boundary
+
+Task 2.12 adds a model-specific C17 orchestration layer above the accepted
+tokenizer, semantic provider and reference layers. `kq_model_exec_config`
+validates/borrows the exact target owners and 48 immutable layer configs;
+`kq_model_exec_state` owns explicit context-bounded layer state. `kq-run`
+exposes only raw-text, one-token, greedy M1 execution.
+
+The executor performs bounded embedding rows, layers `0..47`, the final
+qwen4exp hyper-connection mixer, all LM-head row dots, full finite-logit
+argmax and native decode. Converter-folded gamma restoration belongs to the
+physical-to-canonical weight-provider boundary and occurs exactly once.
+Failures do not publish outputs or position and force a complete private state
+reset before retry.
+
+This is not a scheduler architecture. Its repeated scalar logical weight
+touches are correctness instrumentation, not physical I/O. Multi-token decode,
+batching, sampling, vision, MTP, cache/prefetch, SIMD and CUDA model kernels
+remain outside M1. `KQ-BACKLOG-BENCH-002` is still required before final
+disk-backed PLE/residency policy.

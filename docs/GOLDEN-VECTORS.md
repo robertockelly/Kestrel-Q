@@ -206,7 +206,7 @@ must not be inferred from the low-level primitive evidence.
 Task 2.11 adds a separate exact-GGUF operator namespace under
 `research/operators/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
 The pinned llama.cpp helper independently decodes requested target rows and
-pinned Transformers components execute canonical layer equations. Two
+pinned Transformers components execute canonical layer equations. Four
 calibration profiles and a disjoint holdout cover GDN layer 0, QSA layer 3 and
 PLE-GDN layer 1, each with prefill plus decode. Native output is only the
 comparison subject. Floating outputs use recorded per-family/per-phase
@@ -215,9 +215,24 @@ selection and PLE member/row requests remain exact discrete results.
 
 | Task 2.11 evidence | SHA-256 |
 |---|---|
-| `target-layer-contract.json` | `99a3fc74ede825ee2ddc6fcbb2e9d11ee51df375bfae9e1c8354a76d2a09d0e6` |
-| `target-layer-calibration.json` | `bbeb38e15d90f895d0b54f3ee382f0b31a148cec4a32838b78e087079d0b5d70` |
-| `target-layer-holdout.json` | `3b85e035bfa79b6a8160ec779ee9cb766c491cb5a0ba109e47560b7c792ab162` |
-| `target-layer-state-vectors.json` | `b5a3d6c4025042541b96c6b90c27cafcdcd0852ec4ae9339a60242bb0482f13f` |
-| `target-layer-native-validation.json` | `94dab5eedda76dc37ccf7de829765c91169bce463bcd8b9adfe5e9c9a0f923b9` |
-| `target-layer-manifest.json` | `c520b958f35209462f02dbac47564cd8f6889f174dd16c42e23ee8182f300b00` |
+| `target-layer-contract.json` | `84c6043cd4bb6c56037bd7747766feebdd8289b4c46af3a0b795fdb3f521ef70` |
+| `target-layer-calibration.json` | `584bd247f7d578ce6a2f997b19e7f06934f11df491ea3182240badc387688936` |
+| `target-layer-holdout.json` | `85d67f9fa9f4ba19f7219dbb46c74ffe09c881779355e0f5b451b7bb114adef7` |
+| `target-layer-state-vectors.json` | `30ce3f4ce11174fd2cacb239b6c5823cf5d2bd1179e4197b6dc23156a15986a0` |
+| `target-layer-native-validation.json` | `c7575a9e98cb03cbeeb2845068b616e025e51f6705e2dc1f22e97345966a769d` |
+| `target-layer-manifest.json` | `44a12bdd9477a8493cd47a0517f396a8f5991cc42c31766df42a4463611e64a0` |
+
+Task 2.12 adds an independently executed full-model Class-Q milestone under
+`research/milestones/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
+Pinned llama.cpp receives the committed canonical IDs directly; Kestrel-Q is
+only the comparison subject. The exact next-token contract is token ID 271.
+Top-N logits and hidden summaries are characterization-only and do not replace
+the lower-level calibrated operator contracts.
+
+| Task 2.12 evidence | SHA-256 |
+|---|---|
+| `first-token-contract.json` | `37c614713fa940f623a918b9d0a10242b7f0cba9d174364377d763869f05f2ae` |
+| `first-token-oracle.json` | `02bca9f4c5b90a1e153a35133d10fc9aaa0c1adcf894083ce70c99bfc57add63` |
+| `first-token-native.json` | `27dc45eeb4002125010e3e54eec67aca7881b43648eca0a0b752a2aaee7ea546` |
+| `first-token-validation.json` | `632f12319b817fe9e043e44df05e00f5c9e20ba3c245292ae45ecd36ec8d1d06` |
+| `first-token-manifest.json` | `1f993d201edcd10864a52d99ca3cdd8bef3c9ec5bcd910cd99627e5edaa7fce9` |

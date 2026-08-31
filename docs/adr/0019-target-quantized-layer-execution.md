@@ -45,8 +45,13 @@ converter transforms, preserves split bindings, opens selected expert members
 and exact PLE rows, and reuses Task 2.5 numerics. No complete target matrix is
 materialized in F32.
 
+Task 2.12 sharpened that accepted boundary: the converter's zero-centered
+`+1` storage rule applies to HC, QSA/indexer and PLE norms, while the GDN
+linear-attention norm is direct gamma. The independent Task 2.11 generator and
+provider now both perform that source-proven inverse exactly once.
+
 Pinned llama.cpp decoding plus pinned Transformers equations independently
-generate two calibration profiles and a disjoint holdout for target layers 0,
+generate four calibration profiles and a disjoint holdout for target layers 0,
 3 and 1. Native floating outputs pass all calibrated contracts; MoE top-10
 order, selected-expert access and PLE intents pass exact comparison. Provider
 preflight passes 48/48 layers with zero payload dereference.

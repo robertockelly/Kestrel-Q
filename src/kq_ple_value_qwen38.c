@@ -180,6 +180,8 @@ kq_status kq_ple_value_execute_quantized(
     LOAD_PLE_VECTOR(norm_key,2U);LOAD_PLE_VECTOR(norm_query,3U);
     LOAD_PLE_VECTOR(norm_conv,4U);LOAD_PLE_VECTOR(convolution,5U);
 #undef LOAD_PLE_VECTOR
+    /* The provider is the storage-to-canonical boundary for the three
+       converter-folded PLE gammas; they are already zero-centred here. */
     cursor=(float *)((unsigned char *)temporary+temporary_bytes);
     return run(c,state,&w,provider,lookup,hidden,tokens,intents,intent_count,
         output,output_capacity,scratch,scratch_bytes,cursor,
