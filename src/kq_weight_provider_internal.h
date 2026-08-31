@@ -7,6 +7,7 @@
 #define KQ_WEIGHT_PROVIDER_MAX_SEMANTICS 2048U
 #define KQ_WEIGHT_PROVIDER_VECTOR_LIMIT 65536U
 #define KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY 64U
+#define KQ_WEIGHT_PROVIDER_ROUTE_TRACE_CAPACITY 64U
 #define KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY 64U
 
 struct kq_weight_provider {
@@ -20,12 +21,12 @@ struct kq_weight_provider {
         expert_trace[KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY];
     uint32_t expert_trace_count;
     kq_weight_provider_expert_request
-        route_trace[KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY];
+        route_trace[KQ_WEIGHT_PROVIDER_ROUTE_TRACE_CAPACITY];
     uint32_t route_trace_count;
     kq_weight_provider_ple_request
         ple_trace[KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY];
-    uint32_t ple_trace_count;
-    int test_fail_next_request;
+    uint32_t test_control_low;
+    uint32_t test_control_high;
 };
 
 kq_status kq_weight_provider_record_route(
@@ -35,5 +36,9 @@ kq_status kq_weight_provider_record_route(
 
 /* Test-only fault injection used by model-level transaction regressions. */
 void kq_weight_provider_test_fail_next_request(kq_weight_provider *provider);
+kq_status kq_weight_provider_test_enable_extended_trace(
+    kq_weight_provider *provider, uint64_t route_capacity,
+    uint64_t expert_capacity, uint64_t ple_capacity,
+    kq_diagnostic *diagnostic);
 
 #endif

@@ -351,8 +351,19 @@ physical-to-canonical weight-provider boundary and occurs exactly once.
 Failures do not publish outputs or position and force a complete private state
 reset before retry.
 
-This is not a scheduler architecture. Its repeated scalar logical weight
-touches are correctness instrumentation, not physical I/O. Multi-token decode,
-batching, sampling, vision, MTP, cache/prefetch, SIMD and CUDA model kernels
-remain outside M1. `KQ-BACKLOG-BENCH-002` is still required before final
-disk-backed PLE/residency policy.
+Task 2.13 extends the same model-specific boundary with true incremental greedy
+decode. Prefill runs once; each selected canonical token ID passes directly
+through one-token layer decode, final mixing, logits and native token decode.
+The model position and GDN, QSA, PLE-address and PLE-value state advance one
+position per successful token. A failed later step rolls completed layers back
+to their preceding transaction slots and publishes neither outputs nor model
+position; retry from that state reproduces the oracle token. Provider metrics
+and traces remain monotonic audit data and are not rolled back.
+
+This is not a scheduler or product-session architecture. Its repeated scalar
+logical weight touches are correctness instrumentation, not physical I/O.
+Context is an explicit bounded caller choice (16 for the governed Task 2.13
+case) and greedy argmax is the only selection policy. Batching, sampling,
+context serialization, vision, MTP, cache/prefetch, SIMD and CUDA model kernels
+remain outside the boundary. `KQ-BACKLOG-BENCH-002` is still required before
+final disk-backed PLE/residency policy.

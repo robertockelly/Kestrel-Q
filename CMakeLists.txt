@@ -230,13 +230,28 @@ if(KQ_BUILD_TESTS)
         COMMAND kq_first_token_integration_test)
     set_tests_properties(kq_first_token_real_artifact PROPERTIES
         SKIP_RETURN_CODE 77)
+    add_executable(kq_multi_token_integration_test
+        tests/multi_token_integration.c)
+    target_link_libraries(kq_multi_token_integration_test PRIVATE kq_core)
+    target_include_directories(kq_multi_token_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_multi_token_integration_test)
+    add_test(NAME kq_multi_token_real_artifact
+        COMMAND kq_multi_token_integration_test)
+    set_tests_properties(kq_multi_token_real_artifact PROPERTIES
+        SKIP_RETURN_CODE 77)
     add_test(NAME kq_run_rejects_vision
         COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
                 --greedy --vision)
     add_test(NAME kq_run_rejects_mtp
         COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
                 --greedy --mtp)
+    add_test(NAME kq_run_rejects_zero_generation
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 0
+                --greedy)
     set_tests_properties(kq_run_rejects_vision kq_run_rejects_mtp PROPERTIES
+        WILL_FAIL TRUE)
+    set_tests_properties(kq_run_rejects_zero_generation PROPERTIES
         WILL_FAIL TRUE)
 
     add_executable(kq_tensor_view_test tests/tensor_view_test.c)

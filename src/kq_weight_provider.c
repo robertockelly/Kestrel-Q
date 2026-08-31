@@ -18,6 +18,19 @@
 #define KQ_GDN_VALUE_HEADS 48U
 #define KQ_GDN_HEAD_WIDTH 128U
 #define KQ_GDN_VALUE_REPEAT 3U
+#define KQ_WEIGHT_PROVIDER_TEST_FAIL_FLAG ((uintptr_t)1U)
+
+typedef struct kq_weight_provider_extended_trace {
+    kq_weight_provider_expert_request *routes;
+    kq_weight_provider_expert_request *experts;
+    kq_weight_provider_ple_request *ple;
+    uint64_t route_count;
+    uint64_t expert_count;
+    uint64_t ple_count;
+    uint64_t route_capacity;
+    uint64_t expert_capacity;
+    uint64_t ple_capacity;
+} kq_weight_provider_extended_trace;
 
 static kq_status fail(kq_diagnostic *d, kq_status s, const char *m) {
     kq_diagnostic_set(d, s, "%s", m);
@@ -86,10 +99,43 @@ static int provider_valid(const kq_weight_provider *p) {
            p->gguf != NULL && p->model != NULL;
 }
 
+static uintptr_t get_test_control(const kq_weight_provider *p) {
+    uint64_t value;
+    if (p == NULL) return 0U;
+    value = p->test_control_low;
+    value |= (uint64_t)p->test_control_high << 32U;
+    return (uintptr_t)value;
+}
+
+static void set_test_control(kq_weight_provider *p, uintptr_t value) {
+    uint64_t wide = (uint64_t)value;
+    p->test_control_low = (uint32_t)(wide & UINT64_C(0xffffffff));
+    p->test_control_high = (uint32_t)(wide >> 32U);
+}
+
+static kq_weight_provider_extended_trace *extended_trace(
+    const kq_weight_provider *p) {
+    uintptr_t pointer;
+    if (p == NULL) return NULL;
+    pointer = get_test_control(p) & ~KQ_WEIGHT_PROVIDER_TEST_FAIL_FLAG;
+    return (kq_weight_provider_extended_trace *)pointer;
+}
+
+static void free_extended_trace(kq_weight_provider_extended_trace *trace) {
+    if (trace != NULL) {
+        free(trace->ple);
+        free(trace->experts);
+        free(trace->routes);
+        free(trace);
+    }
+}
+
 static kq_status maybe_fail_test_request(kq_weight_provider *p,
                                          kq_diagnostic *d) {
-    if (p != NULL && p->test_fail_next_request) {
-        p->test_fail_next_request = 0;
+    if (p != NULL &&
+        (get_test_control(p) & KQ_WEIGHT_PROVIDER_TEST_FAIL_FLAG) != 0U) {
+        set_test_control(
+            p, get_test_control(p) & ~KQ_WEIGHT_PROVIDER_TEST_FAIL_FLAG);
         return fail(d, KQ_STATUS_LIMIT_EXCEEDED,
                     "injected weight-provider request failure");
     }
@@ -272,9 +318,61 @@ kq_status kq_weight_provider_open(const kq_gguf *gguf,
 
 void kq_weight_provider_close(kq_weight_provider *p) {
     if (p != NULL) {
+        free_extended_trace(extended_trace(p));
         p->magic = 0U;
         free(p);
     }
+}
+
+kq_status kq_weight_provider_test_enable_extended_trace(
+    kq_weight_provider *p, uint64_t route_capacity,
+    uint64_t expert_capacity, uint64_t ple_capacity,
+    kq_diagnostic *d) {
+    kq_weight_provider_extended_trace *trace;
+    uint64_t route_bytes;
+    uint64_t expert_bytes;
+    uint64_t ple_bytes;
+    uint64_t owned;
+    if (!provider_valid(p) || route_capacity == 0U ||
+        expert_capacity == 0U || ple_capacity == 0U ||
+        extended_trace(p) != NULL)
+        return fail(d, KQ_STATUS_INVALID_ARGUMENT,
+                    "extended provider trace arguments are invalid");
+    if (!mul_u64(route_capacity, sizeof(*trace->routes), &route_bytes) ||
+        !mul_u64(expert_capacity, sizeof(*trace->experts), &expert_bytes) ||
+        !mul_u64(ple_capacity, sizeof(*trace->ple), &ple_bytes) ||
+        route_bytes > SIZE_MAX || expert_bytes > SIZE_MAX ||
+        ple_bytes > SIZE_MAX)
+        return fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                    "extended provider trace size overflows");
+    trace = (kq_weight_provider_extended_trace *)calloc(1U, sizeof(*trace));
+    if (trace == NULL)
+        return fail(d, KQ_STATUS_OUT_OF_MEMORY,
+                    "could not allocate extended provider trace");
+    trace->routes = (kq_weight_provider_expert_request *)malloc(
+        (size_t)route_bytes);
+    trace->experts = (kq_weight_provider_expert_request *)malloc(
+        (size_t)expert_bytes);
+    trace->ple = (kq_weight_provider_ple_request *)malloc((size_t)ple_bytes);
+    if (trace->routes == NULL || trace->experts == NULL || trace->ple == NULL) {
+        free_extended_trace(trace);
+        return fail(d, KQ_STATUS_OUT_OF_MEMORY,
+                    "could not allocate extended provider trace arrays");
+    }
+    trace->route_capacity = route_capacity;
+    trace->expert_capacity = expert_capacity;
+    trace->ple_capacity = ple_capacity;
+    if (!add_u64(sizeof(*trace), route_bytes, &owned) ||
+        !add_u64(owned, expert_bytes, &owned) ||
+        !add_u64(owned, ple_bytes, &owned) ||
+        !add_u64(p->metrics.provider_owned_bytes, owned, &owned)) {
+        free_extended_trace(trace);
+        return fail(d, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                    "extended provider owned-byte count overflows");
+    }
+    p->metrics.provider_owned_bytes = owned;
+    set_test_control(p, get_test_control(p) | (uintptr_t)trace);
+    return KQ_STATUS_OK;
 }
 
 kq_status kq_weight_provider_linear_f32(kq_weight_provider *p,
@@ -389,12 +487,20 @@ kq_status kq_weight_provider_linear_f32(kq_weight_provider *p,
             p->metrics.linear_elapsed_nanoseconds = total;
     }
     if (expert != KQ_WEIGHT_PROVIDER_NO_EXPERT) {
+        kq_weight_provider_extended_trace *trace = extended_trace(p);
         p->metrics.selected_expert_requests += 1U;
-        if (role == KQ_BINDING_PART_GATE &&
-            p->expert_trace_count < KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY) {
-            p->expert_trace[p->expert_trace_count].layer_id = s->layer_id;
-            p->expert_trace[p->expert_trace_count].expert_id = expert;
-            p->expert_trace_count += 1U;
+        if (role == KQ_BINDING_PART_GATE) {
+            if (trace != NULL && trace->expert_count < trace->expert_capacity) {
+                trace->experts[trace->expert_count].layer_id = s->layer_id;
+                trace->experts[trace->expert_count].expert_id = expert;
+                trace->expert_count += 1U;
+            } else if (trace == NULL &&
+                       p->expert_trace_count <
+                           KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY) {
+                p->expert_trace[p->expert_trace_count].layer_id = s->layer_id;
+                p->expert_trace[p->expert_trace_count].expert_id = expert;
+                p->expert_trace_count += 1U;
+            }
         }
     }
 done:
@@ -666,12 +772,19 @@ static kq_status ple_lookup(void *user, uint32_t member, uint64_t row,
         status = account(p, s, row_bytes, block_count,
                          UINT64_C(160) * sizeof(float), d);
     if (status == KQ_STATUS_OK) {
+        kq_weight_provider_extended_trace *trace = extended_trace(p);
         memcpy(output, staged, sizeof(staged));
         p->metrics.ple_row_requests += 1U;
-        if (p->ple_trace_count < KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY) {
-            p->ple_trace[p->ple_trace_count].logical_member = member;
-            p->ple_trace[p->ple_trace_count].member_row = row;
-            p->ple_trace_count += 1U;
+        if (trace != NULL && trace->ple_count < trace->ple_capacity) {
+            trace->ple[trace->ple_count].logical_member = member;
+            trace->ple[trace->ple_count].member_row = row;
+            trace->ple_count += 1U;
+        } else if (trace == NULL &&
+                   p->metrics.ple_row_requests <=
+                       KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY) {
+            uint64_t trace_index = p->metrics.ple_row_requests - 1U;
+            p->ple_trace[trace_index].logical_member = member;
+            p->ple_trace[trace_index].member_row = row;
         }
     }
     kq_tensor_view_close(view);
@@ -700,46 +813,61 @@ const kq_weight_provider_metrics *kq_weight_provider_get_metrics(
 kq_status kq_weight_provider_copy_expert_requests(
     const kq_weight_provider *p, kq_weight_provider_expert_request *requests,
     uint64_t capacity, uint64_t *required_count) {
+    const kq_weight_provider_extended_trace *trace;
+    uint64_t count;
+    const kq_weight_provider_expert_request *source;
     if (!provider_valid(p) || required_count == NULL)
         return KQ_STATUS_INVALID_ARGUMENT;
-    *required_count = p->expert_trace_count;
-    if (capacity < p->expert_trace_count ||
-        (p->expert_trace_count != 0U && requests == NULL))
+    trace = extended_trace(p);
+    count = trace != NULL ? trace->expert_count : p->expert_trace_count;
+    source = trace != NULL ? trace->experts : p->expert_trace;
+    *required_count = count;
+    if (capacity < count || (count != 0U && requests == NULL))
         return KQ_STATUS_BUFFER_TOO_SMALL;
-    if (p->expert_trace_count != 0U)
-        memcpy(requests, p->expert_trace,
-               (size_t)p->expert_trace_count * sizeof(*requests));
+    if (count != 0U)
+        memcpy(requests, source, (size_t)count * sizeof(*requests));
     return KQ_STATUS_OK;
 }
 
 kq_status kq_weight_provider_copy_route_requests(
     const kq_weight_provider *p, kq_weight_provider_expert_request *requests,
     uint64_t capacity, uint64_t *required_count) {
+    const kq_weight_provider_extended_trace *trace;
+    uint64_t count;
+    const kq_weight_provider_expert_request *source;
     if (!provider_valid(p) || required_count == NULL)
         return KQ_STATUS_INVALID_ARGUMENT;
-    *required_count = p->route_trace_count;
-    if (capacity < p->route_trace_count ||
-        (p->route_trace_count != 0U && requests == NULL))
+    trace = extended_trace(p);
+    count = trace != NULL ? trace->route_count : p->route_trace_count;
+    source = trace != NULL ? trace->routes : p->route_trace;
+    *required_count = count;
+    if (capacity < count || (count != 0U && requests == NULL))
         return KQ_STATUS_BUFFER_TOO_SMALL;
-    if (p->route_trace_count != 0U)
-        memcpy(requests, p->route_trace,
-               (size_t)p->route_trace_count * sizeof(*requests));
+    if (count != 0U)
+        memcpy(requests, source, (size_t)count * sizeof(*requests));
     return KQ_STATUS_OK;
 }
 
 kq_status kq_weight_provider_record_route(
     kq_weight_provider *p, uint32_t layer_id, const uint32_t *expert_ids,
     uint32_t expert_count, kq_diagnostic *d) {
+    kq_weight_provider_extended_trace *trace;
     uint32_t index;
     if (!provider_valid(p) || expert_ids == NULL || expert_count == 0U ||
         layer_id >= 48U)
         return fail(d, KQ_STATUS_INVALID_ARGUMENT,
                     "invalid weight-provider route record");
+    trace = extended_trace(p);
     for (index = 0U; index < expert_count; ++index) {
         if (expert_ids[index] >= 512U)
             return fail(d, KQ_STATUS_INVALID_ARGUMENT,
                         "weight-provider route contains an invalid expert");
-        if (p->route_trace_count < KQ_WEIGHT_PROVIDER_EXPERT_TRACE_CAPACITY) {
+        if (trace != NULL && trace->route_count < trace->route_capacity) {
+            trace->routes[trace->route_count].layer_id = layer_id;
+            trace->routes[trace->route_count].expert_id = expert_ids[index];
+            trace->route_count += 1U;
+        } else if (trace == NULL &&
+                   p->route_trace_count < KQ_WEIGHT_PROVIDER_ROUTE_TRACE_CAPACITY) {
             p->route_trace[p->route_trace_count].layer_id = layer_id;
             p->route_trace[p->route_trace_count].expert_id = expert_ids[index];
             p->route_trace_count += 1U;
@@ -749,21 +877,29 @@ kq_status kq_weight_provider_record_route(
 }
 
 void kq_weight_provider_test_fail_next_request(kq_weight_provider *p) {
-    if (provider_valid(p)) p->test_fail_next_request = 1;
+    if (provider_valid(p))
+        set_test_control(
+            p, get_test_control(p) | KQ_WEIGHT_PROVIDER_TEST_FAIL_FLAG);
 }
 
 kq_status kq_weight_provider_copy_ple_requests(
     const kq_weight_provider *p, kq_weight_provider_ple_request *requests,
     uint64_t capacity, uint64_t *required_count) {
+    const kq_weight_provider_extended_trace *trace;
+    uint64_t count;
+    const kq_weight_provider_ple_request *source;
     if (!provider_valid(p) || required_count == NULL)
         return KQ_STATUS_INVALID_ARGUMENT;
-    *required_count = p->ple_trace_count;
-    if (capacity < p->ple_trace_count ||
-        (p->ple_trace_count != 0U && requests == NULL))
+    trace = extended_trace(p);
+    count = trace != NULL ? trace->ple_count : p->metrics.ple_row_requests;
+    if (trace == NULL && count > KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY)
+        count = KQ_WEIGHT_PROVIDER_PLE_TRACE_CAPACITY;
+    source = trace != NULL ? trace->ple : p->ple_trace;
+    *required_count = count;
+    if (capacity < count || (count != 0U && requests == NULL))
         return KQ_STATUS_BUFFER_TOO_SMALL;
-    if (p->ple_trace_count != 0U)
-        memcpy(requests, p->ple_trace,
-               (size_t)p->ple_trace_count * sizeof(*requests));
+    if (count != 0U)
+        memcpy(requests, source, (size_t)count * sizeof(*requests));
     return KQ_STATUS_OK;
 }
 

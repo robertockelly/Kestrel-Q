@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "hash_algorithm": "FNV-1a-64 over explicit semantic bytes/fields",
+  "steps": [
+    {
+      "step": 1,
+      "position": 7,
+      "state_hash_fnv1a64": "76e95376ee079538",
+      "gdn_state_hash_fnv1a64": "0b76b682d59878f1",
+      "qsa_state_hash_fnv1a64": "ce0861a27f5d139d",
+      "ple_address_state_hash_fnv1a64": "fe99e4acde853589",
+      "ple_value_state_hash_fnv1a64": "db64a24a910fd195",
+      "qsa_sequence_length_min": 7,
+      "qsa_sequence_length_max": 7,
+      "qsa_complete_blocks_min": 1,
+      "qsa_complete_blocks_max": 1,
+      "qsa_incomplete_tail_min": 3,
+      "qsa_incomplete_tail_max": 3
+    },
+    {
+      "step": 2,
+      "position": 8,
+      "state_hash_fnv1a64": "2e433f7eac69cab8",
+      "gdn_state_hash_fnv1a64": "531445af610a45cf",
+      "qsa_state_hash_fnv1a64": "396f3fc33cd1c4ed",
+      "ple_address_state_hash_fnv1a64": "8e122cf41b1ffbd8",
+      "ple_value_state_hash_fnv1a64": "44be525222c99eed",
+      "qsa_sequence_length_min": 8,
+      "qsa_sequence_length_max": 8,
+      "qsa_complete_blocks_min": 2,
+      "qsa_complete_blocks_max": 2,
+      "qsa_incomplete_tail_min": 0,
+      "qsa_incomplete_tail_max": 0
+    },
+    {
+      "step": 3,
+      "position": 9,
+      "state_hash_fnv1a64": "a79223df470c7123",
+      "gdn_state_hash_fnv1a64": "7dc815eef00da2ed",
+      "qsa_state_hash_fnv1a64": "1ed931a39998ac9a",
+      "ple_address_state_hash_fnv1a64": "1300398cf96d179d",
+      "ple_value_state_hash_fnv1a64": "a831a45decb03553",
+      "qsa_sequence_length_min": 9,
+      "qsa_sequence_length_max": 9,
+      "qsa_complete_blocks_min": 2,
+      "qsa_complete_blocks_max": 2,
+      "qsa_incomplete_tail_min": 1,
+      "qsa_incomplete_tail_max": 1
+    },
+    {
+      "step": 4,
+      "position": 10,
+      "state_hash_fnv1a64": "03c63f1c3634eb63",
+      "gdn_state_hash_fnv1a64": "e281dffcb3369e61",
+      "qsa_state_hash_fnv1a64": "c6de06dd9c192096",
+      "ple_address_state_hash_fnv1a64": "54672826edbdf4ec",
+      "ple_value_state_hash_fnv1a64": "d7e477460207d5ad",
+      "qsa_sequence_length_min": 10,
+      "qsa_sequence_length_max": 10,
+      "qsa_complete_blocks_min": 2,
+      "qsa_complete_blocks_max": 2,
+      "qsa_incomplete_tail_min": 2,
+      "qsa_incomplete_tail_max": 2
+    }
+  ],
+  "rollback": {
+    "injected_step": 3,
+    "injected_layer": 24,
+    "status": "PASS",
+    "pre_and_post_failure_summaries_equal": true,
+    "retry_token_id": 198
+  },
+  "raw_state_blobs_committed": false
+}

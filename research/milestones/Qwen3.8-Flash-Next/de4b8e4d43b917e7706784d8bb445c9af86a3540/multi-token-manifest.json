@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "task": "2.13",
+  "status": "COMPLETE_PASS",
+  "baseline_commit": "1f2b967d6bf5ec7aaa263192462ede1eb5c9bd28",
+  "artifacts": [
+    {
+      "path": "multi-token-contract.json",
+      "sha256": "2ae8808f68bfe10b658f32cae11d56d49aaed7cfb419f6aec93b64c9b0b24f6e"
+    },
+    {
+      "path": "multi-token-oracle.json",
+      "sha256": "9204ea21bac16f288bca389153bd919cb5d629cf6ce5818e8bcb0af85b4294b8"
+    },
+    {
+      "path": "multi-token-native.json",
+      "sha256": "5d2292995bccc3012aa2e0ebbd2a26eafdd1b73560acc407ecf45845040abfaf"
+    },
+    {
+      "path": "multi-token-state.json",
+      "sha256": "677bc8a06e06dca3591070ec030d2b73de195fc137785caf36bce2f9b01a5aac"
+    },
+    {
+      "path": "multi-token-validation.json",
+      "sha256": "df1bf3aa3810a4cad0492d8d62747e7c6a5d54a70a3a01f960b212349c19c4b0"
+    }
+  ],
+  "source_raw_captures": "IGNORED_NOT_COMMITTED",
+  "raw_model_payload_committed": false
+}

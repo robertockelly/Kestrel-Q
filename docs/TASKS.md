@@ -74,11 +74,11 @@ exact-GGUF runtime correctness claims.
 
 ## Epic 2 — Loader and introspection
 
-**Implementation status: IN PROGRESS.** Tasks 2.0–2.12 are complete/pass. The
+**Implementation status: IN PROGRESS.** Tasks 2.0–2.13 are complete/pass. The
 native runtime now includes independently validated scalar operators, complete
-target-quantized layer composition and M1's short-context 48-layer first-token
-path. The governed Epic 2 plan does not define M1 as its final closure gate;
-no post-M1 task has started.
+target-quantized layer composition, M1's short-context first token and a true
+incremental four-token greedy continuation. The governed Epic 2 plan does not
+define a closure gate beyond these tasks, so no closure status is invented.
 
 - [x] Choose initial model storage/container strategy (ADR 0006 staged direct-GGUF-first path)
 - [x] Task 2.0 — Native GGUF introspection and memory-mapped container layer:
@@ -250,6 +250,20 @@ no post-M1 task has started.
     recovery: **PASS**;
   - logical payload 40,208,768,960 bytes under the governed 64 GiB M1 ceiling;
   - ADR 0020: **ACCEPTED**;
+  - overall status: **COMPLETE / PASS**.
+- [x] Task 2.13 — Native Multi-Token Greedy Decode & Session Continuity:
+  - independent pinned llama.cpp continuation over the explicit canonical
+    prompt IDs: **FROZEN BEFORE NATIVE VALIDATION**;
+  - native IDs `[271, 248068, 198, 760]` and decoded fragments
+    `["\n\n", "<think>", "\n", "The"]`: **EXACT DISCRETE PASS**;
+  - prompt prefill once plus three direct one-token decode calls: **PASS**;
+  - GDN/QSA/PLE state continuity, exact MoE top-10 selected-only access and
+    16 PLE intents per decode token: **PASS**;
+  - injected later-step failure, unchanged pre-step state/output and oracle
+    retry: **PASS**;
+  - successful logical payload 59,212,012,160 bytes under the governed 96 GiB
+    ceiling; complete target F32 matrices materialized = **0**;
+  - ADR 0021: **ACCEPTED**;
   - overall status: **COMPLETE / PASS**.
 
 ## Epic 3 — CPU correctness engine

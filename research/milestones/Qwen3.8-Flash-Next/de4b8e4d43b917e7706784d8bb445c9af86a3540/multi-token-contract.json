@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "task": "2.13",
+  "baseline_commit": "1f2b967d6bf5ec7aaa263192462ede1eb5c9bd28",
+  "canonical_model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "gguf_sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+  "prompt_id": "KQ-PROMPT-001",
+  "prompt_utf8": "Hello, Kestrel-Q.",
+  "prompt_token_ids": [
+    9419,
+    11,
+    710,
+    467,
+    3621,
+    27325,
+    13
+  ],
+  "context_capacity": 16,
+  "max_new_tokens": 4,
+  "generation": "GREEDY_EXACT_DISCRETE",
+  "prefill_count": 1,
+  "decode_input": "PREVIOUS_SELECTED_TOKEN_ID_DIRECT",
+  "prompt_replay": "PROHIBITED",
+  "eog_token_ids": [
+    248044,
+    248046
+  ],
+  "transaction": "ONE_COMPLETE_MODEL_TOKEN",
+  "failure_policy": "ROLLBACK_TO_PRE_STEP_STATE",
+  "payload_gate_bytes": 103079215104
+}

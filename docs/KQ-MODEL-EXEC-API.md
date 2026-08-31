@@ -16,10 +16,14 @@ concurrent mutation; there is no global model-execution state.
 - `kq_model_exec_state_create` allocates bounded per-layer state.
 - `kq_model_exec_state_reset` deterministically returns all layers and the
   model position to zero.
+- `kq_model_exec_state_get_summary` reports positions, QSA block/tail bounds
+  and deterministic semantic-state hashes without exporting state blobs.
 - config/state owned-byte and context/position queries return zero for invalid
   objects.
 - `kq_model_exec_required_scratch_bytes` is checked and requires a reset state,
   non-empty prompt and room for a continuation position.
+- `kq_model_exec_required_decode_scratch_bytes` sizes one incremental token
+  against the current bounded QSA length and context capacity.
 
 ## Execution
 
@@ -35,13 +39,21 @@ On success the call commits:
 - the result/metrics structure;
 - public model position equal to the prompt length.
 
-On failure caller logits, decoded output, result and public position remain
-unchanged. Private layer staging may have been written, so the next execution
-resets all layers automatically. A successful prefill state cannot be reused
-as an incremental generator in this M1 API.
+`kq_model_exec_decode_one_f32` consumes one previously selected canonical ID
+directly and returns the following greedy ID/logits/decoded fragment. It
+requires a successful prefill or decode state, room in the configured context
+and caller-owned buffers under the same lifetime and aliasing rules.
+
+On prefill failure caller logits, decoded output, result and public position
+remain unchanged; legacy M1 recovery resets private staging before retry. On
+incremental failure, completed layer commits are rolled back in reverse order,
+so all persistent state and caller outputs remain at the immediately preceding
+successful token. Provider accounting is monotonic audit data and is not part
+of the rollback state.
 
 Input IDs `248077..248319` and all IDs outside model capacity fail explicitly.
-Prompts must contain fewer tokens than context capacity. Buffers must not
+Prompts must contain fewer tokens than context capacity. Decode fails closed
+at capacity and on a reset/invalid continuation state. Buffers must not
 overlap, arithmetic is checked and non-finite hidden/logit results fail closed.
 
 `kq_model_exec_greedy_argmax_f32` validates finite logits, examines the complete
@@ -49,9 +61,14 @@ array and retains the first/lower ID on exact ties. It does not apply a
 tokenizer/model ID policy by itself; the model executor validates the selected
 ID before native decode.
 
+`kq_model_exec_token_is_eog` recognizes the pinned generation EOG IDs 248044
+and 248046. The caller returns/decodes an EOG selection and stops before
+feeding it. No RNG or sampling surface exists.
+
 ## Metrics
 
 Metrics distinguish semantic logical touches from physical I/O and expose
 embedding/head bytes, blocks, unique semantics, routed selections, selected
-expert matrix requests, PLE rows, state/scratch/logits bytes and elapsed host
-time. They are characterization counters, not performance guarantees.
+expert matrix requests, PLE rows, QSA selection counts, prefill/decode counts,
+state/scratch/logits bytes and elapsed host time. They are characterization
+counters, not performance guarantees.

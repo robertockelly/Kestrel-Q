@@ -1,6 +1,6 @@
 # PLAN-EPIC-2-NATIVE-RUNTIME-FOUNDATIONS.md
 
-Status: **IN PROGRESS — TASKS 2.0–2.12 COMPLETE / PASS**
+Status: **IN PROGRESS — TASKS 2.0–2.13 COMPLETE / PASS**
 
 ## Epic 2 — Native Runtime Foundations
 
@@ -34,6 +34,8 @@ Initial task order:
 12. Task 2.11 — Target quantized layer execution through bounded semantic
     weight access. **COMPLETE / PASS**
 13. Task 2.12 — First Correct Native Token. **COMPLETE / PASS**
+14. Task 2.13 — Native Multi-Token Greedy Decode & Session Continuity.
+    **COMPLETE / PASS**
 
 Constraints:
 
@@ -97,3 +99,11 @@ the explicit committed IDs. Three real provider faults recover to the same
 control token. ADR 0020 is ACCEPTED. Epic 2 remains **IN PROGRESS** because
 this plan does not define M1 as its final acceptance gate; no post-M1 task is
 started or invented here.
+
+Task 2.13 extends M1 into a bounded true incremental continuation. The prompt
+is prefilled exactly once and selected IDs feed one-token decode directly.
+Pinned llama.cpp independently produces `[271, 248068, 198, 760]`; native
+Kestrel-Q matches the full sequence exactly, preserves the token-271 M1 gate
+and proves later-step rollback/retry without resetting the successful prefix.
+ADR 0021 is ACCEPTED. Epic 2 remains **IN PROGRESS** because this plan still
+does not define a closure gate beyond the completed governed tasks.

@@ -1,6 +1,6 @@
 # Native model executor
 
-Status: **TASK 2.12 COMPLETE / PASS**
+Status: **TASK 2.13 COMPLETE / PASS**
 
 The Task 2.12 executor is the first production C17 path that composes all
 accepted target components into one real-model operation:
@@ -27,10 +27,14 @@ ascending order and rejects any missing, reordered or incompatible binding.
 All borrowed owners outlive config, state and calls.
 
 `kq_model_exec_state` owns one Task 2.10 state per layer and a public position.
-M1 explicitly uses context capacity 8; no 262,144-token cache is allocated.
+M1 explicitly uses context capacity 8; Task 2.13 uses capacity 16 for a
+seven-token prompt plus up to four returned tokens. No 262,144-token cache is allocated.
 A failed operation leaves the public position and caller outputs unchanged and
 marks private state for reset. The next attempt resets all layers before work.
-Real injected failures at layers 0, 24 and 47 each recover to token 271.
+Real injected failures at layers 0, 24 and 47 each recover to token 271. The
+incremental API uses a stronger whole-model per-token rollback: earlier layer
+commits flip back immediately if a later layer/final stage fails, preserving a
+valid generated prefix without resetting it.
 
 ## Bounded execution
 
@@ -63,6 +67,14 @@ Logical touches are not physical disk I/O, page-cache traffic or storage
 throughput. No performance conclusion follows. Cache, prefetch, SIMD, CUDA
 model kernels and scheduler policy remain deferred.
 
+## Incremental extension
+
+Task 2.13 preserves the M1 path and adds direct one-token decode. The governed
+four-token result is `[271, 248068, 198, 760]`; prefill runs once and three
+decode calls advance position 7 -> 8 -> 9 -> 10. See
+`MULTI-TOKEN-DECODE-CONTRACT.md` and `NATIVE-MULTI-TOKEN-GENERATION.md` for the
+state, transaction, payload and evidence contracts.
+
 ## CLI
 
 The strict milestone command is:
@@ -71,6 +83,7 @@ The strict milestone command is:
 kq-run $env:KQ_GGUF_PATH --prompt "Hello, Kestrel-Q." --max-new-tokens 1 --greedy
 ```
 
-It reports bounded phase/layer progress and derived checkpoint summaries, not
-raw activations or weights. Other generation counts, sampling, chat options,
-vision and MTP are rejected by the command shape.
+Task 2.13 also accepts `--max-new-tokens 2..4` with context 16. It reports
+bounded phase/layer and per-token progress, not activations or weights. Zero,
+larger counts, sampling, chat options, vision and MTP are rejected by the
+command shape.

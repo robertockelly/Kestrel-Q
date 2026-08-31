@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "oracle_sequence": [
+    271,
+    248068,
+    198,
+    760
+  ],
+  "native_sequence": [
+    271,
+    248068,
+    198,
+    760
+  ],
+  "comparison": "EXACT_DISCRETE",
+  "m1_token_271_preserved": true,
+  "m1_decoded_bytes_preserved": "\n\n",
+  "prompt_prefill_count": 1,
+  "incremental_decode_count": 3,
+  "rollback_retry": "PASS",
+  "qsa_block_tail": "PASS",
+  "qsa_sparse_selection_counts": "PASS",
+  "moe_top10_and_selected_only": "PASS",
+  "ple_exact_rows": "PASS",
+  "successful_payload_gate_bytes": 103079215104,
+  "successful_payload_bytes": 59212012160,
+  "payload_gate_pass": true,
+  "complete_target_f32_weight_matrices": 0,
+  "self_oracle": false
+}

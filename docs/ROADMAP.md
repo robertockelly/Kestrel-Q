@@ -33,10 +33,10 @@ Architecture, tensor inventory, tokenizer, reference outputs, hardware baseline.
   chat-template and PLE-address vectors regenerate byte-identically. Canonical
   BF16 and exact-GGUF full-model runs remain explicit capable-environment gates;
   no weight-dependent output was fabricated.
-- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.12 are
-  complete/pass, including M1 First Correct Native Token. The governed Epic 2
-  plan does not define M1 as its final closure gate, so no later status is
-  invented and no post-M1 task is started.
+- Epic 1 is complete/pass. Epic 2 is **IN PROGRESS**: Tasks 2.0–2.13 are
+  complete/pass, including M1 First Correct Native Token and its first bounded
+  true incremental greedy continuation. The governed Epic 2 plan does not
+  define a closure gate beyond these tasks, so no closure status is invented.
 
 ## R1 — Read the model
 Safe mapping, metadata, tensor inspection, diagnostics.
@@ -109,8 +109,13 @@ Safe mapping, metadata, tensor inspection, diagnostics.
   the pinned independent llama.cpp Class-Q oracle; three model-level fault
   recoveries pass. Logical payload is 40,208,768,960 bytes under the 64 GiB M1
   safety ceiling and is not physical-I/O evidence.
-- R1/Epic 2 remains in progress according to its governed plan; M1 is complete
-  and no post-M1 optimization task has started.
+- Task 2.13 is complete/pass. ADR 0021 accepts prompt-prefill-once plus direct
+  one-token greedy continuation. Pinned llama.cpp and native Kestrel-Q both
+  produce `[271, 248068, 198, 760]`; a failed later step rolls back all
+  completed layers and retry reproduces the oracle token. The successful path
+  accounts 59,212,012,160 logical packed bytes under 96 GiB, not physical I/O.
+- R1/Epic 2 remains in progress according to its governed plan; no scheduler,
+  cache/prefetch optimization, sampling or CUDA model kernel has started.
 
 ## R2 — Compute correctly
 Minimal CPU reference inference and reference-vector parity.
@@ -126,6 +131,8 @@ Minimal CPU reference inference and reference-vector parity.
   2.11**.
 - Real target embedding, 48-layer execution, final mixer, LM head/logits,
   greedy argmax and native decode: **COMPLETE / PASS via Task 2.12**.
+- True incremental bounded greedy continuation and per-step transaction:
+  **COMPLETE / PASS via Task 2.13**.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

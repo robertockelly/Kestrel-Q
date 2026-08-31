@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "kq_internal.h"
-#include "kq_layer.h"
+#include "kq_layer_internal.h"
 #include "kq_numeric.h"
 #include "kq_weight_provider_internal.h"
 
@@ -349,10 +349,110 @@ uint64_t kq_model_exec_state_owned_bytes(const kq_model_exec_state *state) {
     return state_valid(state) ? state->owned_bytes : 0U;
 }
 
+static uint64_t hash_u64(uint64_t hash, uint64_t value) {
+    uint32_t byte_index;
+    for (byte_index = 0U; byte_index < 8U; ++byte_index) {
+        hash ^= (value >> (byte_index * 8U)) & UINT64_C(0xff);
+        hash *= UINT64_C(1099511628211);
+    }
+    return hash;
+}
+
+kq_status kq_model_exec_state_get_summary(
+    const kq_model_exec_state *state,
+    kq_model_exec_state_summary *summary,
+    kq_diagnostic *diagnostic) {
+    kq_model_exec_state_summary staged;
+    uint64_t hash = UINT64_C(14695981039346656037);
+    uint32_t layer;
+    if (!state_valid(state) || summary == NULL)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                          "model state summary arguments are invalid");
+    memset(&staged, 0, sizeof(staged));
+    staged.model_position = state->position;
+    staged.layer_position_min = UINT64_MAX;
+    staged.qsa_sequence_length_min = UINT64_MAX;
+    staged.qsa_complete_blocks_min = UINT64_MAX;
+    staged.qsa_incomplete_tail_min = UINT64_MAX;
+    staged.gdn_state_hash = UINT64_C(14695981039346656037);
+    staged.qsa_state_hash = UINT64_C(14695981039346656037);
+    staged.ple_address_state_hash = UINT64_C(14695981039346656037);
+    staged.ple_value_state_hash = UINT64_C(14695981039346656037);
+    hash = hash_u64(hash, state->position);
+    for (layer = 0U; layer < KQ_MODEL_EXEC_LAYER_COUNT; ++layer) {
+        kq_layer_state_summary layer_summary;
+        kq_status status = kq_layer_state_get_summary(
+            state->layers[layer], &layer_summary, diagnostic);
+        if (status != KQ_STATUS_OK) return status;
+        if (layer_summary.position < staged.layer_position_min)
+            staged.layer_position_min = layer_summary.position;
+        if (layer_summary.position > staged.layer_position_max)
+            staged.layer_position_max = layer_summary.position;
+        if (layer_summary.gdn_initialized)
+            staged.gdn_initialized_layers += 1U;
+        if (layer_summary.family == KQ_LAYER_FAMILY_GDN ||
+            layer_summary.family == KQ_LAYER_FAMILY_PLE_GDN)
+            staged.gdn_state_hash = hash_u64(
+                staged.gdn_state_hash, layer_summary.gdn_state_hash);
+        if (layer_summary.family == KQ_LAYER_FAMILY_QSA) {
+            uint64_t complete = layer_summary.qsa_length / 4U;
+            uint64_t tail = layer_summary.qsa_length % 4U;
+            staged.qsa_layers += 1U;
+            if (layer_summary.qsa_length < staged.qsa_sequence_length_min)
+                staged.qsa_sequence_length_min = layer_summary.qsa_length;
+            if (layer_summary.qsa_length > staged.qsa_sequence_length_max)
+                staged.qsa_sequence_length_max = layer_summary.qsa_length;
+            if (complete < staged.qsa_complete_blocks_min)
+                staged.qsa_complete_blocks_min = complete;
+            if (complete > staged.qsa_complete_blocks_max)
+                staged.qsa_complete_blocks_max = complete;
+            if (tail < staged.qsa_incomplete_tail_min)
+                staged.qsa_incomplete_tail_min = tail;
+            if (tail > staged.qsa_incomplete_tail_max)
+                staged.qsa_incomplete_tail_max = tail;
+            staged.qsa_state_hash = hash_u64(
+                staged.qsa_state_hash, layer_summary.qsa_state_hash);
+        }
+        if (layer_summary.family == KQ_LAYER_FAMILY_PLE_GDN) {
+            staged.ple_address_position = layer_summary.ple_address_position;
+            staged.ple_value_position = layer_summary.ple_value_position;
+            staged.ple_address_state_hash = hash_u64(
+                staged.ple_address_state_hash,
+                layer_summary.ple_address_integrity);
+            staged.ple_value_state_hash = hash_u64(
+                staged.ple_value_state_hash,
+                layer_summary.ple_value_state_hash);
+        }
+        hash = hash_u64(hash, layer);
+        hash = hash_u64(hash, (uint64_t)layer_summary.family);
+        hash = hash_u64(hash, layer_summary.position);
+        hash = hash_u64(hash, layer_summary.qsa_length);
+        hash = hash_u64(hash, layer_summary.ple_address_position);
+        hash = hash_u64(hash, layer_summary.ple_value_position);
+        hash = hash_u64(hash, layer_summary.ple_address_integrity);
+        hash = hash_u64(hash, layer_summary.gdn_state_hash);
+        hash = hash_u64(hash, layer_summary.qsa_state_hash);
+        hash = hash_u64(hash, layer_summary.ple_value_state_hash);
+        hash = hash_u64(hash, layer_summary.active_slot);
+        hash = hash_u64(hash, (uint64_t)layer_summary.gdn_initialized);
+    }
+    if (staged.layer_position_min == UINT64_MAX)
+        staged.layer_position_min = 0U;
+    if (staged.qsa_sequence_length_min == UINT64_MAX) {
+        staged.qsa_sequence_length_min = 0U;
+        staged.qsa_complete_blocks_min = 0U;
+        staged.qsa_incomplete_tail_min = 0U;
+    }
+    staged.structural_hash = hash;
+    *summary = staged;
+    return KQ_STATUS_OK;
+}
+
 static kq_status required_scratch_internal(
     const kq_model_exec_config *config, const kq_model_exec_state *state,
     uint64_t token_count, uint64_t *total_bytes,
-    uint64_t *layer_scratch_bytes, kq_diagnostic *diagnostic) {
+    uint64_t *layer_scratch_bytes, int decode,
+    kq_diagnostic *diagnostic) {
     uint64_t branch_elements;
     uint64_t fixed_floats;
     uint64_t bytes;
@@ -365,10 +465,21 @@ static kq_status required_scratch_internal(
          KQ_MODEL_EXEC_HIDDEN_SIZE) * sizeof(float);
 
     if (!config_valid(config) || !state_valid(state) ||
-        state->config != config || token_count == 0U || total_bytes == NULL ||
-        state->position != 0U || token_count >= config->context_capacity)
+        state->config != config || token_count == 0U || total_bytes == NULL)
         return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
-                          "model scratch query requires reset state and bounded prompt");
+                          "model scratch query arguments are invalid");
+    if (!decode && token_count >= config->context_capacity)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "prefill scratch requires room for continuation");
+    if ((decode && token_count != 1U))
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "decode scratch requires exactly one token");
+    if ((!decode && (state->position != 0U || state->requires_reset)) ||
+        (decode && (state->position == 0U || state->requires_reset ||
+                    state->position >= config->context_capacity)))
+        return model_fail(diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                          decode ? "decode scratch requires live bounded state" :
+                                   "prefill scratch requires reset bounded state");
     for (layer = 0U; layer < KQ_MODEL_EXEC_LAYER_COUNT; ++layer) {
         status = kq_layer_required_quantized_scratch_bytes(
             config->layers[layer], state->layers[layer],
@@ -400,7 +511,14 @@ kq_status kq_model_exec_required_scratch_bytes(
     uint64_t prompt_token_count, uint64_t *scratch_bytes,
     kq_diagnostic *diagnostic) {
     return required_scratch_internal(config, state, prompt_token_count,
-                                     scratch_bytes, NULL, diagnostic);
+                                     scratch_bytes, NULL, 0, diagnostic);
+}
+
+kq_status kq_model_exec_required_decode_scratch_bytes(
+    const kq_model_exec_config *config, const kq_model_exec_state *state,
+    uint64_t *scratch_bytes, kq_diagnostic *diagnostic) {
+    return required_scratch_internal(config, state, 1U, scratch_bytes,
+                                     NULL, 1, diagnostic);
 }
 
 static void partition_scratch(uint64_t token_count, void *scratch,
@@ -561,7 +679,7 @@ kq_status kq_model_exec_prefill_first_token_f32(
         state->requires_reset = 0;
     }
     status = required_scratch_internal(config, state, token_count, &required,
-                                       &layer_scratch, diagnostic);
+                                       &layer_scratch, 0, diagnostic);
     if (status != KQ_STATUS_OK) return status;
     if (scratch_bytes < required)
         return model_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
@@ -633,6 +751,14 @@ kq_status kq_model_exec_prefill_first_token_f32(
             diagnostic);
         if (status != KQ_STATUS_OK) return status;
         staged_result.metrics.layers_completed += 1U;
+        staged_result.metrics.qsa_selection_events +=
+            layer_metrics.qsa_selection_events;
+        staged_result.metrics.qsa_candidate_blocks +=
+            layer_metrics.qsa_candidate_blocks;
+        staged_result.metrics.qsa_selected_blocks +=
+            layer_metrics.qsa_selected_blocks;
+        staged_result.metrics.qsa_selected_tokens +=
+            layer_metrics.qsa_selected_tokens;
         emit_progress(observer, observer_user_data,
                       KQ_MODEL_EXEC_PHASE_LAYER_COMPLETE, layer,
                       next + (token_count - 1U) * KQ_MODEL_EXEC_FINAL_WIDTH,
@@ -695,6 +821,8 @@ kq_status kq_model_exec_prefill_first_token_f32(
         selected == 248044U || selected == 248046U;
     staged_result.decoded_utf8_bytes = decoded_required;
     staged_result.metrics.prompt_tokens = token_count;
+    staged_result.metrics.input_tokens = token_count;
+    staged_result.metrics.prompt_prefill_count = 1U;
     staged_result.metrics.persistent_state_bytes = state->owned_bytes;
     staged_result.metrics.peak_scratch_bytes = required;
     staged_result.metrics.logits_bytes = logits_bytes;
@@ -731,10 +859,276 @@ kq_status kq_model_exec_prefill_first_token_f32(
                              &staged_result.metrics.elapsed_nanoseconds);
     memcpy(logits, buffers.logits, (size_t)logits_bytes);
     state->position += token_count;
+    state->requires_reset = 0;
     *result = staged_result;
     emit_progress(observer, observer_user_data,
                   KQ_MODEL_EXEC_PHASE_TOKEN_SELECTED, UINT32_MAX, NULL, 0U);
     return KQ_STATUS_OK;
+}
+
+int kq_model_exec_token_is_eog(uint32_t token_id) {
+    return token_id == 248044U || token_id == 248046U;
+}
+
+static kq_status rollback_decode_layers(
+    kq_model_exec_state *state, uint32_t committed_layers,
+    kq_status original_status, const kq_diagnostic *original_diagnostic,
+    kq_diagnostic *diagnostic) {
+    while (committed_layers != 0U) {
+        kq_diagnostic rollback_diagnostic;
+        kq_status rollback_status;
+        committed_layers -= 1U;
+        kq_diagnostic_clear(&rollback_diagnostic);
+        rollback_status = kq_layer_state_rollback_last(
+            state->layers[committed_layers], 1U, &rollback_diagnostic);
+        if (rollback_status != KQ_STATUS_OK) {
+            state->requires_reset = 1;
+            return model_fail(diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                              "model decode rollback could not restore layer state");
+        }
+    }
+    if (diagnostic != NULL && original_diagnostic != NULL)
+        *diagnostic = *original_diagnostic;
+    return original_status;
+}
+
+kq_status kq_model_exec_decode_one_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    uint32_t input_token_id,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result, kq_diagnostic *diagnostic) {
+    kq_model_exec_buffers buffers;
+    const kq_weight_provider_metrics *before;
+    const kq_weight_provider_metrics *after;
+    kq_weight_provider_metrics before_copy;
+    kq_model_exec_result staged_result;
+    unsigned char staged_decoded[1024];
+    kq_tokenizer_decode_options decode_options;
+    kq_diagnostic original_diagnostic;
+    LARGE_INTEGER frequency = {0};
+    LARGE_INTEGER started = {0};
+    LARGE_INTEGER finished = {0};
+    uint64_t required;
+    uint64_t layer_scratch;
+    uint64_t logits_bytes;
+    uint64_t embedding_before;
+    uint64_t embedding_after;
+    uint64_t lm_before;
+    uint64_t decoded_required = 0U;
+    uint32_t branch;
+    uint32_t layer;
+    uint32_t selected;
+    uint32_t committed_layers = 0U;
+    float *current;
+    float *next;
+    kq_status status;
+
+    kq_diagnostic_clear(diagnostic);
+    memset(&staged_result, 0, sizeof(staged_result));
+    if (!config_valid(config) || !state_valid(state) ||
+        state->config != config || logits == NULL || decoded_utf8 == NULL ||
+        scratch == NULL || result == NULL ||
+        logits_capacity < KQ_MODEL_EXEC_VOCABULARY_SIZE)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "model incremental-decode arguments are invalid");
+    if (input_token_id >= KQ_MODEL_EXEC_CANONICAL_TOKEN_LIMIT)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_TOKEN_ID,
+                          "decode input is a padded or invalid canonical token ID");
+    if (state->requires_reset || state->position == 0U)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                          "incremental decode requires successful prefill state");
+    if (state->position >= config->context_capacity)
+        return model_fail(diagnostic, KQ_STATUS_LIMIT_EXCEEDED,
+                          "incremental decode exhausted context capacity");
+    status = required_scratch_internal(config, state, 1U, &required,
+                                       &layer_scratch, 1, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    if (scratch_bytes < required)
+        return model_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                          "model incremental-decode scratch is too small");
+    if (!mul_u64(KQ_MODEL_EXEC_VOCABULARY_SIZE, sizeof(float), &logits_bytes))
+        return model_fail(diagnostic, KQ_STATUS_ARITHMETIC_OVERFLOW,
+                          "model incremental-decode buffer size overflows");
+    if (ranges_overlap(logits, logits_bytes, scratch, scratch_bytes) ||
+        ranges_overlap(decoded_utf8, decoded_utf8_capacity, scratch, scratch_bytes) ||
+        ranges_overlap(logits, logits_bytes, decoded_utf8, decoded_utf8_capacity))
+        return model_fail(diagnostic, KQ_STATUS_ALIASING_VIOLATION,
+                          "model incremental outputs and scratch overlap");
+
+    before = kq_weight_provider_get_metrics(config->provider);
+    if (before == NULL) return KQ_STATUS_INCOMPATIBLE_MODEL_EXEC;
+    before_copy = *before;
+    if (QueryPerformanceFrequency(&frequency) != 0)
+        (void)QueryPerformanceCounter(&started);
+    partition_scratch(1U, scratch, layer_scratch, &buffers);
+
+    embedding_before = before_copy.logical_payload_bytes_touched;
+    status = kq_weight_provider_row_f32(
+        config->provider, config->embedding, input_token_id,
+        KQ_MODEL_EXEC_HIDDEN_SIZE, buffers.embedding,
+        KQ_MODEL_EXEC_HIDDEN_SIZE, buffers.provider_scratch,
+        buffers.provider_scratch_bytes, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    for (branch = 0U; branch < KQ_MODEL_EXEC_BRANCH_COUNT; ++branch)
+        memcpy(buffers.branches_a + branch * KQ_MODEL_EXEC_HIDDEN_SIZE,
+               buffers.embedding, KQ_MODEL_EXEC_HIDDEN_SIZE * sizeof(float));
+    after = kq_weight_provider_get_metrics(config->provider);
+    if (after == NULL || after->logical_payload_bytes_touched < embedding_before)
+        return KQ_STATUS_INCOMPATIBLE_MODEL_EXEC;
+    embedding_after = after->logical_payload_bytes_touched;
+    staged_result.metrics.embedding_logical_bytes_touched =
+        embedding_after - embedding_before;
+    emit_progress(observer, observer_user_data,
+                  KQ_MODEL_EXEC_PHASE_EMBEDDING_COMPLETE, UINT32_MAX,
+                  buffers.embedding, KQ_MODEL_EXEC_HIDDEN_SIZE);
+
+    current = buffers.branches_a;
+    next = buffers.branches_b;
+    for (layer = 0U; layer < KQ_MODEL_EXEC_LAYER_COUNT; ++layer) {
+        kq_layer_metrics layer_metrics;
+        float *swap;
+        emit_progress(observer, observer_user_data,
+                      KQ_MODEL_EXEC_PHASE_LAYER_BEGIN, layer, NULL, 0U);
+        memset(&layer_metrics, 0, sizeof(layer_metrics));
+        status = kq_layer_decode_quantized_f32(
+            config->layers[layer], config->provider, current, input_token_id,
+            next, KQ_MODEL_EXEC_FINAL_WIDTH, state->layers[layer],
+            buffers.layer_scratch, buffers.layer_scratch_bytes,
+            NULL, NULL, &layer_metrics, diagnostic);
+        if (status != KQ_STATUS_OK) goto rollback;
+        committed_layers += 1U;
+        staged_result.metrics.layers_completed += 1U;
+        staged_result.metrics.qsa_selection_events +=
+            layer_metrics.qsa_selection_events;
+        staged_result.metrics.qsa_candidate_blocks +=
+            layer_metrics.qsa_candidate_blocks;
+        staged_result.metrics.qsa_selected_blocks +=
+            layer_metrics.qsa_selected_blocks;
+        staged_result.metrics.qsa_selected_tokens +=
+            layer_metrics.qsa_selected_tokens;
+        emit_progress(observer, observer_user_data,
+                      KQ_MODEL_EXEC_PHASE_LAYER_COMPLETE, layer, next,
+                      KQ_MODEL_EXEC_FINAL_WIDTH);
+        swap = current;
+        current = next;
+        next = swap;
+    }
+
+    status = final_mix(config, current, &buffers, diagnostic);
+    if (status != KQ_STATUS_OK) goto rollback;
+    emit_progress(observer, observer_user_data,
+                  KQ_MODEL_EXEC_PHASE_FINAL_MIX_COMPLETE, UINT32_MAX,
+                  buffers.hidden, KQ_MODEL_EXEC_HIDDEN_SIZE);
+
+    before = kq_weight_provider_get_metrics(config->provider);
+    if (before == NULL) {
+        status = KQ_STATUS_INCOMPATIBLE_MODEL_EXEC;
+        goto rollback;
+    }
+    lm_before = before->logical_payload_bytes_touched;
+    status = kq_weight_provider_linear_f32(
+        config->provider, config->lm_head, KQ_BINDING_PART_WHOLE,
+        KQ_WEIGHT_PROVIDER_NO_EXPERT, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+        KQ_MODEL_EXEC_HIDDEN_SIZE, buffers.hidden, buffers.logits,
+        KQ_MODEL_EXEC_VOCABULARY_SIZE, buffers.provider_scratch,
+        buffers.provider_scratch_bytes, diagnostic);
+    if (status != KQ_STATUS_OK) goto rollback;
+    after = kq_weight_provider_get_metrics(config->provider);
+    if (after == NULL || after->logical_payload_bytes_touched < lm_before) {
+        status = KQ_STATUS_INCOMPATIBLE_MODEL_EXEC;
+        goto rollback;
+    }
+    staged_result.metrics.lm_head_logical_bytes_touched =
+        after->logical_payload_bytes_touched - lm_before;
+    emit_progress(observer, observer_user_data,
+                  KQ_MODEL_EXEC_PHASE_LOGITS_COMPLETE, UINT32_MAX,
+                  buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE);
+
+    status = kq_model_exec_greedy_argmax_f32(
+        buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE, &selected, diagnostic);
+    if (status != KQ_STATUS_OK) goto rollback;
+    if (selected >= KQ_MODEL_EXEC_CANONICAL_TOKEN_LIMIT) {
+        status = model_fail(diagnostic, KQ_STATUS_INVALID_TOKEN_ID,
+                            "greedy model output is a padded non-tokenizer ID");
+        goto rollback;
+    }
+    decode_options.special_policy = KQ_TOKENIZER_DECODE_KEEP_SPECIAL;
+    status = kq_tokenizer_decode(config->tokenizer, &selected, 1U,
+                                 &decode_options, NULL, 0U,
+                                 &decoded_required, diagnostic);
+    if (status != KQ_STATUS_BUFFER_TOO_SMALL &&
+        !(status == KQ_STATUS_OK && decoded_required == 0U)) goto rollback;
+    if (decoded_utf8_capacity < decoded_required ||
+        decoded_required > sizeof(staged_decoded)) {
+        status = model_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                            "decoded incremental token output is too small");
+        goto rollback;
+    }
+    status = kq_tokenizer_decode(config->tokenizer, &selected, 1U,
+                                 &decode_options, staged_decoded,
+                                 sizeof(staged_decoded), &decoded_required,
+                                 diagnostic);
+    if (status != KQ_STATUS_OK) goto rollback;
+
+    staged_result.selected_token_id = selected;
+    staged_result.selected_token_is_eog = kq_model_exec_token_is_eog(selected);
+    staged_result.decoded_utf8_bytes = decoded_required;
+    staged_result.metrics.input_tokens = 1U;
+    staged_result.metrics.incremental_decode_count = 1U;
+    staged_result.metrics.persistent_state_bytes = state->owned_bytes;
+    staged_result.metrics.peak_scratch_bytes = required;
+    staged_result.metrics.logits_bytes = logits_bytes;
+    after = kq_weight_provider_get_metrics(config->provider);
+    if (after == NULL ||
+        after->logical_payload_bytes_touched < before_copy.logical_payload_bytes_touched ||
+        after->quantized_blocks_touched < before_copy.quantized_blocks_touched ||
+        after->selected_expert_requests < before_copy.selected_expert_requests ||
+        after->ple_row_requests < before_copy.ple_row_requests) {
+        status = KQ_STATUS_INCOMPATIBLE_MODEL_EXEC;
+        goto rollback;
+    }
+    staged_result.metrics.logical_payload_bytes_touched =
+        after->logical_payload_bytes_touched - before_copy.logical_payload_bytes_touched;
+    staged_result.metrics.payload_blocks_touched =
+        after->quantized_blocks_touched - before_copy.quantized_blocks_touched;
+    staged_result.metrics.unique_semantic_tensors_touched =
+        after->unique_semantic_tensors_touched;
+    staged_result.metrics.routed_expert_member_requests =
+        after->selected_expert_requests - before_copy.selected_expert_requests;
+    staged_result.metrics.selected_expert_matrix_requests =
+        staged_result.metrics.routed_expert_member_requests;
+    if (staged_result.metrics.selected_expert_matrix_requests % 3U != 0U) {
+        status = model_fail(diagnostic, KQ_STATUS_INCOMPATIBLE_MODEL_EXEC,
+                            "routed expert matrix request count is incomplete");
+        goto rollback;
+    }
+    staged_result.metrics.routed_expert_selections =
+        staged_result.metrics.selected_expert_matrix_requests / 3U;
+    staged_result.metrics.ple_row_requests =
+        after->ple_row_requests - before_copy.ple_row_requests;
+    staged_result.metrics.maximum_f32_weight_bytes_materialized =
+        after->maximum_f32_weight_bytes_materialized;
+    if (frequency.QuadPart > 0 && QueryPerformanceCounter(&finished) != 0)
+        (void)qpc_elapsed_ns(started, finished, frequency,
+                             &staged_result.metrics.elapsed_nanoseconds);
+
+    memcpy(logits, buffers.logits, (size_t)logits_bytes);
+    if (decoded_required != 0U)
+        memcpy(decoded_utf8, staged_decoded, (size_t)decoded_required);
+    state->position += 1U;
+    *result = staged_result;
+    emit_progress(observer, observer_user_data,
+                  KQ_MODEL_EXEC_PHASE_TOKEN_SELECTED, UINT32_MAX, NULL, 0U);
+    return KQ_STATUS_OK;
+
+rollback:
+    if (diagnostic != NULL) original_diagnostic = *diagnostic;
+    else kq_diagnostic_clear(&original_diagnostic);
+    return rollback_decode_layers(state, committed_layers, status,
+                                  &original_diagnostic, diagnostic);
 }
 
 kq_status kq_model_exec_generate_first_token_f32(

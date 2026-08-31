@@ -235,7 +235,23 @@ The M1 public position advances only after final logits, valid argmax and native
 decode. A failed call keeps public position/output unchanged, marks private
 state for reset, and the next call resets all 48 layers. Real faults at layers
 0, 24 and 47 followed by complete token-271 control runs verify this policy.
-M1 does not expose incremental multi-token decode or context save/restore.
+Task 2.13 makes the existing state continuable through explicit one-token
+decode without prompt replay. At context capacity 16, the model state owns
+361,208,872 bytes. The released semantic capacity is 116,822,048 bytes:
+116,195,328 fixed GDN bytes, 442,368 QSA capacity bytes, a 32-byte PLE address
+state and 184,320 PLE value-state bytes. Peak scratch is 8,693,472 bytes and
+the logits buffer is 993,280 bytes. The remaining 244,386,824 bytes are the
+scalar-reference container representation, duplicate transaction slots,
+bounded copy workspace and C object overhead; they are not all transaction
+overhead.
+
+The governed sequence retains positions 7, 8, 9 and 10 after successive
+selected outputs. Across all 12 QSA layers the sequence length follows those
+positions; complete-block/tail pairs are `(1,3)`, `(2,0)`, `(2,1)` and
+`(2,2)`. Compact FNV-1a hashes cover the active semantic GDN, QSA, PLE-address
+and PLE-value states for regression evidence. They are target-representation
+diagnostics, not serialized portable session objects. Context save/restore is
+still not exposed.
 
 ## Optional-state boundaries
 

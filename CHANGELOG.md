@@ -8,6 +8,71 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 2.13 and accepted ADR 0021: the native C17 model executor now
+  prefills the prompt exactly once, consumes each selected canonical token ID
+  through a true one-token incremental decode and stops on EOG or the caller's
+  bounded greedy `max_new_tokens` limit without replay or retokenization.
+- Added an independent multi-token Class-Q oracle at pinned
+  `llama.cpp@90c26fcd4b2114b4aa39d09d69318cb8f438d27a`. Given the exact canonical
+  `KQ-PROMPT-001` IDs and context 16 it freezes `[271, 248068, 198, 760]` with
+  decoded fragments `["\n\n", "<think>", "\n", "The"]`; native Kestrel-Q
+  matches the complete sequence exactly and preserves the one-token M1 gate.
+- Added explicit model-state summaries for position, QSA block/tail geometry
+  and compact active GDN/QSA/PLE-address/PLE-value hashes. Positions advance
+  7, 8, 9 and 10; all 12 QSA caches follow them with complete-block/tail pairs
+  `(1,3)`, `(2,0)`, `(2,1)` and `(2,2)`.
+- Made one-token model decode transactional across all 48 layers. A forced
+  provider failure at layer 24 after two prior generated tokens rolls completed
+  layers back in reverse order, leaves state and caller outputs unchanged, and
+  retry produces oracle token 198. Provider metrics/traces remain monotonic
+  audit evidence rather than rollback-managed semantic state.
+- Added exact per-step access invariants: prompt prefill is one, incremental
+  decode is three, each decode has 480 ordered top-10 selections, zero
+  unselected expert member access and 16 exact PLE rows. Successful logical
+  payload is 40,208,768,960 bytes for prefill plus 6,334,414,400 per decode,
+  totaling 59,212,012,160 bytes under the governed 96 GiB ceiling; these are
+  not physical-I/O measurements.
+- Strengthened the final QSA evidence to freeze exact aggregate candidate /
+  selected-block counts of 48/48 for prefill and 24/24 for each decode, with
+  selected-token counts 336, 96, 108 and 120. Complete-block/tail state and
+  sparse-selection work are therefore checked independently.
+- Extended `kq-run` with bounded `--max-new-tokens N` greedy continuation and
+  per-token progress while retaining `--max-new-tokens 1` token 271 / `\n\n`
+  compatibility. Zero generation, padded IDs, invalid continuation, prompt
+  replay, context exhaustion and failed-step output publication fail closed.
+- Added deterministic six-file Task 2.13 milestone evidence and research-only
+  oracle/evidence tooling. Historical Task 2.12 evidence remains unchanged;
+  no model payload or local model path is stored.
+- Preserved two internal test findings before repair. The first invariant
+  validator assumed token-major MoE trace order, while the executor correctly
+  emits layer-major traces with tokens inside each layer; its expected layer
+  calculation and regression were corrected. The second validator conflated
+  three physical gate/up/down matrix requests with one logical selected-expert
+  member trace; the two independently checked counters are now distinct.
+- The first final clean build also caught a CLI-reporting-only identifier typo
+  in the new final-token logit label. The generation loop stores its bounded
+  prefix in `results`/`generated`; using those actual locals fixes the compile
+  failure, and both clean CPU/CUDA builds cover the regression.
+- The first clean CPU CTest then caught a status-code compatibility regression
+  before any model payload work: the refactored scratch query had grouped an
+  overlong prompt with invalid continuation state and returned
+  `INVALID_MODEL_STATE` instead of M1's governed `INVALID_ARGUMENT`. Input
+  geometry and state validity now fail through separate branches, with the
+  existing first-token regression enforcing the stable result.
+- The same clean suite preserved a Task 2.11 determinism failure after the
+  initial Task 2.13 test enlarged fixed provider trace arrays: although numeric
+  output was unchanged, `provider_owned_bytes` changed from 18,576 to 151,696
+  and therefore invalidated accepted evidence. Fixed trace capacities and the
+  historical owned-byte result are restored. The multi-token test now opts
+  into a separately allocated, bounded extended trace through an internal
+  test-only hook; ordinary production providers and prior evidence remain
+  byte-identical.
+- Final clean Release validation passes 40/40 CPU tests and 42/42 CUDA tests,
+  including all Task 2.0–2.12 regressions, the real multi-token transaction
+  gate, the restored Task 2.11 deterministic oracle and CUDA smoke/self-test.
+  No new Kestrel-Q `/W4` warning appears; only the previously governed
+  NVCC-generated external C4211 remains.
+
 - Completed Task 2.12 / M1 and accepted ADR 0020: the native C17 scalar path
   tokenizes governed raw UTF-8, reads bounded real embedding rows, executes
   target layers 0 through 47, applies the final qwen4exp hyper-connection

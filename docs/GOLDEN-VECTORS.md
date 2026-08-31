@@ -236,3 +236,19 @@ the lower-level calibrated operator contracts.
 | `first-token-native.json` | `27dc45eeb4002125010e3e54eec67aca7881b43648eca0a0b752a2aaee7ea546` |
 | `first-token-validation.json` | `632f12319b817fe9e043e44df05e00f5c9e20ba3c245292ae45ecd36ec8d1d06` |
 | `first-token-manifest.json` | `1f993d201edcd10864a52d99ca3cdd8bef3c9ec5bcd910cd99627e5edaa7fce9` |
+
+Task 2.13 preserves the M1 evidence unchanged and adds an independent
+four-token greedy continuation in the same milestone namespace. The oracle is
+again pinned llama.cpp over explicit canonical prompt IDs; native results are
+comparison subjects only. Exact discrete equality is required for the full
+sequence `[271, 248068, 198, 760]`. Floating selected/runner-up logits are
+diagnostic characterization, not a widened correctness substitute.
+
+| Task 2.13 evidence | SHA-256 |
+|---|---|
+| `multi-token-contract.json` | `2ae8808f68bfe10b658f32cae11d56d49aaed7cfb419f6aec93b64c9b0b24f6e` |
+| `multi-token-oracle.json` | `9204ea21bac16f288bca389153bd919cb5d629cf6ce5818e8bcb0af85b4294b8` |
+| `multi-token-native.json` | `5d2292995bccc3012aa2e0ebbd2a26eafdd1b73560acc407ecf45845040abfaf` |
+| `multi-token-state.json` | `677bc8a06e06dca3591070ec030d2b73de195fc137785caf36bce2f9b01a5aac` |
+| `multi-token-validation.json` | `df1bf3aa3810a4cad0492d8d62747e7c6a5d54a70a3a01f960b212349c19c4b0` |
+| `multi-token-manifest.json` | `b7e2a3fa1ca098f0b7a8caa3b31f964aa5d140cfafaeb072ff5ad9d1e9ec1efe` |

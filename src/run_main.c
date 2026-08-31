@@ -16,14 +16,26 @@
 #include "kq_tokenizer.h"
 #include "kq_weight_provider.h"
 
-#define KQ_RUN_CONTEXT_CAPACITY UINT64_C(8)
-#define KQ_RUN_PAYLOAD_BUDGET (UINT64_C(64) * UINT64_C(1024) * \
+#define KQ_RUN_CONTEXT_CAPACITY UINT64_C(16)
+#define KQ_RUN_MAX_NEW_TOKENS 4U
+#define KQ_RUN_PAYLOAD_BUDGET (UINT64_C(96) * UINT64_C(1024) * \
                                UINT64_C(1024) * UINT64_C(1024))
 
 static void usage(void) {
     (void)fprintf(stderr,
         "usage: kq-run <model.gguf> --prompt <text> "
-        "--max-new-tokens 1 --greedy\n");
+        "--max-new-tokens N --greedy (N=1..4)\n");
+}
+
+static int parse_max_new_tokens(const wchar_t *text, uint32_t *value) {
+    wchar_t *end = NULL;
+    unsigned long parsed;
+    if (text == NULL || value == NULL || *text == L'\0') return 0;
+    parsed = wcstoul(text, &end, 10);
+    if (end == text || *end != L'\0' || parsed == 0UL ||
+        parsed > KQ_RUN_MAX_NEW_TOKENS) return 0;
+    *value = (uint32_t)parsed;
+    return 1;
 }
 
 static void print_failure(kq_status status, const kq_diagnostic *diagnostic) {
@@ -55,9 +67,6 @@ static unsigned char *wide_to_utf8(const wchar_t *value, uint64_t *bytes) {
 
 static void progress(const kq_model_exec_progress_event *event,
                      void *user_data) {
-    uint64_t value_index;
-    double sum = 0.0;
-    double squared_sum = 0.0;
     (void)user_data;
     if (event == NULL) return;
     switch (event->phase) {
@@ -83,24 +92,6 @@ static void progress(const kq_model_exec_progress_event *event,
             break;
         default:
             break;
-    }
-    if (event->last_token_values != NULL &&
-        event->last_token_value_count != 0U &&
-        event->phase != KQ_MODEL_EXEC_PHASE_LOGITS_COMPLETE) {
-        for (value_index = 0U; value_index < event->last_token_value_count;
-             ++value_index) {
-            const double value = event->last_token_values[value_index];
-            sum += value;
-            squared_sum += value * value;
-        }
-        (void)fprintf(stderr,
-            "checkpoint: phase=%u layer=%u elements=%llu sum=%.17g "
-            "squared_sum=%.17g first=%.9g,%.9g,%.9g,%.9g\n",
-            (unsigned int)event->phase, (unsigned int)event->layer_id,
-            (unsigned long long)event->last_token_value_count, sum,
-            squared_sum, event->last_token_values[0],
-            event->last_token_values[1], event->last_token_values[2],
-            event->last_token_values[3]);
     }
 }
 
@@ -143,10 +134,13 @@ int wmain(int argc, wchar_t **argv) {
     uint64_t token_count = 0U;
     kq_tokenizer_encode_options encode_options;
     float *logits = NULL;
-    unsigned char decoded[256];
     void *scratch = NULL;
     uint64_t scratch_bytes = 0U;
-    kq_model_exec_result result = {0};
+    kq_model_exec_result results[KQ_RUN_MAX_NEW_TOKENS];
+    kq_model_exec_state_summary summaries[KQ_RUN_MAX_NEW_TOKENS];
+    unsigned char decoded_steps[KQ_RUN_MAX_NEW_TOKENS][256];
+    uint32_t max_new_tokens = 0U;
+    uint32_t generated = 0U;
     kq_diagnostic diagnostic;
     kq_status status = KQ_STATUS_OK;
     int exit_code = 1;
@@ -158,7 +152,7 @@ int wmain(int argc, wchar_t **argv) {
     model_path = argv[1];
     if (wcscmp(argv[2], L"--prompt") != 0 ||
         wcscmp(argv[4], L"--max-new-tokens") != 0 ||
-        wcscmp(argv[5], L"1") != 0 ||
+        !parse_max_new_tokens(argv[5], &max_new_tokens) ||
         wcscmp(argv[6], L"--greedy") != 0) {
         usage();
         return 2;
@@ -193,6 +187,8 @@ int wmain(int argc, wchar_t **argv) {
                                      &diagnostic);
     if (status == KQ_STATUS_BUFFER_TOO_SMALL && token_count != 0U) {
         if (token_count >= KQ_RUN_CONTEXT_CAPACITY ||
+            (uint64_t)(max_new_tokens - 1U) >
+                KQ_RUN_CONTEXT_CAPACITY - token_count ||
             token_count > SIZE_MAX / sizeof(*token_ids)) {
             status = KQ_STATUS_LIMIT_EXCEEDED;
         } else {
@@ -219,15 +215,142 @@ int wmain(int argc, wchar_t **argv) {
     if (status == KQ_STATUS_OK)
         status = kq_model_exec_prefill_first_token_f32(
             config, state, token_ids, token_count, logits,
-            KQ_MODEL_EXEC_VOCABULARY_SIZE, decoded, sizeof(decoded), scratch,
-            scratch_bytes, progress, NULL, &result, &diagnostic);
+            KQ_MODEL_EXEC_VOCABULARY_SIZE, decoded_steps[0],
+            sizeof(decoded_steps[0]), scratch, scratch_bytes, progress, NULL,
+            &results[0], &diagnostic);
     if (status != KQ_STATUS_OK) {
         print_failure(status, &diagnostic);
         goto done;
     }
-    (void)printf("token_id=%u\ndecoded_utf8=", result.selected_token_id);
-    (void)fwrite(decoded, 1U, (size_t)result.decoded_utf8_bytes, stdout);
-    (void)printf("\nis_eog=%d\nprompt_tokens=%llu\n"
+    generated = 1U;
+    status = kq_model_exec_state_get_summary(
+        state, &summaries[0], &diagnostic);
+    if (status != KQ_STATUS_OK) {
+        print_failure(status, &diagnostic);
+        goto done;
+    }
+    while (generated < max_new_tokens &&
+           !results[generated - 1U].selected_token_is_eog) {
+        void *resized;
+        uint64_t decode_scratch_bytes = 0U;
+        status = kq_model_exec_required_decode_scratch_bytes(
+            config, state, &decode_scratch_bytes, &diagnostic);
+        if (status != KQ_STATUS_OK) break;
+        if (decode_scratch_bytes > SIZE_MAX) {
+            status = KQ_STATUS_LIMIT_EXCEEDED;
+            break;
+        }
+        if (decode_scratch_bytes > scratch_bytes) {
+            resized = realloc(scratch, (size_t)decode_scratch_bytes);
+            if (resized == NULL) {
+                status = KQ_STATUS_OUT_OF_MEMORY;
+                break;
+            }
+            scratch = resized;
+            scratch_bytes = decode_scratch_bytes;
+        }
+        status = kq_model_exec_decode_one_f32(
+            config, state, results[generated - 1U].selected_token_id,
+            logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+            decoded_steps[generated], sizeof(decoded_steps[generated]),
+            scratch, scratch_bytes, progress, NULL, &results[generated],
+            &diagnostic);
+        if (status != KQ_STATUS_OK) break;
+        status = kq_model_exec_state_get_summary(
+            state, &summaries[generated], &diagnostic);
+        if (status != KQ_STATUS_OK) break;
+        generated += 1U;
+    }
+    if (status != KQ_STATUS_OK) {
+        print_failure(status, &diagnostic);
+        goto done;
+    }
+    if (max_new_tokens == 1U) {
+        (void)printf("token_id=%u\ndecoded_utf8=",
+                     results[0].selected_token_id);
+        (void)fwrite(decoded_steps[0], 1U,
+                     (size_t)results[0].decoded_utf8_bytes, stdout);
+        (void)printf("\nis_eog=%d\n", results[0].selected_token_is_eog);
+    }
+    {
+        uint32_t step;
+        uint64_t total_payload = 0U;
+        uint64_t total_blocks = 0U;
+        uint64_t total_routes = 0U;
+        uint64_t total_matrices = 0U;
+        uint64_t total_ple_rows = 0U;
+        uint64_t total_elapsed = 0U;
+        for (step = 0U; step < generated; ++step) {
+            total_payload += results[step].metrics.logical_payload_bytes_touched;
+            total_blocks += results[step].metrics.payload_blocks_touched;
+            total_routes += results[step].metrics.routed_expert_selections;
+            total_matrices += results[step].metrics.selected_expert_matrix_requests;
+            total_ple_rows += results[step].metrics.ple_row_requests;
+            total_elapsed += results[step].metrics.elapsed_nanoseconds;
+            (void)printf("step_%u_token_id=%u\nstep_%u_decoded_utf8=",
+                         (unsigned int)(step + 1U),
+                         results[step].selected_token_id,
+                         (unsigned int)(step + 1U));
+            (void)fwrite(decoded_steps[step], 1U,
+                         (size_t)results[step].decoded_utf8_bytes, stdout);
+            (void)printf("\nstep_%u_is_eog=%d\nstep_%u_position=%llu\n"
+                         "step_%u_state_hash=%016llx\n"
+                         "step_%u_gdn_state_hash=%016llx\n"
+                         "step_%u_qsa_state_hash=%016llx\n"
+                         "step_%u_ple_address_state_hash=%016llx\n"
+                         "step_%u_ple_value_state_hash=%016llx\n"
+                         "step_%u_payload_bytes=%llu\n"
+                         "step_%u_payload_blocks=%llu\n"
+                         "step_%u_expert_selections=%llu\n"
+                         "step_%u_ple_rows=%llu\n",
+                         (unsigned int)(step + 1U),
+                         results[step].selected_token_is_eog,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].model_position,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].structural_hash,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].gdn_state_hash,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].qsa_state_hash,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].ple_address_state_hash,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)summaries[step].ple_value_state_hash,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)results[step].metrics.logical_payload_bytes_touched,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)results[step].metrics.payload_blocks_touched,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)results[step].metrics.routed_expert_selections,
+                         (unsigned int)(step + 1U),
+                         (unsigned long long)results[step].metrics.ple_row_requests);
+        }
+        (void)printf("generated_tokens=%u\nprompt_prefill_count=1\n"
+                     "incremental_decode_count=%u\ncontext_capacity=%llu\n"
+                     "total_logical_payload_bytes_touched=%llu\n"
+                     "total_payload_blocks_touched=%llu\n"
+                     "total_routed_expert_selections=%llu\n"
+                     "total_selected_expert_matrix_requests=%llu\n"
+                     "total_ple_row_requests=%llu\n"
+                     "persistent_state_bytes=%llu\n"
+                     "peak_scratch_bytes=%llu\nlogits_bytes=%llu\n"
+                     "maximum_f32_weight_bytes_materialized=%llu\n"
+                     "elapsed_nanoseconds=%llu\n",
+                     generated, (unsigned int)(generated - 1U),
+                     (unsigned long long)KQ_RUN_CONTEXT_CAPACITY,
+                     (unsigned long long)total_payload,
+                     (unsigned long long)total_blocks,
+                     (unsigned long long)total_routes,
+                     (unsigned long long)total_matrices,
+                     (unsigned long long)total_ple_rows,
+                     (unsigned long long)results[generated - 1U].metrics.persistent_state_bytes,
+                     (unsigned long long)scratch_bytes,
+                     (unsigned long long)results[generated - 1U].metrics.logits_bytes,
+                     (unsigned long long)results[generated - 1U].metrics.maximum_f32_weight_bytes_materialized,
+                     (unsigned long long)total_elapsed);
+    }
+    (void)printf("prompt_tokens=%llu\n"
                  "logical_payload_bytes_touched=%llu\n"
                  "payload_blocks_touched=%llu\n"
                  "unique_semantic_tensors_touched=%llu\n"
@@ -241,24 +364,29 @@ int wmain(int argc, wchar_t **argv) {
                  "logits_bytes=%llu\n"
                  "maximum_f32_weight_bytes_materialized=%llu\n"
                  "elapsed_nanoseconds=%llu\n",
-                 result.selected_token_is_eog,
-                 (unsigned long long)result.metrics.prompt_tokens,
-                 (unsigned long long)result.metrics.logical_payload_bytes_touched,
-                 (unsigned long long)result.metrics.payload_blocks_touched,
-                 (unsigned long long)result.metrics.unique_semantic_tensors_touched,
-                 (unsigned long long)result.metrics.embedding_logical_bytes_touched,
-                 (unsigned long long)result.metrics.routed_expert_selections,
-                 (unsigned long long)result.metrics.selected_expert_matrix_requests,
-                 (unsigned long long)result.metrics.routed_expert_member_requests,
-                 (unsigned long long)result.metrics.ple_row_requests,
-                 (unsigned long long)result.metrics.lm_head_logical_bytes_touched,
-                 (unsigned long long)result.metrics.persistent_state_bytes,
-                 (unsigned long long)result.metrics.peak_scratch_bytes,
-                 (unsigned long long)result.metrics.logits_bytes,
-                 (unsigned long long)result.metrics.maximum_f32_weight_bytes_materialized,
-                 (unsigned long long)result.metrics.elapsed_nanoseconds);
+                 (unsigned long long)results[0].metrics.prompt_tokens,
+                 (unsigned long long)results[0].metrics.logical_payload_bytes_touched,
+                 (unsigned long long)results[0].metrics.payload_blocks_touched,
+                 (unsigned long long)results[0].metrics.unique_semantic_tensors_touched,
+                 (unsigned long long)results[0].metrics.embedding_logical_bytes_touched,
+                 (unsigned long long)results[0].metrics.routed_expert_selections,
+                 (unsigned long long)results[0].metrics.selected_expert_matrix_requests,
+                 (unsigned long long)results[0].metrics.routed_expert_member_requests,
+                 (unsigned long long)results[0].metrics.ple_row_requests,
+                 (unsigned long long)results[0].metrics.lm_head_logical_bytes_touched,
+                 (unsigned long long)results[0].metrics.persistent_state_bytes,
+                 (unsigned long long)results[0].metrics.peak_scratch_bytes,
+                 (unsigned long long)results[0].metrics.logits_bytes,
+                 (unsigned long long)results[0].metrics.maximum_f32_weight_bytes_materialized,
+                 (unsigned long long)results[0].metrics.elapsed_nanoseconds);
     print_top_logits(logits, KQ_MODEL_EXEC_VOCABULARY_SIZE, 20U);
-    (void)printf("oracle_selected_token_271_logit=%.9g\n", logits[271]);
+    if (max_new_tokens == 1U) {
+        (void)printf("selected_token_271_logit=%.9g\n", logits[271]);
+    } else {
+        (void)printf("final_selected_token_%u_logit=%.9g\n",
+                     (unsigned int)results[generated - 1U].selected_token_id,
+                     logits[results[generated - 1U].selected_token_id]);
+    }
     exit_code = 0;
 
 done:

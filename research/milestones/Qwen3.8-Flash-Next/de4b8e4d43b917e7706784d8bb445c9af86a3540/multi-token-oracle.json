@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "class": "Q_EXACT_GGUF",
+  "runtime": "llama.cpp",
+  "revision": "90c26fcd4b2114b4aa39d09d69318cb8f438d27a",
+  "license": "MIT",
+  "gguf_sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+  "input_authority": "EXPLICIT_CANONICAL_TOKEN_IDS",
+  "context_capacity": 16,
+  "prompt_prefill_count": 1,
+  "incremental_decode_count": 3,
+  "generated_steps": [
+    {
+      "step": 1,
+      "position": 7,
+      "token_id": 271,
+      "logit": 16.3287392,
+      "is_eog": false,
+      "piece": "\n\n",
+      "decode_elapsed_ms": 6205,
+      "top_logits": [
+        {
+          "token_id": 271,
+          "logit": 16.3287392
+        },
+        {
+          "token_id": 353,
+          "logit": 15.313982
+        },
+        {
+          "token_id": 198,
+          "logit": 14.0839825
+        },
+        {
+          "token_id": 2500,
+          "logit": 13.9742184
+        },
+        {
+          "token_id": 6558,
+          "logit": 13.9149666
+        },
+        {
+          "token_id": 2885,
+          "logit": 13.6937037
+        },
+        {
+          "token_id": 3437,
+          "logit": 13.5553856
+        },
+        {
+          "token_id": 1577,
+          "logit": 13.3973408
+        },
+        {
+          "token_id": 220,
+          "logit": 13.3490028
+        },
+        {
+          "token_id": 1394,
+          "logit": 13.2505074
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "position": 8,
+      "token_id": 248068,
+      "logit": 18.2409,
+      "is_eog": false,
+      "piece": "<think>",
+      "decode_elapsed_ms": 8690,
+      "top_logits": [
+        {
+          "token_id": 248068,
+          "logit": 18.2409
+        },
+        {
+          "token_id": 9419,
+          "logit": 17.1122208
+        },
+        {
+          "token_id": 40,
+          "logit": 13.0672188
+        },
+        {
+          "token_id": 2064,
+          "logit": 12.2895222
+        },
+        {
+          "token_id": 4558,
+          "logit": 12.0013943
+        },
+        {
+          "token_id": 4199,
+          "logit": 11.5927734
+        },
+        {
+          "token_id": 32,
+          "logit": 11.5177593
+        },
+        {
+          "token_id": 1919,
+          "logit": 11.4958401
+        },
+        {
+          "token_id": 3710,
+          "logit": 11.378335
+        },
+        {
+          "token_id": 4639,
+          "logit": 11.2867098
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "position": 9,
+      "token_id": 198,
+      "logit": 27.7949657,
+      "is_eog": false,
+      "piece": "\n",
+      "decode_elapsed_ms": 3918,
+      "top_logits": [
+        {
+          "token_id": 198,
+          "logit": 27.7949657
+        },
+        {
+          "token_id": 271,
+          "logit": 26.0136127
+        },
+        {
+          "token_id": 1358,
+          "logit": 13.8616657
+        },
+        {
+          "token_id": 248046,
+          "logit": 11.7153912
+        },
+        {
+          "token_id": 987,
+          "logit": 10.488533
+        },
+        {
+          "token_id": 6987,
+          "logit": 9.97170258
+        },
+        {
+          "token_id": 13,
+          "logit": 9.22205448
+        },
+        {
+          "token_id": 13488,
+          "logit": 9.08504963
+        },
+        {
+          "token_id": 60,
+          "logit": 8.92494678
+        },
+        {
+          "token_id": 30,
+          "logit": 8.78567696
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "position": 10,
+      "token_id": 760,
+      "logit": 27.9940491,
+      "is_eog": false,
+      "piece": "The",
+      "decode_elapsed_ms": 0,
+      "top_logits": [
+        {
+          "token_id": 760,
+          "logit": 27.9940491
+        },
+        {
+          "token_id": 90700,
+          "logit": 20.5146942
+        },
+        {
+          "token_id": 8160,
+          "logit": 18.4182472
+        },
+        {
+          "token_id": 77264,
+          "logit": 18.3744125
+        },
+        {
+          "token_id": 9764,
+          "logit": 16.1510983
+        },
+        {
+          "token_id": 1919,
+          "logit": 15.3371201
+        },
+        {
+          "token_id": 97237,
+          "logit": 14.0762358
+        },
+        {
+          "token_id": 3733,
+          "logit": 13.90028
+        },
+        {
+          "token_id": 1421,
+          "logit": 13.8117228
+        },
+        {
+          "token_id": 40,
+          "logit": 13.508441
+        }
+      ]
+    }
+  ],
+  "generated_token_ids": [
+    271,
+    248068,
+    198,
+    760
+  ],
+  "decoded_fragments": [
+    "\n\n",
+    "<think>",
+    "\n",
+    "The"
+  ],
+  "eog_reached": false,
+  "load_elapsed_ms": 453133,
+  "prompt_elapsed_ms": 300094,
+  "peak_working_set_bytes": 26925772800,
+  "peak_pagefile_bytes": 45757501440,
+  "private_usage_bytes": 45755449344
+}

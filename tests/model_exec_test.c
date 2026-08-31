@@ -45,5 +45,19 @@ int main(void) {
     passed &= expect_status(kq_model_exec_greedy_argmax_f32(
         tie, 0U, &selected, &diagnostic), KQ_STATUS_INVALID_ARGUMENT,
         "empty logits rejection");
+    if (!kq_model_exec_token_is_eog(248044U) ||
+        !kq_model_exec_token_is_eog(248046U) ||
+        kq_model_exec_token_is_eog(271U) ||
+        kq_model_exec_token_is_eog(248063U)) {
+        (void)fprintf(stderr, "canonical EOG identity mismatch\n");
+        passed = 0;
+    }
+    passed &= expect_status(kq_model_exec_required_decode_scratch_bytes(
+        NULL, NULL, NULL, &diagnostic), KQ_STATUS_INVALID_ARGUMENT,
+        "invalid decode scratch query");
+    passed &= expect_status(kq_model_exec_decode_one_f32(
+        NULL, NULL, 0U, NULL, 0U, NULL, 0U, NULL, 0U,
+        NULL, NULL, NULL, &diagnostic), KQ_STATUS_INVALID_ARGUMENT,
+        "invalid incremental decode");
     return passed ? 0 : 1;
 }

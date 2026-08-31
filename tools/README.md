@@ -568,3 +568,41 @@ cmake --build .research-cache/task-2.12/llama-first-token-oracle-build `
 The governed milestone stores only deterministic derived summaries under
 `research/milestones/`; raw logs, full logits and all model payload remain
 ignored. Kestrel-Q never supplies expected values to this oracle.
+
+## Task 2.13 multi-token Class-Q oracle and evidence
+
+`llama-multi-token-oracle.cpp` extends the research-only pinned llama.cpp
+oracle without changing the production dependency boundary. It accepts only
+explicit canonical IDs, prefills once, feeds selected IDs directly to decode,
+uses greedy argmax and emits up to four token IDs, decoded fragments and
+bounded top-N diagnostics. Its separate CMake project links the same pinned
+MIT-licensed llama.cpp revision as Task 2.12; neither helper is part of
+`kq_core` or `kq-run`.
+
+```powershell
+cmake -S tools/llama-multi-token-oracle `
+  -B .research-cache/task-2.13/llama-multi-token-oracle-build `
+  -DLLAMA_SOURCE_ROOT=<pinned-llama-checkout> `
+  -DLLAMA_BUILD_ROOT=<pinned-llama-build>
+cmake --build .research-cache/task-2.13/llama-multi-token-oracle-build `
+  --config Release
+& .research-cache/task-2.13/llama-multi-token-oracle-build/Release/kq_llama_multi_token_oracle.exe `
+  --model $env:KQ_GGUF_PATH `
+  --tokens 9419,11,710,467,3621,27325,13 `
+  --context 16 --max-new-tokens 4 --top-n 20 --threads 16 `
+  --output .research-cache/task-2.13/multi-token-oracle-raw.json
+```
+
+`generate_multi_token_evidence.py` validates the ignored oracle/native raw
+captures against pinned source, model, prompt and exact-sequence gates, then
+creates the six deterministic `multi-token-*.json` summaries under the
+existing milestone revision root. Rerunning it with the same inputs must be
+byte-identical. The generator stores neither raw model payload nor the local
+model path.
+
+```powershell
+py -3 tools/generate_multi_token_evidence.py `
+  --oracle-raw .research-cache/task-2.13/multi-token-oracle-raw.json `
+  --native-raw .research-cache/task-2.13/multi-token-native-integration-r5.txt `
+  --output-dir research/milestones/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+```

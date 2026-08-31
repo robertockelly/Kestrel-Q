@@ -49,6 +49,29 @@ struct kq_layer_state {
     uint64_t owned_bytes;
 };
 
+typedef struct kq_layer_state_summary {
+    kq_layer_family family;
+    uint64_t position;
+    uint64_t qsa_length;
+    uint64_t ple_address_position;
+    uint64_t ple_value_position;
+    uint64_t ple_address_integrity;
+    uint64_t gdn_state_hash;
+    uint64_t qsa_state_hash;
+    uint64_t ple_value_state_hash;
+    uint32_t active_slot;
+    int gdn_initialized;
+} kq_layer_state_summary;
+
+/* Model-executor transaction support. The immediately previous slot remains
+   intact until the next successful operation on this layer. */
+kq_status kq_layer_state_rollback_last(
+    kq_layer_state *state, uint64_t token_count,
+    kq_diagnostic *diagnostic);
+kq_status kq_layer_state_get_summary(
+    const kq_layer_state *state, kq_layer_state_summary *summary,
+    kq_diagnostic *diagnostic);
+
 kq_status kq_layer_test_config_create(
     const kq_layer_dimensions *dimensions, kq_gdn_config *gdn,
     kq_qsa_config *qsa, kq_moe_config *moe, kq_ple_config *ple,

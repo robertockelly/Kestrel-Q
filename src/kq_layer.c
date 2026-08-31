@@ -447,6 +447,89 @@ kq_status kq_layer_state_reset(kq_layer_state *state,
 uint64_t kq_layer_state_owned_bytes(const kq_layer_state *s) { return kq_layer_state_valid(s) ? s->owned_bytes : 0U; }
 uint64_t kq_layer_state_position(const kq_layer_state *s) { return kq_layer_state_valid(s) ? s->position : 0U; }
 
+static uint64_t kq_layer_hash_bytes(uint64_t hash,
+                                    const void *data, uint64_t bytes) {
+    const unsigned char *cursor = (const unsigned char *)data;
+    uint64_t index;
+    for (index = 0U; index < bytes; ++index) {
+        hash ^= cursor[index];
+        hash *= UINT64_C(1099511628211);
+    }
+    return hash;
+}
+
+kq_status kq_layer_state_rollback_last(
+    kq_layer_state *state, uint64_t token_count,
+    kq_diagnostic *diagnostic) {
+    if (!kq_layer_state_valid(state) || token_count == 0U ||
+        state->position < token_count) {
+        kq_diagnostic_set(diagnostic, KQ_STATUS_INVALID_LAYER_STATE,
+                          "%s", "layer rollback has no matching commit");
+        return KQ_STATUS_INVALID_LAYER_STATE;
+    }
+    state->active_slot = 1U - state->active_slot;
+    state->position -= token_count;
+    return KQ_STATUS_OK;
+}
+
+kq_status kq_layer_state_get_summary(
+    const kq_layer_state *state, kq_layer_state_summary *summary,
+    kq_diagnostic *diagnostic) {
+    uint32_t active;
+    if (!kq_layer_state_valid(state) || summary == NULL) {
+        kq_diagnostic_set(diagnostic, KQ_STATUS_INVALID_LAYER_STATE,
+                          "%s", "layer state summary arguments are invalid");
+        return KQ_STATUS_INVALID_LAYER_STATE;
+    }
+    active = state->active_slot;
+    memset(summary, 0, sizeof(*summary));
+    summary->family = state->config->dimensions.family;
+    summary->position = state->position;
+    summary->active_slot = active;
+    if (state->qsa[active] != NULL)
+        summary->qsa_length = state->qsa[active]->length;
+    if (state->gdn[active] != NULL) {
+        const kq_gdn_state *gdn = state->gdn[active];
+        uint64_t element_bytes =
+            gdn->config->dimensions.activation_dtype ==
+                KQ_GDN_ACTIVATION_BF16 ? sizeof(uint16_t) : sizeof(float);
+        summary->gdn_initialized = state->gdn[active]->initialized;
+        summary->gdn_state_hash = kq_layer_hash_bytes(
+            UINT64_C(14695981039346656037), gdn->conv_state,
+            gdn->config->conv_state_elements * element_bytes);
+        summary->gdn_state_hash = kq_layer_hash_bytes(
+            summary->gdn_state_hash, gdn->recurrent_state,
+            gdn->config->recurrent_elements * sizeof(float));
+    }
+    if (state->qsa[active] != NULL) {
+        const kq_qsa_state *qsa = state->qsa[active];
+        uint64_t element_bytes =
+            qsa->config->dimensions.activation_dtype ==
+                KQ_QSA_ACTIVATION_BF16 ? sizeof(uint16_t) : sizeof(float);
+        uint64_t kv_bytes = qsa->length * qsa->config->key_values_per_token *
+                            element_bytes;
+        uint64_t raw_bytes = qsa->length *
+                             qsa->config->raw_index_values_per_token *
+                             element_bytes;
+        summary->qsa_state_hash = kq_layer_hash_bytes(
+            UINT64_C(14695981039346656037), qsa->key_cache, kv_bytes);
+        summary->qsa_state_hash = kq_layer_hash_bytes(
+            summary->qsa_state_hash, qsa->value_cache, kv_bytes);
+        summary->qsa_state_hash = kq_layer_hash_bytes(
+            summary->qsa_state_hash, qsa->raw_index_key_cache, raw_bytes);
+    }
+    if (state->config->ple != NULL) {
+        summary->ple_address_position = state->ple[active].position;
+        summary->ple_address_integrity = state->ple[active].integrity;
+        summary->ple_value_position = state->ple_value[active]->position;
+        summary->ple_value_state_hash = kq_layer_hash_bytes(
+            UINT64_C(14695981039346656037),
+            state->ple_value[active]->history,
+            state->ple_value[active]->config->state_bytes);
+    }
+    return KQ_STATUS_OK;
+}
+
 kq_status kq_layer_required_scratch_bytes(
     const kq_layer_config *config, const kq_layer_state *state,
     uint64_t token_count, uint64_t *scratch_bytes,
