@@ -1,0 +1,42 @@
+{
+  "baseline_commit": "9986b934d639b61575018653dfc8a4eabe2965ea",
+  "files": {
+    "sampled-generation-contract.json": {
+      "bytes": 1163,
+      "sha256": "7a6715ab74bb37bd520ba7791b23bf374d8b3a109e9ee58fd6bb5889b20deeb9"
+    },
+    "sampled-generation-native.json": {
+      "bytes": 14148,
+      "sha256": "46b9d621ca691ec04474e21d8e437bae1b21596709d0832605709ce10331c4aa"
+    },
+    "sampled-generation-oracle.json": {
+      "bytes": 11172,
+      "sha256": "4354819fd7b7ecbcdca2194282b8a935ff6ac3f835e8710e51481b937d72c34c"
+    },
+    "sampled-generation-state.json": {
+      "bytes": 7436,
+      "sha256": "5cc69ebbd8fbec228e5e3bd54406879485c6709e0cabd5d0498f42b6b2cb48ed"
+    },
+    "sampled-generation-validation.json": {
+      "bytes": 3133,
+      "sha256": "870beb104f0acb82efae8a51e499a77d17222ad99079c174f0349c9c7ccc6a97"
+    }
+  },
+  "generation_tool": "tools/generate-sampled-generation-evidence.py",
+  "generation_tool_sha256": "0ea1483e6460c5c8a49765b036a01a9091c2e08f83ec0d02f8820722734cf99c",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "production_source_sha256": {
+    "include/kq_model_exec.h": "a753c0d16d8c72e482d231fb6bf09b3ed84963a3bd0f5c2921063cde10f87eb5",
+    "src/kq_model_exec.c": "98d38f3f8d99be55c59eab766e946d86cc85353cbaa4e0b00192c47e41602cfd",
+    "src/kq_sampling.c": "1807841a8c6ae5fc58be688a30589c7bceef360713b6d8db9c15f1ad273b6d2a",
+    "src/run_main.c": "47d9bc120d005ecb4097cf2239a38d7468735eadacfcb30793aa3768d3d5c72e",
+    "tests/sampled_generation_integration.c": "d1d08e1888c3ff2678533d6a3d4c1c16614f1bd00546b5e3bdbf31f7353edd77"
+  },
+  "schema": "kq-sampled-generation-manifest-v1",
+  "status": "PASS",
+  "temporary_inputs": {
+    "committed": false,
+    "full_logit_files": 12,
+    "native_transcript_sha256": "b2e2a77054f6c776f5d82c00a51b2a1e5d001387a9d6ccac0e2e68636992f13c"
+  }
+}

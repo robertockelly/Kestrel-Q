@@ -1,0 +1,250 @@
+{
+  "schema": "kq-sampled-generation-state-v1",
+  "state_blobs_committed": false,
+  "traces": {
+    "holdout": [
+      {
+        "gdn_state_hash": "0b76b682d59878f1",
+        "model_position": 7,
+        "moe_route_order_hash": "8c56f870bee6e9bc",
+        "ple_address_state_hash": "fe99e4acde853589",
+        "ple_intent_order_hash": "d614b54dfe1be781",
+        "ple_value_state_hash": "db64a24a910fd195",
+        "qsa_candidate_blocks": 48,
+        "qsa_complete_blocks_min_max": [
+          1,
+          1
+        ],
+        "qsa_incomplete_tail_min_max": [
+          3,
+          3
+        ],
+        "qsa_selected_blocks": 48,
+        "qsa_selected_tokens": 336,
+        "qsa_sequence_length_min_max": [
+          7,
+          7
+        ],
+        "qsa_state_hash": "ce0861a27f5d139d",
+        "rng_draws_after": 1,
+        "rng_draws_before": 0,
+        "rng_state_after": 15487556474951640320,
+        "rng_state_before": 5718471626015965605,
+        "step": 1,
+        "structural_hash": "76e95376ee079538"
+      },
+      {
+        "gdn_state_hash": "531445af610a45cf",
+        "model_position": 8,
+        "moe_route_order_hash": "60098d9667ca5914",
+        "ple_address_state_hash": "8e122cf41b1ffbd8",
+        "ple_intent_order_hash": "f4bd4227f521012a",
+        "ple_value_state_hash": "44be525222c99eed",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          0,
+          0
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 96,
+        "qsa_sequence_length_min_max": [
+          8,
+          8
+        ],
+        "qsa_state_hash": "396f3fc33cd1c4ed",
+        "rng_draws_after": 2,
+        "rng_draws_before": 1,
+        "rng_state_after": 2973959337725165823,
+        "rng_state_before": 15487556474951640320,
+        "step": 2,
+        "structural_hash": "2e433f7eac69cab8"
+      },
+      {
+        "gdn_state_hash": "7dc815eef00da2ed",
+        "model_position": 9,
+        "moe_route_order_hash": "ea523a19c94ca220",
+        "ple_address_state_hash": "1300398cf96d179d",
+        "ple_intent_order_hash": "a45ec693d16315d1",
+        "ple_value_state_hash": "a831a45decb03553",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          1,
+          1
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 108,
+        "qsa_sequence_length_min_max": [
+          9,
+          9
+        ],
+        "qsa_state_hash": "1ed931a39998ac9a",
+        "rng_draws_after": 3,
+        "rng_draws_before": 2,
+        "rng_state_after": 4444934027426672082,
+        "rng_state_before": 2973959337725165823,
+        "step": 3,
+        "structural_hash": "a79223df470c7123"
+      },
+      {
+        "gdn_state_hash": "e281dffcb3369e61",
+        "model_position": 10,
+        "moe_route_order_hash": "3c9c279fa0ac8cff",
+        "ple_address_state_hash": "54672826edbdf4ec",
+        "ple_intent_order_hash": "f2a0f0df85657e4d",
+        "ple_value_state_hash": "d7e477460207d5ad",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          2,
+          2
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 120,
+        "qsa_sequence_length_min_max": [
+          10,
+          10
+        ],
+        "qsa_state_hash": "c6de06dd9c192096",
+        "rng_draws_after": 4,
+        "rng_draws_before": 3,
+        "rng_state_after": 7359580124897688553,
+        "rng_state_before": 4444934027426672082,
+        "step": 4,
+        "structural_hash": "03c63f1c3634eb63"
+      }
+    ],
+    "primary": [
+      {
+        "gdn_state_hash": "0b76b682d59878f1",
+        "model_position": 7,
+        "moe_route_order_hash": "8c56f870bee6e9bc",
+        "ple_address_state_hash": "fe99e4acde853589",
+        "ple_intent_order_hash": "d614b54dfe1be781",
+        "ple_value_state_hash": "db64a24a910fd195",
+        "qsa_candidate_blocks": 48,
+        "qsa_complete_blocks_min_max": [
+          1,
+          1
+        ],
+        "qsa_incomplete_tail_min_max": [
+          3,
+          3
+        ],
+        "qsa_selected_blocks": 48,
+        "qsa_selected_tokens": 336,
+        "qsa_sequence_length_min_max": [
+          7,
+          7
+        ],
+        "qsa_state_hash": "ce0861a27f5d139d",
+        "rng_draws_after": 1,
+        "rng_draws_before": 0,
+        "rng_state_after": 7107501451583967935,
+        "rng_state_before": 17450277885725229694,
+        "step": 1,
+        "structural_hash": "76e95376ee079538"
+      },
+      {
+        "gdn_state_hash": "531445af610a45cf",
+        "model_position": 8,
+        "moe_route_order_hash": "60098d9667ca5914",
+        "ple_address_state_hash": "8e122cf41b1ffbd8",
+        "ple_intent_order_hash": "f4bd4227f521012a",
+        "ple_value_state_hash": "44be525222c99eed",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          0,
+          0
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 96,
+        "qsa_sequence_length_min_max": [
+          8,
+          8
+        ],
+        "qsa_state_hash": "396f3fc33cd1c4ed",
+        "rng_draws_after": 2,
+        "rng_draws_before": 1,
+        "rng_state_after": 11834677366765710636,
+        "rng_state_before": 7107501451583967935,
+        "step": 2,
+        "structural_hash": "2e433f7eac69cab8"
+      },
+      {
+        "gdn_state_hash": "7dc815eef00da2ed",
+        "model_position": 9,
+        "moe_route_order_hash": "ea523a19c94ca220",
+        "ple_address_state_hash": "1300398cf96d179d",
+        "ple_intent_order_hash": "a45ec693d16315d1",
+        "ple_value_state_hash": "a831a45decb03553",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          1,
+          1
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 108,
+        "qsa_sequence_length_min_max": [
+          9,
+          9
+        ],
+        "qsa_state_hash": "1ed931a39998ac9a",
+        "rng_draws_after": 3,
+        "rng_draws_before": 2,
+        "rng_state_after": 8336691191022429525,
+        "rng_state_before": 11834677366765710636,
+        "step": 3,
+        "structural_hash": "a79223df470c7123"
+      },
+      {
+        "gdn_state_hash": "e281dffcb3369e61",
+        "model_position": 10,
+        "moe_route_order_hash": "3c9c279fa0ac8cff",
+        "ple_address_state_hash": "54672826edbdf4ec",
+        "ple_intent_order_hash": "f2a0f0df85657e4d",
+        "ple_value_state_hash": "d7e477460207d5ad",
+        "qsa_candidate_blocks": 24,
+        "qsa_complete_blocks_min_max": [
+          2,
+          2
+        ],
+        "qsa_incomplete_tail_min_max": [
+          2,
+          2
+        ],
+        "qsa_selected_blocks": 24,
+        "qsa_selected_tokens": 120,
+        "qsa_sequence_length_min_max": [
+          10,
+          10
+        ],
+        "qsa_state_hash": "c6de06dd9c192096",
+        "rng_draws_after": 4,
+        "rng_draws_before": 3,
+        "rng_state_after": 1484571941732899722,
+        "rng_state_before": 8336691191022429525,
+        "step": 4,
+        "structural_hash": "03c63f1c3634eb63"
+      }
+    ]
+  }
+}

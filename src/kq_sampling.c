@@ -532,6 +532,47 @@ kq_status kq_sampling_copy_work_for_test(
     return KQ_STATUS_OK;
 }
 
+kq_status kq_sampling_copy_retained_order_for_test(
+    const kq_sampling_config *config, const void *scratch,
+    uint64_t scratch_bytes, uint32_t *token_ids,
+    uint64_t output_capacity, uint64_t *output_count,
+    kq_diagnostic *diagnostic) {
+    kq_sampling_scratch work;
+    uint64_t retained = 0U;
+    uint32_t index;
+    kq_status status;
+    kq_diagnostic_clear(diagnostic);
+    if (!kq_sampling_config_valid(config) || scratch == NULL ||
+        output_count == NULL) {
+        return kq_sampling_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                                "sampling retained-order request is invalid");
+    }
+    status = kq_prepare_scratch(config, (void *)scratch, scratch_bytes, &work,
+                                diagnostic);
+    if (status != KQ_STATUS_OK) {
+        return status;
+    }
+    for (index = 0U; index < config->vocabulary_size; ++index) {
+        uint32_t token_id = work.order[index];
+        if (work.probabilities[token_id] > 0.0f) {
+            retained += 1U;
+        }
+    }
+    *output_count = retained;
+    if (retained != 0U && (token_ids == NULL || output_capacity < retained)) {
+        return kq_sampling_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                                "sampling retained-order output is too small");
+    }
+    retained = 0U;
+    for (index = 0U; index < config->vocabulary_size; ++index) {
+        uint32_t token_id = work.order[index];
+        if (work.probabilities[token_id] > 0.0f) {
+            token_ids[retained++] = token_id;
+        }
+    }
+    return KQ_STATUS_OK;
+}
+
 kq_status kq_sampling_select_f32(const kq_sampling_config *config,
                                   kq_sampling_rng_state *state,
                                   const float *logits,

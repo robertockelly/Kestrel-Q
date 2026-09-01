@@ -1,6 +1,6 @@
 # TASKS-EPIC-3-CPU-CORRECTNESS-ENGINE.md
 
-Status: **IN PROGRESS — TASK 3.0 COMPLETE / PASS**
+Status: **COMPLETE / PASS — TASKS 3.0-3.1 COMPLETE / PASS**
 
 ## Inception baseline
 
@@ -39,34 +39,34 @@ Status: **COMPLETE / PASS**
 
 ### Task 3.1 — Sampled Incremental Generation & Oracle Validation
 
-Status: **PLANNED / NOT STARTED**
+Status: **COMPLETE / PASS**
 
-- [ ] Create its task-specific governance package only after Task 3.0 review
+- [x] Create its task-specific governance package only after Task 3.0 review
   and checkpoint.
-- [ ] Integrate Task 3.0 selection after full-logit production.
-- [ ] Keep prompt prefill exactly once and generated-ID decode direct.
-- [ ] Include sampler RNG in the per-token transaction boundary.
-- [ ] Prove failed post-selection rollback and deterministic retry.
-- [ ] Preserve Task 2.12/2.13 greedy exact sequences.
-- [ ] Validate the official profile over a bounded prompt/seed matrix without a
+- [x] Integrate Task 3.0 selection after full-logit production.
+- [x] Keep prompt prefill exactly once and generated-ID decode direct.
+- [x] Include sampler RNG in the per-token transaction boundary.
+- [x] Prove failed post-selection rollback and deterministic retry.
+- [x] Preserve Task 2.12/2.13 greedy exact sequences.
+- [x] Validate the official profile over a bounded prompt/seed matrix without a
   self-oracle.
-- [ ] Validate EOG, max-token and context stop behavior.
-- [ ] Record bounded state/payload/memory characterization without performance
+- [x] Validate EOG, max-token and context stop behavior.
+- [x] Record bounded state/payload/memory characterization without performance
   claims.
-- [ ] Clean CPU/CUDA regressions and repository-safety gates PASS.
+- [x] Clean CPU/CUDA regressions and repository-safety gates PASS.
 
 ## Epic 3 closure gates
 
 - [x] Task 3.0 COMPLETE/PASS.
-- [ ] Task 3.1 COMPLETE/PASS.
+- [x] Task 3.1 COMPLETE/PASS.
 - [x] Official Qwen3.8 default sampling profile supported.
 - [x] Exact processor/RNG/fixed-input decision evidence PASS.
 - [x] Calibrated floating and predeclared statistical holdout PASS.
-- [ ] Sampled incremental state/stop/rollback evidence PASS.
-- [ ] Greedy M1 and Task 2.13 evidence unchanged and PASS.
-- [ ] No production oracle dependency or hidden global RNG state.
-- [ ] No performance/scheduler/CUDA/long-context scope drift.
-- [ ] Epic 3 closure review recorded.
+- [x] Sampled incremental state/stop/rollback evidence PASS.
+- [x] Greedy M1 and Task 2.13 evidence unchanged and PASS.
+- [x] No production oracle dependency or hidden global RNG state.
+- [x] No performance/scheduler/CUDA/long-context scope drift.
+- [x] Epic 3 completion recorded by the final governed Task 3.1 gate.
 
 ## Deferred and future boundaries
 

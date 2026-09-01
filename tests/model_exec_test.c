@@ -59,5 +59,13 @@ int main(void) {
         NULL, NULL, 0U, NULL, 0U, NULL, 0U, NULL, 0U,
         NULL, NULL, NULL, &diagnostic), KQ_STATUS_INVALID_ARGUMENT,
         "invalid incremental decode");
+    passed &= expect_status(kq_model_exec_sampled_prefill_f32(
+        NULL, NULL, NULL, NULL, NULL, 0U, NULL, 0U, NULL, 0U,
+        NULL, 0U, NULL, 0U, NULL, NULL, NULL, NULL, &diagnostic),
+        KQ_STATUS_INVALID_ARGUMENT, "invalid sampled prefill");
+    passed &= expect_status(kq_model_exec_sampled_decode_one_f32(
+        NULL, NULL, NULL, NULL, 0U, NULL, 0U, NULL, 0U,
+        NULL, 0U, NULL, 0U, NULL, NULL, NULL, NULL, &diagnostic),
+        KQ_STATUS_INVALID_ARGUMENT, "invalid sampled decode");
     return passed ? 0 : 1;
 }

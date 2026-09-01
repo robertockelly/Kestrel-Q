@@ -8,6 +8,49 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 3.1, Sampled Incremental Generation & Oracle Validation, as
+  **COMPLETE / PASS**, completing Epic 3's governed CPU correctness engine.
+  Added sampled prefill and one-token decode entry points that invoke the
+  accepted Task 3.0 sampler while staging model state, caller-owned PCG state
+  and caller outputs as one transaction. Prompt prefill remains exactly once;
+  no sampler mathematics, model operator or greedy behavior changed.
+- Added primary seed/stream, disjoint holdout and exact replay over the real
+  registered GGUF and `KQ-PROMPT-001`. Both observed four-token traces are
+  `[271, 248068, 198, 760]` (`"\n\n<think>\nThe"`) while their PCG words and
+  states differ. A separate standard-library Python implementation processes
+  each temporary full-logit capture and requires exact survivor/order hash,
+  RNG transition and selected token; full logits remain ignored and are not
+  governed artifacts.
+- Extended `kq-run` with deterministic `--sample --seed <u64>` and optional
+  `--stream <u63>` mode under the frozen temperature 1.0 / top-k 20 / top-p
+  0.95 profile. `--greedy` remains unchanged, no wall-clock seed exists and
+  invalid/mixed modes fail before model opening.
+- Added fail-closed integration coverage for corrupt RNG, output aliasing,
+  early/middle/late model failures, post-decode sampler failure, padded-ID
+  selection, EOG stop/reuse, context exhaustion and deterministic retry.
+  Every failure preserves model state, RNG and caller output. The successful
+  trace retains one prefill plus three decodes, 59,212,012,160 logical packed
+  bytes, 2,474,546,240 blocks, exact QSA/MoE/PLE invariants, 361,208,872 bytes
+  of context-16 model state and zero complete target F32 matrices.
+- During the dirty journey, the sampled CLI initially triggered MSVC C4701
+  because conservative data-flow analysis did not infer that RNG state was
+  initialized on every sampled-only print path; explicit zero initialization
+  removed the warning. Review also found that the new context-exhaustion test
+  could preserve an earlier `OK` status after a scratch-helper failure; an
+  explicit PASS flag now prevents false success. Finally, the EOG diagnostic
+  reused a result struct after filling failure sentinels, printing the sentinel
+  token and post-state twice despite a correct internal transition. Accepted
+  EOG fields are now snapshotted before the rejection probe, and the evidence
+  generator requires token 248046, position 10→11 and draw 4→5 exactly. All
+  affected pre-governance captures remain ignored and invalid.
+- Revalidated the complete clean Release matrix after the final Task 3.1
+  fixes: CPU `46/46` CTest PASS and CUDA `48/48` CTest PASS. No new
+  Kestrel-Q `/W4` warning was emitted; the CUDA build retains only the
+  previously governed NVCC-generated C4211 warning.
+- Accepted ADR 0023: Task 3.0 remains the sampling/RNG authority; Task 3.1
+  owns the explicit model-plus-RNG transaction, EOG stop and padding-ID
+  rollback. `KQ-BACKLOG-BENCH-002` remains DEFERRED and Epic 4 has not started.
+
 - Completed Task 3.0, Native Sampling Policy & Deterministic Selection
   Primitives, as **COMPLETE / PASS**. Added a separate CPU-only C17 sampling
   boundary over complete 248,320-element finite F32 logits, immutable validated

@@ -370,16 +370,26 @@ payload. Config objects are shareable read-only; RNG state is mutable only by
 its caller and commits after successful canonical-ID selection.
 
 This separation makes processor math and randomness independently testable and
-keeps the accepted greedy argmax unchanged. Task 3.1, which is not started,
-will be responsible for combining model and RNG state into a whole-token
-transaction. No sampled generation CLI or model-session behavior is present
-in Task 3.0.
+keeps the accepted greedy argmax unchanged. Task 3.1 composes the two accepted
+boundaries through `kq_model_exec_sampled_prefill_f32` and
+`kq_model_exec_sampled_decode_one_f32`. The executor stages a private copy of
+the caller's RNG beside the existing per-token model transaction; model state,
+RNG state and outputs commit only after successful selection and canonical-ID
+decode. Failed model, sampler or padded-ID paths publish neither state.
+
+The sampled CLI requires an explicit seed, offers an optional bounded stream
+and never creates hidden session/RNG state. EOG is returned once and cannot be
+fed to sampled decode. Temporary real full logits exist only in ignored
+research capture; a separate evidence tool reprocesses them and verifies exact
+survivor/order hashes, PCG transition and selected ID without becoming a
+production dependency.
 
 This is not a scheduler or product-session architecture. Its repeated scalar
 logical weight touches are correctness instrumentation, not physical I/O.
 Context is an explicit bounded caller choice (16 for the governed Task 2.13
-case) and greedy argmax remains the executor's only integrated selection
-policy. Batching, sampled executor integration, context serialization, vision,
-MTP, cache/prefetch, SIMD and CUDA model kernels remain outside the boundary.
+and Task 3.1 cases). Greedy argmax and the accepted Task 3.0 default sampling
+profile are the two integrated selection policies. Batching, additional
+sampling processors, context serialization, vision, MTP, cache/prefetch, SIMD
+and CUDA model kernels remain outside the boundary.
 `KQ-BACKLOG-BENCH-002` is still required before final disk-backed
 PLE/residency policy.

@@ -1,0 +1,54 @@
+{
+  "context_exhaustion": "PASS",
+  "controls": [
+    "sampled-control name=output-alias status=forbidden numeric buffer aliasing model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=corrupt-rng status=invalid sampling RNG state model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=early-layer status=defensive limit exceeded position=7 state_hash=76e95376ee079538 rng_state=7107501451583967935 rng_draws=1 model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=middle-layer status=defensive limit exceeded position=7 state_hash=76e95376ee079538 rng_state=7107501451583967935 rng_draws=1 model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=late-layer status=defensive limit exceeded position=7 state_hash=76e95376ee079538 rng_state=7107501451583967935 rng_draws=1 model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=post-decode-sampler status=invalid numeric domain position=8 state_hash=2e433f7eac69cab8 rng_state=11834677366765710636 rng_draws=2 model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=padded-id status=invalid tokenizer token ID position=8 state_hash=2e433f7eac69cab8 rng_state=11834677366765710636 rng_draws=2 model_rollback=PASS rng_rollback=PASS output_rollback=PASS",
+    "sampled-control name=later-eog status=OK token=248046 position_before=10 position_after=11 draws_before=4 draws_after=5 no_decode_after_eog=PASS stopped_state_rejection=PASS",
+    "sampled-control name=deterministic-replay steps=4 exact=PASS",
+    "sampled-control name=first-eog status=OK token=248046 position=7 prefill=1 decode=0 draws=1 no_decode_after_eog=PASS",
+    "sampled-control name=context-exhaustion status=defensive limit exceeded capacity=8 position=8 model_rollback=PASS rng_rollback=PASS output_rollback=PASS"
+  ],
+  "deterministic_replay": "PASS",
+  "early_middle_late_and_sampler_rollback": "PASS",
+  "eog_control": "PASS",
+  "exact_independent_selection_rng": "PASS",
+  "exact_independent_steps": 8,
+  "full_logits_files_committed": 0,
+  "padded_id_range": [
+    248077,
+    248319
+  ],
+  "padded_id_rollback": "PASS",
+  "replay_checks": [
+    {
+      "bounded_fields_exact": true,
+      "full_logits_exact_to_primary": true,
+      "full_logits_sha256": "e490ca76c590cee534201d4e223008f27dbd9593163fcb1e1cc5788d23a26d29",
+      "step": 1
+    },
+    {
+      "bounded_fields_exact": true,
+      "full_logits_exact_to_primary": true,
+      "full_logits_sha256": "f146e2415367fd77191de232967b22abe26b286301cd22b1ecf00af4a4205d44",
+      "step": 2
+    },
+    {
+      "bounded_fields_exact": true,
+      "full_logits_exact_to_primary": true,
+      "full_logits_sha256": "74900060597b8e4f997b766fdd1abe5825854697727133e3d5888fd013e31c0d",
+      "step": 3
+    },
+    {
+      "bounded_fields_exact": true,
+      "full_logits_exact_to_primary": true,
+      "full_logits_sha256": "51fe3b0756c85082d35177426703b69edec7434de4ec30b358e39af2d7a7a2c0",
+      "step": 4
+    }
+  ],
+  "schema": "kq-sampled-generation-validation-v1"
+}

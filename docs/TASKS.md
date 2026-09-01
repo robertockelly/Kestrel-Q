@@ -276,12 +276,13 @@ accepted Epic 2 status.
 
 ## Epic 3 — CPU correctness engine
 
-**Epic 3 status: IN PROGRESS — TASK 3.0 COMPLETE / PASS.** The inception review
+**Epic 3 status: COMPLETE / PASS — TASKS 3.0-3.1 COMPLETE / PASS.** The inception review
 confirmed that Tasks 2.3 and 2.5-2.13 already satisfy the tokenizer, scalar
 numeric/operator, target execution, logits, greedy and incremental-state parts
 of Project Plan Phase 2. Sampling is the only explicitly unfinished R2
-workstream. The separate native sampling boundary is now complete; sampled
-incremental executor integration remains Task 3.1.
+workstream. Task 3.0 completes the separate native sampling boundary and Task
+3.1 completes sampled incremental executor integration with whole-token
+model/RNG transactions.
 
 - [x] Scalar reference tensor primitives (Task 2.5 low-level boundary)
 - [x] Reference dequantization (Task 2.5 seven registered formats)
@@ -308,17 +309,19 @@ incremental executor integration remains Task 3.1.
     floating holdout and predeclared statistical validation;
   - ADR 0022 is **ACCEPTED**: immutable model-specific policy and caller-owned
     PCG32 state are separate from model-logit production.
-- [ ] Task 3.1 — Sampled Incremental Generation & Oracle Validation:
-  - status: **PLANNED / NOT STARTED**;
-  - create its task-specific governance package only after Task 3.0 review and
-    checkpoint;
-  - integrate the accepted sampler with prompt-prefill-once incremental decode,
-    EOG/context/max-token stopping and whole-token model-plus-RNG rollback;
-  - preserve the exact Task 2.12/2.13 greedy evidence.
+- [x] Task 3.1 — Sampled Incremental Generation & Oracle Validation:
+  - status: **COMPLETE / PASS**;
+  - integrated the accepted sampler with prompt-prefill-once incremental
+    decode and explicit caller-owned PCG state;
+  - exact primary/holdout/replay, EOG/context stop and whole-token
+    model-plus-RNG rollback gates: **PASS**;
+  - exact Task 2.12/2.13 greedy evidence: preserved and passing;
+  - ADR 0023: **ACCEPTED**.
 
-**Next governed task:** Task 3.1 — Sampled Incremental Generation & Oracle
-Validation (**PLANNED / NOT STARTED**). Its task-specific implementation
-package is created only after the reviewed Task 3.0 checkpoint.
+**Epic 3 closure:** **COMPLETE / PASS**. The official default profile is
+supported by the bounded scalar CPU correctness path, with independent
+selection/RNG evidence and no production oracle dependency. Epic 4 has not
+started and no next implementation task is introduced by this closure.
 
 `KQ-BACKLOG-BENCH-001` and `KQ-BACKLOG-BENCH-002` remain deferred; neither is
 an Epic 3 correctness prerequisite.

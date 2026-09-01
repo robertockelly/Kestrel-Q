@@ -1,0 +1,34 @@
+{
+  "baseline_commit": "9986b934d639b61575018653dfc8a4eabe2965ea",
+  "context_capacity": 16,
+  "full_logits_committed": false,
+  "gguf_sha256": "8003d03db822cb089ab55caa5fff0f82f6f4199fe6ac58368bc9989365b6f8c2",
+  "max_new_tokens": 4,
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "oracle_runtime": {
+    "binary64_mantissa_bits": 53,
+    "f32_rounding": "explicit IEEE-754 binary32 pack/unpack after each governed operation",
+    "implementation": "CPython",
+    "version": "3.13.12"
+  },
+  "policy": {
+    "temperature": 1.0,
+    "top_k": 20,
+    "top_p_f32_hex": "3333733f"
+  },
+  "prompt_id": "KQ-PROMPT-001",
+  "prompt_token_ids": [
+    9419,
+    11,
+    710,
+    467,
+    3621,
+    27325,
+    13
+  ],
+  "schema": "kq-sampled-generation-contract-v1",
+  "selection_oracle": "independent Python F32 policy/PCG processing over temporary native full logits",
+  "task_3_0_sampling_contract_sha256": "5a185f8b832b7de2785813bfbf4b30deb46d54f31d9208134d71562eff34112f",
+  "task_3_0_sampling_manifest_sha256": "fa82837b070f81b70d3d0ff83b48cd79d157b4188f19fcd73082ff275cfe8284",
+  "transaction": "model state + caller RNG state + caller outputs"
+}

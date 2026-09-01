@@ -1,0 +1,388 @@
+{
+  "class": "NATIVE_LOGITS_INDEPENDENT_SELECTION",
+  "implementation": "tools/generate-sampled-generation-evidence.py",
+  "native_sampling_code_imported": false,
+  "schema": "kq-sampled-generation-oracle-v1",
+  "traces": {
+    "holdout": [
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "b6f38441",
+        "retained_count": 15,
+        "retained_order_fnv1a64": "8c3e307d8278d2e6",
+        "rng_draws_after": 1,
+        "rng_integrity_after": 14681388593730710044,
+        "rng_state_after": 15487556474951640320,
+        "rng_word": 645251143,
+        "runner_up": [
+          {
+            "logit_f32_hex": "b6f38441",
+            "token_id": 271
+          },
+          {
+            "logit_f32_hex": "e19f7741",
+            "token_id": 353
+          },
+          {
+            "logit_f32_hex": "b0116541",
+            "token_id": 6558
+          },
+          {
+            "logit_f32_hex": "617e6241",
+            "token_id": 2500
+          },
+          {
+            "logit_f32_hex": "aeff6141",
+            "token_id": 1577
+          }
+        ],
+        "selected_logit_f32_hex": "b6f38441",
+        "selected_probability_f32_hex": "8ab3043f",
+        "selected_token_id": 271,
+        "step": 1,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "b3149941",
+        "retained_count": 2,
+        "retained_order_fnv1a64": "2ad8344853533c3a",
+        "rng_draws_after": 2,
+        "rng_integrity_after": 7825877905827584804,
+        "rng_state_after": 2973959337725165823,
+        "rng_word": 2004461623,
+        "runner_up": [
+          {
+            "logit_f32_hex": "b3149941",
+            "token_id": 248068
+          },
+          {
+            "logit_f32_hex": "fb758741",
+            "token_id": 9419
+          },
+          {
+            "logit_f32_hex": "f4324f41",
+            "token_id": 40
+          },
+          {
+            "logit_f32_hex": "fc854641",
+            "token_id": 2064
+          },
+          {
+            "logit_f32_hex": "81cf3f41",
+            "token_id": 15771
+          }
+        ],
+        "selected_logit_f32_hex": "b3149941",
+        "selected_probability_f32_hex": "7285663f",
+        "selected_token_id": 248068,
+        "step": 2,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "f30cdb41",
+        "retained_count": 2,
+        "retained_order_fnv1a64": "c7b600ee919e2a63",
+        "rng_draws_after": 3,
+        "rng_integrity_after": 17010719894712155088,
+        "rng_state_after": 4444934027426672082,
+        "rng_word": 2705697299,
+        "runner_up": [
+          {
+            "logit_f32_hex": "f30cdb41",
+            "token_id": 198
+          },
+          {
+            "logit_f32_hex": "aad8cc41",
+            "token_id": 271
+          },
+          {
+            "logit_f32_hex": "bd605241",
+            "token_id": 1358
+          },
+          {
+            "logit_f32_hex": "6b9a2b41",
+            "token_id": 248046
+          },
+          {
+            "logit_f32_hex": "d8562041",
+            "token_id": 987
+          }
+        ],
+        "selected_logit_f32_hex": "f30cdb41",
+        "selected_probability_f32_hex": "b8ea5a3f",
+        "selected_token_id": 198,
+        "step": 3,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "aaaee141",
+        "retained_count": 1,
+        "retained_order_fnv1a64": "37fe267d8a9d9ed7",
+        "rng_draws_after": 4,
+        "rng_integrity_after": 1552544972357601296,
+        "rng_state_after": 7359580124897688553,
+        "rng_word": 1600907046,
+        "runner_up": [
+          {
+            "logit_f32_hex": "aaaee141",
+            "token_id": 760
+          },
+          {
+            "logit_f32_hex": "db62a241",
+            "token_id": 90700
+          },
+          {
+            "logit_f32_hex": "2e0a9341",
+            "token_id": 77264
+          },
+          {
+            "logit_f32_hex": "a1818e41",
+            "token_id": 8160
+          },
+          {
+            "logit_f32_hex": "fd287b41",
+            "token_id": 9764
+          }
+        ],
+        "selected_logit_f32_hex": "aaaee141",
+        "selected_probability_f32_hex": "0000803f",
+        "selected_token_id": 760,
+        "step": 4,
+        "top_k_retained_count": 20
+      }
+    ],
+    "primary": [
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "b6f38441",
+        "retained_count": 15,
+        "retained_order_fnv1a64": "8c3e307d8278d2e6",
+        "rng_draws_after": 1,
+        "rng_integrity_after": 12443029149754336061,
+        "rng_state_after": 7107501451583967935,
+        "rng_word": 368435569,
+        "runner_up": [
+          {
+            "logit_f32_hex": "b6f38441",
+            "token_id": 271
+          },
+          {
+            "logit_f32_hex": "e19f7741",
+            "token_id": 353
+          },
+          {
+            "logit_f32_hex": "b0116541",
+            "token_id": 6558
+          },
+          {
+            "logit_f32_hex": "617e6241",
+            "token_id": 2500
+          },
+          {
+            "logit_f32_hex": "aeff6141",
+            "token_id": 1577
+          }
+        ],
+        "selected_logit_f32_hex": "b6f38441",
+        "selected_probability_f32_hex": "8ab3043f",
+        "selected_token_id": 271,
+        "step": 1,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "b3149941",
+        "retained_count": 2,
+        "retained_order_fnv1a64": "2ad8344853533c3a",
+        "rng_draws_after": 2,
+        "rng_integrity_after": 2882898146495947197,
+        "rng_state_after": 11834677366765710636,
+        "rng_word": 2181383652,
+        "runner_up": [
+          {
+            "logit_f32_hex": "b3149941",
+            "token_id": 248068
+          },
+          {
+            "logit_f32_hex": "fb758741",
+            "token_id": 9419
+          },
+          {
+            "logit_f32_hex": "f4324f41",
+            "token_id": 40
+          },
+          {
+            "logit_f32_hex": "fc854641",
+            "token_id": 2064
+          },
+          {
+            "logit_f32_hex": "81cf3f41",
+            "token_id": 15771
+          }
+        ],
+        "selected_logit_f32_hex": "b3149941",
+        "selected_probability_f32_hex": "7285663f",
+        "selected_token_id": 248068,
+        "step": 2,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "f30cdb41",
+        "retained_count": 2,
+        "retained_order_fnv1a64": "c7b600ee919e2a63",
+        "rng_draws_after": 3,
+        "rng_integrity_after": 15579885863990940657,
+        "rng_state_after": 8336691191022429525,
+        "rng_word": 581429370,
+        "runner_up": [
+          {
+            "logit_f32_hex": "f30cdb41",
+            "token_id": 198
+          },
+          {
+            "logit_f32_hex": "aad8cc41",
+            "token_id": 271
+          },
+          {
+            "logit_f32_hex": "bd605241",
+            "token_id": 1358
+          },
+          {
+            "logit_f32_hex": "6b9a2b41",
+            "token_id": 248046
+          },
+          {
+            "logit_f32_hex": "d8562041",
+            "token_id": 987
+          }
+        ],
+        "selected_logit_f32_hex": "f30cdb41",
+        "selected_probability_f32_hex": "b8ea5a3f",
+        "selected_token_id": 198,
+        "step": 3,
+        "top_k_retained_count": 20
+      },
+      {
+        "comparison": {
+          "retained_count": true,
+          "retained_order_hash": true,
+          "rng_draws_after": true,
+          "rng_increment_after": true,
+          "rng_integrity_after": true,
+          "rng_state_after": true,
+          "rng_word": true,
+          "selected_token_id": true,
+          "top_k_retained_count": true
+        },
+        "maximum_logit_f32_hex": "aaaee141",
+        "retained_count": 1,
+        "retained_order_fnv1a64": "37fe267d8a9d9ed7",
+        "rng_draws_after": 4,
+        "rng_integrity_after": 8080040015425294641,
+        "rng_state_after": 1484571941732899722,
+        "rng_word": 1304811774,
+        "runner_up": [
+          {
+            "logit_f32_hex": "aaaee141",
+            "token_id": 760
+          },
+          {
+            "logit_f32_hex": "db62a241",
+            "token_id": 90700
+          },
+          {
+            "logit_f32_hex": "2e0a9341",
+            "token_id": 77264
+          },
+          {
+            "logit_f32_hex": "a1818e41",
+            "token_id": 8160
+          },
+          {
+            "logit_f32_hex": "fd287b41",
+            "token_id": 9764
+          }
+        ],
+        "selected_logit_f32_hex": "aaaee141",
+        "selected_probability_f32_hex": "0000803f",
+        "selected_token_id": 760,
+        "step": 4,
+        "top_k_retained_count": 20
+      }
+    ]
+  }
+}

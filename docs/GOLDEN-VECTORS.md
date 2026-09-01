@@ -277,3 +277,22 @@ RNG implementations to produce the same token sequence.
 | `sampling-statistical.json` | `f4ff7787f138645a99510a9f77d6f437d100a548c878400718188efb0a007d88` |
 | `sampling-native-validation.json` | `85d00208f1ba9a390df490b7b6819bc6eb571f9384b6139906048fb99ff51527` |
 | `sampling-manifest.json` | `fa82837b070f81b70d3d0ff83b48cd79d157b4188f19fcd73082ff275cfe8284` |
+
+## Task 3.1 sampled-generation integration evidence
+
+Task 3.1 adds bounded integration evidence to the existing milestone namespace
+under `research/milestones/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
+Primary and disjoint holdout use the real native logits but a separate
+standard-library implementation of the frozen Task 3.0 transforms and PCG
+transition. Eight primary/holdout steps pass exact retained-order, RNG and
+selected-ID equality. The replay's four temporary full-logit hashes match the
+primary exactly. Full logits remain ignored and are not part of this table.
+
+| Task 3.1 evidence | SHA-256 |
+|---|---|
+| `sampled-generation-contract.json` | `7a6715ab74bb37bd520ba7791b23bf374d8b3a109e9ee58fd6bb5889b20deeb9` |
+| `sampled-generation-oracle.json` | `4354819fd7b7ecbcdca2194282b8a935ff6ac3f835e8710e51481b937d72c34c` |
+| `sampled-generation-native.json` | `46b9d621ca691ec04474e21d8e437bae1b21596709d0832605709ce10331c4aa` |
+| `sampled-generation-state.json` | `5cc69ebbd8fbec228e5e3bd54406879485c6709e0cabd5d0498f42b6b2cb48ed` |
+| `sampled-generation-validation.json` | `870beb104f0acb82efae8a51e499a77d17222ad99079c174f0349c9c7ccc6a97` |
+| `sampled-generation-manifest.json` | `2506073d9e9c4d0733cd109429e74b420e755a161193f815ea3bb6bbb951097a` |

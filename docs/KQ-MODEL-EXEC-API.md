@@ -44,6 +44,23 @@ directly and returns the following greedy ID/logits/decoded fragment. It
 requires a successful prefill or decode state, room in the configured context
 and caller-owned buffers under the same lifetime and aliasing rules.
 
+`kq_model_exec_sampled_prefill_f32` and
+`kq_model_exec_sampled_decode_one_f32` compose the same execution path with an
+immutable Task 3.0 `kq_sampling_config`, caller-owned
+`kq_sampling_rng_state`, caller-owned sampling scratch and a separate
+`kq_sampling_result`. They do not contain sampling mathematics. The prefill
+call stages the first draw after one prompt prefill. The decode call consumes
+one preceding accepted sampled ID, stages one incremental model step and then
+draws its successor.
+
+For sampled calls, model state, RNG state, model/sampling results, logits and
+decoded output commit together. Failed model execution, sampling, padded-ID
+validation or output decode leaves all caller-visible state/output unchanged.
+The sampled decode entry rejects EOG input because a successful EOG selection
+is a stopped generation and must never be fed back. The caller remains
+responsible for max-token and EOG loop termination; there is no hidden session
+or RNG state.
+
 On prefill failure caller logits, decoded output, result and public position
 remain unchanged; legacy M1 recovery resets private staging before retry. On
 incremental failure, completed layer commits are rolled back in reverse order,
@@ -63,7 +80,8 @@ ID before native decode.
 
 `kq_model_exec_token_is_eog` recognizes the pinned generation EOG IDs 248044
 and 248046. The caller returns/decodes an EOG selection and stops before
-feeding it. No RNG or sampling surface exists.
+feeding it. Greedy selection remains unchanged. Sampled execution accepts the
+Task 3.0 policy/RNG surface explicitly and never seeds from wall-clock state.
 
 ## Metrics
 

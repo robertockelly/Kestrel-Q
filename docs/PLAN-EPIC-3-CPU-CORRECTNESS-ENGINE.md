@@ -1,6 +1,6 @@
 # PLAN-EPIC-3-CPU-CORRECTNESS-ENGINE.md
 
-Status: **IN PROGRESS — TASK 3.0 COMPLETE / PASS**
+Status: **COMPLETE / PASS — TASKS 3.0-3.1 COMPLETE / PASS**
 
 ## Objective
 
@@ -82,8 +82,8 @@ greedy argmax and has no RNG or sampling API. It is not a performance gap.
 1. **Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives**
    — **COMPLETE / PASS**.
 2. **Task 3.1 — Sampled Incremental Generation & Oracle Validation** —
-   **PLANNED / NOT STARTED**. Its task-specific package is created only after
-   Task 3.0 is reviewed and checkpointed.
+   **COMPLETE / PASS**. It composes the accepted Task 3.0 sampler with the
+   accepted incremental executor and closes the remaining R2 sampling gap.
 
 Dependency graph:
 
@@ -97,7 +97,7 @@ Task 3.0 sampling transforms + explicit RNG + selection evidence
 Task 3.1 sampled executor integration + stop/rollback/oracle evidence
                          |
                          v
-              Epic 3 / R2 closure review
+              Epic 3 / R2 COMPLETE / PASS
 ```
 
 The two tasks are separate because logit processing, probability construction,
@@ -186,7 +186,8 @@ Epic 3 is COMPLETE/PASS only when:
   dependency;
 - clean CPU and CUDA regression suites pass with no new Kestrel-Q warning;
 - no runtime/model artifact, secret or user-specific path is committed; and
-- Epic 3 closure is recorded separately after its task gates pass.
+- Epic 3 completion is recorded with the final governed Task 3.1 gate, as
+  directed by the Task 3.1 mandate.
 
 These are correctness gates, not speed, quality or product-readiness claims.
 
@@ -243,7 +244,8 @@ benchmark is run during Epic 3 inception.
 
 `docs/adr/0022-native-sampling-policy-boundary.md` is **ACCEPTED** from Task
 3.0 evidence. Model-logit production, immutable selection policy and
-caller-owned versioned PCG32 state are separate runtime boundaries. Task 3.1
-remains planned/not started and owns executor integration.
+caller-owned versioned PCG32 state are separate runtime boundaries. ADR 0023
+is **ACCEPTED** from Task 3.1 evidence and governs their whole-token
+transactional integration.
 
 `EPIC_3_INITIAL_ADR = ADR 0022 / ACCEPTED`.

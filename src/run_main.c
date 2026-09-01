@@ -2,6 +2,7 @@
 #define NOMINMAX
 #include <windows.h>
 
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,7 @@
 #include "kq_gguf.h"
 #include "kq_model.h"
 #include "kq_model_exec.h"
+#include "kq_sampling.h"
 #include "kq_status.h"
 #include "kq_tokenizer.h"
 #include "kq_weight_provider.h"
@@ -24,7 +26,9 @@
 static void usage(void) {
     (void)fprintf(stderr,
         "usage: kq-run <model.gguf> --prompt <text> "
-        "--max-new-tokens N --greedy (N=1..4)\n");
+        "--max-new-tokens N --greedy (N=1..4)\n"
+        "       kq-run <model.gguf> --prompt <text> "
+        "--max-new-tokens N --sample --seed <u64> [--stream <u63>]\n");
 }
 
 static int parse_max_new_tokens(const wchar_t *text, uint32_t *value) {
@@ -35,6 +39,20 @@ static int parse_max_new_tokens(const wchar_t *text, uint32_t *value) {
     if (end == text || *end != L'\0' || parsed == 0UL ||
         parsed > KQ_RUN_MAX_NEW_TOKENS) return 0;
     *value = (uint32_t)parsed;
+    return 1;
+}
+
+static int parse_u64(const wchar_t *text, uint64_t maximum, uint64_t *value) {
+    wchar_t *end = NULL;
+    unsigned long long parsed;
+    if (text == NULL || value == NULL || *text == L'\0' || *text == L'-')
+        return 0;
+    errno = 0;
+    parsed = wcstoull(text, &end, 10);
+    if (errno == ERANGE || end == text || *end != L'\0' ||
+        (uint64_t)parsed > maximum)
+        return 0;
+    *value = (uint64_t)parsed;
     return 1;
 }
 
@@ -130,32 +148,57 @@ int wmain(int argc, wchar_t **argv) {
     kq_weight_provider *provider = NULL;
     kq_model_exec_config *config = NULL;
     kq_model_exec_state *state = NULL;
+    kq_sampling_config *sampling_config = NULL;
+    kq_sampling_rng_state sampling_rng = {0};
+    kq_sampling_policy sampling_policy;
     uint32_t *token_ids = NULL;
     uint64_t token_count = 0U;
     kq_tokenizer_encode_options encode_options;
     float *logits = NULL;
     void *scratch = NULL;
+    void *sampling_scratch = NULL;
     uint64_t scratch_bytes = 0U;
+    uint64_t sampling_scratch_bytes = 0U;
     kq_model_exec_result results[KQ_RUN_MAX_NEW_TOKENS];
     kq_model_exec_state_summary summaries[KQ_RUN_MAX_NEW_TOKENS];
+    kq_sampling_result sampling_results[KQ_RUN_MAX_NEW_TOKENS];
     unsigned char decoded_steps[KQ_RUN_MAX_NEW_TOKENS][256];
     uint32_t max_new_tokens = 0U;
     uint32_t generated = 0U;
+    uint64_t sampling_seed = 0U;
+    uint64_t sampling_stream = KQ_SAMPLING_DEFAULT_STREAM;
+    int sampled_mode = 0;
     kq_diagnostic diagnostic;
     kq_status status = KQ_STATUS_OK;
     int exit_code = 1;
 
-    if (argc != 7) {
+    if (argc != 7 && argc != 9 && argc != 11) {
         usage();
         return 2;
     }
     model_path = argv[1];
     if (wcscmp(argv[2], L"--prompt") != 0 ||
         wcscmp(argv[4], L"--max-new-tokens") != 0 ||
-        !parse_max_new_tokens(argv[5], &max_new_tokens) ||
-        wcscmp(argv[6], L"--greedy") != 0) {
+        !parse_max_new_tokens(argv[5], &max_new_tokens)) {
         usage();
         return 2;
+    }
+    if (argc == 7) {
+        if (wcscmp(argv[6], L"--greedy") != 0) {
+            usage();
+            return 2;
+        }
+    } else {
+        if (wcscmp(argv[6], L"--sample") != 0 ||
+            wcscmp(argv[7], L"--seed") != 0 ||
+            !parse_u64(argv[8], UINT64_MAX, &sampling_seed) ||
+            (argc == 11 && (wcscmp(argv[9], L"--stream") != 0 ||
+                            !parse_u64(argv[10], KQ_SAMPLING_MAX_STREAM,
+                                       &sampling_stream)))) {
+            usage();
+            return 2;
+        }
+        sampled_mode = 1;
     }
     prompt_argument = argv[3];
     prompt = wide_to_utf8(prompt_argument, &prompt_bytes);
@@ -180,6 +223,14 @@ int wmain(int argc, wchar_t **argv) {
             &config, &diagnostic);
     if (status == KQ_STATUS_OK)
         status = kq_model_exec_state_create(config, &state, &diagnostic);
+    if (status == KQ_STATUS_OK && sampled_mode) {
+        kq_sampling_policy_qwen38_default(&sampling_policy);
+        status = kq_sampling_config_open_qwen38(
+            &sampling_policy, &sampling_config, &diagnostic);
+    }
+    if (status == KQ_STATUS_OK && sampled_mode)
+        status = kq_sampling_rng_seed(sampling_seed, sampling_stream,
+                                      &sampling_rng, &diagnostic);
     encode_options.special_policy = KQ_TOKENIZER_SPECIAL_REJECT;
     if (status == KQ_STATUS_OK)
         status = kq_tokenizer_encode(tokenizer, prompt, prompt_bytes,
@@ -212,12 +263,32 @@ int wmain(int argc, wchar_t **argv) {
                                  sizeof(*logits));
         if (scratch == NULL || logits == NULL) status = KQ_STATUS_OUT_OF_MEMORY;
     }
-    if (status == KQ_STATUS_OK)
-        status = kq_model_exec_prefill_first_token_f32(
-            config, state, token_ids, token_count, logits,
-            KQ_MODEL_EXEC_VOCABULARY_SIZE, decoded_steps[0],
-            sizeof(decoded_steps[0]), scratch, scratch_bytes, progress, NULL,
-            &results[0], &diagnostic);
+    if (status == KQ_STATUS_OK && sampled_mode) {
+        sampling_scratch_bytes =
+            kq_sampling_required_scratch_bytes(sampling_config);
+        if (sampling_scratch_bytes == 0U || sampling_scratch_bytes > SIZE_MAX)
+            status = KQ_STATUS_LIMIT_EXCEEDED;
+        else {
+            sampling_scratch = malloc((size_t)sampling_scratch_bytes);
+            if (sampling_scratch == NULL) status = KQ_STATUS_OUT_OF_MEMORY;
+        }
+    }
+    if (status == KQ_STATUS_OK) {
+        if (sampled_mode)
+            status = kq_model_exec_sampled_prefill_f32(
+                config, state, sampling_config, &sampling_rng,
+                token_ids, token_count, logits,
+                KQ_MODEL_EXEC_VOCABULARY_SIZE, decoded_steps[0],
+                sizeof(decoded_steps[0]), scratch, scratch_bytes,
+                sampling_scratch, sampling_scratch_bytes, progress, NULL,
+                &results[0], &sampling_results[0], &diagnostic);
+        else
+            status = kq_model_exec_prefill_first_token_f32(
+                config, state, token_ids, token_count, logits,
+                KQ_MODEL_EXEC_VOCABULARY_SIZE, decoded_steps[0],
+                sizeof(decoded_steps[0]), scratch, scratch_bytes, progress,
+                NULL, &results[0], &diagnostic);
+    }
     if (status != KQ_STATUS_OK) {
         print_failure(status, &diagnostic);
         goto done;
@@ -249,12 +320,22 @@ int wmain(int argc, wchar_t **argv) {
             scratch = resized;
             scratch_bytes = decode_scratch_bytes;
         }
-        status = kq_model_exec_decode_one_f32(
-            config, state, results[generated - 1U].selected_token_id,
-            logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
-            decoded_steps[generated], sizeof(decoded_steps[generated]),
-            scratch, scratch_bytes, progress, NULL, &results[generated],
-            &diagnostic);
+        if (sampled_mode)
+            status = kq_model_exec_sampled_decode_one_f32(
+                config, state, sampling_config, &sampling_rng,
+                results[generated - 1U].selected_token_id,
+                logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+                decoded_steps[generated], sizeof(decoded_steps[generated]),
+                scratch, scratch_bytes, sampling_scratch,
+                sampling_scratch_bytes, progress, NULL, &results[generated],
+                &sampling_results[generated], &diagnostic);
+        else
+            status = kq_model_exec_decode_one_f32(
+                config, state, results[generated - 1U].selected_token_id,
+                logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+                decoded_steps[generated], sizeof(decoded_steps[generated]),
+                scratch, scratch_bytes, progress, NULL, &results[generated],
+                &diagnostic);
         if (status != KQ_STATUS_OK) break;
         status = kq_model_exec_state_get_summary(
             state, &summaries[generated], &diagnostic);
@@ -325,6 +406,16 @@ int wmain(int argc, wchar_t **argv) {
                          (unsigned long long)results[step].metrics.routed_expert_selections,
                          (unsigned int)(step + 1U),
                          (unsigned long long)results[step].metrics.ple_row_requests);
+            if (sampled_mode)
+                (void)printf("step_%u_rng_word=%u\n"
+                             "step_%u_rng_draws_after=%llu\n"
+                             "step_%u_survivor_count=%u\n",
+                             (unsigned int)(step + 1U),
+                             sampling_results[step].rng_word,
+                             (unsigned int)(step + 1U),
+                             (unsigned long long)sampling_results[step].rng_draws_after,
+                             (unsigned int)(step + 1U),
+                             sampling_results[step].retained_count);
         }
         (void)printf("generated_tokens=%u\nprompt_prefill_count=1\n"
                      "incremental_decode_count=%u\ncontext_capacity=%llu\n"
@@ -350,6 +441,14 @@ int wmain(int argc, wchar_t **argv) {
                      (unsigned long long)results[generated - 1U].metrics.maximum_f32_weight_bytes_materialized,
                      (unsigned long long)total_elapsed);
     }
+    if (sampled_mode)
+        (void)printf("selection_mode=sample\nsampling_seed=%llu\n"
+                     "sampling_stream=%llu\nrng_draws=%llu\n",
+                     (unsigned long long)sampling_seed,
+                     (unsigned long long)sampling_stream,
+                     (unsigned long long)sampling_rng.draws);
+    else
+        (void)printf("selection_mode=greedy\n");
     (void)printf("prompt_tokens=%llu\n"
                  "logical_payload_bytes_touched=%llu\n"
                  "payload_blocks_touched=%llu\n"
@@ -390,10 +489,12 @@ int wmain(int argc, wchar_t **argv) {
     exit_code = 0;
 
 done:
+    free(sampling_scratch);
     free(logits);
     free(scratch);
     free(token_ids);
     kq_model_exec_state_close(state);
+    kq_sampling_config_close(sampling_config);
     kq_model_exec_config_close(config);
     kq_weight_provider_close(provider);
     kq_tokenizer_close(tokenizer);

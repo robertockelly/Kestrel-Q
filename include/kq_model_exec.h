@@ -5,6 +5,7 @@
 
 #include "kq_gguf.h"
 #include "kq_model.h"
+#include "kq_sampling.h"
 #include "kq_status.h"
 #include "kq_tokenizer.h"
 #include "kq_weight_provider.h"
@@ -159,6 +160,40 @@ kq_status kq_model_exec_decode_one_f32(
     void *scratch, uint64_t scratch_bytes,
     kq_model_exec_progress_observer observer, void *observer_user_data,
     kq_model_exec_result *result, kq_diagnostic *diagnostic);
+
+/* Samples the first token from a single prompt prefill. Model state, caller
+   RNG state and caller outputs commit together. Sampling scratch is separate
+   from model scratch and is owned by the caller. */
+kq_status kq_model_exec_sampled_prefill_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    const uint32_t *token_ids, uint64_t token_count,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic);
+
+/* Consumes one accepted sampled token and samples its successor. The model
+   layer slots, public position, RNG state and caller outputs are one
+   transaction. */
+kq_status kq_model_exec_sampled_decode_one_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    uint32_t input_token_id,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic);
 
 int kq_model_exec_token_is_eog(uint32_t token_id);
 

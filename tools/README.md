@@ -651,3 +651,38 @@ python tools/validate-native-sampling.py `
 
 Production C17 sampling code reads none of these JSON files and links no
 Python, PyTorch, Transformers, tokenizers, NumPy or PCG dependency.
+
+## Task 3.1 sampled-generation integration evidence
+
+`kq_sampled_generation_integration_test` runs the registered real GGUF with
+the governed prompt, primary and disjoint holdout PCG cases. With
+`--capture-dir`, it writes one complete F32 logit array per successful sampled
+step plus a native transcript to an explicitly ignored cache. These files are
+temporary oracle inputs and must never be added to Git.
+
+`generate-sampled-generation-evidence.py` is a separate standard-library
+Python implementation of the frozen Task 3.0 top-k/top-p/F32 categorical and
+PCG transition. For every primary/holdout step it consumes the temporary
+logits and exact pre-step RNG state, then requires exact retained count/order
+hash, RNG word/post-state/integrity and selected token. It writes six bounded
+`sampled-generation-*.json` files under the existing milestone revision root;
+no full logits or local model path appear in those files.
+
+```powershell
+$env:KQ_GGUF_PATH = [Environment]::GetEnvironmentVariable('KQ_GGUF_PATH', 'User')
+$capture = '.research-cache/task-3.1/capture-final'
+New-Item -ItemType Directory -Force -Path $capture | Out-Null
+& build-cpu/Release/kq_sampled_generation_integration_test.exe `
+  --capture-dir $capture 2>&1 | Tee-Object "$capture/native-console.txt"
+
+$milestone = 'research/milestones/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+python tools/generate-sampled-generation-evidence.py `
+  --native-log "$capture/native-console.txt" `
+  --logits-dir $capture --output-dir $milestone
+python tools/generate-sampled-generation-evidence.py `
+  --native-log "$capture/native-console.txt" `
+  --logits-dir $capture --output-dir $milestone --verify
+```
+
+The production executor calls `kq_sampling` directly and has no Python,
+Transformers, llama.cpp or research-JSON dependency.

@@ -10,6 +10,7 @@
 
 #include "kq_internal.h"
 #include "kq_layer_internal.h"
+#include "kq_model_exec_internal.h"
 #include "kq_numeric.h"
 #include "kq_weight_provider_internal.h"
 
@@ -62,6 +63,20 @@ typedef struct kq_model_exec_buffers {
     void *layer_scratch;
     uint64_t layer_scratch_bytes;
 } kq_model_exec_buffers;
+
+typedef kq_status (*kq_model_exec_selector)(
+    const float *logits, uint64_t logit_count, void *context,
+    uint32_t *selected_token_id, kq_diagnostic *diagnostic);
+
+typedef struct kq_model_exec_sample_context {
+    const kq_sampling_config *config;
+    kq_sampling_rng_state rng;
+    void *scratch;
+    uint64_t scratch_bytes;
+    kq_sampling_result result;
+    const float *selection_logits;
+    uint64_t selection_logit_count;
+} kq_model_exec_sample_context;
 
 static kq_status model_fail(kq_diagnostic *diagnostic, kq_status status,
                             const char *message) {
@@ -568,6 +583,37 @@ kq_status kq_model_exec_greedy_argmax_f32(
     return KQ_STATUS_OK;
 }
 
+static kq_status select_greedy(const float *logits, uint64_t logit_count,
+                               void *context, uint32_t *selected_token_id,
+                               kq_diagnostic *diagnostic) {
+    (void)context;
+    return kq_model_exec_greedy_argmax_f32(
+        logits, logit_count, selected_token_id, diagnostic);
+}
+
+static kq_status select_sampled(const float *logits, uint64_t logit_count,
+                                void *context, uint32_t *selected_token_id,
+                                kq_diagnostic *diagnostic) {
+    kq_model_exec_sample_context *sample =
+        (kq_model_exec_sample_context *)context;
+    const float *selection_logits = logits;
+    uint64_t selection_count = logit_count;
+    kq_status status;
+    if (sample == NULL || selected_token_id == NULL)
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "sampled model selection context is invalid");
+    if (sample->selection_logits != NULL) {
+        selection_logits = sample->selection_logits;
+        selection_count = sample->selection_logit_count;
+    }
+    status = kq_sampling_select_f32(
+        sample->config, &sample->rng, selection_logits, selection_count,
+        sample->scratch, sample->scratch_bytes, &sample->result, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    *selected_token_id = sample->result.selected_token_id;
+    return KQ_STATUS_OK;
+}
+
 static kq_status final_mix(
     const kq_model_exec_config *config, const float *branches,
     kq_model_exec_buffers *buffers, kq_diagnostic *diagnostic) {
@@ -629,13 +675,14 @@ static kq_status final_mix(
     return KQ_STATUS_OK;
 }
 
-kq_status kq_model_exec_prefill_first_token_f32(
+static kq_status prefill_select_f32(
     const kq_model_exec_config *config, kq_model_exec_state *state,
     const uint32_t *token_ids, uint64_t token_count,
     float *logits, uint64_t logits_capacity,
     unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
     void *scratch, uint64_t scratch_bytes,
     kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_selector selector, void *selector_context,
     kq_model_exec_result *result, kq_diagnostic *diagnostic) {
     kq_model_exec_buffers buffers;
     const kq_weight_provider_metrics *before;
@@ -667,7 +714,8 @@ kq_status kq_model_exec_prefill_first_token_f32(
     memset(&staged_result, 0, sizeof(staged_result));
     if (!config_valid(config) || !state_valid(state) ||
         state->config != config || token_ids == NULL || logits == NULL ||
-        decoded_utf8 == NULL || scratch == NULL || result == NULL ||
+        decoded_utf8 == NULL || scratch == NULL || selector == NULL ||
+        result == NULL ||
         logits_capacity < KQ_MODEL_EXEC_VOCABULARY_SIZE || token_count == 0U)
         return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
                           "model first-token arguments are invalid");
@@ -795,8 +843,8 @@ kq_status kq_model_exec_prefill_first_token_f32(
                   KQ_MODEL_EXEC_PHASE_LOGITS_COMPLETE, UINT32_MAX,
                   buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE);
 
-    status = kq_model_exec_greedy_argmax_f32(
-        buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE, &selected, diagnostic);
+    status = selector(buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+                      selector_context, &selected, diagnostic);
     if (status != KQ_STATUS_OK) return status;
     if (selected >= KQ_MODEL_EXEC_CANONICAL_TOKEN_LIMIT)
         return model_fail(diagnostic, KQ_STATUS_INVALID_TOKEN_ID,
@@ -866,6 +914,20 @@ kq_status kq_model_exec_prefill_first_token_f32(
     return KQ_STATUS_OK;
 }
 
+kq_status kq_model_exec_prefill_first_token_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const uint32_t *token_ids, uint64_t token_count,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result, kq_diagnostic *diagnostic) {
+    return prefill_select_f32(
+        config, state, token_ids, token_count, logits, logits_capacity,
+        decoded_utf8, decoded_utf8_capacity, scratch, scratch_bytes,
+        observer, observer_user_data, select_greedy, NULL, result, diagnostic);
+}
+
 int kq_model_exec_token_is_eog(uint32_t token_id) {
     return token_id == 248044U || token_id == 248046U;
 }
@@ -892,13 +954,14 @@ static kq_status rollback_decode_layers(
     return original_status;
 }
 
-kq_status kq_model_exec_decode_one_f32(
+static kq_status decode_one_select_f32(
     const kq_model_exec_config *config, kq_model_exec_state *state,
     uint32_t input_token_id,
     float *logits, uint64_t logits_capacity,
     unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
     void *scratch, uint64_t scratch_bytes,
     kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_selector selector, void *selector_context,
     kq_model_exec_result *result, kq_diagnostic *diagnostic) {
     kq_model_exec_buffers buffers;
     const kq_weight_provider_metrics *before;
@@ -930,7 +993,7 @@ kq_status kq_model_exec_decode_one_f32(
     memset(&staged_result, 0, sizeof(staged_result));
     if (!config_valid(config) || !state_valid(state) ||
         state->config != config || logits == NULL || decoded_utf8 == NULL ||
-        scratch == NULL || result == NULL ||
+        scratch == NULL || selector == NULL || result == NULL ||
         logits_capacity < KQ_MODEL_EXEC_VOCABULARY_SIZE)
         return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
                           "model incremental-decode arguments are invalid");
@@ -1047,8 +1110,8 @@ kq_status kq_model_exec_decode_one_f32(
                   KQ_MODEL_EXEC_PHASE_LOGITS_COMPLETE, UINT32_MAX,
                   buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE);
 
-    status = kq_model_exec_greedy_argmax_f32(
-        buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE, &selected, diagnostic);
+    status = selector(buffers.logits, KQ_MODEL_EXEC_VOCABULARY_SIZE,
+                      selector_context, &selected, diagnostic);
     if (status != KQ_STATUS_OK) goto rollback;
     if (selected >= KQ_MODEL_EXEC_CANONICAL_TOKEN_LIMIT) {
         status = model_fail(diagnostic, KQ_STATUS_INVALID_TOKEN_ID,
@@ -1129,6 +1192,315 @@ rollback:
     else kq_diagnostic_clear(&original_diagnostic);
     return rollback_decode_layers(state, committed_layers, status,
                                   &original_diagnostic, diagnostic);
+}
+
+kq_status kq_model_exec_decode_one_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    uint32_t input_token_id,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *scratch, uint64_t scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result, kq_diagnostic *diagnostic) {
+    return decode_one_select_f32(
+        config, state, input_token_id, logits, logits_capacity,
+        decoded_utf8, decoded_utf8_capacity, scratch, scratch_bytes,
+        observer, observer_user_data, select_greedy, NULL, result, diagnostic);
+}
+
+static kq_status validate_sampled_buffers(
+    const kq_sampling_config *sampling_config,
+    const kq_sampling_rng_state *rng_state,
+    const float *logits, const unsigned char *decoded_utf8,
+    uint64_t decoded_utf8_capacity,
+    const void *model_scratch, uint64_t model_scratch_bytes,
+    const void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    const kq_model_exec_result *result,
+    const kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    const uint64_t logits_bytes =
+        (uint64_t)KQ_MODEL_EXEC_VOCABULARY_SIZE * sizeof(float);
+    uint64_t required_sampling;
+    if (sampling_config == NULL || rng_state == NULL || logits == NULL ||
+        decoded_utf8 == NULL || model_scratch == NULL ||
+        sampling_scratch == NULL || result == NULL ||
+        sampling_result == NULL ||
+        kq_sampling_config_vocabulary_size(sampling_config) !=
+            KQ_MODEL_EXEC_VOCABULARY_SIZE) {
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "sampled model-execution arguments are invalid");
+    }
+    required_sampling =
+        kq_sampling_required_scratch_bytes(sampling_config);
+    if (required_sampling == 0U)
+        return model_fail(diagnostic, KQ_STATUS_INCOMPATIBLE_SAMPLING,
+                          "sampled model policy is incompatible");
+    if (sampling_scratch_bytes < required_sampling)
+        return model_fail(diagnostic, KQ_STATUS_BUFFER_TOO_SMALL,
+                          "sampled model selection scratch is too small");
+    if (ranges_overlap(model_scratch, model_scratch_bytes,
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(logits, logits_bytes,
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(decoded_utf8, decoded_utf8_capacity,
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(rng_state, sizeof(*rng_state),
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(result, sizeof(*result),
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(sampling_result, sizeof(*sampling_result),
+                       sampling_scratch, sampling_scratch_bytes) ||
+        ranges_overlap(rng_state, sizeof(*rng_state), logits, logits_bytes) ||
+        ranges_overlap(rng_state, sizeof(*rng_state), decoded_utf8,
+                       decoded_utf8_capacity) ||
+        ranges_overlap(rng_state, sizeof(*rng_state), model_scratch,
+                       model_scratch_bytes) ||
+        ranges_overlap(result, sizeof(*result), rng_state,
+                       sizeof(*rng_state)) ||
+        ranges_overlap(sampling_result, sizeof(*sampling_result), rng_state,
+                       sizeof(*rng_state)) ||
+        ranges_overlap(result, sizeof(*result), logits, logits_bytes) ||
+        ranges_overlap(result, sizeof(*result), decoded_utf8,
+                       decoded_utf8_capacity) ||
+        ranges_overlap(result, sizeof(*result), model_scratch,
+                       model_scratch_bytes) ||
+        ranges_overlap(sampling_result, sizeof(*sampling_result), logits,
+                       logits_bytes) ||
+        ranges_overlap(sampling_result, sizeof(*sampling_result),
+                       decoded_utf8, decoded_utf8_capacity) ||
+        ranges_overlap(sampling_result, sizeof(*sampling_result),
+                       model_scratch, model_scratch_bytes) ||
+        ranges_overlap(result, sizeof(*result), sampling_result,
+                       sizeof(*sampling_result))) {
+        return model_fail(diagnostic, KQ_STATUS_ALIASING_VIOLATION,
+                          "sampled model state, outputs, and scratch overlap");
+    }
+    return KQ_STATUS_OK;
+}
+
+static kq_status sampled_prefill_internal(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    const uint32_t *token_ids, uint64_t token_count,
+    const float *selection_logits, uint64_t selection_logit_count,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    kq_model_exec_sample_context sample;
+    kq_model_exec_result staged_result;
+    unsigned char staged_decoded[1024];
+    kq_diagnostic original_diagnostic;
+    uint64_t pre_position = state_valid(state) ? state->position : UINT64_MAX;
+    uint64_t staged_capacity = decoded_utf8_capacity;
+    kq_status status;
+    kq_diagnostic_clear(diagnostic);
+    status = validate_sampled_buffers(
+        sampling_config, rng_state, logits, decoded_utf8,
+        decoded_utf8_capacity, model_scratch, model_scratch_bytes,
+        sampling_scratch, sampling_scratch_bytes, result, sampling_result,
+        diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    if ((selection_logits == NULL && selection_logit_count != 0U) ||
+        (selection_logits != NULL &&
+         selection_logit_count != KQ_MODEL_EXEC_VOCABULARY_SIZE))
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "sampled selection-logit control is invalid");
+    memset(&sample, 0, sizeof(sample));
+    memset(&staged_result, 0, sizeof(staged_result));
+    memset(staged_decoded, 0, sizeof(staged_decoded));
+    status = kq_sampling_rng_snapshot(rng_state, &sample.rng, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    sample.config = sampling_config;
+    sample.scratch = sampling_scratch;
+    sample.scratch_bytes = sampling_scratch_bytes;
+    sample.selection_logits = selection_logits;
+    sample.selection_logit_count = selection_logit_count;
+    if (staged_capacity > sizeof(staged_decoded))
+        staged_capacity = sizeof(staged_decoded);
+    status = prefill_select_f32(
+        config, state, token_ids, token_count, logits, logits_capacity,
+        staged_decoded, staged_capacity, model_scratch, model_scratch_bytes,
+        observer, observer_user_data, select_sampled, &sample,
+        &staged_result, diagnostic);
+    if (status != KQ_STATUS_OK) {
+        if (diagnostic != NULL) original_diagnostic = *diagnostic;
+        else kq_diagnostic_clear(&original_diagnostic);
+        if (pre_position == 0U && state_valid(state)) {
+            kq_diagnostic reset_diagnostic;
+            kq_diagnostic_clear(&reset_diagnostic);
+            if (kq_model_exec_state_reset(state, &reset_diagnostic) !=
+                KQ_STATUS_OK) {
+                return model_fail(
+                    diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                    "sampled prefill rollback could not reset model state");
+            }
+        }
+        if (diagnostic != NULL) *diagnostic = original_diagnostic;
+        return status;
+    }
+    if (staged_result.decoded_utf8_bytes != 0U)
+        memcpy(decoded_utf8, staged_decoded,
+               (size_t)staged_result.decoded_utf8_bytes);
+    *rng_state = sample.rng;
+    *sampling_result = sample.result;
+    *result = staged_result;
+    return KQ_STATUS_OK;
+}
+
+kq_status kq_model_exec_sampled_prefill_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    const uint32_t *token_ids, uint64_t token_count,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    return sampled_prefill_internal(
+        config, state, sampling_config, rng_state, token_ids, token_count,
+        NULL, 0U,
+        logits, logits_capacity, decoded_utf8, decoded_utf8_capacity,
+        model_scratch, model_scratch_bytes, sampling_scratch,
+        sampling_scratch_bytes, observer, observer_user_data, result,
+        sampling_result, diagnostic);
+}
+
+kq_status kq_model_exec_sampled_prefill_with_selection_logits_for_test(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    const uint32_t *token_ids, uint64_t token_count,
+    const float *selection_logits, uint64_t selection_logit_count,
+    float *model_logits, uint64_t model_logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    return sampled_prefill_internal(
+        config, state, sampling_config, rng_state, token_ids, token_count,
+        selection_logits, selection_logit_count, model_logits,
+        model_logits_capacity, decoded_utf8, decoded_utf8_capacity,
+        model_scratch, model_scratch_bytes, sampling_scratch,
+        sampling_scratch_bytes, observer, observer_user_data, result,
+        sampling_result, diagnostic);
+}
+
+static kq_status sampled_decode_internal(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    uint32_t input_token_id,
+    const float *selection_logits, uint64_t selection_logit_count,
+    float *model_logits, uint64_t model_logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    kq_model_exec_sample_context sample;
+    kq_model_exec_result staged_result;
+    unsigned char staged_decoded[1024];
+    uint64_t staged_capacity = decoded_utf8_capacity;
+    kq_status status;
+    kq_diagnostic_clear(diagnostic);
+    status = validate_sampled_buffers(
+        sampling_config, rng_state, model_logits, decoded_utf8,
+        decoded_utf8_capacity, model_scratch, model_scratch_bytes,
+        sampling_scratch, sampling_scratch_bytes, result, sampling_result,
+        diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    if ((selection_logits == NULL && selection_logit_count != 0U) ||
+        (selection_logits != NULL &&
+         selection_logit_count != KQ_MODEL_EXEC_VOCABULARY_SIZE))
+        return model_fail(diagnostic, KQ_STATUS_INVALID_ARGUMENT,
+                          "sampled selection-logit control is invalid");
+    if (kq_model_exec_token_is_eog(input_token_id))
+        return model_fail(diagnostic, KQ_STATUS_INVALID_MODEL_STATE,
+                          "sampled generation cannot decode after EOG");
+    memset(&sample, 0, sizeof(sample));
+    memset(&staged_result, 0, sizeof(staged_result));
+    memset(staged_decoded, 0, sizeof(staged_decoded));
+    status = kq_sampling_rng_snapshot(rng_state, &sample.rng, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    sample.config = sampling_config;
+    sample.scratch = sampling_scratch;
+    sample.scratch_bytes = sampling_scratch_bytes;
+    sample.selection_logits = selection_logits;
+    sample.selection_logit_count = selection_logit_count;
+    if (staged_capacity > sizeof(staged_decoded))
+        staged_capacity = sizeof(staged_decoded);
+    status = decode_one_select_f32(
+        config, state, input_token_id, model_logits, model_logits_capacity,
+        staged_decoded, staged_capacity, model_scratch, model_scratch_bytes,
+        observer, observer_user_data, select_sampled, &sample,
+        &staged_result, diagnostic);
+    if (status != KQ_STATUS_OK) return status;
+    if (staged_result.decoded_utf8_bytes != 0U)
+        memcpy(decoded_utf8, staged_decoded,
+               (size_t)staged_result.decoded_utf8_bytes);
+    *rng_state = sample.rng;
+    *sampling_result = sample.result;
+    *result = staged_result;
+    return KQ_STATUS_OK;
+}
+
+kq_status kq_model_exec_sampled_decode_one_f32(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    uint32_t input_token_id,
+    float *logits, uint64_t logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    return sampled_decode_internal(
+        config, state, sampling_config, rng_state, input_token_id, NULL, 0U,
+        logits, logits_capacity, decoded_utf8, decoded_utf8_capacity,
+        model_scratch, model_scratch_bytes, sampling_scratch,
+        sampling_scratch_bytes, observer, observer_user_data, result,
+        sampling_result, diagnostic);
+}
+
+kq_status kq_model_exec_sampled_decode_one_with_selection_logits_for_test(
+    const kq_model_exec_config *config, kq_model_exec_state *state,
+    const kq_sampling_config *sampling_config,
+    kq_sampling_rng_state *rng_state,
+    uint32_t input_token_id,
+    const float *selection_logits, uint64_t selection_logit_count,
+    float *model_logits, uint64_t model_logits_capacity,
+    unsigned char *decoded_utf8, uint64_t decoded_utf8_capacity,
+    void *model_scratch, uint64_t model_scratch_bytes,
+    void *sampling_scratch, uint64_t sampling_scratch_bytes,
+    kq_model_exec_progress_observer observer, void *observer_user_data,
+    kq_model_exec_result *result,
+    kq_sampling_result *sampling_result,
+    kq_diagnostic *diagnostic) {
+    return sampled_decode_internal(
+        config, state, sampling_config, rng_state, input_token_id,
+        selection_logits, selection_logit_count, model_logits,
+        model_logits_capacity, decoded_utf8, decoded_utf8_capacity,
+        model_scratch, model_scratch_bytes, sampling_scratch,
+        sampling_scratch_bytes, observer, observer_user_data, result,
+        sampling_result, diagnostic);
 }
 
 kq_status kq_model_exec_generate_first_token_f32(

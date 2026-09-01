@@ -253,6 +253,23 @@ and PLE-value states for regression evidence. They are target-representation
 diagnostics, not serialized portable session objects. Context save/restore is
 still not exposed.
 
+Task 3.1 composes a separate 56-byte caller-owned PCG state with this model
+state. The RNG is not embedded in, owned by or hashed as part of the model
+state: sampled execution copies it to a private local snapshot and publishes
+the next RNG state only when the corresponding model step and selected token
+also commit. A failure therefore preserves both the preceding model summary
+and preceding RNG state. The immutable sampling config and 3,973,127-byte
+sampling scratch are likewise separate from the context-persistent model
+state.
+
+The two governed sampled traces advance through the same model positions and
+semantic-state hashes as the frozen greedy trace because they happen to select
+the same four IDs. Their PCG words/states differ. Synthetic EOG controls prove
+that a successful EOG draw is committed once and never fed to model decode;
+context exhaustion and padding-ID selection preserve both state machines.
+These are bounded generation-lifecycle facts, not a persisted product-session
+format.
+
 ## Optional-state boundaries
 
 ### MTP

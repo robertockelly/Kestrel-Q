@@ -19,4 +19,15 @@ kq_status kq_sampling_copy_work_for_test(
     uint64_t output_capacity,
     kq_diagnostic *diagnostic);
 
+/* Copies final survivors in the sampler's deterministic ascending
+   score/token-ID order. Test/research diagnostics only. */
+kq_status kq_sampling_copy_retained_order_for_test(
+    const kq_sampling_config *config,
+    const void *scratch,
+    uint64_t scratch_bytes,
+    uint32_t *token_ids,
+    uint64_t output_capacity,
+    uint64_t *output_count,
+    kq_diagnostic *diagnostic);
+
 #endif

@@ -245,6 +245,17 @@ if(KQ_BUILD_TESTS)
         COMMAND kq_multi_token_integration_test)
     set_tests_properties(kq_multi_token_real_artifact PROPERTIES
         SKIP_RETURN_CODE 77)
+    add_executable(kq_sampled_generation_integration_test
+        tests/sampled_generation_integration.c)
+    target_link_libraries(kq_sampled_generation_integration_test PRIVATE
+        kq_core)
+    target_include_directories(kq_sampled_generation_integration_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_sampled_generation_integration_test)
+    add_test(NAME kq_sampled_generation_real_artifact
+        COMMAND kq_sampled_generation_integration_test)
+    set_tests_properties(kq_sampled_generation_real_artifact PROPERTIES
+        SKIP_RETURN_CODE 77)
     add_test(NAME kq_run_rejects_vision
         COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
                 --greedy --vision)
@@ -254,9 +265,23 @@ if(KQ_BUILD_TESTS)
     add_test(NAME kq_run_rejects_zero_generation
         COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 0
                 --greedy)
-    set_tests_properties(kq_run_rejects_vision kq_run_rejects_mtp PROPERTIES
-        WILL_FAIL TRUE)
-    set_tests_properties(kq_run_rejects_zero_generation PROPERTIES
+    add_test(NAME kq_run_rejects_sample_without_seed
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
+                --sample)
+    add_test(NAME kq_run_rejects_sample_invalid_stream
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
+                --sample --seed 0 --stream 9223372036854775808)
+    add_test(NAME kq_run_rejects_mode_conflict
+        COMMAND kq_run placeholder.gguf --prompt x --max-new-tokens 1
+                --greedy --seed 0)
+    set_tests_properties(
+        kq_run_rejects_vision
+        kq_run_rejects_mtp
+        kq_run_rejects_zero_generation
+        kq_run_rejects_sample_without_seed
+        kq_run_rejects_sample_invalid_stream
+        kq_run_rejects_mode_conflict
+        PROPERTIES
         WILL_FAIL TRUE)
 
     add_executable(kq_tensor_view_test tests/tensor_view_test.c)

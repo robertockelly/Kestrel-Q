@@ -1,6 +1,6 @@
 # Native model executor
 
-Status: **TASK 2.13 COMPLETE / PASS**
+Status: **TASK 3.1 COMPLETE / PASS**
 
 The Task 2.12 executor is the first production C17 path that composes all
 accepted target components into one real-model operation:
@@ -12,7 +12,8 @@ UTF-8 -> native tokenizer -> bounded embedding rows
        -> stable greedy argmax -> native decode
 ```
 
-It is target-specific, batch 1, text-only and greedy-only. It contains no new
+It is target-specific, batch 1 and text-only. Greedy remains accepted and Task
+3.1 adds the separate accepted Task 3.0 sampled-selection boundary. It contains no new
 GDN, QSA, MoE, PLE or GR equations; those remain owned by the Task 2.6–2.10
 modules. The GGUF is accessed only through the semantic provider and bounded
 views. No complete target matrix is materialized as F32.
@@ -75,6 +76,14 @@ decode calls advance position 7 -> 8 -> 9 -> 10. See
 `MULTI-TOKEN-DECODE-CONTRACT.md` and `NATIVE-MULTI-TOKEN-GENERATION.md` for the
 state, transaction, payload and evidence contracts.
 
+Task 3.1 adds sampled prefill/decode entry points without changing the model
+arithmetic or greedy entry points. Each sampled call snapshots the explicit
+caller-owned PCG state, runs the existing model transaction, delegates the
+complete logits to `kq_sampling`, validates/decodes the selected canonical ID
+and commits model state, RNG and outputs together. Sampling or token-domain
+failure rolls model and RNG back together. See `SAMPLED-GENERATION-CONTRACT.md`
+and `NATIVE-SAMPLED-GENERATION.md`.
+
 ## CLI
 
 The strict milestone command is:
@@ -83,7 +92,9 @@ The strict milestone command is:
 kq-run $env:KQ_GGUF_PATH --prompt "Hello, Kestrel-Q." --max-new-tokens 1 --greedy
 ```
 
-Task 2.13 also accepts `--max-new-tokens 2..4` with context 16. It reports
+The CLI accepts `--max-new-tokens 2..4` with context 16. It reports
 bounded phase/layer and per-token progress, not activations or weights. Zero,
-larger counts, sampling, chat options, vision and MTP are rejected by the
-command shape.
+larger counts, chat options, vision and MTP are rejected by the command shape.
+`--greedy` is unchanged. Task 3.1 additionally accepts `--sample --seed <u64>`
+and an optional governed `--stream <u63>`; it never derives a seed from wall
+clock or process-global state.
