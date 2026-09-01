@@ -135,8 +135,22 @@ Minimal CPU reference inference and reference-vector parity.
   greedy argmax and native decode: **COMPLETE / PASS via Task 2.12**.
 - True incremental bounded greedy continuation and per-step transaction:
   **COMPLETE / PASS via Task 2.13**.
-- Sampling remains future Epic 3 / R2 work. No numbered next task or
-  task-specific plan is currently defined.
+- Epic 3 inception reconstructed the remaining R2 scope without changing
+  runtime behavior. Sampling is the only unfinished Phase 2/R2 workstream;
+  tokenizer, scalar operators, real quantized execution, logits and incremental
+  greedy generation are already complete through Task 2.13. Epic 3 is **IN
+  PROGRESS** as a governed planning phase; implementation remains not started.
+- Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives:
+  **NOT STARTED**. It first characterizes the pinned official default profile
+  and then establishes a separate C17 policy/RNG/selection boundary with exact,
+  calibrated-float and predeclared statistical evidence.
+- Task 3.1 — Sampled Incremental Generation & Oracle Validation:
+  **PLANNED / NOT STARTED**. It follows Task 3.0 and extends the accepted
+  prompt-prefill-once executor transaction to explicit sampler state while
+  preserving the frozen greedy sequences.
+- Epic 3 closes only after both tasks pass their independent-oracle,
+  fail-closed and clean-regression gates. This is CPU correctness work, not a
+  performance, scheduler, CUDA, long-context or product milestone.
 
 ## R3 — Use the GPU
 CUDA baseline with correctness parity.

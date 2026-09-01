@@ -8,6 +8,32 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed the governance-only Epic 3 inception review. Committed roadmap
+  evidence shows that tokenizer, scalar numerics/operators, real quantized
+  execution, full logits, greedy selection and incremental state/rollback are
+  already complete through Task 2.13; sampling is the only explicitly
+  unfinished Project Plan Phase 2 / R2 workstream. Epic 3 therefore enters
+  **IN PROGRESS** governance status while implementation remains not started.
+  No runtime, test or research evidence changed in this iteration.
+- Planned the minimum dependency-ordered Epic 3 sequence: Task 3.0, Native
+  Sampling Policy & Deterministic Selection Primitives, followed by Task 3.1,
+  Sampled Incremental Generation & Oracle Validation. Both remain NOT STARTED;
+  only Task 3.0 receives a task-specific execution package in this inception
+  delta.
+- Proposed ADR 0022 for the durable separation of model-logit production,
+  immutable sampling policy and caller-owned deterministic RNG state. The ADR
+  remains unaccepted until Task 3.0 pins the official processor path, portable
+  RNG semantics and independent exact/calibrated/statistical evidence.
+- Preserved the official pinned Qwen3.8 sampling profile as mandatory future
+  characterization (`do_sample=true`, temperature 1.0, top-k 20, top-p 0.95)
+  without treating derived GGUF defaults as complete semantic authority or
+  inventing probabilistic token-equality claims across different RNGs.
+- Kept SIMD, CUDA model kernels, caching, prefetch, scheduling, memory tiering,
+  long-context/session work, batching, MTP and vision outside Epic 3.
+  `KQ-BACKLOG-BENCH-001` remains deferred until production WDDM capacity policy
+  and `KQ-BACKLOG-BENCH-002` remains deferred until final scheduler/residency
+  design; neither benchmark was run.
+
 - Closed Epic 2 as **COMPLETE / PASS** after a governance-only traceability
   review. The original loader/introspection and runtime-foundation objectives,
   the Project Plan Phase 1 exit gates and every explicitly governed Task

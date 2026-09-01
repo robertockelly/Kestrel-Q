@@ -270,9 +270,17 @@ Epic 2 closure criterion exists.
 accepted and no runtime behavior changed during the closure review.
 `KQ-BACKLOG-BENCH-002` remains deferred and required before final scheduler /
 residency policy, not before Epic 2 closure. The next existing roadmap phase is
-Epic 3 / R2; no numbered next task is currently defined.
+Epic 3 / R2. No numbered next task was defined at the Epic 2 closure checkpoint;
+the separate inception record below now governs Task 3.0 without changing the
+accepted Epic 2 status.
 
 ## Epic 3 — CPU correctness engine
+
+**Epic 3 status: IN PROGRESS — IMPLEMENTATION NOT STARTED.** The inception review
+confirmed that Tasks 2.3 and 2.5-2.13 already satisfy the tokenizer, scalar
+numeric/operator, target execution, logits, greedy and incremental-state parts
+of Project Plan Phase 2. Sampling is the only explicitly unfinished R2
+workstream. No Epic 3 runtime implementation has started.
 
 - [x] Scalar reference tensor primitives (Task 2.5 low-level boundary)
 - [x] Reference dequantization (Task 2.5 seven registered formats)
@@ -288,8 +296,31 @@ Epic 3 / R2; no numbered next task is currently defined.
 - [x] Complete one-layer scalar reference composition (Task 2.10)
 - [x] Real target-quantized single-layer execution (Task 2.11)
 - [x] Logits (Task 2.12 complete target LM head)
-- [ ] Sampling
 - [x] Reference-vector validation (Task 2.12 independent first-token oracle)
+- [ ] Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives:
+  - status: **NOT STARTED**;
+  - characterize the pinned official sampling profile and Transformers
+    processor path before code;
+  - implement a separate immutable C17 sampler configuration with explicit
+    caller-owned portable RNG state;
+  - require independent exact processor/RNG/selection vectors, calibrated
+    floating holdout and predeclared statistical validation;
+  - proposed ADR 0022 defines the durable policy/RNG boundary but remains
+    unaccepted until Task 3.0 evidence passes.
+- [ ] Task 3.1 — Sampled Incremental Generation & Oracle Validation:
+  - status: **PLANNED / NOT STARTED**;
+  - create its task-specific governance package only after Task 3.0 review and
+    checkpoint;
+  - integrate the accepted sampler with prompt-prefill-once incremental decode,
+    EOG/context/max-token stopping and whole-token model-plus-RNG rollback;
+  - preserve the exact Task 2.12/2.13 greedy evidence.
+
+**Next governed task:** Task 3.0 — Native Sampling Policy & Deterministic
+Selection Primitives (**NOT STARTED**). Task 3.1 has no implementation package
+yet and must not start concurrently.
+
+`KQ-BACKLOG-BENCH-001` and `KQ-BACKLOG-BENCH-002` remain deferred; neither is
+an Epic 3 correctness prerequisite.
 
 ## Epic 4 — CUDA
 

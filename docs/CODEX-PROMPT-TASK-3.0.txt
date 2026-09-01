@@ -1,0 +1,37 @@
+Execute Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives.
+
+Repository: C:\SRC\Kestrel-Q
+
+Start only after the reviewed Epic 3 inception checkpoint is committed. First
+establish actual HEAD and a clean working tree; never reset newer maintainer
+work.
+
+Read AGENTS.md, the project/roadmap/task records, the Epic 3 plan/checklist,
+PLAN-TASK-3.0-NATIVE-SAMPLING-POLICY.md,
+TASKS-TASK-3.0-NATIVE-SAMPLING-POLICY.md, NATIVE-SAMPLING-GUIDE.md, proposed
+ADR 0022, ADR 0007, the Task 2.12/2.13 execution contracts/APIs and CHANGELOG.
+
+Characterize the pinned official generation configuration and exact pinned
+Transformers sampling path before writing production algorithm code. The
+mandatory profile is do_sample=true, temperature=1.0, top_k=20, top_p=0.95,
+with EOG IDs 248046/248044. Pin processor order, floating semantics, token
+eligibility and padded-ID behavior. Select and document a portable deterministic
+RNG with explicit state and independent exact vectors; do not use CRT randomness
+or hidden global state.
+
+Implement only a separate immutable C17 sampler config plus caller-owned RNG
+state over explicit F32 logits. Generate independent Class-C transform/RNG/
+selection evidence before native comparison. Use exact comparison for discrete
+and RNG fields, separately calibrated floating contracts and a predeclared
+statistical holdout. Kestrel-Q is never its own oracle.
+
+Do not integrate the model executor or CLI; that is Task 3.1. Do not access
+model payload, add penalties/generic processors, batching, sessions, MTP,
+vision, SIMD/CUDA model kernels, scheduler/cache/prefetch/memory tiering or run
+BENCH-001/BENCH-002. Preserve greedy Task 2.12/2.13 behavior.
+
+Create the contract, production/API docs, deterministic evidence and tests;
+finalize ADR 0022 only after all gates pass. Update Epic 3 records and
+CHANGELOG in the same iteration. Run clean CPU/CUDA Release suites, repository
+safety and git diff --check. Task 3.1 remains NOT STARTED. Do not commit or
+push; leave the complete Task 3.0 delta review-ready.
