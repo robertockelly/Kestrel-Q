@@ -276,11 +276,12 @@ accepted Epic 2 status.
 
 ## Epic 3 — CPU correctness engine
 
-**Epic 3 status: IN PROGRESS — IMPLEMENTATION NOT STARTED.** The inception review
+**Epic 3 status: IN PROGRESS — TASK 3.0 COMPLETE / PASS.** The inception review
 confirmed that Tasks 2.3 and 2.5-2.13 already satisfy the tokenizer, scalar
 numeric/operator, target execution, logits, greedy and incremental-state parts
 of Project Plan Phase 2. Sampling is the only explicitly unfinished R2
-workstream. No Epic 3 runtime implementation has started.
+workstream. The separate native sampling boundary is now complete; sampled
+incremental executor integration remains Task 3.1.
 
 - [x] Scalar reference tensor primitives (Task 2.5 low-level boundary)
 - [x] Reference dequantization (Task 2.5 seven registered formats)
@@ -297,16 +298,16 @@ workstream. No Epic 3 runtime implementation has started.
 - [x] Real target-quantized single-layer execution (Task 2.11)
 - [x] Logits (Task 2.12 complete target LM head)
 - [x] Reference-vector validation (Task 2.12 independent first-token oracle)
-- [ ] Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives:
-  - status: **NOT STARTED**;
+- [x] Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives:
+  - status: **COMPLETE / PASS**;
   - characterize the pinned official sampling profile and Transformers
     processor path before code;
   - implement a separate immutable C17 sampler configuration with explicit
     caller-owned portable RNG state;
   - require independent exact processor/RNG/selection vectors, calibrated
     floating holdout and predeclared statistical validation;
-  - proposed ADR 0022 defines the durable policy/RNG boundary but remains
-    unaccepted until Task 3.0 evidence passes.
+  - ADR 0022 is **ACCEPTED**: immutable model-specific policy and caller-owned
+    PCG32 state are separate from model-logit production.
 - [ ] Task 3.1 — Sampled Incremental Generation & Oracle Validation:
   - status: **PLANNED / NOT STARTED**;
   - create its task-specific governance package only after Task 3.0 review and
@@ -315,9 +316,9 @@ workstream. No Epic 3 runtime implementation has started.
     EOG/context/max-token stopping and whole-token model-plus-RNG rollback;
   - preserve the exact Task 2.12/2.13 greedy evidence.
 
-**Next governed task:** Task 3.0 — Native Sampling Policy & Deterministic
-Selection Primitives (**NOT STARTED**). Task 3.1 has no implementation package
-yet and must not start concurrently.
+**Next governed task:** Task 3.1 — Sampled Incremental Generation & Oracle
+Validation (**PLANNED / NOT STARTED**). Its task-specific implementation
+package is created only after the reviewed Task 3.0 checkpoint.
 
 `KQ-BACKLOG-BENCH-001` and `KQ-BACKLOG-BENCH-002` remain deferred; neither is
 an Epic 3 correctness prerequisite.

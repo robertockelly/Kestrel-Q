@@ -1,0 +1,491 @@
+{
+  "cases": [
+    {
+      "base_logit": -90.0,
+      "id": "special-domain",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "defce83e",
+            "processed_logit_f32_le_hex": "00000040",
+            "token_id": 0
+          },
+          {
+            "probability_f32_le_hex": "71508d3e",
+            "processed_logit_f32_le_hex": "0000c03f",
+            "token_id": 248044
+          },
+          {
+            "probability_f32_le_hex": "3e6c2b3e",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 248046
+          },
+          {
+            "probability_f32_le_hex": "47f2cf3d",
+            "processed_logit_f32_le_hex": "0000003f",
+            "token_id": 248076
+          }
+        ],
+        "retained_count": 4,
+        "retained_ids": [
+          0,
+          248044,
+          248046,
+          248076
+        ],
+        "retained_ids_u32le_sha256": "3c91f693aa965d9f0e255d6793612e001fa920fd3e1bcb2780a4372eba1b30c6",
+        "rng_state_after": "c23b8ceb4dea3bbf",
+        "rng_state_before": "44200494a800ef7e",
+        "rng_word": "958402b3",
+        "selected_token_id": 248044,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "0": 2.0,
+        "248044": 1.5,
+        "248046": 1.0,
+        "248076": 0.5
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 256,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "equal-twenty",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1001
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1002
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1003
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1004
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1005
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1006
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1007
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1008
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1009
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1010
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1011
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1012
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1013
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1014
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1015
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1016
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1017
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1018
+          },
+          {
+            "probability_f32_le_hex": "3694573d",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 1019
+          }
+        ],
+        "retained_count": 19,
+        "retained_ids": [
+          1001,
+          1002,
+          1003,
+          1004,
+          1005,
+          1006,
+          1007,
+          1008,
+          1009,
+          1010,
+          1011,
+          1012,
+          1013,
+          1014,
+          1015,
+          1016,
+          1017,
+          1018,
+          1019
+        ],
+        "retained_ids_u32le_sha256": "0004a6ee37542fe8b53ee5ca34caa44a18f67a98ca8d5e0255ccba472b6ad05e",
+        "rng_state_after": "2a9b258d4f79e9a8",
+        "rng_state_before": "9c71f8c1f4966eab",
+        "rng_word": "7f7631c7",
+        "selected_token_id": 1010,
+        "top_k_retained_count": 20,
+        "top_k_retained_ids": [
+          1000,
+          1001,
+          1002,
+          1003,
+          1004,
+          1005,
+          1006,
+          1007,
+          1008,
+          1009,
+          1010,
+          1011,
+          1012,
+          1013,
+          1014,
+          1015,
+          1016,
+          1017,
+          1018,
+          1019
+        ],
+        "top_k_retained_ids_u32le_sha256": "c0ae193f90e99741ef9f73644ffcb60acf110efa35b06026669406d2fe035ba8"
+      },
+      "overrides": {
+        "1000": 1.0,
+        "1001": 1.0,
+        "1002": 1.0,
+        "1003": 1.0,
+        "1004": 1.0,
+        "1005": 1.0,
+        "1006": 1.0,
+        "1007": 1.0,
+        "1008": 1.0,
+        "1009": 1.0,
+        "1010": 1.0,
+        "1011": 1.0,
+        "1012": 1.0,
+        "1013": 1.0,
+        "1014": 1.0,
+        "1015": 1.0,
+        "1016": 1.0,
+        "1017": 1.0,
+        "1018": 1.0,
+        "1019": 1.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 257,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -100.0,
+      "id": "large-finite",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "3b4d2a3f",
+            "processed_logit_f32_le_hex": "0000a042",
+            "token_id": 20
+          },
+          {
+            "probability_f32_le_hex": "1a9a7a3e",
+            "processed_logit_f32_le_hex": "00009e42",
+            "token_id": 21
+          },
+          {
+            "probability_f32_le_hex": "f361b83d",
+            "processed_logit_f32_le_hex": "00009c42",
+            "token_id": 22
+          }
+        ],
+        "retained_count": 3,
+        "retained_ids": [
+          20,
+          21,
+          22
+        ],
+        "retained_ids_u32le_sha256": "e3da990128d0f3da0f2475e0e94956a248db99949deea3dc89ebaa8d6ada0d70",
+        "rng_state_after": "92fabe2f51099791",
+        "rng_state_before": "f4c3ecef412bedd8",
+        "rng_word": "61e8efde",
+        "selected_token_id": 20,
+        "top_k_retained_count": 4,
+        "top_k_retained_ids": [
+          20,
+          21,
+          22,
+          23
+        ],
+        "top_k_retained_ids_u32le_sha256": "30d2aa19f94a7ae2ac58d3a9bc75331a33149544c58dbf8e12024f50e1973c2f"
+      },
+      "overrides": {
+        "20": 80.0,
+        "21": 79.0,
+        "22": 78.0,
+        "23": 60.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 4,
+        "top_p": 0.9990000128746033
+      },
+      "seed": 258,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "temperature-two",
+      "oracle": {
+        "active_processors": [
+          "temperature",
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "a820f43d",
+            "processed_logit_f32_le_hex": "000000c0",
+            "token_id": 32
+          },
+          {
+            "probability_f32_le_hex": "ea7b613f",
+            "processed_logit_f32_le_hex": "00000000",
+            "token_id": 33
+          }
+        ],
+        "retained_count": 2,
+        "retained_ids": [
+          32,
+          33
+        ],
+        "retained_ids_u32le_sha256": "b9b490a4cf6d0519174885fdd1388961dc102c8c9690adbf2e892653e79ca8bf",
+        "rng_state_after": "fb5a56d15299457a",
+        "rng_state_before": "4d15e11c8dc16d05",
+        "rng_word": "9f515f25",
+        "selected_token_id": 33,
+        "top_k_retained_count": 4,
+        "top_k_retained_ids": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "top_k_retained_ids_u32le_sha256": "03784007c48b1e0270cd21aa7c0fee71b2068be466a79495679d8bc9b03f7232"
+      },
+      "overrides": {
+        "30": -12.0,
+        "31": -8.0,
+        "32": -4.0,
+        "33": 0.0
+      },
+      "policy": {
+        "temperature": 2.0,
+        "top_k": 4,
+        "top_p": 0.8999999761581421
+      },
+      "seed": 259,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "highest-canonical-id",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "0000f041",
+            "token_id": 248076
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          248076
+        ],
+        "retained_ids_u32le_sha256": "e7a7cda63d270ce3e3cb507fe4b7cee63500b29be925a2aaa33258efffdc42b1",
+        "rng_state_after": "63b9ef735428f363",
+        "rng_state_before": "a567d549da56ec32",
+        "rng_word": "f8205acf",
+        "selected_token_id": 248076,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "248076": 30.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 260,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "first-padded-selected",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "INVALID_TOKEN_ID",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "0000f041",
+            "token_id": 248077
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          248077
+        ],
+        "retained_ids_u32le_sha256": "e419fb186696148d839c77ca18ca30d985aecbd939076009c1442bf68a9f04c7",
+        "rng_state_after": "cc19881555b8a14c",
+        "rng_state_before": "fdb9c97726ec6b5f",
+        "rng_word": "6e7d8655",
+        "selected_token_id": 248077,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "248077": 30.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 261,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "last-padded-selected",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "INVALID_TOKEN_ID",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "0000f041",
+            "token_id": 248319
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          248319
+        ],
+        "retained_ids_u32le_sha256": "c4fe329edcab2ce8c3bc31610807971d5c861aa8e075808d97f6886598400e2f",
+        "rng_state_after": "347920b757484f35",
+        "rng_state_before": "560bbda47381ea8c",
+        "rng_word": "34f05d41",
+        "selected_token_id": 248319,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "248319": 30.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 262,
+      "stream": 5427223837140668492
+    }
+  ],
+  "contracts_may_not_be_widened": true,
+  "disjoint_from_calibration": true,
+  "schema": "kq-sampling-holdout-v1"
+}

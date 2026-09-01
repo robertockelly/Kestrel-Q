@@ -1,0 +1,454 @@
+{
+  "cases": [
+    {
+      "base_logit": -80.0,
+      "id": "official-default",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "45606e3e",
+            "processed_logit_f32_le_hex": "0000c040",
+            "token_id": 0
+          },
+          {
+            "probability_f32_le_hex": "c0a5393e",
+            "processed_logit_f32_le_hex": "0000b840",
+            "token_id": 17
+          },
+          {
+            "probability_f32_le_hex": "1795103e",
+            "processed_logit_f32_le_hex": "0000b040",
+            "token_id": 34
+          },
+          {
+            "probability_f32_le_hex": "a533e13d",
+            "processed_logit_f32_le_hex": "0000a840",
+            "token_id": 51
+          },
+          {
+            "probability_f32_le_hex": "2663af3d",
+            "processed_logit_f32_le_hex": "0000a040",
+            "token_id": 68
+          },
+          {
+            "probability_f32_le_hex": "7e97883d",
+            "processed_logit_f32_le_hex": "00009840",
+            "token_id": 85
+          },
+          {
+            "probability_f32_le_hex": "6cc1543d",
+            "processed_logit_f32_le_hex": "00009040",
+            "token_id": 102
+          },
+          {
+            "probability_f32_le_hex": "b6b1253d",
+            "processed_logit_f32_le_hex": "00008840",
+            "token_id": 119
+          },
+          {
+            "probability_f32_le_hex": "f20a013d",
+            "processed_logit_f32_le_hex": "00008040",
+            "token_id": 136
+          },
+          {
+            "probability_f32_le_hex": "49ffc83c",
+            "processed_logit_f32_le_hex": "00007040",
+            "token_id": 153
+          },
+          {
+            "probability_f32_le_hex": "6b899c3c",
+            "processed_logit_f32_le_hex": "00006040",
+            "token_id": 170
+          },
+          {
+            "probability_f32_le_hex": "6ad2733c",
+            "processed_logit_f32_le_hex": "00005040",
+            "token_id": 187
+          }
+        ],
+        "retained_count": 12,
+        "retained_ids": [
+          0,
+          17,
+          34,
+          51,
+          68,
+          85,
+          102,
+          119,
+          136,
+          153,
+          170,
+          187
+        ],
+        "retained_ids_u32le_sha256": "6092c4609a415d5bb14a4cdf35171ae05c0eca3c9c9fb6ae70b6e07e256ce273",
+        "rng_state_after": "62a2eae9be3c52bf",
+        "rng_state_before": "f22bd7481281c27e",
+        "rng_word": "15f5e171",
+        "selected_token_id": 0,
+        "top_k_retained_count": 20,
+        "top_k_retained_ids": [
+          0,
+          17,
+          34,
+          51,
+          68,
+          85,
+          102,
+          119,
+          136,
+          153,
+          170,
+          187,
+          204,
+          221,
+          238,
+          255,
+          272,
+          289,
+          306,
+          248044
+        ],
+        "top_k_retained_ids_u32le_sha256": "a3ccc07592d122590187aa2a640101ad5942cc97925a5dc5777596f778f68878"
+      },
+      "overrides": {
+        "0": 6.0,
+        "102": 4.5,
+        "119": 4.25,
+        "136": 4.0,
+        "153": 3.75,
+        "17": 5.75,
+        "170": 3.5,
+        "187": 3.25,
+        "204": 3.0,
+        "221": 2.75,
+        "238": 2.5,
+        "248044": 1.5,
+        "248046": 1.25,
+        "248076": 1.0,
+        "248077": 0.75,
+        "255": 2.25,
+        "272": 2.0,
+        "289": 1.75,
+        "306": 1.5,
+        "323": 1.25,
+        "34": 5.5,
+        "340": 1.0,
+        "357": 0.75,
+        "374": 0.5,
+        "391": 0.25,
+        "408": 0.0,
+        "51": 5.25,
+        "68": 5.0,
+        "85": 4.75
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 0,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "top-k-threshold-tie",
+      "oracle": {
+        "active_processors": [
+          "top_k"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "4b63f33e",
+            "processed_logit_f32_le_hex": "00004040",
+            "token_id": 5
+          },
+          {
+            "probability_f32_le_hex": "2513333e",
+            "processed_logit_f32_le_hex": "00000040",
+            "token_id": 6
+          },
+          {
+            "probability_f32_le_hex": "2513333e",
+            "processed_logit_f32_le_hex": "00000040",
+            "token_id": 7
+          },
+          {
+            "probability_f32_le_hex": "2513333e",
+            "processed_logit_f32_le_hex": "00000040",
+            "token_id": 8
+          }
+        ],
+        "retained_count": 4,
+        "retained_ids": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "retained_ids_u32le_sha256": "f3e0813c89d0991f07fbb5027a68c0cb809e1effc0c1e8974664bd2e57b50024",
+        "rng_state_after": "cb02838bbfcc00a8",
+        "rng_state_before": "4a7dcb755f1741ab",
+        "rng_word": "a2a7dd9e",
+        "selected_token_id": 6,
+        "top_k_retained_count": 4,
+        "top_k_retained_ids": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "top_k_retained_ids_u32le_sha256": "f3e0813c89d0991f07fbb5027a68c0cb809e1effc0c1e8974664bd2e57b50024"
+      },
+      "overrides": {
+        "5": 3.0,
+        "6": 2.0,
+        "7": 2.0,
+        "8": 2.0,
+        "9": 1.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 3,
+        "top_p": 1.0
+      },
+      "seed": 1,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "top-p-below-half",
+      "oracle": {
+        "active_processors": [
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "00000000",
+            "token_id": 11
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          11
+        ],
+        "retained_ids_u32le_sha256": "cb30e91817239109ffd0a5870046e128f04619da80c7624d921162fdfe514f76",
+        "rng_state_after": "33621c2dc15bae91",
+        "rng_state_before": "a2cfbfa2abacc0d8",
+        "rng_word": "2e22859f",
+        "selected_token_id": 11,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "10": 0.0,
+        "11": 0.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 0,
+        "top_p": 0.4999999701976776
+      },
+      "seed": 2,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "top-p-on-half",
+      "oracle": {
+        "active_processors": [
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "00000000",
+            "token_id": 11
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          11
+        ],
+        "retained_ids_u32le_sha256": "cb30e91817239109ffd0a5870046e128f04619da80c7624d921162fdfe514f76",
+        "rng_state_after": "9bc1b4cfc2eb5c7a",
+        "rng_state_before": "fb21b3cff8424005",
+        "rng_word": "c86341e4",
+        "selected_token_id": 11,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "10": 0.0,
+        "11": 0.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 0,
+        "top_p": 0.5
+      },
+      "seed": 3,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "top-p-above-half",
+      "oracle": {
+        "active_processors": [
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000003f",
+            "processed_logit_f32_le_hex": "00000000",
+            "token_id": 10
+          },
+          {
+            "probability_f32_le_hex": "0000003f",
+            "processed_logit_f32_le_hex": "00000000",
+            "token_id": 11
+          }
+        ],
+        "retained_count": 2,
+        "retained_ids": [
+          10,
+          11
+        ],
+        "retained_ids_u32le_sha256": "50ac472466c102b9f97990af92e6c7acc1e76efbfd9b10904c4e2cfd533b0ca8",
+        "rng_state_after": "04214d71c47b0a63",
+        "rng_state_before": "5373a7fd44d7bf32",
+        "rng_word": "0d5b9d99",
+        "selected_token_id": 10,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "10": 0.0,
+        "11": 0.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 0,
+        "top_p": 0.5000000596046448
+      },
+      "seed": 4,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "temperature-half",
+      "oracle": {
+        "active_processors": [
+          "temperature",
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "b1b2893e",
+            "processed_logit_f32_le_hex": "0000803f",
+            "token_id": 3
+          },
+          {
+            "probability_f32_le_hex": "a8263b3f",
+            "processed_logit_f32_le_hex": "00000040",
+            "token_id": 4
+          }
+        ],
+        "retained_count": 2,
+        "retained_ids": [
+          3,
+          4
+        ],
+        "retained_ids_u32le_sha256": "8073c94ef47ecc86dcd78a8d9027a23484fadcd7cea37150319ba8cbf1c70b6b",
+        "rng_state_after": "6c80e613c60ab84c",
+        "rng_state_before": "abc59c2a916d3e5f",
+        "rng_word": "b6dbf3c5",
+        "selected_token_id": 4,
+        "top_k_retained_count": 4,
+        "top_k_retained_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "top_k_retained_ids_u32le_sha256": "cf97adeedb59e05bfd73a2b4c2a8885708c4f4f70c84c64b27120e72ab733b72"
+      },
+      "overrides": {
+        "0": -1.0,
+        "1": -0.5,
+        "2": 0.0,
+        "3": 0.5,
+        "4": 1.0
+      },
+      "policy": {
+        "temperature": 0.5,
+        "top_k": 4,
+        "top_p": 0.800000011920929
+      },
+      "seed": 5,
+      "stream": 5427223837140668492
+    },
+    {
+      "base_logit": -80.0,
+      "id": "dominant-eog",
+      "oracle": {
+        "active_processors": [
+          "top_k",
+          "top_p"
+        ],
+        "expected_status": "OK",
+        "retained": [
+          {
+            "probability_f32_le_hex": "0000803f",
+            "processed_logit_f32_le_hex": "0000a041",
+            "token_id": 248046
+          }
+        ],
+        "retained_count": 1,
+        "retained_ids": [
+          248046
+        ],
+        "retained_ids_u32le_sha256": "201a8bab084b2a57aa2f6a8ceb51b3609f4c5a297d952bf51dbf4cd321e16151",
+        "rng_state_after": "d4e07eb5c79a6635",
+        "rng_state_before": "04179057de02bd8c",
+        "rng_word": "82f22a47",
+        "selected_token_id": 248046,
+        "top_k_retained_count": 248320,
+        "top_k_retained_ids": null,
+        "top_k_retained_ids_u32le_sha256": "04e2cf36c8dbca2187a72a00956b204113e8a107478e8301c3982b6d960a29a2"
+      },
+      "overrides": {
+        "248046": 20.0,
+        "3": 0.0
+      },
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "seed": 6,
+      "stream": 5427223837140668492
+    }
+  ],
+  "comparison": {
+    "logits_and_probabilities": "CALIBRATED_FLOAT",
+    "membership_and_selection": "EXACT_DISCRETE",
+    "rng": "EXACT_BITS"
+  },
+  "schema": "kq-sampling-calibration-v1"
+}

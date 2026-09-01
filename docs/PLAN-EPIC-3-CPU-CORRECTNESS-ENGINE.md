@@ -1,6 +1,6 @@
 # PLAN-EPIC-3-CPU-CORRECTNESS-ENGINE.md
 
-Status: **IN PROGRESS — IMPLEMENTATION NOT STARTED**
+Status: **IN PROGRESS — TASK 3.0 COMPLETE / PASS**
 
 ## Objective
 
@@ -68,8 +68,8 @@ All entry criteria are satisfied at the published baseline:
 | Greedy argmax and exact token parity | Complete via Tasks 2.12-2.13 | Preserve as regression/fallback |
 | Incremental state and rollback | Complete via Task 2.13 | Extend transaction to sampler state |
 | EOG IDs and max/context stop | Complete for greedy | Revalidate through sampled integration |
-| Sampling transformations and selection | Absent | Task 3.0 |
-| Explicit portable RNG ownership/state | Absent | Task 3.0 |
+| Sampling transformations and selection | Complete via Task 3.0 | Preserve; integrate in Task 3.1 |
+| Explicit portable RNG ownership/state | Complete via Task 3.0 | Include in Task 3.1 transaction |
 | Sampled incremental generation | Absent | Task 3.1 |
 | Sampling-specific independent evidence | Absent | Tasks 3.0-3.1 |
 
@@ -80,7 +80,7 @@ greedy argmax and has no RNG or sampling API. It is not a performance gap.
 ## Task sequence
 
 1. **Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives**
-   — **NOT STARTED**.
+   — **COMPLETE / PASS**.
 2. **Task 3.1 — Sampled Incremental Generation & Oracle Validation** —
    **PLANNED / NOT STARTED**. Its task-specific package is created only after
    Task 3.0 is reviewed and checkpointed.
@@ -241,9 +241,9 @@ benchmark is run during Epic 3 inception.
 
 ## Initial ADR
 
-`docs/adr/0022-native-sampling-policy-boundary.md` is **PROPOSED** because the
-separation between model-logit production, selection policy and caller-owned
-RNG state is a durable runtime boundary. It is not accepted by this planning
-iteration and must be finalized from Task 3.0 evidence.
+`docs/adr/0022-native-sampling-policy-boundary.md` is **ACCEPTED** from Task
+3.0 evidence. Model-logit production, immutable selection policy and
+caller-owned versioned PCG32 state are separate runtime boundaries. Task 3.1
+remains planned/not started and owns executor integration.
 
-`EPIC_3_INITIAL_ADR = ADR 0022 / PROPOSED`.
+`EPIC_3_INITIAL_ADR = ADR 0022 / ACCEPTED`.

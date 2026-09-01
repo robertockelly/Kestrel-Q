@@ -252,3 +252,28 @@ diagnostic characterization, not a widened correctness substitute.
 | `multi-token-state.json` | `677bc8a06e06dca3591070ec030d2b73de195fc137785caf36bce2f9b01a5aac` |
 | `multi-token-validation.json` | `df1bf3aa3810a4cad0492d8d62747e7c6a5d54a70a3a01f960b212349c19c4b0` |
 | `multi-token-manifest.json` | `b7e2a3fa1ca098f0b7a8caa3b31f964aa5d140cfafaeb072ff5ad9d1e9ec1efe` |
+
+## Task 3.0 sampling policy evidence
+
+Task 3.0 adds an isolated Class-C sampling namespace under
+`research/sampling/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540/`.
+Pinned Transformers generates expected processor masks and probabilities;
+an independent Python implementation of the published PCG32 specification
+generates RNG/state and categorical decisions before native validation.
+Kestrel-Q is only the comparison subject and no model payload is involved.
+
+Seven calibration cases freeze a probability contract, and seven disjoint
+holdout cases pass it unchanged. Exact fields cover retained token IDs/order,
+PCG words/state and selected IDs. A separately predeclared 100,000-draw
+Hoeffding corpus validates distributional behavior without requiring unrelated
+RNG implementations to produce the same token sequence.
+
+| Task 3.0 evidence | SHA-256 |
+|---|---|
+| `sampling-contract.json` | `5a185f8b832b7de2785813bfbf4b30deb46d54f31d9208134d71562eff34112f` |
+| `sampling-calibration.json` | `775c11680ab49fe497ab7924406b9ed0aaefe60c0eec07308e53259529bf34c1` |
+| `sampling-holdout.json` | `4d10ce57c5584ad480af0eff3527db48941bea8b26a525de52c5969fcfc2ab9e` |
+| `sampling-rng-vectors.json` | `66ee01c020b49fd7fbadcd34426124d56db4d0bc12666f4be1f9ec0605f6840e` |
+| `sampling-statistical.json` | `f4ff7787f138645a99510a9f77d6f437d100a548c878400718188efb0a007d88` |
+| `sampling-native-validation.json` | `85d00208f1ba9a390df490b7b6819bc6eb571f9384b6139906048fb99ff51527` |
+| `sampling-manifest.json` | `fa82837b070f81b70d3d0ff83b48cd79d157b4188f19fcd73082ff275cfe8284` |

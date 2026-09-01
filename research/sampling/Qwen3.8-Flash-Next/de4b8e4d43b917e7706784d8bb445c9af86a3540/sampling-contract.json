@@ -1,0 +1,75 @@
+{
+  "expected_values_from_kestrel_q": false,
+  "generation_config": {
+    "bos_token_id": 248044,
+    "do_sample": true,
+    "eos_token_id": [
+      248046,
+      248044
+    ],
+    "pad_token_id": 248044,
+    "temperature": 1.0,
+    "top_k": 20,
+    "top_p": 0.95
+  },
+  "generation_config_sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e",
+  "model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "model_weights_loaded": false,
+  "non_finite_policy": "FAIL_CLOSED",
+  "oracle_environment": {
+    "numpy": "1.26.4",
+    "python": "3.13.12",
+    "tokenizers": "0.23.1",
+    "torch": "2.11.0+cpu",
+    "transformers": "5.16.0.dev0"
+  },
+  "parameter_domain": {
+    "temperature": "finite F32 > 0",
+    "top_k": "integer 0..248320; zero disables",
+    "top_p": "finite F32 0..1; one disables"
+  },
+  "pcg_source_hashes": {
+    "LICENSE.txt": "e03ba41d7fab20700769fe4118bab50d800cb74f990353a05d2f5fff1c228363",
+    "pcg_basic.c": "b3a77c42f9e7b57a095aa0c5f684c42a2fdade5cb823cdb483bb09a88ffc6fe0",
+    "pcg_basic.h": "18b8752b39fe07d527b4afe7756d1349fd44871f218811ec4d57c1ea7fc1e9f5"
+  },
+  "processor_order": [
+    "temperature_if_nonunit",
+    "top_k_if_nonzero",
+    "top_p_if_below_one",
+    "softmax",
+    "categorical"
+  ],
+  "rng": {
+    "algorithm": "PCG-XSH-RR-64-32",
+    "default_stream": 5427223837140668492,
+    "draws_per_successful_selection": 1,
+    "license": "Apache-2.0",
+    "pcg_revision": "bc39cd76ac3d541e618606bcc6e1e5ba5e5e6aa3",
+    "state_format_version": 1,
+    "uniform_mapping": "binary64(word / 2^32)"
+  },
+  "schema": "kq-sampling-contract-v1",
+  "source_hashes": {
+    "src/transformers/generation/configuration_utils.py": "427f7e57922fb58c3b321f5e5837ee782bd640cd5b22833029b16f9d4b9c4cdb",
+    "src/transformers/generation/logits_process.py": "c5b5d5666576b19e19a09b99b55806ea009dd8e999892f7a8d2d7876dbfc2002",
+    "src/transformers/generation/utils.py": "c45e19eb4534a2478f8e4825dc35a28fb5efe5a2f8d09695e4b2ea532b4dbd82"
+  },
+  "status": "PINNED_BEFORE_NATIVE_VALIDATION",
+  "top_k": "remove score < kth score; preserve threshold ties",
+  "top_p": "ascending score/id; remove cumulative <= 1-p; keep one",
+  "transformers_revision": "805a9e939fa8c1bff8d8ffdf041c051b71a914aa",
+  "vocabulary": {
+    "canonical_token_count": 248077,
+    "eog_ids": [
+      248046,
+      248044
+    ],
+    "model_capacity": 248320,
+    "padded_ids": [
+      248077,
+      248319
+    ],
+    "padded_policy": "participate_then_fail_if_selected"
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "algorithm": "PCG-XSH-RR-64-32",
+  "cases": [
+    {
+      "increment_hex": "0000000000000001",
+      "seed": 0,
+      "seeded_state_hex": "5851f42d4c957f2e",
+      "stream": 0,
+      "words": [
+        {
+          "draw": 1,
+          "state_after_hex": "c0b18ccf4e252d17",
+          "uniform_hex": "0x1.c9828f1000000p-1",
+          "word_hex": "e4c14788"
+        },
+        {
+          "draw": 2,
+          "state_after_hex": "cbb5f646404a560c",
+          "uniform_hex": "0x1.bce328b000000p-3",
+          "word_hex": "379c6516"
+        },
+        {
+          "draw": 3,
+          "state_after_hex": "c7033129d2bd141d",
+          "uniform_hex": "0x1.712aceec00000p-2",
+          "word_hex": "5c4ab3bb"
+        },
+        {
+          "draw": 4,
+          "state_after_hex": "30705b042917ec1a",
+          "uniform_hex": "0x1.80748f8000000p-2",
+          "word_hex": "601d23e0"
+        },
+        {
+          "draw": 5,
+          "state_after_hex": "20fd5db43a776693",
+          "uniform_hex": "0x1.c382b8c000000p-4",
+          "word_hex": "1c382b8c"
+        },
+        {
+          "draw": 6,
+          "state_after_hex": "9a8b7f78da6ef4d8",
+          "uniform_hex": "0x1.a3f5562c00000p-1",
+          "word_hex": "d1faab16"
+        },
+        {
+          "draw": 7,
+          "state_after_hex": "502959d812b031f9",
+          "uniform_hex": "0x1.9da028b400000p-2",
+          "word_hex": "67680a2d"
+        },
+        {
+          "draw": 8,
+          "state_after_hex": "ab894868b3b04fc6",
+          "uniform_hex": "0x1.240294dc00000p-1",
+          "word_hex": "92014a6e"
+        }
+      ]
+    },
+    {
+      "increment_hex": "0000000000000001",
+      "seed": 18446744073709551615,
+      "seeded_state_hex": "0000000000000001",
+      "stream": 0,
+      "words": [
+        {
+          "draw": 1,
+          "state_after_hex": "5851f42d4c957f2e",
+          "uniform_hex": "0x0.0p+0",
+          "word_hex": "00000000"
+        },
+        {
+          "draw": 2,
+          "state_after_hex": "c0b18ccf4e252d17",
+          "uniform_hex": "0x1.c9828f1000000p-1",
+          "word_hex": "e4c14788"
+        },
+        {
+          "draw": 3,
+          "state_after_hex": "cbb5f646404a560c",
+          "uniform_hex": "0x1.bce328b000000p-3",
+          "word_hex": "379c6516"
+        },
+        {
+          "draw": 4,
+          "state_after_hex": "c7033129d2bd141d",
+          "uniform_hex": "0x1.712aceec00000p-2",
+          "word_hex": "5c4ab3bb"
+        },
+        {
+          "draw": 5,
+          "state_after_hex": "30705b042917ec1a",
+          "uniform_hex": "0x1.80748f8000000p-2",
+          "word_hex": "601d23e0"
+        },
+        {
+          "draw": 6,
+          "state_after_hex": "20fd5db43a776693",
+          "uniform_hex": "0x1.c382b8c000000p-4",
+          "word_hex": "1c382b8c"
+        },
+        {
+          "draw": 7,
+          "state_after_hex": "9a8b7f78da6ef4d8",
+          "uniform_hex": "0x1.a3f5562c00000p-1",
+          "word_hex": "d1faab16"
+        },
+        {
+          "draw": 8,
+          "state_after_hex": "502959d812b031f9",
+          "uniform_hex": "0x1.9da028b400000p-2",
+          "word_hex": "67680a2d"
+        }
+      ]
+    },
+    {
+      "increment_hex": "96a2bea6829aa099",
+      "seed": 0,
+      "seeded_state_hex": "f22bd7481281c27e",
+      "stream": 5427223837140668492,
+      "words": [
+        {
+          "draw": 1,
+          "state_after_hex": "62a2eae9be3c52bf",
+          "uniform_hex": "0x1.5f5e171000000p-4",
+          "word_hex": "15f5e171"
+        },
+        {
+          "draw": 2,
+          "state_after_hex": "a43d385cbd6ced2c",
+          "uniform_hex": "0x1.040a8bc800000p-1",
+          "word_hex": "820545e4"
+        },
+        {
+          "draw": 3,
+          "state_after_hex": "73b1e077f3052555",
+          "uniform_hex": "0x1.153f43d000000p-3",
+          "word_hex": "22a7e87a"
+        },
+        {
+          "draw": 4,
+          "state_after_hex": "149a4250be805b8a",
+          "uniform_hex": "0x1.371763f800000p-2",
+          "word_hex": "4dc5d8fe"
+        },
+        {
+          "draw": 5,
+          "state_after_hex": "88ad107debe62ddb",
+          "uniform_hex": "0x1.9348eec400000p-2",
+          "word_hex": "64d23bb1"
+        },
+        {
+          "draw": 6,
+          "state_after_hex": "19058ae4df475518",
+          "uniform_hex": "0x1.2b54569800000p-3",
+          "word_hex": "256a8ad3"
+        },
+        {
+          "draw": 7,
+          "state_after_hex": "ef3faaa5cc537dd1",
+          "uniform_hex": "0x1.c82c652c00000p-1",
+          "word_hex": "e4163296"
+        },
+        {
+          "draw": 8,
+          "state_after_hex": "eb5e05d81f576d56",
+          "uniform_hex": "0x1.fc8b513800000p-3",
+          "word_hex": "3f916a27"
+        }
+      ]
+    },
+    {
+      "increment_hex": "ffffffffffffffff",
+      "seed": 18446744073709551615,
+      "seeded_state_hex": "4f5c17a566d501a5",
+      "stream": 9223372036854775807,
+      "words": [
+        {
+          "draw": 1,
+          "state_after_hex": "d6eeda8eb04b2500",
+          "uniform_hex": "0x1.33ae023800000p-3",
+          "word_hex": "2675c047"
+        },
+        {
+          "draw": 2,
+          "state_after_hex": "2945a042cd9080ff",
+          "uniform_hex": "0x1.dde6a0dc00000p-2",
+          "word_hex": "7779a837"
+        },
+        {
+          "draw": 3,
+          "state_after_hex": "3daf93f29ad02dd2",
+          "uniform_hex": "0x1.428b542600000p-1",
+          "word_hex": "a145aa13"
+        },
+        {
+          "draw": 4,
+          "state_after_hex": "66227b21808d3be9",
+          "uniform_hex": "0x1.7daf9c9800000p-2",
+          "word_hex": "5f6be726"
+        },
+        {
+          "draw": 5,
+          "state_after_hex": "ee759f9bb4291ef4",
+          "uniform_hex": "0x1.48f1131400000p-2",
+          "word_hex": "523c44c5"
+        },
+        {
+          "draw": 6,
+          "state_after_hex": "ebe65ec285997ce3",
+          "uniform_hex": "0x1.d6901b5800000p-2",
+          "word_hex": "75a406d6"
+        },
+        {
+          "draw": 7,
+          "state_after_hex": "fa38cbc8b50e90e6",
+          "uniform_hex": "0x1.ccc8762600000p-1",
+          "word_hex": "e6643b13"
+        },
+        {
+          "draw": 8,
+          "state_after_hex": "f916c906ab4f926d",
+          "uniform_hex": "0x1.1c7aa34000000p-1",
+          "word_hex": "8e3d51a0"
+        }
+      ]
+    }
+  ],
+  "comparison_class": "EXACT_BITS",
+  "explicit_word_boundaries": [
+    {
+      "uniform_hex": "0x0.0p+0",
+      "word_hex": "00000000"
+    },
+    {
+      "uniform_hex": "0x1.0000000000000p-1",
+      "word_hex": "80000000"
+    },
+    {
+      "uniform_hex": "0x1.fffffffe00000p-1",
+      "word_hex": "ffffffff"
+    }
+  ],
+  "pcg_revision": "bc39cd76ac3d541e618606bcc6e1e5ba5e5e6aa3",
+  "schema": "kq-sampling-rng-vectors-v1",
+  "uniform_mapping": "binary64(word / 2^32)"
+}

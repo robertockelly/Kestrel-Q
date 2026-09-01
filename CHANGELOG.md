@@ -8,6 +8,49 @@ The project is currently pre-alpha.
 
 ### Changed
 
+- Completed Task 3.0, Native Sampling Policy & Deterministic Selection
+  Primitives, as **COMPLETE / PASS**. Added a separate CPU-only C17 sampling
+  boundary over complete 248,320-element finite F32 logits, immutable validated
+  policy, caller-owned PCG32 state and caller scratch. The model executor,
+  accepted greedy argmax, CLI and model payload paths remain unchanged; Task
+  3.1 sampled incremental integration remains NOT STARTED.
+- Characterized the pinned official Qwen3.8/Transformers processor path before
+  native algorithm code: temperature, top-k threshold with retained ties,
+  ascending-cumulative top-p with the equality boundary removed, then F32
+  softmax. Recorded exact source/config hashes, the full token-domain behavior,
+  EOG eligibility, padding-ID transactional rejection, strict FP environment
+  and every unsupported processor/option in `SAMPLING-CONTRACT.md`.
+- Pinned PCG-XSH-RR 64/32 to Apache-2.0
+  `pcg-c-basic@bc39cd76ac3d541e618606bcc6e1e5ba5e5e6aa3`, with an independently
+  implemented versioned seed/stream/state/uniform/categorical contract. Added
+  reset, snapshot/import, corruption validation and success-only state commit;
+  production links no PCG, Python, PyTorch, Transformers or llama.cpp runtime.
+- Added deterministic Class-C sampling evidence: seven calibration and seven
+  disjoint holdout cases, four exact RNG-vector cases, fixed-input selections,
+  padded-ID rollback cases and a predeclared 100,000-draw-per-case Hoeffding
+  distribution gate. Processed logits are bit exact; probability holdout
+  observed at most 1 ULP under the calibration-frozen 3 ULP and
+  `5.960464477539063e-08` absolute contract. The independent and native
+  statistical populations pass all 25 category assertions.
+- Added fail-closed regression coverage for invalid policy fields,
+  wrong vocabulary/capacity, non-finite logits, invalid probability mass,
+  corrupt RNG state, padding-ID selection, overlapping buffers and incompatible
+  rounding mode. During evidence generation, an initial deterministic draft
+  serialized every retained ID for disabled top-k, producing roughly 17 MiB
+  calibration/holdout JSON files. Root cause was unbounded diagnostic evidence,
+  not model data; the invalid draft was never governed. The generator now
+  stores count plus an exact u32le SHA-256 and omits lists above 256 entries,
+  regenerates byte-identically and keeps all evidence bounded.
+- Accepted ADR 0022, documenting the durable separation among model-logit
+  production, immutable sampling policy and explicit caller-owned RNG state.
+  Epic 3 remains IN PROGRESS, Task 3.1 remains PLANNED / NOT STARTED, and
+  `KQ-BACKLOG-BENCH-001` / `KQ-BACKLOG-BENCH-002` remain DEFERRED.
+- Final clean Release validation passed 42/42 CPU CTests and 44/44 CUDA CTests,
+  including all Task 2 real-artifact/oracle regressions, the Task 3.0 synthetic
+  suite, its independent validator and CUDA smoke/self-test. No new Kestrel-Q
+  `/W4` warning was introduced; the governed external NVCC-generated C4211
+  remains unchanged.
+
 - Completed the governance-only Epic 3 inception review. Committed roadmap
   evidence shows that tokenizer, scalar numerics/operators, real quantized
   execution, full logits, greedy selection and incremental state/rollback are

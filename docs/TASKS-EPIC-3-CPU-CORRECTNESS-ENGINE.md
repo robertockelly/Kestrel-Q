@@ -1,6 +1,6 @@
 # TASKS-EPIC-3-CPU-CORRECTNESS-ENGINE.md
 
-Status: **IN PROGRESS — IMPLEMENTATION NOT STARTED**
+Status: **IN PROGRESS — TASK 3.0 COMPLETE / PASS**
 
 ## Inception baseline
 
@@ -18,24 +18,24 @@ Status: **IN PROGRESS — IMPLEMENTATION NOT STARTED**
 
 ### Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives
 
-Status: **NOT STARTED**
+Status: **COMPLETE / PASS**
 
-- [ ] Characterize pinned official generation configuration and Transformers
+- [x] Characterize pinned official generation configuration and Transformers
   sampling path before code.
-- [ ] Pin exact supported processor order, token eligibility and special/padded
+- [x] Pin exact supported processor order, token eligibility and special/padded
   ID semantics.
-- [ ] Select and document portable deterministic RNG algorithm/state semantics.
-- [ ] Implement separate immutable sampler config and explicit mutable RNG
+- [x] Select and document portable deterministic RNG algorithm/state semantics.
+- [x] Implement separate immutable sampler config and explicit mutable RNG
   state in C17.
-- [ ] Validate exact masks/order, RNG vectors and fixed-input selections against
+- [x] Validate exact masks/order, RNG vectors and fixed-input selections against
   an independent oracle.
-- [ ] Calibrate floating transforms and pass a disjoint holdout.
-- [ ] Define and pass a predeclared statistical acceptance corpus where exact
+- [x] Calibrate floating transforms and pass a disjoint holdout.
+- [x] Define and pass a predeclared statistical acceptance corpus where exact
   token equality is invalid.
-- [ ] Preserve greedy argmax and EOG behavior.
-- [ ] Complete fail-closed suite.
-- [ ] Finalize ADR 0022 from evidence.
-- [ ] Clean CPU/CUDA regressions and repository-safety gates PASS.
+- [x] Preserve greedy argmax and EOG behavior.
+- [x] Complete fail-closed suite.
+- [x] Finalize ADR 0022 from evidence.
+- [x] Clean CPU/CUDA regressions and repository-safety gates PASS.
 
 ### Task 3.1 — Sampled Incremental Generation & Oracle Validation
 
@@ -57,11 +57,11 @@ Status: **PLANNED / NOT STARTED**
 
 ## Epic 3 closure gates
 
-- [ ] Task 3.0 COMPLETE/PASS.
+- [x] Task 3.0 COMPLETE/PASS.
 - [ ] Task 3.1 COMPLETE/PASS.
-- [ ] Official Qwen3.8 default sampling profile supported.
-- [ ] Exact processor/RNG/fixed-input decision evidence PASS.
-- [ ] Calibrated floating and predeclared statistical holdout PASS.
+- [x] Official Qwen3.8 default sampling profile supported.
+- [x] Exact processor/RNG/fixed-input decision evidence PASS.
+- [x] Calibrated floating and predeclared statistical holdout PASS.
 - [ ] Sampled incremental state/stop/rollback evidence PASS.
 - [ ] Greedy M1 and Task 2.13 evidence unchanged and PASS.
 - [ ] No production oracle dependency or hidden global RNG state.

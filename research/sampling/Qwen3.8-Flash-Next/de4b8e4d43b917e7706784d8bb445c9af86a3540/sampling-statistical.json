@@ -1,0 +1,322 @@
+{
+  "absolute_error_bound": 0.007355194859556844,
+  "cases": [
+    {
+      "base_logit": -80.0,
+      "id": "uniform-two",
+      "outcomes": [
+        {
+          "absolute_error": 2.999999999997449e-05,
+          "count": 50003,
+          "expected_probability_f32_le_hex": "0000003f",
+          "frequency": 0.50003,
+          "pass": true,
+          "token_id": 100
+        },
+        {
+          "absolute_error": 2.999999999997449e-05,
+          "count": 49997,
+          "expected_probability_f32_le_hex": "0000003f",
+          "frequency": 0.49997,
+          "pass": true,
+          "token_id": 101
+        }
+      ],
+      "overrides": {
+        "100": 0.0,
+        "101": 0.0
+      },
+      "pass": true,
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "retained_ids": [
+        100,
+        101
+      ],
+      "seed": 768,
+      "stream": 5427223837140668492,
+      "trials": 100000
+    },
+    {
+      "base_logit": -80.0,
+      "id": "uniform-four",
+      "outcomes": [
+        {
+          "absolute_error": 0.0010699999999999876,
+          "count": 24893,
+          "expected_probability_f32_le_hex": "0000803e",
+          "frequency": 0.24893,
+          "pass": true,
+          "token_id": 200
+        },
+        {
+          "absolute_error": 0.00040000000000001146,
+          "count": 25040,
+          "expected_probability_f32_le_hex": "0000803e",
+          "frequency": 0.2504,
+          "pass": true,
+          "token_id": 201
+        },
+        {
+          "absolute_error": 0.0005700000000000149,
+          "count": 25057,
+          "expected_probability_f32_le_hex": "0000803e",
+          "frequency": 0.25057,
+          "pass": true,
+          "token_id": 202
+        },
+        {
+          "absolute_error": 9.999999999998899e-05,
+          "count": 25010,
+          "expected_probability_f32_le_hex": "0000803e",
+          "frequency": 0.2501,
+          "pass": true,
+          "token_id": 203
+        }
+      ],
+      "overrides": {
+        "200": 0.0,
+        "201": 0.0,
+        "202": 0.0,
+        "203": 0.0
+      },
+      "pass": true,
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "retained_ids": [
+        200,
+        201,
+        202,
+        203
+      ],
+      "seed": 769,
+      "stream": 5427223837140668492,
+      "trials": 100000
+    },
+    {
+      "base_logit": -80.0,
+      "id": "official-equal-twenty",
+      "outcomes": [
+        {
+          "absolute_error": 0.0006784206604957613,
+          "count": 5331,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05331,
+          "pass": true,
+          "token_id": 301
+        },
+        {
+          "absolute_error": 0.0004015793395042433,
+          "count": 5223,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05223,
+          "pass": true,
+          "token_id": 302
+        },
+        {
+          "absolute_error": 0.0014715793395042448,
+          "count": 5116,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05116,
+          "pass": true,
+          "token_id": 303
+        },
+        {
+          "absolute_error": 0.00018157933950424532,
+          "count": 5245,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05245,
+          "pass": true,
+          "token_id": 304
+        },
+        {
+          "absolute_error": 4.1579339504244084e-05,
+          "count": 5259,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05259,
+          "pass": true,
+          "token_id": 305
+        },
+        {
+          "absolute_error": 5.842066049575878e-05,
+          "count": 5269,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05269,
+          "pass": true,
+          "token_id": 306
+        },
+        {
+          "absolute_error": 0.000308420660495759,
+          "count": 5294,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05294,
+          "pass": true,
+          "token_id": 307
+        },
+        {
+          "absolute_error": 0.00029842066049575594,
+          "count": 5293,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05293,
+          "pass": true,
+          "token_id": 308
+        },
+        {
+          "absolute_error": 0.0010915793395042395,
+          "count": 5154,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05154,
+          "pass": true,
+          "token_id": 309
+        },
+        {
+          "absolute_error": 0.0008484206604957578,
+          "count": 5348,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05348,
+          "pass": true,
+          "token_id": 310
+        },
+        {
+          "absolute_error": 0.00044842066049576024,
+          "count": 5308,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05308,
+          "pass": true,
+          "token_id": 311
+        },
+        {
+          "absolute_error": 0.000528420660495757,
+          "count": 5316,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05316,
+          "pass": true,
+          "token_id": 312
+        },
+        {
+          "absolute_error": 0.0006115793395042451,
+          "count": 5202,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05202,
+          "pass": true,
+          "token_id": 313
+        },
+        {
+          "absolute_error": 0.00016842066049575777,
+          "count": 5280,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.0528,
+          "pass": true,
+          "token_id": 314
+        },
+        {
+          "absolute_error": 0.00010157933950424164,
+          "count": 5253,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05253,
+          "pass": true,
+          "token_id": 315
+        },
+        {
+          "absolute_error": 0.0018084206604957603,
+          "count": 5444,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05444,
+          "pass": true,
+          "token_id": 316
+        },
+        {
+          "absolute_error": 0.0005715793395042398,
+          "count": 5206,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05206,
+          "pass": true,
+          "token_id": 317
+        },
+        {
+          "absolute_error": 0.00019157933950424144,
+          "count": 5244,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05244,
+          "pass": true,
+          "token_id": 318
+        },
+        {
+          "absolute_error": 0.00048157933950424003,
+          "count": 5215,
+          "expected_probability_f32_le_hex": "3694573d",
+          "frequency": 0.05215,
+          "pass": true,
+          "token_id": 319
+        }
+      ],
+      "overrides": {
+        "300": 0.0,
+        "301": 0.0,
+        "302": 0.0,
+        "303": 0.0,
+        "304": 0.0,
+        "305": 0.0,
+        "306": 0.0,
+        "307": 0.0,
+        "308": 0.0,
+        "309": 0.0,
+        "310": 0.0,
+        "311": 0.0,
+        "312": 0.0,
+        "313": 0.0,
+        "314": 0.0,
+        "315": 0.0,
+        "316": 0.0,
+        "317": 0.0,
+        "318": 0.0,
+        "319": 0.0
+      },
+      "pass": true,
+      "policy": {
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.949999988079071
+      },
+      "retained_ids": [
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        316,
+        317,
+        318,
+        319
+      ],
+      "seed": 770,
+      "stream": 5427223837140668492,
+      "trials": 100000
+    }
+  ],
+  "comparison_class": "PREDECLARED_STATISTICAL",
+  "family_alpha": 0.001,
+  "method": "per-category absolute frequency Hoeffding bound",
+  "multiple_test_policy": "union bound over every retained category",
+  "pass": true,
+  "schema": "kq-sampling-statistical-v1",
+  "threshold_selected_before_native_run": true,
+  "total_category_assertions": 25,
+  "trials_per_case": 100000
+}

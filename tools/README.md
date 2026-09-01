@@ -606,3 +606,48 @@ py -3 tools/generate_multi_token_evidence.py `
   --native-raw .research-cache/task-2.13/multi-token-native-integration-r5.txt `
   --output-dir research/milestones/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
 ```
+
+## Task 3.0 sampling reference and native validation
+
+`generate-sampling-reference.py` is an offline, oracle-only generator for the
+pinned Qwen3.8 sampling contract. It verifies the official generation-config
+hash and the exact pinned Transformers source hashes, then invokes the pinned
+processor classes to create calibration and disjoint holdout expectations. It
+also implements the published PCG-XSH-RR 64/32 arithmetic independently to
+create exact RNG/state and categorical-selection vectors. It never invokes
+Kestrel-Q, opens a GGUF or reads model payload.
+
+The required oracle checkouts remain ignored:
+
+- `huggingface/transformers@805a9e939fa8c1bff8d8ffdf041c051b71a914aa`
+  (Apache-2.0), executed with CPython 3.13.12, PyTorch 2.11.0+cpu
+  (BSD-3-Clause), NumPy 1.26.4 (BSD-3-Clause) and tokenizers 0.23.1
+  (Apache-2.0);
+- `imneme/pcg-c-basic@bc39cd76ac3d541e618606bcc6e1e5ba5e5e6aa3`
+  (Apache-2.0), used as a specification/provenance pin only. Production
+  Kestrel-Q links no PCG package.
+
+```powershell
+$samplingOut = 'research/sampling/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540'
+$env:PYTHONPATH = "$(Resolve-Path .research-cache/task-1.4/transformers/src);$(Resolve-Path .research-cache/task-2.10-pythondeps)"
+python tools/generate-sampling-reference.py `
+  --transformers-checkout .research-cache/task-1.4/transformers `
+  --pcg-checkout .research-cache/task-3.0/pcg-c-basic `
+  --generation-config .research-cache/model-baseline/de4b8e4d43b917e7706784d8bb445c9af86a3540/generation_config.json `
+  --output-dir $samplingOut --verify
+```
+
+`validate-native-sampling.py` runs `kq_sampling_probe` against those frozen
+expectations. It derives floating limits only from calibration, applies them
+unchanged to holdout, requires exact discrete processor/RNG/selection results,
+repeats the predeclared statistical gate and writes only deterministic native
+validation plus the finalized manifest.
+
+```powershell
+python tools/validate-native-sampling.py `
+  --probe build-cpu/Release/kq_sampling_probe.exe `
+  --evidence-dir $samplingOut --verify
+```
+
+Production C17 sampling code reads none of these JSON files and links no
+Python, PyTorch, Transformers, tokenizers, NumPy or PCG dependency.

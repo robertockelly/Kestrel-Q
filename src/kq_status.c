@@ -116,6 +116,10 @@ const char *kq_status_string(kq_status status) {
             return "incompatible model execution configuration";
         case KQ_STATUS_INVALID_MODEL_STATE:
             return "invalid model execution state";
+        case KQ_STATUS_INCOMPATIBLE_SAMPLING:
+            return "incompatible sampling policy";
+        case KQ_STATUS_INVALID_RNG_STATE:
+            return "invalid sampling RNG state";
         default:
             return "unknown Kestrel-Q status";
     }

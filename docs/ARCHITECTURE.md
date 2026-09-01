@@ -360,10 +360,26 @@ to their preceding transaction slots and publishes neither outputs nor model
 position; retry from that state reproduces the oracle token. Provider metrics
 and traces remain monotonic audit data and are not rolled back.
 
+Task 3.0 adds `kq_sampling` as a deliberately separate CPU-only boundary. It
+accepts exactly 248,320 complete finite F32 logits, an immutable validated
+Qwen3.8 sampling policy, caller scratch and caller-owned versioned PCG32 state.
+It applies the pinned temperature, top-k and top-p processor order and returns
+one canonical token ID plus bounded diagnostics. The sampler owns no model,
+GGUF, tokenizer, stop condition or executor state, and it cannot access tensor
+payload. Config objects are shareable read-only; RNG state is mutable only by
+its caller and commits after successful canonical-ID selection.
+
+This separation makes processor math and randomness independently testable and
+keeps the accepted greedy argmax unchanged. Task 3.1, which is not started,
+will be responsible for combining model and RNG state into a whole-token
+transaction. No sampled generation CLI or model-session behavior is present
+in Task 3.0.
+
 This is not a scheduler or product-session architecture. Its repeated scalar
 logical weight touches are correctness instrumentation, not physical I/O.
 Context is an explicit bounded caller choice (16 for the governed Task 2.13
-case) and greedy argmax is the only selection policy. Batching, sampling,
-context serialization, vision, MTP, cache/prefetch, SIMD and CUDA model kernels
-remain outside the boundary. `KQ-BACKLOG-BENCH-002` is still required before
-final disk-backed PLE/residency policy.
+case) and greedy argmax remains the executor's only integrated selection
+policy. Batching, sampled executor integration, context serialization, vision,
+MTP, cache/prefetch, SIMD and CUDA model kernels remain outside the boundary.
+`KQ-BACKLOG-BENCH-002` is still required before final disk-backed
+PLE/residency policy.

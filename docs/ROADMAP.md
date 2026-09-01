@@ -139,11 +139,11 @@ Minimal CPU reference inference and reference-vector parity.
   runtime behavior. Sampling is the only unfinished Phase 2/R2 workstream;
   tokenizer, scalar operators, real quantized execution, logits and incremental
   greedy generation are already complete through Task 2.13. Epic 3 is **IN
-  PROGRESS** as a governed planning phase; implementation remains not started.
+  PROGRESS**; Task 3.0's isolated native sampling boundary is complete/pass.
 - Task 3.0 — Native Sampling Policy & Deterministic Selection Primitives:
-  **NOT STARTED**. It first characterizes the pinned official default profile
-  and then establishes a separate C17 policy/RNG/selection boundary with exact,
-  calibrated-float and predeclared statistical evidence.
+  **COMPLETE / PASS**. The pinned official default profile now has a separate
+  C17 policy/PCG32/selection boundary with exact, calibrated-float and
+  predeclared statistical evidence; ADR 0022 is accepted.
 - Task 3.1 — Sampled Incremental Generation & Oracle Validation:
   **PLANNED / NOT STARTED**. It follows Task 3.0 and extends the accepted
   prompt-prefill-once executor transaction to explicit sampler state while

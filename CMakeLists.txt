@@ -71,6 +71,7 @@ add_library(kq_core
     src/kq_qsa.c
     src/kq_qsa_qwen38.c
     src/kq_runtime.c
+    src/kq_sampling.c
     src/kq_sha256.c
     src/kq_status.c
     src/kq_tensor_view.c
@@ -98,6 +99,8 @@ if(MSVC)
     set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
         src/kq_model_exec.c src/kq_weight_provider.c APPEND PROPERTY
         COMPILE_OPTIONS /fp:strict)
+    set_property(SOURCE src/kq_sampling.c APPEND PROPERTY
+        COMPILE_OPTIONS /fp:strict)
 else()
     set_property(SOURCE src/kq_numeric.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
@@ -108,6 +111,8 @@ else()
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
     set_property(SOURCE src/kq_layer.c src/kq_layer_qwen38.c
         src/kq_model_exec.c src/kq_weight_provider.c APPEND PROPERTY
+        COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
+    set_property(SOURCE src/kq_sampling.c APPEND PROPERTY
         COMPILE_OPTIONS -fno-fast-math -ffp-contract=off)
 endif()
 
@@ -297,6 +302,19 @@ if(KQ_BUILD_TESTS)
     target_link_libraries(kq_numeric_test PRIVATE kq_core)
     kq_enable_c_warnings(kq_numeric_test)
     add_test(NAME kq_numeric_synthetic COMMAND kq_numeric_test)
+
+    add_executable(kq_sampling_test tests/sampling_test.c)
+    target_link_libraries(kq_sampling_test PRIVATE kq_core)
+    target_include_directories(kq_sampling_test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_sampling_test)
+    add_test(NAME kq_sampling_synthetic COMMAND kq_sampling_test)
+
+    add_executable(kq_sampling_probe tests/sampling_probe.c)
+    target_link_libraries(kq_sampling_probe PRIVATE kq_core)
+    target_include_directories(kq_sampling_probe PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    kq_enable_c_warnings(kq_sampling_probe)
 
     add_executable(kq_numeric_probe tests/numeric_probe.c)
     target_link_libraries(kq_numeric_probe PRIVATE kq_core)
@@ -539,6 +557,15 @@ if(KQ_BUILD_TESTS)
         )
         set_tests_properties(kq_target_layer_independent_oracle PROPERTIES
             SKIP_RETURN_CODE 77)
+        add_test(
+            NAME kq_sampling_independent_oracle
+            COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tools/validate-native-sampling.py
+                --probe $<TARGET_FILE:kq_sampling_probe>
+                --evidence-dir
+                ${CMAKE_CURRENT_SOURCE_DIR}/research/sampling/Qwen3.8-Flash-Next/de4b8e4d43b917e7706784d8bb445c9af86a3540
+                --verify
+        )
     endif()
 
     if(KQ_ENABLE_CUDA)
